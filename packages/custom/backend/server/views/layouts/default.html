@@ -3,7 +3,7 @@
 {% include '../includes/head.html' %}
 
 <body data-ng-controller="BackendController" data-curl="{{currenturl}}"  ng-cloak class="ng-cloak compact-menu" ng-class="state">  
-<main class="page-content content-wrap">  
+<main class="page-content content-wrap">   
 {% if currenturl !== '/admin/login' %}
     {% block header %}{% endblock %} 
     {% block sidebar %}{% endblock %}

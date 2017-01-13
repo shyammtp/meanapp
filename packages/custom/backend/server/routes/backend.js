@@ -8,11 +8,11 @@
         var requiresAdmin = circles.controller.hasCircle('admin');
         var requiresLogin = circles.controller.hasCircle('authenticated');
  
-        app.get('/',function(req,res) {  
+        app.get('/',function(req,res) {   
             Backend.render('index', {
                 package: 'backend',
                 currenturl : req.originalUrl,
-                locals : app.locals
+                settings : app.locals
             }, function(err, html) {
                 res.send(html);
             });

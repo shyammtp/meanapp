@@ -5,6 +5,7 @@
  */
 var Module = require('meanio').Module;
 
+
 var Theme = new Module('theme');
 
 /*
@@ -23,7 +24,10 @@ Theme.register(function(app, auth, database, circles) {
     menu: 'main'
   });
   
-  app.locals.theme = 'black';
+    var Settings = require('mongoose').model('Settings');
+    new Settings().getConfig('THEME',function(err, data) {
+      app.locals.theme = data.value;
+    });  
   /**
     //Uncomment to use. Requires meanio@0.3.7 or above
     // Save settings with callback
@@ -48,3 +52,4 @@ Theme.register(function(app, auth, database, circles) {
 
   return Theme;
 });
+ 

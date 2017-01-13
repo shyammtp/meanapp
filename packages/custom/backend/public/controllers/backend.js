@@ -8,8 +8,7 @@
         $scope.package = {
             name: 'backend'
         }; 
-        Backend.getAssetsData().then(function(res) {
-            console.log(res);
+        Backend.getAssetsData().then(function(res) { 
             $scope.assetspath = res.path;
             $scope.theme = res.theme; 
         }); 
