@@ -23,6 +23,7 @@ Backend.register(function(app, auth, database, circles) {
     roles: ['authenticated'],
     menu: 'main'
   }); 
+  
   /**
     //Uncomment to use. Requires meanio@0.3.7 or above
     // Save settings with callback

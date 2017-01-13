@@ -12,8 +12,9 @@
             url: '/backend/example/:circle',
             templateUrl: 'backend/views/example.html'
         });
-
-         $locationProvider.html5Mode(true);
+        $locationProvider
+            .html5Mode({enabled:true, requireBase:false});
+          
     }
 
     angular

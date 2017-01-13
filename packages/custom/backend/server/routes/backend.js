@@ -7,16 +7,22 @@
 
         var requiresAdmin = circles.controller.hasCircle('admin');
         var requiresLogin = circles.controller.hasCircle('authenticated');
+ 
+        app.get('/',function(req,res) {  
+            Backend.render('index', {
+                package: 'backend',
+                currenturl : req.originalUrl,
+                locals : app.locals
+            }, function(err, html) {
+                res.send(html);
+            });
+        }); 
 
-        app.get('/api/backend/example/anyone', function(req, res) {
-            res.send('Anyone can access this');
+        app.get('/api/locals',function(req,res) {
+            res.send(app.locals);
         });
 
-        app.get('/api/login',function(req,res) {
-            console.log(database);
-        });
-
-        app.get('/api/backend/example/auth', requiresLogin, function(req, res) {
+        /*app.get('/api/backend/example/auth', requiresLogin, function(req, res) {
             res.send('Only authenticated users can access this');
         });
 
@@ -26,11 +32,12 @@
 
         app.get('/api/backend/example/render', function(req, res) {
             Backend.render('index', {
-                package: 'backend'
+                package: 'backend',
+                shyam : 'test'
             }, function(err, html) {
                 //Rendering a view from the Package server/views
                 res.send(html);
             });
-        });
+        });*/
     };
 })();
