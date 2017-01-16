@@ -6,7 +6,10 @@
 var Module = require('meanio').Module;
 
 
-var Theme = new Module('theme');
+var Theme = new Module('theme'); 
+var Menus = require('../backend/server/models/menus.js');
+var Mongoose = require('mongoose'),
+  Menus = Mongoose.model('Menus');
 
 /*
  * All MEAN packages require registration
@@ -23,11 +26,13 @@ Theme.register(function(app, auth, database, circles) {
     roles: ['authenticated'],
     menu: 'main'
   });
-  
-    var Settings = require('mongoose').model('Settings');
-    new Settings().getConfig('THEME',function(err, data) {
+   
+    app.locals.theme = 'black';
+   /* new Settings().getConfig('THEME',function(err, data) {
       app.locals.theme = data.value;
-    });  
+    });  */
+ 
+    Menus.getMenus('admin');
   /**
     //Uncomment to use. Requires meanio@0.3.7 or above
     // Save settings with callback

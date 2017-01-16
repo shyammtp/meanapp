@@ -93548,7 +93548,6 @@
 	            name: 'backend'
 	        };
 	        Backend.getAssetsData().then(function (res) {
-	            console.log(res);
 	            $scope.assetspath = res.path;
 	            $scope.theme = res.theme;
 	        });
