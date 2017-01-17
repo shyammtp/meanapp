@@ -32,7 +32,9 @@ Theme.register(function(app, auth, database, circles) {
       app.locals.theme = data.value;
     });  */
  
-    Menus.getMenus('admin');
+    Menus.getMenus('admin',"",function(returns) {
+      console.log(returns);
+    });
   /**
     //Uncomment to use. Requires meanio@0.3.7 or above
     // Save settings with callback

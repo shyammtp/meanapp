@@ -14,34 +14,59 @@ var MenusSchema = new Schema({
 	parent_key : {type: String, default: null}
 });
 
-function buildSet(parent_key,domain,obj,data) {
-	domain || (domain = 'admin');
-	var sets = [],_obj = obj;
-	_obj.model('Menus').find({domain: domain,parent_key: parent_key}).exec(function(err,res) {
-		res.forEach(function(o,r) {
-			var data = data || {};
-			data['title_en'] = o.title_en;
-			data['before'] = o.before;
-			data['url'] = o.url;
-			_obj.CheckChildren(o.menu_key,function(err, childre) {
-				if(childre > 0) {
-					console.log(childre);
-					data['children'] = [];
-					data['children'].push(buildSet(o.menu_key,domain,_obj,data));
-				}  
-
-			}); 
-			
-		});
-		 
-		 return data;
-			console.log(sets);
-	});
+function getPromise(parent_key,domain,obj){
+  	var _obj = obj;
+   	var promise = _obj.model('Menus').find({domain: domain}).exec();
+   	return promise;
 }
-MenusSchema.statics.getMenus = function(domain) {
+ 
+
+function getChildren(data, menukey) { 
+	var childrens = [];
+	data.forEach(function(o,r) {
+		if(o.parent_key == menukey) {
+			childrens.push(o);
+		}
+	});
+	return childrens;
+}
+
+
+function buildSet(data,parent_key,domain,obj) {
+	domain || (domain = 'admin');
+	var sets = {};
+	var _obj = obj;
+	data.forEach(function(o,r) {
+		if(o.parent_key == parent_key) {
+			var datas = {};
+			datas['title_en'] = o.title_en;
+			datas['before'] = o.before;
+			datas['url'] = o.url;
+			datas['children'] = [];
+			var children = getChildren(data,o.menu_key); 
+			if(children.length > 0) {
+				datas['children'] = buildSet(children,o.menu_key,domain,_obj);
+			}
+			sets[o.menu_key] = datas;
+		} 
+	});
+	return sets;
+}
+
+MenusSchema.statics.getMenus = function(domain,parent_key,cb) {
 	var _obj = this,root = [];
-	buildSet("",domain,this);
+	parent_key || (parent_key = '');
+	var promise = getPromise("",domain,this); 
+	promise.then(function(s) { 
+		var returns = sys(s,domain,parent_key,_obj);
+		cb(returns);
+	})
+
 };
+
+function sys(data,domain,parent_key,obj) { 
+	return buildSet(data, parent_key,domain,obj);
+}
 
 
 MenusSchema.statics.CheckChildren = function(parent_key,cb) {
