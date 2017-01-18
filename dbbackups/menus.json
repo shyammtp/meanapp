@@ -1,0 +1,33 @@
+[{
+    "_id" : ObjectId("5879d715debbaac8a35d490c"),
+    "menu_key" : "dashboard",
+    "title_en" : "Dashboard",
+    "sort" : 1,
+    "url" : "admin/dashboard",
+    "before" : "<i class='fa fa-dashboard'></i>",
+    "after" : "",
+    "parent_key" : "",
+    "domain" : "admin"
+},
+{
+    "_id" : ObjectId("5879d7f4debbaac8a35d4959"),
+    "menu_key" : "settings",
+    "title_en" : "Settings",
+    "sort" : 2,
+    "url" : "",
+    "before" : "<i class='fa fa-anchor'></i>",
+    "after" : "",
+    "parent_key" : "",
+    "domain" : "admin"
+},
+{
+    "_id" : ObjectId("5879d82bdebbaac8a35d496c"),
+    "menu_key" : "general",
+    "title_en" : "General",
+    "sort" : 1,
+    "url" : "admin/settings/general",
+    "before" : "<i class='fa fa-anchor'></i>",
+    "after" : "",
+    "parent_key" : "settings",
+    "domain" : "admin"
+}]

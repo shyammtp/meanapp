@@ -93554,6 +93554,12 @@
 	            $scope.theme = res.theme;
 	        });
 	
+	        Backend.getMenus().then(function (response) {
+	            $scope.datas = response.data;
+	        });
+	        $scope.objectLength = function (obj) {
+	            return Object.keys(obj).length;
+	        };
 	        $scope.checkCircle = function () {
 	            Backend.checkCircle($stateParams.circle).then(function (response) {
 	                $scope.res = response;
@@ -93611,7 +93617,7 @@
 	            restrict: 'E',
 	            templateUrl: 'backend/views/page/sidebar/menus.html',
 	            link: function link(scope, element, attrs) {
-	                scope.name = 'shyam';
+	                angular.element('.sidebar .sub-menu').hide();
 	            }
 	
 	        };

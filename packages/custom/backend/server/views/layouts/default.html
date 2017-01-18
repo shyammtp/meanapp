@@ -6,7 +6,7 @@
 <main class="page-content content-wrap">   
 {% if currenturl !== '/admin/login' %}
     {% block header %}{% endblock %} 
-    <shmenu-sidebar data-ng-controller="SidebarController"></shmenu-sidebar> 
+    <shmenu-sidebar></shmenu-sidebar> 
 {% endif %}
     {% block content %}{% endblock %} 
     {% include '../includes/foot.html' %} 

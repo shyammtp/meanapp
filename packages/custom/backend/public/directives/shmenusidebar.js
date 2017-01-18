@@ -6,7 +6,7 @@
             restrict : 'E',
             templateUrl : 'backend/views/page/sidebar/menus.html',
             link : function(scope,element,attrs) { 
-                scope.name = 'shyam';
+                angular.element('.sidebar .sub-menu').hide();
             }
 
         }
