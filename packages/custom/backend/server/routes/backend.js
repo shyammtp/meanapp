@@ -1,14 +1,15 @@
 (function() {
     'use strict';
-
+ 
     /* jshint -W098 */
     // The Package is past automatically as first parameter
     module.exports = function(Backend, app, auth, database, circles) {
-
+        var sidebar = Backend.sidebarcontroller; 
         var requiresAdmin = circles.controller.hasCircle('admin');
         var requiresLogin = circles.controller.hasCircle('authenticated');
- 
-        app.get('/',function(req,res) {   
+        app.use(sidebar.theme);
+
+        app.get('/',function(req,res) {  
             Backend.render('index', {
                 package: 'backend',
                 currenturl : req.originalUrl,
@@ -17,6 +18,8 @@
                 res.send(html);
             });
         }); 
+
+        app.get('/api/backend/menus',sidebar.menuslist);
 
         app.get('/api/locals',function(req,res) {
             res.send(app.locals);

@@ -11,8 +11,8 @@
         Backend.getAssetsData().then(function(res) { 
             $scope.assetspath = res.path;
             $scope.theme = res.theme; 
-        }); 
-        
+        });  
+          
         $scope.checkCircle = function() {
             Backend.checkCircle($stateParams.circle).then(function(response) {
                 $scope.res = response;
@@ -22,6 +22,7 @@
                 $scope.resStatus = 'danger';
             });
         };
+
     }
 
     angular

@@ -26,15 +26,11 @@ Theme.register(function(app, auth, database, circles) {
     roles: ['authenticated'],
     menu: 'main'
   });
-   
-    app.locals.theme = 'black';
+    
    /* new Settings().getConfig('THEME',function(err, data) {
       app.locals.theme = data.value;
     });  */
- 
-    Menus.getMenus('admin',"",function(returns) {
-      console.log(returns);
-    });
+  
   /**
     //Uncomment to use. Requires meanio@0.3.7 or above
     // Save settings with callback

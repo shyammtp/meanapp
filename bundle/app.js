@@ -105,7 +105,7 @@
 	
 	  var req = __webpack_require__(29);
 	  req.keys().map(req);
-	  req = __webpack_require__(41);
+	  req = __webpack_require__(43);
 	  req.keys().map(req);
 	  angular.module('mean', packageModules);
 	}
@@ -93508,14 +93508,16 @@
 
 	var map = {
 		"./custom/backend/public/controllers/backend.js": 30,
-		"./custom/backend/public/directives/wdirective.js": 31,
-		"./custom/backend/public/index.js": 32,
-		"./custom/backend/public/routes/backend.js": 35,
-		"./custom/backend/public/services/backend.js": 36,
-		"./custom/theme/public/controllers/theme.js": 37,
-		"./custom/theme/public/index.js": 38,
-		"./custom/theme/public/routes/theme.js": 39,
-		"./custom/theme/public/services/theme.js": 40
+		"./custom/backend/public/controllers/sidebar.js": 31,
+		"./custom/backend/public/directives/shmenusidebar.js": 32,
+		"./custom/backend/public/directives/wdirective.js": 33,
+		"./custom/backend/public/index.js": 34,
+		"./custom/backend/public/routes/backend.js": 37,
+		"./custom/backend/public/services/backend.js": 38,
+		"./custom/theme/public/controllers/theme.js": 39,
+		"./custom/theme/public/index.js": 40,
+		"./custom/theme/public/routes/theme.js": 41,
+		"./custom/theme/public/services/theme.js": 42
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -93577,6 +93579,56 @@
 	(function () {
 	    'use strict';
 	
+	    /* jshint -W098 */
+	
+	    function SidebarController($scope, Global, Backend, $stateParams) {
+	        $scope.global = Global;
+	
+	        Backend.getMenus().then(function (response) {
+	            $scope.datas = response.data;
+	        });
+	        $scope.objectLength = function (obj) {
+	            return Object.keys(obj).length;
+	        };
+	    }
+	
+	    angular.module('mean.backend').controller('SidebarController', SidebarController);
+	
+	    SidebarController.$inject = ['$scope', 'Global', 'Backend', '$stateParams'];
+	})();
+
+/***/ },
+/* 32 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	(function () {
+	    'use strict';
+	
+	    function shMenuSidebar() {
+	        return {
+	            restrict: 'E',
+	            templateUrl: 'backend/views/page/sidebar/menus.html',
+	            link: function link(scope, element, attrs) {
+	                scope.name = 'shyam';
+	            }
+	
+	        };
+	    }
+	
+	    angular.module('mean.backend').directive('shmenuSidebar', shMenuSidebar);
+	})();
+
+/***/ },
+/* 33 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	(function () {
+	    'use strict';
+	
 	    function wDirective() {
 	        return {
 	            restrict: 'A',
@@ -93588,21 +93640,21 @@
 	})();
 
 /***/ },
-/* 32 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	__webpack_require__(33);
+	__webpack_require__(35);
 
 /***/ },
-/* 33 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(34);
+	var content = __webpack_require__(36);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(4)(content, {});
@@ -93622,7 +93674,7 @@
 	}
 
 /***/ },
-/* 34 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(3)();
@@ -93636,7 +93688,7 @@
 
 
 /***/ },
-/* 35 */
+/* 37 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -93664,7 +93716,7 @@
 	})();
 
 /***/ },
-/* 36 */
+/* 38 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -93682,6 +93734,15 @@
 	                $http.get('/api/backend/example/' + circle).success(function (response) {
 	                    deferred.resolve(response);
 	                }).error(function (response) {
+	                    deferred.reject(response);
+	                });
+	                return deferred.promise;
+	            },
+	            getMenus: function getMenus() {
+	                var deferred = $q.defer();
+	                $http.get('/api/backend/menus').then(function (response) {
+	                    deferred.resolve(response);
+	                }, function (response) {
 	                    deferred.reject(response);
 	                });
 	                return deferred.promise;
@@ -93709,7 +93770,7 @@
 	})();
 
 /***/ },
-/* 37 */
+/* 39 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -93742,13 +93803,13 @@
 	})();
 
 /***/ },
-/* 38 */
+/* 40 */
 /***/ function(module, exports) {
 
 	'use strict';
 
 /***/ },
-/* 39 */
+/* 41 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -93772,7 +93833,7 @@
 	})();
 
 /***/ },
-/* 40 */
+/* 42 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -93802,24 +93863,24 @@
 	})();
 
 /***/ },
-/* 41 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./meanio-circles/public/controllers/circles.js": 42,
-		"./meanio-circles/public/index.js": 43,
-		"./meanio-circles/public/routes/circles.js": 46,
-		"./meanio-circles/public/services/circles.js": 47,
-		"./meanio-system/public/routes/system.js": 48,
-		"./meanio-system/public/services/config.js": 49,
-		"./meanio-system/public/services/global.js": 50,
-		"./meanio-system/public/services/interceptor.js": 51,
-		"./meanio-system/public/services/menus.js": 52,
-		"./meanio-system/public/system.js": 53,
-		"./meanio-users/public/controllers/meanUser.js": 54,
-		"./meanio-users/public/index.js": 55,
-		"./meanio-users/public/routes/auth.js": 58,
-		"./meanio-users/public/services/meanUser.js": 59
+		"./meanio-circles/public/controllers/circles.js": 44,
+		"./meanio-circles/public/index.js": 45,
+		"./meanio-circles/public/routes/circles.js": 48,
+		"./meanio-circles/public/services/circles.js": 49,
+		"./meanio-system/public/routes/system.js": 50,
+		"./meanio-system/public/services/config.js": 51,
+		"./meanio-system/public/services/global.js": 52,
+		"./meanio-system/public/services/interceptor.js": 53,
+		"./meanio-system/public/services/menus.js": 54,
+		"./meanio-system/public/system.js": 55,
+		"./meanio-users/public/controllers/meanUser.js": 56,
+		"./meanio-users/public/index.js": 57,
+		"./meanio-users/public/routes/auth.js": 60,
+		"./meanio-users/public/services/meanUser.js": 61
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -93832,11 +93893,11 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 41;
+	webpackContext.id = 43;
 
 
 /***/ },
-/* 42 */
+/* 44 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -93871,22 +93932,22 @@
 
 
 /***/ },
-/* 43 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	__webpack_require__(44);
+	__webpack_require__(46);
 
 
 /***/ },
-/* 44 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(45);
+	var content = __webpack_require__(47);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(4)(content, {});
@@ -93906,7 +93967,7 @@
 	}
 
 /***/ },
-/* 45 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(3)();
@@ -93920,7 +93981,7 @@
 
 
 /***/ },
-/* 46 */
+/* 48 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -93974,7 +94035,7 @@
 
 
 /***/ },
-/* 47 */
+/* 49 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -94004,7 +94065,7 @@
 
 
 /***/ },
-/* 48 */
+/* 50 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -94057,7 +94118,7 @@
 
 
 /***/ },
-/* 49 */
+/* 51 */
 /***/ function(module, exports) {
 
 	angular.module('mean.system').provider('$meanConfig', [function() {
@@ -94086,7 +94147,7 @@
 
 
 /***/ },
-/* 50 */
+/* 52 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -94210,7 +94271,7 @@
 
 
 /***/ },
-/* 51 */
+/* 53 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -94248,7 +94309,7 @@
 
 
 /***/ },
-/* 52 */
+/* 54 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -94264,7 +94325,7 @@
 
 
 /***/ },
-/* 53 */
+/* 55 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -94285,7 +94346,7 @@
 
 
 /***/ },
-/* 54 */
+/* 56 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -94405,24 +94466,24 @@
 
 
 /***/ },
-/* 55 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	__webpack_require__(56);
+	__webpack_require__(58);
 
 /***/ },
-/* 56 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(57);
+	__webpack_require__(59);
 	module.exports = 'angular-jwt';
 	
 
 
 /***/ },
-/* 57 */
+/* 59 */
 /***/ function(module, exports) {
 
 	(function() {
@@ -94819,7 +94880,7 @@
 	}());
 
 /***/ },
-/* 58 */
+/* 60 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -94838,7 +94899,7 @@
 
 
 /***/ },
-/* 59 */
+/* 61 */
 /***/ function(module, exports) {
 
 	'use strict';

@@ -13,8 +13,12 @@ var Backend = new Module('backend');
  */
 Backend.register(function(app, auth, database, circles) {
 
+  Backend.sidebarcontroller = require('./server/controllers/sidebar')(Backend, app);
   //We enable routing. By default the Package Object is passed to the routes
   Backend.routes(app, auth, database, circles);
+
+
+
   app.set('views', path.join(__dirname, '/server/views'));
   //We are adding a link to the main menu for all authenticated users
   Backend.menus.add({

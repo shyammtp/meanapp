@@ -16,6 +16,15 @@
                 return deferred.promise;
 
             },
+            getMenus : function() {
+                var deferred = $q.defer();
+                $http.get('/api/backend/menus').then(function(response) {
+                    deferred.resolve(response);
+                }, function(response) {
+                    deferred.reject(response);
+                });
+                return deferred.promise;
+            },
             getLocals : function() {
                 var deferred = $q.defer();
                 $http.get('/api/locals').then(function(response) {
