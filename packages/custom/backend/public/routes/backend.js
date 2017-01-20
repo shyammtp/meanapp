@@ -13,12 +13,12 @@
             templateUrl: 'backend/views/page/dashboard.html',
             params: {title : 'shyam'}
         })
-
+ 
 
         .state('general settings', {
             url: '/admin/settings/general',
             templateUrl: 'backend/views/settings/general.html',
-            params: {title : 'shyam',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'UI Kits'}]}
+            params: {title : 'General Settings',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Settings', link: 'admin/settings'},{title : 'General'}]}
         });
         $locationProvider
             .html5Mode({enabled:true, requireBase:false});

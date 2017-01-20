@@ -1,5 +1,5 @@
 $( document ).ready(function() {
     
-    // Write your custom Javascript codes here...
+   $('select').material_select();
     
 });

@@ -12,8 +12,7 @@
         Backend.getAssetsData().then(function(res) { 
             $scope.assetspath = res.path;
             $scope.theme = res.theme; 
-        });  
-        
+        }); 
         Backend.getMenus().then(function(response) { 
             $scope.datas = response.data;    
         }); 

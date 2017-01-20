@@ -1,377 +1,78 @@
 <div class="page-inner">
     <div class="page-title">
         <h3 class="breadcrumb-header">{{params.title}}</h3>
-        <div class="page-breadcrumb">
-            <ol class="breadcrumb breadcrumb-with-header" >
-                <li class="active" ng-repeat="crumbs in params.breadcrumbs"><a href="{{crumbs.link}}" ng-if="crumbs.link">{{crumbs.title}}</a><span ng-if="crumbs.link == undefined">{{crumbs.title}}</span></li> 
-            </ol>
-        </div>
+        <div breadcrumbs></div>
     </div>
-    <div id="main-wrapper">
-        <h4 class="m-l-xs m-b-sm">Basic example</h4>
-        <p class="m-l-xs m-b-md">By default, all the <code>.panel</code> does is apply some basic border and padding to contain some content</p>
+    <div id="main-wrapper"> 
         <div class="row">
             <div class="col-md-12">
-                <div class="panel">
-                    <div class="panel-body">
-                        Basic panel example
-                    </div>
-                </div>
-            </div>
-        </div><!-- Row -->
-        <h4 class="m-l-xs m-b-sm">Panel with heading</h4>
-        <p class="m-l-xs m-b-md">Easily add a heading container to your panel with <code>.panel-heading</code>. You may also include any <code>&lt;h1&gt;-&lt;h6&gt;</code> with a <code>.panel-title</code> class to add a pre-styled heading. <br>For proper link coloring, be sure to place links in headings within <code>.panel-title</code>.</p>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Panel title</h3>
-                    </div>
-                    <div class="panel-body">
-                        Panel content
-                    </div>
-                </div>
-            </div>
-        </div><!-- Row -->
-        <h4 class="m-l-xs m-b-sm">Panel with footer</h4>
-        <p class="m-l-xs m-b-md">Wrap buttons or secondary text in <code>.panel-footer</code>. Note that panel footers <strong>do not</strong> inherit colors and borders when using contextual variations as they are not meant to be in the foreground.</p>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        Panel content
-                    </div>
-                    <div class="panel-footer">Panel footer</div>
-                </div>
-            </div>
-        </div><!-- Row -->
-        <h4 class="m-l-xs m-b-sm">Contextual alternatives</h4>
-        <p class="m-l-xs m-b-md">Like other components, easily make a panel more meaningful to a particular context by adding any of the contextual state classes.</p>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Panel title</h3>
-                    </div>
-                    <div class="panel-body">
-                        <code>.panel-default</code>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Panel title</h3>
-                    </div>
-                    <div class="panel-body">
-                        <code>.panel-primary</code>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="panel panel-success">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Panel title</h3>
-                    </div>
-                    <div class="panel-body">
-                        <code>.panel-success</code>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Panel title</h3>
-                    </div>
-                    <div class="panel-body">
-                        <code>.panel-info</code>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="panel panel-warning">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Panel title</h3>
-                    </div>
-                    <div class="panel-body">
-                        <code>.panel-warning</code>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="panel panel-danger">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Panel title</h3>
-                    </div>
-                    <div class="panel-body">
-                        <code>.panel-danger</code>
-                    </div>
-                </div>
-            </div>
-        </div><!-- Row -->
-        <h4 class="m-l-xs m-b-sm">Panel Controls</h4>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-white">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Panel with controls</h3>
-                        <div class="panel-control">
-                            <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Expand/Collapse" class="panel-collapse"><i class="icon-arrow-down"></i></a>
-                            <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Reload" class="panel-reload"><i class="icon-reload"></i></a>
-                            <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Remove" class="panel-remove"><i class="icon-close"></i></a>
-                        </div>
-                    </div>
-                    <div class="panel-body">
-                        This panel comes with controls at top right corner !
-                    </div>
-                </div>
-            </div>
-        </div><!-- Row -->
-        <h4 class="m-l-xs m-b-sm">Colored Panels</h4>
-        <p class="m-l-xs m-b-md">Like other components, easily make a panel more meaningful to a particular context by adding any of the contextual state classes.</p>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="panel panel-white">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Panel title</h3>
-                    </div>
-                    <div class="panel-body">
-                        <code>.panel-white</code>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="panel panel-purple">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Panel title</h3>
-                    </div>
-                    <div class="panel-body">
-                        <code>.panel-purple</code>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="panel panel-green">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Panel title</h3>
-                    </div>
-                    <div class="panel-body">
-                        <code>.panel-green</code>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="panel panel-blue">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Panel title</h3>
-                    </div>
-                    <div class="panel-body">
-                        <code>.panel-blue</code>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="panel panel-yellow">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Panel title</h3>
-                    </div>
-                    <div class="panel-body">
-                        <code>.panel-yellow</code>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="panel panel-red">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Panel title</h3>
-                    </div>
-                    <div class="panel-body">
-                        <code>.panel-red</code>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="panel panel-transparent">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Transparent Panel</h3>
-                        <div class="panel-control">
-                            <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Expand/Collapse" class="panel-collapse"><i class="icon-arrow-down"></i></a>
-                            <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Reload" class="panel-reload"><i class="icon-reload"></i></a>
-                            <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Remove" class="panel-remove"><i class="icon-close"></i></a>
-                        </div>
-                    </div>
-                    <div class="panel-body">
-                        <code>.panel-transparent</code>
-                    </div>
-                </div>
-            </div>
-        </div><!-- Row -->
-        <h4 class="m-l-xs m-b-sm">With tables</h4>
-        <p class="m-l-xs m-b-md">Add any non-bordered <code>.table</code> within a panel for a seamless design. If there is a <code>.panel-body</code>, we add an extra border to the top of the table for separation.</p>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Panel heading</h3>
-                    </div>
-                    <div class="panel-body">
-                        <p>Some default panel content here. Nulla vitae elit libero, a pharetra augue. Aenean lacinia bibendum nulla sed consectetur. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                    </div>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Username</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Larry</td>
-                                <td>the Bird</td>
-                                <td>@twitter</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div><!-- Row -->
-        <p class="m-l-xs m-b-sm" >If there is no panel body, the component moves from panel header to table without interruption.</p>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Panel heading</div>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Username</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Larry</td>
-                                <td>the Bird</td>
-                                <td>@twitter</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div><!-- Row -->
-        <h4 class="m-l-xs m-b-sm">With list groups</h4>
-        <p class="m-l-xs m-b-md">Easily include full-width list groups within any panel.</p>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Panel heading</h3>
-                    </div>
-                    <div class="panel-body">
-                        <p>Some default panel content here. Nulla vitae elit libero, a pharetra augue. Aenean lacinia bibendum nulla sed consectetur. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                    </div>
-                    <ul class="list-group">
-                        <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Morbi leo risus</li>
-                        <li class="list-group-item">Porta ac consectetur ac</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
+                <div role="tabpanel">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active "><a href="#sitesettings" role="tab" data-toggle="tab">Site Settings</a></li>
+                        <li role="presentation"><a href="#tab2" role="tab" data-toggle="tab">Tab 2</a></li>
+                        <li role="presentation"><a href="#tab3" role="tab" data-toggle="tab">Tab 3</a></li>
+                        <li role="presentation"><a href="#tab4" role="tab" data-toggle="tab">Tab 4</a></li>
                     </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content z-depth-2">
+                        <div role="tabpanel" class="tab-pane active" id="sitesettings">
+                             <div class="row">
+                                <form class="col-md-12 form-set">
+                                   
+                                  <div class="row">
+                                    <div class="input-field ">
+                                        <div class="col-md-12">
+                                          <input id="email" type="email" class="validate">
+                                          <label for="email">Site Name</label>
+                                          </div>
+                                    </div>
+                                  </div> 
+                                  <div class="row m-t-20">
+                                      <div class="input-field col-md-12">
+                                            <div class="select-wrapper">
+                                                <select  class="initialized">
+                                                  <option value="" disabled="" selected="">Select Theme</option>
+                                                  <option value="black">Black</option>
+                                                  <option value="white">White</option> 
+                                                </select>
+                                            </div>
+                                            <label>Select Panel Theme</label>
+                                          </div>
+                                    </div>
+
+                                  <div class="row">
+                                    <div class="file-field input-field col-md-12">
+                                          <div class="btn btn-primary">
+                                            <span>Upload Logo</span>
+                                            <input type="file">
+                                          </div>
+                                          <div class="file-path-wrapper">
+                                            <input class="file-path validate" type="text">
+                                          </div>
+                                        </div>
+                                    </div>
+                                </form>
+                              </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="tab2">
+                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="tab3">
+                            <p>Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.</p>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="tab4">
+                            <p>Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div><!-- Row -->
-        <h4 class="m-l-xs m-b-sm">Draggable Panels</h4>
-        <div class="sortable">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="panel panel-white">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Panel heading</h3>
-                            <div class="panel-control">
-                                <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Expand/Collapse" class="panel-collapse"><i class="icon-arrow-down"></i></a>
-                                <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Reload" class="panel-reload"><i class="icon-reload"></i></a>
-                                <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Remove" class="panel-remove"><i class="icon-close"></i></a>
-                            </div>
-                        </div>
-                        <div class="panel-body">
-                            <p>Some default panel content here. Nulla vitae elit libero, a pharetra augue. Aenean lacinia bibendum nulla sed consectetur. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                        </div>
-                    </div>
-                    <div class="panel panel-purple">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Panel heading</h3>
-                            <div class="panel-control">
-                                <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Expand/Collapse" class="panel-collapse"><i class="icon-arrow-down"></i></a>
-                                <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Reload" class="panel-reload"><i class="icon-reload"></i></a>
-                                <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Remove" class="panel-remove"><i class="icon-close"></i></a>
-                            </div>
-                        </div>
-                        <div class="panel-body">
-                            <p>Some default panel content here. Nulla vitae elit libero, a pharetra augue. Aenean lacinia bibendum nulla sed consectetur. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="panel panel-green">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Panel heading</h3>
-                            <div class="panel-control">
-                                <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Expand/Collapse" class="panel-collapse"><i class="icon-arrow-down"></i></a>
-                                <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Reload" class="panel-reload"><i class="icon-reload"></i></a>
-                                <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Remove" class="panel-remove"><i class="icon-close"></i></a>
-                            </div>
-                        </div>
-                        <div class="panel-body">
-                            <p>Some default panel content here. Nulla vitae elit libero, a pharetra augue. Aenean lacinia bibendum nulla sed consectetur. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                        </div>
-                    </div>
-                    <div class="panel panel-red">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Panel heading</h3>
-                            <div class="panel-control">
-                                <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Expand/Collapse" class="panel-collapse"><i class="icon-arrow-down"></i></a>
-                                <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Reload" class="panel-reload"><i class="icon-reload"></i></a>
-                                <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Remove" class="panel-remove"><i class="icon-close"></i></a>
-                            </div>
-                        </div>
-                        <div class="panel-body">
-                            <p>Some default panel content here. Nulla vitae elit libero, a pharetra augue. Aenean lacinia bibendum nulla sed consectetur. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                        </div>
-                    </div>
-                </div>
-            </div><!-- Row -->
-        </div><!-- Sortable -->
+        </div>
     </div><!-- Main Wrapper -->
     <div class="page-footer">
         <p class="no-s">Made with <i class="fa fa-heart"></i> by stacks</p>
     </div>
 </div><!-- Page Inner -->
+<script> 
+         angular.element('select').material_select(); 
+</script>

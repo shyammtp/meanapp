@@ -460,6 +460,8 @@ textarea {
 }
 
 label {
+	font-size:12px;
+	font-family: "Open Sans";
   display: block;
   margin-bottom: 5px;
 }
@@ -483,7 +485,7 @@ input[type="url"],
 input[type="search"],
 input[type="tel"],
 input[type="color"] {
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-family: "Open Sans",Helvetica,Arial,sans-serif;
   -webkit-appearance: none !important;   
 	color: #282323;
   outline: 0;
@@ -657,3 +659,5 @@ textarea[class*="span"]
     background-color: #649c00;
     *background-color: #649c00;
 }
+
+

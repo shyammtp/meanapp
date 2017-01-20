@@ -24,7 +24,7 @@ function getPromise(parent_key,domain,obj){
 function getChildren(data, menukey) { 
 	var childrens = [];
 	data.forEach(function(o,r) {
-		if(o.parent_key == menukey) {
+		if(o.parent_key === menukey) {
 			childrens.push(o);
 		}
 	});
@@ -37,15 +37,15 @@ function buildSet(data,parent_key,domain,obj) {
 	var sets = {};
 	var _obj = obj;
 	data.forEach(function(o,r) {
-		if(o.parent_key == parent_key) {
+		if(o.parent_key === parent_key) {
 			var datas = {};
-			datas['title_en'] = o.title_en;
-			datas['before'] = o.before;
-			datas['url'] = o.url;
-			datas['children'] = [];
+			datas.title_en = o.title_en;
+			datas.before = o.before;
+			datas.url = o.url;
+			datas.children = [];
 			var children = getChildren(data,o.menu_key); 
 			if(children.length > 0) {
-				datas['children'] = buildSet(children,o.menu_key,domain,_obj);
+				datas.children = buildSet(children,o.menu_key,domain,_obj);
 			}
 			sets[o.menu_key] = datas;
 		} 
@@ -54,9 +54,9 @@ function buildSet(data,parent_key,domain,obj) {
 }
 
 MenusSchema.statics.getMenus = function(domain,parent_key,cb) {
-	var _obj = this,root = [];
+	var _obj = this;
 	parent_key || (parent_key = '');
-	var promise = getPromise("",domain,this); 
+	var promise = getPromise('',domain,this); 
 	promise.then(function(s) { 
 		var returns = sys(s,domain,parent_key,_obj);
 		cb(returns);

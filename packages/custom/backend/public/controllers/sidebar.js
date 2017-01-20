@@ -5,8 +5,7 @@
 
     function SidebarController($scope, Global, Backend, $stateParams) {
         $scope.global = Global;
-        
-        
+         
         Backend.getMenus().then(function(response) { 
             $scope.datas = response.data;    
         }); 
