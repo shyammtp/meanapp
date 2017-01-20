@@ -3,11 +3,12 @@
 
     /* jshint -W098 */
 
-    function BackendController($scope, Global, Backend, $stateParams) {
+    function BackendController($scope, Global, Backend, $stateParams) { 
         $scope.global = Global;
         $scope.package = {
             name: 'backend'
-        }; 
+        };   
+        $scope.params =  $stateParams; 
         Backend.getAssetsData().then(function(res) { 
             $scope.assetspath = res.path;
             $scope.theme = res.theme; 

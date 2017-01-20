@@ -1,5 +1,5 @@
 body {
-    background: #ccc;
+    background-color: rgb(15, 15, 15)!important;
 }
 
 ::-webkit-input-placeholder {
@@ -47,11 +47,11 @@ body {
  
 .navbar {
     height: 64px;
-    box-shadow: 0 5px 11px -3px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 5px 9px -3px rgba(0, 0, 0, 0.8);
 }
 
-.navbar-inner {
-    background: #141414;
+.navbar-inner { 
+    background: #141414 /*url('../../img/outlets.png')*/; 
 }
 
 .navbar .logo-box { 
@@ -85,8 +85,8 @@ body {
 }
 
 .sidebar {
-    background: #141414;
-    /*box-shadow: -1px 0px 26px #020202;*/
+   /* background: #141414;
+    box-shadow: -1px 0px 26px #020202;*/
 }
 
 .sidebar-profile span small {
@@ -94,7 +94,7 @@ body {
 }
 
 .menu {
-    background: #141414;
+   /* background: #141414;*/
 }
 
 .menu.accordion-menu {
@@ -243,8 +243,7 @@ span.active-page {
     height: 64px;
 }
 
-.page-title {
-    background: #141414;
+.page-title { 
     padding: 30px 30px 0 30px;
     border: 0;
 }

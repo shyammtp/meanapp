@@ -93549,6 +93549,7 @@
 	        $scope.package = {
 	            name: 'backend'
 	        };
+	        $scope.params = $stateParams;
 	        Backend.getAssetsData().then(function (res) {
 	            $scope.assetspath = res.path;
 	            $scope.theme = res.theme;
@@ -93617,7 +93618,7 @@
 	            restrict: 'E',
 	            templateUrl: 'backend/views/page/sidebar/menus.html',
 	            link: function link(scope, element, attrs) {
-	                angular.element('.sidebar .sub-menu').hide();
+	                //angular.element('.sidebar .sub-menu').hide();
 	            }
 	
 	        };
@@ -93708,10 +93709,12 @@
 	            templateUrl: 'backend/views/login.html'
 	        }).state('admin dasboard page', {
 	            url: '/admin/dashboard',
-	            templateUrl: 'backend/views/page/dashboard.html'
-	        }).state('backend circles example', {
-	            url: '/backend/example/:circle',
-	            templateUrl: 'backend/views/example.html'
+	            templateUrl: 'backend/views/page/dashboard.html',
+	            params: { title: 'shyam' }
+	        }).state('general settings', {
+	            url: '/admin/settings/general',
+	            templateUrl: 'backend/views/settings/general.html',
+	            params: { title: 'shyam', breadcrumbs: [{ title: 'Home', link: 'admin/dashboard' }, { title: 'UI Kits' }] }
 	        });
 	        $locationProvider.html5Mode({ enabled: true, requireBase: false });
 	    }
