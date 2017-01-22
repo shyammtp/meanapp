@@ -2,7 +2,7 @@
     <div class="page-title">
         <h3 class="breadcrumb-header">{{params.title}}</h3>
         <div breadcrumbs></div>
-    </div>
+    </div> 
     <div id="main-wrapper"> 
         <div class="row">
             <div class="col-md-12">
@@ -17,41 +17,47 @@
                     <!-- Tab panes -->
                     <div class="tab-content z-depth-2">
                         <div role="tabpanel" class="tab-pane active" id="sitesettings">
-                             <div class="row">
-                                <form class="col-md-12 form-set">
+                             <div class="row" ng-controller="SettingsController">
+                                <form class="col-md-12 form-set" novalidate enctype="multipart/form-data">
                                    
-                                  <div class="row">
+                                  <div class="row m-t-10">
                                     <div class="input-field ">
-                                        <div class="col-md-12">
-                                          <input id="email" type="email" class="validate">
-                                          <label for="email">Site Name</label>
-                                          </div>
+                                        <div class="col-md-12"> 
+                                          <input id="sitename" ng-model="settings.SITENAME" name="sitename" type="text"  value="{{settings.SITENAME}}" class="">
+                                          <label for="sitename" class="{{settings.SITENAME ? 'active':''}}">Site Name</label>
+                                          <p class="help-block">Example block-level help text here.</p>
+                                        </div>
+                                        
                                     </div>
                                   </div> 
                                   <div class="row m-t-20">
-                                      <div class="input-field col-md-12">
+                                        <div class="input-field col-md-12">
                                             <div class="select-wrapper">
-                                                <select  class="initialized">
-                                                  <option value="" disabled="" selected="">Select Theme</option>
-                                                  <option value="black">Black</option>
-                                                  <option value="white">White</option> 
+                                                <select md-select ng-model="settings.THEME" class="initialized" data-options="[{'title':'Black','value': 'black'}]" data-value="{{settings.THEME}}"> 
+                                                    <option value="" disabled="">Select Theme</option>
+                                                    <option value="black">Black</option>
+                                                    <option value="white">White</option>  
                                                 </select>
                                             </div>
                                             <label>Select Panel Theme</label>
-                                          </div>
+                                        </div>
                                     </div>
 
                                   <div class="row">
                                     <div class="file-field input-field col-md-12">
                                           <div class="btn btn-primary">
                                             <span>Upload Logo</span>
-                                            <input type="file">
+                                            <input type="file" ng-file-select="onFileSelect($files)" ng-model="settings.FILE"/>  
                                           </div>
                                           <div class="file-path-wrapper">
                                             <input class="file-path validate" type="text">
                                           </div>
+                                          <!-- Image thumbnail: <img ngf-thumbnail="settings.FILE"> -->
+                                          <p class="help-block">Upload type is *.jpg, *.png, *.jpeg</p>
                                         </div>
+
                                     </div>
+                                    <button type="submit" ng-click="saveSettings(settings)" class="btn btn-primary waves-effect pull-right m-t-xs m-b-xs">Save</button>
                                 </form>
                               </div>
                         </div>

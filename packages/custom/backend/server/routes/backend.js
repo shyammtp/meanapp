@@ -5,8 +5,7 @@
     // The Package is past automatically as first parameter
     module.exports = function(Backend, app, auth, database, circles) {
         var sidebar = Backend.sidebarcontroller; 
-        var requiresAdmin = circles.controller.hasCircle('admin');
-        var requiresLogin = circles.controller.hasCircle('authenticated');
+        var settings = Backend.settingscontroller;   
         app.use(sidebar.theme);
 
         app.get('/',function(req,res) {  
@@ -20,6 +19,10 @@
         }); 
 
         app.get('/api/backend/menus',sidebar.menuslist);
+        app.post('/api/settings/save',settings.savesettings);
+        app.get('/api/settings/get',settings.getallsettings);
+
+        app.post('/api/settings/upload',settings.upload);
 
         app.get('/api/locals',function(req,res) {
             res.send(app.locals);

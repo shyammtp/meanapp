@@ -38,7 +38,39 @@
                 return this.getLocals().then(function(response) {
                     return {path : '/theme/assets/lib/'+response.data.theme+'/',theme : response.data.theme};
                 });
+            },
+            saveSettings : function(name, value, place_id) {
+                var deferred = $q.defer();
+                $http.post('/api/settings/save',{name : name, value : value, place_id : place_id}).then(function(response) {
+                    deferred.resolve(response);
+                }, function(response) {
+                    deferred.reject(response);
+                });
+                return deferred.promise;
+            },
+            getSettings: function(place_id) {
+                var deferred = $q.defer();
+                $http.get('/api/settings/get',{place_id : place_id}).then(function(response) {
+                    deferred.resolve(response);
+                }, function(response) {
+                    deferred.reject(response);
+                });
+                return deferred.promise;
+            },
+            upload: function(fd) {
+                $http.post("/api/settings/upload", fd, {
+                    withCredentials: false,
+                    headers: {
+                      'Content-Type': undefined
+                    },
+                    transformRequest: angular.identity,
+                    params: {
+                      fd
+                    },
+                    responseType: "arraybuffer"
+                  });
             }
+
         };
     }
 

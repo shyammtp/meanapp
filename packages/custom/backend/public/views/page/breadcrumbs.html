@@ -1,0 +1,5 @@
+ <div class="page-breadcrumb">
+    <ol class="breadcrumb breadcrumb-with-header">
+        <li ng-repeat="crumbs in params.breadcrumbs"><a href="{{crumbs.link}}" ng-if="crumbs.link">{{crumbs.title}}</a><span ng-if="crumbs.link ==undefined ">{{crumbs.title}}</span></li> 
+    </ol>
+</div>
