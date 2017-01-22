@@ -3,7 +3,7 @@
 
     /* jshint -W098 */
 
-    function BackendController($scope, Global, Backend, $stateParams, $upload) { 
+    function BackendController($scope, Global, Backend, $stateParams) { 
         $scope.global = Global;
         $scope.package = {
             name: 'backend'
@@ -30,16 +30,7 @@
             });  
         }
 
-        var uploadFile = function () {
-                var file = $scope.profile;
-                console.log(file);
-                var fd = new FormData();
-                 fd.append('file', file.file);
-                console.log(file.file);
-                 Backend.upload(fd);
-
-            };
-        
+       
         $scope.onFileSelect = function($files) { 
             $scope.profile = $files[0];
             uploadFile();
@@ -70,11 +61,11 @@
     }
 
     angular
-        .module('mean.backend',['ngFileUpload'])
+        .module('mean.backend')
         .controller('BackendController', BackendController)
         .controller('SettingsController', SettingsController);
 
-    BackendController.$inject = ['$scope', 'Global', 'Backend', '$stateParams','$upload'];
+    BackendController.$inject = ['$scope', 'Global', 'Backend', '$stateParams'];
     SettingsController.$inject = ['$scope','Backend'];
 
 })();
