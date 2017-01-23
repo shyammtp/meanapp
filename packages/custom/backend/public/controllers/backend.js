@@ -60,12 +60,24 @@
 
     }
 
+    function WidgetController($scope,ListWidget) { 
+         
+         ListWidget.addColumn('name',{'type' : 'text'});
+         ListWidget.addColumn('username',{'type' : 'number'}); 
+         ListWidget.setDBResults([{name: 'Pradeep shyam',username : 'shyammtp'},
+                                {name: 'Malathi Vidhya', username: 'mvid'}]);
+
+    }
+
+
     angular
         .module('mean.backend')
         .controller('BackendController', BackendController)
-        .controller('SettingsController', SettingsController);
+        .controller('SettingsController', SettingsController)
+        .controller('WidgetController', WidgetController);
 
     BackendController.$inject = ['$scope', 'Global', 'Backend', '$stateParams'];
     SettingsController.$inject = ['$scope','Backend'];
+    WidgetController.$inject = ['$scope','ListWidget'];
 
 })();
