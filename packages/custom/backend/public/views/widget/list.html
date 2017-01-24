@@ -4,8 +4,8 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr ng-repeat="(key, value) in dbresult">
-			<td>{{value.name}}</td>
+		<tr ng-repeat="(key, value) in dbresult"> 
+			<td ng-repeat="(k,v) in value">{{k | columnrender}}</td>
 		</tr>
 	</tbody>
 </table>
