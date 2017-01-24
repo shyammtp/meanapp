@@ -5,7 +5,7 @@
 	</thead>
 	<tbody>
 		<tr ng-repeat="(key, value) in dbresult"> 
-			<td ng-repeat="(k,v) in value">{{k | columnrender}}</td>
+			<td ng-repeat="(k,v) in columns">{{k | columnrender:value}}</td>
 		</tr>
 	</tbody>
 </table>

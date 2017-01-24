@@ -28,9 +28,7 @@
                      });
                  }
             });  
-        }
-
-       
+        }        
         $scope.onFileSelect = function($files) { 
             $scope.profile = $files[0];
             uploadFile();
@@ -62,9 +60,9 @@
 
     function WidgetController($scope,ListWidget) { 
          
-         ListWidget.addColumn('name',{'type' : 'text'});
+         ListWidget.addColumn('name',{'type' : 'text',defaultValue : '--','render':'backend/views/widget/test.html'});
          ListWidget.addColumn('username',{'type' : 'number'}); 
-         ListWidget.setDBResults([{name: 'Pradeep shyam',username : 'shyammtp'},
+         ListWidget.setDBResults([{name: '',username : 'shyammtp',default: 'test'},
                                 {name: 'Malathi Vidhya', username: 'mvid'}]);
 
     }
