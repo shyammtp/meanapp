@@ -21,7 +21,7 @@
             },
             renderRow : function() 
             {
-
+                return this.data.type;
             }
         }
     }
@@ -34,6 +34,7 @@
                 if(!columnname) {
                     return this;
                 }
+                console.log(new WidgetColumn());
                 this.columns[columnname] = WidgetColumn.setData(columndata);
                 return this;
             },
@@ -48,6 +49,9 @@
             getDbResults : function() {
                 return this.dbResults;
             },
+            getColumn : function(columnname) {
+                return this.columns[columnname];
+            }
         };
     }
 
