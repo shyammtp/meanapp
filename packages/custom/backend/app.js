@@ -19,7 +19,7 @@ Backend.register(function(app, auth, database, circles) {
   Backend.routes(app, auth, database, circles);
 
 
- // Backend.angularDependencies(['ngFileUpload']); 
+  Backend.angularDependencies(['ngSanitize']); 
   app.set('views', path.join(__dirname, '/server/views'));
   //We are adding a link to the main menu for all authenticated users
   Backend.menus.add({
