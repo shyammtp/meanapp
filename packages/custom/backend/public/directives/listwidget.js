@@ -6,20 +6,34 @@
             templateUrl : 'backend/views/widget/list.html',
             replace: true,
             link : function(scope,element,attrs) { 
-                scope.dbresult = ListWidget.getDbResults();  
-                scope.columns = ListWidget.getColumns();  
-            },
-            compile : function(element,attrs) {
-                console.log(element);
-            }
+                scope.dbresult = ListWidget.getDbResults(); 
+                scope.columns = ListWidget.getColumnsData();
+                console.log( scope.columns);
+                scope.getColumnRenderStatus = function(k) {
+                    var c = ListWidget.getColumn(k);
+                    if(typeof c.data.render!='undefined') {
+                        return true;
+                    }
+                    return false;
+                } 
+                scope.getColumnRender = function(k) {
+                    var c = ListWidget.getColumn(k); 
+                    if(typeof c.data.render!='undefined') {
+                        return c.data.render;
+                    }
+                    return 'ss';
+                }
+            } 
 
         }
     }
 
-    function widgetCustomRender() {
+    function widgetCustomRender($parse) {
         return { 
             template : '<div ng-include="getContentUrl()"></div>', 
             link : function(scope,element,attrs) { 
+                console.log(attrs);
+                console.log($parse(attrs.rowObject)(scope));
                 scope.getContentUrl = function() {
                     return attrs.template;
                } 
@@ -29,13 +43,9 @@
     }
 
     function columnrender(ListWidget,$sce) {
-        return function(k,data) { 
+        return function(k,data) {  
             var column = ListWidget.getColumn(k); 
             if(typeof column != 'undefined') { 
-                if(column.getData('render')) {
-                    var html ="<widget-custom-render template='"+column.getData('render')+"'></widget-custom-render>";
-                    return $sce.trustAsHtml('<h1>asdsa</h1>');
-                }
                 return ListWidget.getColumn(k).renderRow(data);
             }
             return '';

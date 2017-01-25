@@ -60,9 +60,9 @@
 
     function WidgetController($scope,ListWidget) { 
          
-         ListWidget.addColumn('name',{'type' : 'text',defaultValue : '--','render':'backend/views/widget/test.html'});
-         ListWidget.addColumn('username',{'type' : 'number'}); 
-         ListWidget.setDBResults([{name: '',username : 'shyammtp',default: 'test'},
+         ListWidget.addColumn('name',{'type' : 'text','title' : 'Name',defaultValue : '--','render':'backend/views/widget/test.html'});
+         ListWidget.addColumn('username',{'type' : 'number','title' : 'Username'}); 
+         ListWidget.setDBResults([{name: '',username : 'shyammtp'},
                                 {name: 'Malathi Vidhya', username: 'mvid'}]);
 
     }

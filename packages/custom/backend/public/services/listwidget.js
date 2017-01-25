@@ -89,6 +89,7 @@
                 if(!columnname) {
                     return this;
                 }  
+                columndata.dindex = columnname;
                 if(!columndata.hasOwnProperty('index')) {
                     columndata.index = columnname;
                 }
@@ -108,6 +109,15 @@
             },
             getColumn : function(columnname) {
                 return this.columns[columnname];
+            },
+            getColumnsData: function() {
+                var columns = [];
+                for(var k in this.columns) {
+                    if (this.columns.hasOwnProperty(k)) { 
+                        columns.push(this.columns[k].data)
+                    }                    
+                }
+                return columns;
             }
         };
     }
