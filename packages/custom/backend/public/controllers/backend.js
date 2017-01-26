@@ -58,24 +58,47 @@
 
     }
 
-    function WidgetController($scope,ListWidget) { 
+    function WidgetController($scope,ListWidget,cfpLoadingBar,$location,Backend) { 
+
+         var vm = this;
+         vm.setPage = setPage;
+         ListWidget.addColumn('name',{'type' : 'text','title' : 'Name',defaultValue : '--',width : '40%'});
+         ListWidget.addColumn('from_name',{'type' : 'number','title' : 'Username',width : '40%'}); 
+         ListWidget.addColumn('template_type',{'type' : 'select','title' : 'System / Custom',width : '20%','options' : [{label : "System",id:'system'},
+            {label : "custom",id:'custom'}]});
+         ListWidget.setDataRequestUrl('/api/notificationtemplate/getall'); 
          
-         ListWidget.addColumn('name',{'type' : 'text','title' : 'Name',defaultValue : '--','render':'backend/views/widget/test.html'});
-         ListWidget.addColumn('username',{'type' : 'number','title' : 'Username'}); 
-         ListWidget.setDBResults([{name: '',username : 'shyammtp'},
-                                {name: 'Malathi Vidhya', username: 'mvid'}]);
+        function setPage(page) { 
+            ListWidget.request({page: page}).then(function(res){  
+                ListWidget.setTotalItems(res.data.total)
+                        .setPageSize(1).setPage(page)
+                        .setDBResults(res.data.docs);   
+                $scope.pager = ListWidget.getPager();  
+                $scope.dbresult = ListWidget.getDbResults();
+            });    
+        }  
+        $scope.widgetlimitchange = function(selected) {
+            ListWidget.request({page: 1,limit : selected}).then(function(res){  
+                ListWidget.setTotalItems(res.data.total)
+                        .setPageSize(selected).setPage(1)
+                        .setDBResults(res.data.docs);   
+                $scope.pager = ListWidget.getPager();  
+                $scope.dbresult = ListWidget.getDbResults();
+            }); 
+        }
+        setPage(1);
 
     }
 
 
     angular
-        .module('mean.backend')
+        .module('mean.backend',['angular-loading-bar'])
         .controller('BackendController', BackendController)
         .controller('SettingsController', SettingsController)
         .controller('WidgetController', WidgetController);
 
     BackendController.$inject = ['$scope', 'Global', 'Backend', '$stateParams'];
     SettingsController.$inject = ['$scope','Backend'];
-    WidgetController.$inject = ['$scope','ListWidget'];
+    WidgetController.$inject = ['$scope','ListWidget','cfpLoadingBar','$location','Backend'];
 
 })();

@@ -1,17 +1,57 @@
-<table>
-	<thead>
-		<tr class="headings">
-			<th ng-repeat="(s,v) in columns">{{v.title}}</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr ng-repeat="(key, value) in dbresult"> 
-			<td ng-repeat="(k,v) in columns"> 
-				<span ng-if="getColumnRenderStatus(v.dindex) == true">
-				<widget-custom-render row-object="{{value}}" data-index="{{v.dindex}}" template="{{getColumnRender(v.dindex)}}"></widget-custom-render>
-				</span>
-				<span ng-if="getColumnRenderStatus(v.dindex) == false">{{v.dindex | columnrender:value}}</span>
-			</td>
-		</tr>
-	</tbody>
-</table>
+<div>	
+	<table class="table table-striped">
+		<colgroup>
+			<col ng-repeat="(sh,vh) in columns" width="{{vh.width}}">
+		</colgroup>
+		<thead> 
+			<tr class="filter">
+				<th colspan="{{columns.length}}">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="pull-right btn-group"> 
+								<button type="button" class="btn btn-default waves-effect m-t-xs m-b-xs" ng-click="resetwidgetsearchfilter()">Reset Filter</button>
+								<button type="button" class="btn btn-primary waves-effect m-t-xs m-b-xs" ng-click="widgetsearchfilter()">Search</button>
+							</div>
+						</div>
+					</div>
+
+				</th>
+			</tr>
+			<tr class="headings">
+				<th ng-repeat="(s,v) in columns">{{v.title}}</th>
+			</tr>
+			<tr class="filter">
+				<th ng-repeat="(sd,vd) in columns">
+				<div ng-switch="vd.type">
+				  <div ng-switch-when="range">			     
+				  </div>
+				  <div ng-switch-when="select"> 
+				  	<widget-filter-select data-index="{{vd.dindex}}"></widget-filter-select>   
+				  </div>
+				  <div ng-switch-when="date">			     
+				  </div>
+				  <div ng-switch-when="number">  
+				  	<widget-filter-number  data-index="{{vd.dindex}}"></widget-filter-number>
+				  </div>
+				  <div ng-switch-when="integer"> 
+				  </div>
+				  <div ng-switch-default>		
+				  	<widget-filter-text  data-index="{{vd.dindex}}"></widget-filter-text>	     
+				  </div>
+				</div> 
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="(key, value) in dbresult"> 
+				<td ng-repeat="(k,v) in columns"> 
+					<span ng-if="getColumnRenderStatus(v.dindex) == true">
+					<widget-custom-render row-object="{{value}}" data-index="{{v.dindex}}" template="{{getColumnRender(v.dindex)}}"></widget-custom-render>
+					</span>
+					<span ng-if="getColumnRenderStatus(v.dindex) == false">{{v.dindex | columnrender:value}}</span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<div widget-pagination></div>
+</div>

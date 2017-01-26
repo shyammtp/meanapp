@@ -1,7 +1,8 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-Schema = mongoose.Schema;
+Schema = mongoose.Schema,
+ mongoosePaginate = require('mongoose-paginate');
 
 
 var SettingsSchema = new Schema({
@@ -10,9 +11,11 @@ var SettingsSchema = new Schema({
 	value : String
 });
 
+SettingsSchema.plugin(mongoosePaginate);
+
+
 SettingsSchema.statics.getConfig = function(name, next,place_id) {
-	this.getAllConfig(place_id,function(res) {
-		console.log(res);
+	this.getAllConfig(place_id,function(res) { 
 		return next();
 	}) 
 }
@@ -24,8 +27,15 @@ SettingsSchema.statics.addSettings = function(key, value, place_id, cb) {
 
 
 SettingsSchema.statics.getAllConfig = function(place_id, cb) {
-	var pid = place_id || 1;
+	var pid = place_id || 1; 
 	return this.model('Settings').find({place_id : pid}).exec(cb);
+}
+
+
+SettingsSchema.statics.getAllConfigPaginate = function(place_id, page, cb) {
+	var pid = place_id || 1;
+	var page = page || 1;
+	return this.model('Settings').paginate({place_id : pid}, { page: page, limit: 1 }, cb); 
 }
 
 SettingsSchema.pre('save', function(next) {

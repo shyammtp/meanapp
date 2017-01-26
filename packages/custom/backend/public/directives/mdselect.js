@@ -3,7 +3,7 @@
 
     function mdSelect() { 
         return {  
-            templateUrl: 'backend/views/widget/elements/select.html',
+            /*templateUrl: 'backend/views/widget/elements/select.html',*/
             scope: true,
             link : function(scope,element,attrs) {  
                 if(attrs.value) {

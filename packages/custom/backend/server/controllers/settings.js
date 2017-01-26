@@ -24,6 +24,11 @@ var Mongoose = require('mongoose'),
            res.send(cb);
         });
       },
+       getpaginate : function(req,res) {  
+        Settings.getAllConfigPaginate(req.param('place_id'),req.param('page'),function(err,cb) {
+           res.send(cb);
+        });
+      },
       upload : function(req,res) {
         var form = new formidable.IncomingForm();
         // specify that we want to allow the user to upload multiple files in a single request

@@ -1,0 +1,45 @@
+ <div class="row">
+	<div class="col-md-5">
+		<div class="row">
+			<div class="col-sm-1 m-t-10">
+				View
+			</div>
+			<div class="col-sm-2">
+				<select md-select ng-change="widgetlimitchange(widgetfield.limit)" ng-model="widgetfield.limit" class="initialized" name="limit">
+					<option value="1" selected="selected">1</option>
+					<option value="20">20</option>
+					<option value="30">30</option>
+					<option value="50">50</option>
+					<option value="100">100</option>
+					<option value="200">200</option>
+				</select>
+			</div>
+			<div class="col-sm-5 m-t-10">
+				 per page 
+				 <span class="separator">|</span>
+	 				Total {{pager.totalItems}} records found  
+			</div>
+			 
+		</div>
+	</div>
+	<div class="col-md-7 m-t-10">
+		
+	</div>
+</div>	
+ <ul ng-if="pager.pages.length" class="pagination" style="margin: 0;">
+    <li ng-class="{disabled:pager.currentPage === 1}">
+        <a ng-click="widget.setPage(1)">First</a>
+    </li>
+    <li ng-class="{disabled:pager.currentPage === 1}">
+        <a ng-click="widget.setPage(pager.currentPage - 1)">Previous</a>
+    </li>
+    <li ng-repeat="page in pager.pages" ng-class="{active:pager.currentPage === page}">
+        <a ng-click="widget.setPage(page)">{{page}}</a>
+    </li>               
+    <li ng-class="{disabled:pager.currentPage === pager.totalPages}">
+        <a ng-click="widget.setPage(pager.currentPage + 1)">Next</a>
+    </li>
+    <li ng-class="{disabled:pager.currentPage === pager.totalPages}">
+        <a ng-click="widget.setPage(pager.totalPages)">Last</a>
+    </li>
+</ul>

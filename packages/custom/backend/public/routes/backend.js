@@ -22,7 +22,17 @@
             controller : function($scope,$window) { 
                 // angular.element(document.getElementsByName('select')).material_select();            
             }
+        })
+
+        .state('settings Notifiction template', {
+            url: '/admin/settings/template',
+            templateUrl: 'backend/views/settings/template/list.html',
+            params: {title : 'General Settings',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Settings', link: 'admin/settings'},{title : 'General'}]},
+            controller : function($scope,$window) { 
+                // angular.element(document.getElementsByName('select')).material_select();            
+            }
         });
+        ;
         $locationProvider
             .html5Mode({enabled:true, requireBase:false});
           

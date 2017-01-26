@@ -1,6 +1,9 @@
 (function() {
     'use strict';
  
+var Mongoose = require('mongoose'),
+  NotificationTemplate = Mongoose.model('NotificationTemplate'),
+  path = require('path');
     /* jshint -W098 */
     // The Package is past automatically as first parameter
     module.exports = function(Backend, app, auth, database, circles) {
@@ -21,6 +24,13 @@
         app.get('/api/backend/menus',sidebar.menuslist);
         app.post('/api/settings/save',settings.savesettings);
         app.get('/api/settings/get',settings.getallsettings);
+
+        app.get('/api/settings/getpaginate',settings.getpaginate);
+        app.get('/api/notificationtemplate/getall',function(req,res) { 
+             NotificationTemplate.getAllPaginate(req.query,function(err,cb) {
+               res.send(cb);
+            });
+        });
 
         app.post('/api/settings/upload',settings.upload);
 
