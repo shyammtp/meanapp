@@ -24,11 +24,19 @@
                         scope.dbresult = ListWidget.getDbResults();
                    });
                 }
+                scope.enablefilter = function(enable) {
+                    if(enable) {
+                        scope.filterdependant = true;
+                    } else {
+                        scope.resetwidgetsearchfilter();
+                        scope.filterdependant = false;                        
+                    }
+                }
                 scope.resetwidgetsearchfilter = function() {
 
-                   ListWidget.request({page : 1},['filter']).then(function(res) {
+                   ListWidget.request({page : 1},['filter']).then(function(res) { 
                         ListWidget.setTotalItems(res.data.total)
-                                 .setPage(1)
+                                 .setPage(1,true)
                                 .setDBResults(res.data.docs);   
                         scope.pager = ListWidget.getPager();  
                         scope.dbresult = ListWidget.getDbResults();

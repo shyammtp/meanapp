@@ -58,7 +58,7 @@
 
     }
 
-    function WidgetController($scope,ListWidget,cfpLoadingBar,$location,Backend) { 
+    function WidgetController($scope,ListWidget,$location,Backend) { 
 
          var vm = this;
          vm.setPage = setPage;
@@ -69,9 +69,12 @@
          ListWidget.setDataRequestUrl('/api/notificationtemplate/getall'); 
          
         function setPage(page) { 
-            ListWidget.request({page: page}).then(function(res){  
+            if(page < 1) {
+                page = 1;
+            }
+            ListWidget.request({page: page,limit : 20}).then(function(res){  
                 ListWidget.setTotalItems(res.data.total)
-                        .setPageSize(1).setPage(page)
+                        .setPageSize(20).setPage(page)
                         .setDBResults(res.data.docs);   
                 $scope.pager = ListWidget.getPager();  
                 $scope.dbresult = ListWidget.getDbResults();
@@ -92,13 +95,13 @@
 
 
     angular
-        .module('mean.backend',['angular-loading-bar'])
+        .module('mean.backend')
         .controller('BackendController', BackendController)
         .controller('SettingsController', SettingsController)
         .controller('WidgetController', WidgetController);
 
     BackendController.$inject = ['$scope', 'Global', 'Backend', '$stateParams'];
     SettingsController.$inject = ['$scope','Backend'];
-    WidgetController.$inject = ['$scope','ListWidget','cfpLoadingBar','$location','Backend'];
+    WidgetController.$inject = ['$scope','ListWidget','$location','Backend'];
 
 })();

@@ -126,15 +126,15 @@
       return this;
     }
 
-    function Widget($http, $q,Util,ListPaginate) {   
+    function Widget($http, $q,Util,ListPaginate) {  
+    this.requestParams = {}; 
         return { 
             columns : {},
             pager : {},
             dbResults : [],
             totalItems : 0,
             pageSize: 10,
-            requestUrl : '',
-            requestParams : {},
+            requestUrl : '', 
             addColumn : function(columnname, columndata) {
                 if(!columnname) {
                     return this;
@@ -187,9 +187,12 @@
             getPager : function() {
                 return this.pager;
             },
-            setPage : function(page) { 
+            setPage : function(page, excl) {
+                var excl = excl || false;                
                 if(page < 1 || page > this.pager.totalPages) {
-                    return this;
+                    if(!excl) {
+                        return this;
+                    }
                 } 
                 this.pager = ListPaginate.GetPager(this.getTotalItems(),page,this.getPageSize());
                 return this;
@@ -201,16 +204,19 @@
             getRequestParams: function() {
                 return this.requestParams;
             },
-            request : function(params,remove) {
-                this.requestParams = params;
+            request : function(params,remove) {                  
+                if(typeof this.requestParams === 'undefined') {
+                    this.requestParams = {};
+                } 
+                this.requestParams = angular.extend(this.requestParams,params);
                 var remove = remove || {};
                 for(var k in remove) {
                     if(remove.hasOwnProperty(k)) {
                         delete this.requestParams[remove[k]];
                     }
-                }
+                } 
                 var deferred = $q.defer(); 
-                $http.get(this.requestUrl,{params: params,cache  : true}).then(function(response) {
+                $http.get(this.requestUrl,{params: this.requestParams,cache  : true}).then(function(response) {
                     deferred.resolve(response);
                 }, function(response) {
                     deferred.reject(response);

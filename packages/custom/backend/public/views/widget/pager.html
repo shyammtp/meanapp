@@ -1,13 +1,12 @@
  <div class="row">
-	<div class="col-md-5">
+	<div class="col-md-7">
 		<div class="row">
 			<div class="col-sm-1 m-t-10">
 				View
 			</div>
 			<div class="col-sm-2">
-				<select md-select ng-change="widgetlimitchange(widgetfield.limit)" ng-model="widgetfield.limit" class="initialized" name="limit">
-					<option value="1" selected="selected">1</option>
-					<option value="20">20</option>
+				<select md-select ng-change="widgetlimitchange(widgetfield.limit)" ng-model="widgetfield.limit" class="initialized" name="limit"> 
+					<option value="20" selected="selected">20</option>
 					<option value="30">30</option>
 					<option value="50">50</option>
 					<option value="100">100</option>
@@ -21,10 +20,8 @@
 			</div>
 			 
 		</div>
-	</div>
-	<div class="col-md-7 m-t-10">
-		
-	</div>
+	</div> 
+
 </div>	
  <ul ng-if="pager.pages.length" class="pagination" style="margin: 0;">
     <li ng-class="{disabled:pager.currentPage === 1}">

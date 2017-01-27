@@ -7,11 +7,16 @@
 			<tr class="filter">
 				<th colspan="{{columns.length}}">
 					<div class="row">
-						<div class="col-sm-12">
+						<div class="col-sm-12" ng-hide="filterdependant">
+							<button type="button" class="btn btn-default pull-right z-depth-2 waves-effect m-t-xs m-b-xs" ng-click="enablefilter(true)"><span class="icon-magnifier" style="font-size:14px;"></span></button>
+							<button type="button" class="btn btn-primary pull-right m-r-5 waves-effect m-t-xs m-b-xs">Add Template</button>
+						</div>
+						<div class="col-sm-12 filterdependant" ng-show="filterdependant">								
 							<div class="pull-right btn-group"> 
 								<button type="button" class="btn btn-default waves-effect m-t-xs m-b-xs" ng-click="resetwidgetsearchfilter()">Reset Filter</button>
 								<button type="button" class="btn btn-primary waves-effect m-t-xs m-b-xs" ng-click="widgetsearchfilter()">Search</button>
 							</div>
+							<button type="button" ng-click="enablefilter(false)" class="btn btn-default pull-right m-r-5 waves-effect m-t-xs m-b-xs">Cancel</button>
 						</div>
 					</div>
 
@@ -20,7 +25,7 @@
 			<tr class="headings">
 				<th ng-repeat="(s,v) in columns">{{v.title}}</th>
 			</tr>
-			<tr class="filter">
+			<tr class="filter filterdependant" ng-show="filterdependant">
 				<th ng-repeat="(sd,vd) in columns">
 				<div ng-switch="vd.type">
 				  <div ng-switch-when="range">			     
@@ -43,12 +48,17 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="(key, value) in dbresult"> 
+			<tr ng-if="dbresult.length" ng-repeat="(key, value) in dbresult"> 
 				<td ng-repeat="(k,v) in columns"> 
 					<span ng-if="getColumnRenderStatus(v.dindex) == true">
 					<widget-custom-render row-object="{{value}}" data-index="{{v.dindex}}" template="{{getColumnRender(v.dindex)}}"></widget-custom-render>
 					</span>
 					<span ng-if="getColumnRenderStatus(v.dindex) == false">{{v.dindex | columnrender:value}}</span>
+				</td>
+			</tr>
+			<tr ng-if="dbresult.length <= 0">
+				<td colspan="{{columns.length}}">
+					No Results found
 				</td>
 			</tr>
 		</tbody>
