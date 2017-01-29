@@ -62,10 +62,12 @@
 
          var vm = this;
          vm.setPage = setPage;
-         ListWidget.addColumn('name',{'type' : 'text','title' : 'Name',defaultValue : '--',width : '40%'});
-         ListWidget.addColumn('from_name',{'type' : 'number','title' : 'Username',width : '40%'}); 
+         ListWidget.defaultSortColumn = 'template_type';
+         ListWidget.addColumn('name',{'type' : 'text','title' : 'Name',defaultValue : '--',width : '30%'});
+         ListWidget.addColumn('from_name',{'type' : 'number','title' : 'Username',width : '30%'}); 
          ListWidget.addColumn('template_type',{'type' : 'select','title' : 'System / Custom',width : '20%','options' : [{label : "System",id:'system'},
             {label : "custom",id:'custom'}]});
+         ListWidget.addColumn('nocolumn',{'type' : 'notype','title' : 'Actions',defaultValue : '--',width : '20%',sortable : false,filterable : false,'render' : 'backend/views/settings/template/renderer/actions.html'});
          ListWidget.setDataRequestUrl('/api/notificationtemplate/getall'); 
          
         function setPage(page) { 

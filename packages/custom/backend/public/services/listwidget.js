@@ -88,6 +88,9 @@
       }
       this.data = data; 
       this.renderRow = function(data) {
+        if(this.data.type == 'notype') {
+            return '';
+        }
         switch(this.data.type) {
             case "select":
                 var obj = new selectRender();
@@ -126,24 +129,35 @@
       return this;
     }
 
-    function Widget($http, $q,Util,ListPaginate) {  
-    this.requestParams = {}; 
+    function Widget($http, $q,Util,ListPaginate) { 
         return { 
             columns : {},
             pager : {},
             dbResults : [],
             totalItems : 0,
             pageSize: 10,
+            defaultSortColumn : '',
+            defaultSortDirection : 1,
             requestUrl : '', 
             addColumn : function(columnname, columndata) {
                 if(!columnname) {
                     return this;
-                }  
+                }   
                 columndata.dindex = columnname;
                 if(!columndata.hasOwnProperty('index')) {
                     columndata.index = columnname;
                 }
+                if(!columndata.hasOwnProperty('sortable')) {
+                    columndata.sortable = true;
+                }
+                if(!columndata.hasOwnProperty('filterable')) {
+                    columndata.filterable = true;                    
+                }
                 this.columns[columnname] = new Column(columndata);
+                return this;
+            },
+            setDefaultSortColumn : function(sort) {
+                this.defaultSortColumn = sort;
                 return this;
             },
             getColumns : function() { 
@@ -197,6 +211,12 @@
                 this.pager = ListPaginate.GetPager(this.getTotalItems(),page,this.getPageSize());
                 return this;
             },
+            getSortColumn : function() {
+                return this.defaultSortColumn;
+            },
+            getSortDir : function() {
+                return this.defaultSortDirection;
+            },
             setDataRequestUrl : function(url) {
                 this.requestUrl = url;
                 return this;
@@ -208,6 +228,8 @@
                 if(typeof this.requestParams === 'undefined') {
                     this.requestParams = {};
                 } 
+                params['sort'] = this.defaultSortColumn;
+                params['sortDir'] = this.defaultSortDirection; 
                 this.requestParams = angular.extend(this.requestParams,params);
                 var remove = remove || {};
                 for(var k in remove) {

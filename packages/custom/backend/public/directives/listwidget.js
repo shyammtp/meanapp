@@ -10,7 +10,9 @@
             link : function(scope,element,attrs) { 
                 scope.dbresult = ListWidget.getDbResults(); 
                 scope.columns = ListWidget.getColumnsData(); 
-                scope.widgetfilter = {};
+                scope.widgetfilter = {}; 
+                scope.sortcolumn = ListWidget.getSortColumn();
+                scope.sortdir = ListWidget.getSortDir();
                 scope.widgetsearchfilter = function() {  
                     var encryptedData = CryptoJS.AES.encrypt(angular.toJson(scope.widgetfilter), secretKey).toString();
                     console.log(ListWidget.getRequestParams());
@@ -23,6 +25,23 @@
                         scope.pager = ListWidget.getPager();  
                         scope.dbresult = ListWidget.getDbResults();
                    });
+                }
+                scope.widgetSort = function(index) {
+                    ListWidget.defaultSortColumn = index;
+                    if(ListWidget.getSortDir() == 1) {
+                        ListWidget.defaultSortDirection = -1;
+                    } else {
+                        ListWidget.defaultSortDirection = 1;
+                    }
+                    ListWidget.request({page : 1}).then(function(res) { 
+                        ListWidget.setTotalItems(res.data.total)
+                                 .setPage(1)
+                                .setDBResults(res.data.docs);   
+                        scope.pager = ListWidget.getPager();  
+                        scope.dbresult = ListWidget.getDbResults();
+                   });  
+                    scope.sortcolumn = ListWidget.getSortColumn();
+                    scope.sortdir = ListWidget.getSortDir();
                 }
                 scope.enablefilter = function(enable) {
                     if(enable) {

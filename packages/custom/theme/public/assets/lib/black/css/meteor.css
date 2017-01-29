@@ -3363,11 +3363,10 @@ tr.group:hover {
     text-shadow: none;
     padding: 0px;
     margin: 10px 0px 0px 0px;
-    background-color: #fff;
+    background-color: #232323;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
-    box-shadow: none;
-    border: 1px solid #E2E2E2;
+    box-shadow: none; 
     -webkit-border-radius: 5px!important;
     -moz-border-radius: 5px!important;
     -ms-border-radius: 5px!important;
@@ -3383,7 +3382,8 @@ tr.group:hover {
 }
 
 .dropdown-menu li a:hover {
-    background: #f7f7f7;
+    background: #3e3e3e;
+    color:#929292;
 }
 
 .navbar-nav > li > .dropdown-menu {
@@ -3397,7 +3397,7 @@ tr.group:hover {
     right: auto;
     display: inline-block !important;
     border-right: 8px solid transparent;
-    border-bottom: 8px solid #E2E2E2;
+    border-bottom: 8px solid #232323;
     border-left: 8px solid transparent;
     content: '';
 }
@@ -3409,7 +3409,7 @@ tr.group:hover {
     right: auto;
     display: inline-block !important;
     border-right: 7px solid transparent;
-    border-bottom: 7px solid #fff;
+    border-bottom: 7px solid #232323;
     border-left: 7px solid transparent;
     content: '';
 }

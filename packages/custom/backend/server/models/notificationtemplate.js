@@ -25,8 +25,11 @@ NotificationTemplateSchema.plugin(mongoosePaginate);
 NotificationTemplateSchema.statics.getAllPaginate = function(params, cb) { 
 	var limit = parseInt(params.limit) || 1;
 	var filter = params.filter || false, fcollection = parseFilter(params.filter,this); 
-	console.log(fcollection);
-	return this.model('NotificationTemplate').paginate(fcollection, { page: parseInt(params.page), limit: limit }, cb); 
+	var sort = {};
+	if( typeof params.sort != 'undefined') {
+		sort[params['sort']] = (typeof params.sortDir != 'undefined' ?params.sortDir : -1);
+	}
+	return this.model('NotificationTemplate').paginate(fcollection, { page: parseInt(params.page), sort : sort,limit: limit }, cb); 
 } 
 
 function parseFilter(filter,obj) {

@@ -10,6 +10,10 @@
 						<div class="col-sm-12" ng-hide="filterdependant">
 							<button type="button" class="btn btn-default pull-right z-depth-2 waves-effect m-t-xs m-b-xs" ng-click="enablefilter(true)"><span class="icon-magnifier" style="font-size:14px;"></span></button>
 							<button type="button" class="btn btn-primary pull-right m-r-5 waves-effect m-t-xs m-b-xs">Add Template</button>
+
+							<div class="fixed-action-btn">
+						      <a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
+						  </div>
 						</div>
 						<div class="col-sm-12 filterdependant" ng-show="filterdependant">								
 							<div class="pull-right btn-group"> 
@@ -23,11 +27,11 @@
 				</th>
 			</tr>
 			<tr class="headings">
-				<th ng-repeat="(s,v) in columns">{{v.title}}</th>
+				<th ng-repeat="(s,v) in columns" class="sorting_asc"><a ng-class="{'sorting' : sortcolumn == v.index,'asc' : sortcolumn == v.index && sortdir == 1,'desc' : sortcolumn == v.index && sortdir == -1}" href="javascript:;" ng-click="widgetSort(v.index)" ng-show="v.sortable">{{v.title}}</a><span ng-hide="v.sortable">{{v.title}}</span></th>
 			</tr>
 			<tr class="filter filterdependant" ng-show="filterdependant">
 				<th ng-repeat="(sd,vd) in columns">
-				<div ng-switch="vd.type">
+				<div ng-switch="vd.type" ng-if="vd.filterable">
 				  <div ng-switch-when="range">			     
 				  </div>
 				  <div ng-switch-when="select"> 
