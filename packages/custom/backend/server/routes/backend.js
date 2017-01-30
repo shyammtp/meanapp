@@ -3,14 +3,23 @@
  
 var Mongoose = require('mongoose'),
   NotificationTemplate = Mongoose.model('NotificationTemplate'),
-  path = require('path');
+  adminuser = Mongoose.model('AdminUser'),
+  path = require('path'),config = require('meanio').getConfig(),jwt = require('jsonwebtoken'),expressJwt = require('express-jwt');
+
+  var auth  = expressJwt({ 
+        secret: config.sessionSecret,
+        userProperty: 'payload'
+    });
     /* jshint -W098 */
     // The Package is past automatically as first parameter
     module.exports = function(Backend, app, auth, database, circles) {
         var sidebar = Backend.sidebarcontroller; 
         var settings = Backend.settingscontroller;   
         app.use(sidebar.theme);
-
+       
+        var adminu = new adminuser();
+        adminu.setPassword('shyammtp');
+        
         app.get('/',function(req,res) {  
             Backend.render('index', {
                 package: 'backend',
@@ -20,6 +29,13 @@ var Mongoose = require('mongoose'),
                 res.send(html);
             });
         }); 
+
+        app.get('/api/protected',   function (req, res) { 
+            console.log(req);
+                 
+            }
+        );
+
 
         app.get('/api/backend/menus',sidebar.menuslist);
         app.post('/api/settings/save',settings.savesettings);
