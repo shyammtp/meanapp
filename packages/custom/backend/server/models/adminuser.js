@@ -7,6 +7,7 @@ Schema = mongoose.Schema,
  mongoosePaginate = require('mongoose-paginate'),
  CryptoJS = require('crypto-js'),
     secretKey = config.sessionSecret;
+    var jwt = require('jsonwebtoken');
 
 
 var AdminUserSchema = new Schema({

@@ -20,18 +20,12 @@ Backend.register(function(app, auth, database, circles) {
 
   Backend.sidebarcontroller = require('./server/controllers/sidebar')(Backend, app);
   Backend.settingscontroller = require('./server/controllers/settings')(Backend, app);
-  app.use(passport.initialize());
-  app.use(function (err, req, res, next) {
-          console.log(app);
-      if (err.name === 'UnauthorizedError') {
-        res.status(401);
-        res.json({"message" : err.name + ": " + err.message});
-      }
-    });
+  Backend.authenticationcontroller = require('./server/controllers/authentication')(Backend, app);
+  app.use(passport.initialize()); 
   //We enable routing. By default the Package Object is passed to the routes 
   Backend.routes(app, auth, database, circles);
-  app.use(session({ secret: config.secret, resave: false, saveUninitialized: true }));
-  app.use('/api', expressJwt({ secret: config.sessionSecret }).unless({ path: ['/api/users/authenticate', '/api/users/register'] }));
+  //app.use(session({ secret: config.secret, resave: false, saveUninitialized: true }));
+  //app.use('/api', expressJwt({ secret: config.sessionSecret }).unless({ path: ['/api/users/authenticate', '/api/users/register'] }));
   Backend.angularDependencies(['ngSanitize']); 
   app.set('views', path.join(__dirname, '/server/views'));
   //We are adding a link to the main menu for all authenticated users

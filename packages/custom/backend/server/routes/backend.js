@@ -6,7 +6,7 @@ var Mongoose = require('mongoose'),
   adminuser = Mongoose.model('AdminUser'),
   path = require('path'),config = require('meanio').getConfig(),jwt = require('jsonwebtoken'),expressJwt = require('express-jwt');
 
-  var auth  = expressJwt({ 
+  var authentic  = expressJwt({ 
         secret: config.sessionSecret,
         userProperty: 'payload'
     });
@@ -15,12 +15,13 @@ var Mongoose = require('mongoose'),
     module.exports = function(Backend, app, auth, database, circles) {
         var sidebar = Backend.sidebarcontroller; 
         var settings = Backend.settingscontroller;   
+        var authentication = Backend.authenticationcontroller;
         app.use(sidebar.theme);
-       
+         
         var adminu = new adminuser();
         adminu.setPassword('shyammtp');
         
-        app.get('/',function(req,res) {  
+        app.get('/',function(req,res) { 
             Backend.render('index', {
                 package: 'backend',
                 currenturl : req.originalUrl,
@@ -28,13 +29,15 @@ var Mongoose = require('mongoose'),
             }, function(err, html) {
                 res.send(html);
             });
-        }); 
-
-        app.get('/api/protected',   function (req, res) { 
-            console.log(req);
-                 
-            }
-        );
+        });  
+        app.post('/api/adminlogin', authentication.login);
+        app.post('/api/adminregister', authentication.register);
+        app.use(function (err, req, res, next) {
+          if (err.name === 'UnauthorizedError') {
+            res.status(401);
+            res.json({"message" : err.name + ": " + err.message});
+          }
+        });
 
 
         app.get('/api/backend/menus',sidebar.menuslist);

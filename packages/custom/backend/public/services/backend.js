@@ -83,10 +83,53 @@
         };
     }
 
+    function Authentication($http, $q,$window) {        
+        var saveToken = function(token) {
+            $window.localStorage['login-token'] = token;
+        },
+        getToken = function() {
+            return $window.localStorage['login-token'];
+        },
+        logout = function() {
+            $window.localStorage.removeItem('login-token');
+        }, isLoggedIn = function() {
+              var token = getToken();
+              var payload;
+
+              if(token){
+                payload = token.split('.')[1];
+                payload = $window.atob(payload);
+                payload = JSON.parse(payload);
+
+                return payload.exp > Date.now() / 1000;
+              } else {
+                return false;
+              }
+            },
+        login = function(credentials) {
+            var deferred = $q.defer();
+            $http.post('/api/adminlogin',credentials).then(function(response) {
+                deferred.resolve(response);
+            }, function(response) {
+                deferred.reject(response);
+            });
+            return deferred.promise;
+        };
+        return {
+            saveToken : saveToken,
+            getToken : getToken,
+            logout : logout,
+            isLoggedIn : isLoggedIn,
+            login : login
+        }
+    }
+
     angular
         .module('mean.backend')
-        .factory('Backend', Backend);
+        .factory('Backend', Backend)
+        .factory('Authentication',Authentication);
 
     Backend.$inject = ['$http', '$q'];
+    Authentication.$inject = ['$http', '$q','$window'];
 
 })();

@@ -6,7 +6,7 @@ var passport = require('passport'),Mongoose = require('mongoose'),
   module.exports = function (Backend, app) {
   	 return {
   	 	register : function(req,res) { 
-        var user = new User(); 
+        var user = new AdminUser(); 
         user.name = req.body.name;
         user.email = req.body.email;
 
@@ -44,6 +44,7 @@ var passport = require('passport'),Mongoose = require('mongoose'),
           }
         })(req,res);
       }
+
 
   	 }
   }

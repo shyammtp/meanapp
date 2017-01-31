@@ -3,7 +3,13 @@
 
     /* jshint -W098 */
 
-    function BackendController($scope, Global, Backend, $stateParams) { 
+    function BackendController($scope, Global, Backend, $stateParams,Authentication) { 
+        var bm = this;
+
+        bm.credentials = {
+            email : '',
+            password: ''
+        }
         $scope.global = Global;
         $scope.package = {
             name: 'backend'
@@ -32,6 +38,14 @@
         $scope.onFileSelect = function($files) { 
             $scope.profile = $files[0];
             uploadFile();
+        }
+
+        $scope.login = function() {
+            Authentication.login(bm.credentials).then(function(res) {
+                console.log(res);
+                Authentication.saveToken(res.data.token);
+            });
+            $scope.token = Authentication.getToken();
         }
        
 
@@ -102,7 +116,7 @@
         .controller('SettingsController', SettingsController)
         .controller('WidgetController', WidgetController);
 
-    BackendController.$inject = ['$scope', 'Global', 'Backend', '$stateParams'];
+    BackendController.$inject = ['$scope', 'Global', 'Backend', '$stateParams','Authentication'];
     SettingsController.$inject = ['$scope','Backend'];
     WidgetController.$inject = ['$scope','ListWidget','$location','Backend'];
 

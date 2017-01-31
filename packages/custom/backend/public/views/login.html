@@ -1,4 +1,4 @@
-<div class="container" ng-controller="BackendController">
+<div class="container" ng-controller="BackendController as bm">
   <div class="row login-container animated fadeInUp">  
         <div class="col-md-7 col-md-offset-2 loginbox tiles white no-padding">
         <div class="row">
@@ -11,7 +11,7 @@
                     <div class="row  m-t-40">
                       <div class="col-md-11  ">
                         <div class="input-field col">
-                          <input id="email" type="email" name="email" ng-model="email" class="validate">
+                          <input id="email" type="email" ng-model="bm.credentials.email" class="validate">
                           <label for="email" class="">Email</label>
                           <span ng-show="frm_login.email.$error.email">Not a valid e-mail address</span>
                         </div> 
@@ -21,7 +21,7 @@
                     <div class="row m-t-40">
                      <div class="col-md-11">
                          <div class="input-field col">
-                          <input id="password" type="password" class="validate">
+                          <input id="password" type="password" ng-model="bm.credentials.password" class="validate">
                           <label for="password" class="">Password</label>
                         </div> 
                       </div>
@@ -31,8 +31,9 @@
             </div>
           </div>
         </div>
+        {{token}}
         <div class="login-btns">
-         <button type="button" class="waves-effect waves-light btn btn-primary btn-cons" id="login_toggle">Login</button>
+         <button type="button" class="waves-effect waves-light btn btn-primary btn-cons" ng-click="login()" id="login_toggle">Login</button>
          </div>
      
     
