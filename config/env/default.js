@@ -24,7 +24,7 @@ module.exports = {
 
   // The secret should be set to a non-guessable string that
   // is used to compute a session hash
-  sessionSecret: 'MEAN',
+  sessionSecret: 'SHYAMSECRET',
 
   // The name of the MongoDB collection to store sessions in
   sessionCollection: 'sessions',
@@ -50,8 +50,7 @@ module.exports = {
       locale: 'he',
       direction: 'rtl'
     }],
-    currentLanguage: 'en',
-    loginPage: '/auth/login',
+    currentLanguage: 'en', 
     cssFramework: 'bootstrap'
   },
   clusterSticky: false,
