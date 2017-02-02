@@ -78,8 +78,16 @@
                     },
                     responseType: "arraybuffer"
                   });
+            },
+            getAdminConfig : function(index) {
+                 var deferred = $q.defer(); 
+                $http.get('/api/adminconfig',{params: {'index' : index},cache  : true}).then(function(response) {
+                    deferred.resolve(response);
+                }, function(response) {
+                    deferred.reject(response);
+                });
+                return deferred.promise;
             }
-
         };
     }
 
@@ -99,8 +107,7 @@
               if(token){
                 payload = token.split('.')[1];
                 payload = $window.atob(payload);
-                payload = JSON.parse(payload);
-
+                payload = JSON.parse(payload);  
                 return payload.exp > Date.now() / 1000;
               } else {
                 return false;
@@ -109,8 +116,10 @@
         login = function(credentials) {
             var deferred = $q.defer();
             $http.post('/api/adminlogin',credentials).then(function(response) {
+
                 deferred.resolve(response);
             }, function(response) {
+                
                 deferred.reject(response);
             });
             return deferred.promise;

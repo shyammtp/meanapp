@@ -20,11 +20,18 @@ var Mongoose = require('mongoose'),
          
         var adminu = new adminuser();
         adminu.setPassword('shyammtp');
+
+        app.get('/api/adminconfig',function(req,res) { 
+            
+            res.status(200); 
+            
+            res.json(Backend.adminconfig(req.query['index']));
+        })
         
         app.get('/',function(req,res) { 
             Backend.render('index', {
                 package: 'backend',
-                currenturl : req.originalUrl,
+               // currenturl : req.originalUrl,
                 settings : app.locals
             }, function(err, html) {
                 res.send(html);

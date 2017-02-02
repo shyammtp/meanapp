@@ -11,6 +11,7 @@ expressJwt = require('express-jwt'),
 config = meanio.getConfig(),
 passport = require('passport');
 require("./server/config/passport.js");
+var adminconfig = require('./server/config/adminconfig.json');
 
 /*
  * All MEAN packages require registration
@@ -35,6 +36,7 @@ Backend.register(function(app, auth, database, circles) {
     roles: ['authenticated'],
     menu: 'main'
   }); 
+  Backend.adminconfig = getConfig; 
   
   /**
     //Uncomment to use. Requires meanio@0.3.7 or above
@@ -60,3 +62,10 @@ Backend.register(function(app, auth, database, circles) {
 
   return Backend;
 });
+
+function getConfig(index) {
+  if(adminconfig.hasOwnProperty(index)) { 
+    return adminconfig[index];
+  }
+  return  {};
+}

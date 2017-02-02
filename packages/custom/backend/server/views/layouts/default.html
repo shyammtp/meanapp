@@ -3,11 +3,11 @@
 {% include '../includes/head.html' %}
 
 <body data-ng-controller="BackendController" data-curl="{{currenturl}}"  ng-cloak class="ng-cloak compact-menu" ng-class="state">  
-<main class="page-content content-wrap">   
-{% if currenturl !== '/admin/login' %}
-    {% block header %}{% endblock %} 
+<main class="page-content content-wrap">  
+<div ng-if="currenturl !== '/admin/login'">
+        {% block header %}{% endblock %} 
     <shmenu-sidebar></shmenu-sidebar> 
-{% endif %}
+</div>
     {% block content %}{% endblock %} 
     {% include '../includes/foot.html' %} 
 </main>

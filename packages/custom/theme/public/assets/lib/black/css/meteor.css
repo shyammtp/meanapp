@@ -6050,3 +6050,4 @@ select:disabled{color:rgba(0,0,0,0.3)}
     background-color: #313131;
     border-color: #171717;
 }
+#toast-container .errortoast {background-color:#5f0000; color:#b7b4b4;}

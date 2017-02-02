@@ -3,8 +3,8 @@
 
     /* jshint -W098 */
 
-    function BackendController($scope, Global, Backend, $stateParams,Authentication) { 
-        var bm = this;
+    function BackendController($scope, Global, Backend, $stateParams,$rootScope,$location,$state, Authentication) { 
+        var bm = this; 
 
         bm.credentials = {
             email : '',
@@ -13,7 +13,7 @@
         $scope.global = Global;
         $scope.package = {
             name: 'backend'
-        };     
+        };    
         $scope.params =  $stateParams; 
         Backend.getAssetsData().then(function(res) { 
             $scope.assetspath = res.path;
@@ -41,13 +41,26 @@
         }
 
         $scope.login = function() {
-            Authentication.login(bm.credentials).then(function(res) {
-                console.log(res);
+            Authentication.login(bm.credentials).then(function(res) { 
                 Authentication.saveToken(res.data.token);
+                $location.path('/admin/dashboard'); 
+                Materialize.toast('Logged in Successfully', 4000);  
+            },function(err) { 
+                if(err.status == 401) {
+                    Materialize.toast(err.data.message, 2000,'errortoast');
+                }
             });
-            $scope.token = Authentication.getToken();
+            
         }
-       
+        $scope.logout = function() {
+            Authentication.logout();
+            $state.go('login'); 
+            Materialize.toast('Logged out Successfully', 4000);            
+        }
+        $scope.currenturl = $location.path();
+        $rootScope.$on('$stateChangeStart', function(event, nextRoute, currentRoute) { 
+              $scope.currenturl = nextRoute.url; 
+        });
 
     }
  
@@ -72,9 +85,9 @@
 
     }
 
-    function WidgetController($scope,ListWidget,$location,Backend) { 
+    function WidgetController($scope,ListWidget,$location,Backend,$rootScope,$state) { 
 
-         var vm = this;
+         var vm = this;  
          vm.setPage = setPage;
          ListWidget.defaultSortColumn = 'template_type';
          ListWidget.addColumn('name',{'type' : 'text','title' : 'Name',defaultValue : '--',width : '30%'});
@@ -106,6 +119,7 @@
             }); 
         }
         setPage(1);
+        
 
     }
 
@@ -116,8 +130,8 @@
         .controller('SettingsController', SettingsController)
         .controller('WidgetController', WidgetController);
 
-    BackendController.$inject = ['$scope', 'Global', 'Backend', '$stateParams','Authentication'];
+    BackendController.$inject = ['$scope', 'Global', 'Backend', '$stateParams','$rootScope','$location','$state','Authentication'];
     SettingsController.$inject = ['$scope','Backend'];
-    WidgetController.$inject = ['$scope','ListWidget','$location','Backend'];
+    WidgetController.$inject = ['$scope','ListWidget','$location','Backend','$rootScope','$state'];
 
 })();
