@@ -68,6 +68,7 @@
      function SettingsController($scope,Backend) { 
         
         $scope.saveSettings = function(settings) {  
+            console.log(settings);
             var success = 0,error = 0;
             for(var key in settings)  { 
                Backend.saveSettings(key,settings[key],1).then(function(res) {

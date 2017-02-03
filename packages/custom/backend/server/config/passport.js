@@ -1,3 +1,4 @@
+'use strict';
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var mongoose = require('mongoose');
@@ -7,6 +8,7 @@ passport.use(new LocalStrategy({
     usernameField: 'email'
   },
   function(username, password, done) {
+     
     AdminUser.findOne({ email: username }, function (err, user) {
       if (err) { return done(err); }
       // Return if user not found in database

@@ -4,6 +4,9 @@
 var Mongoose = require('mongoose'),
   NotificationTemplate = Mongoose.model('NotificationTemplate'),
   adminuser = Mongoose.model('AdminUser'),
+  category = Mongoose.model('Category'),
+  arrayutil = require('../helpers/util').array,
+  textutil = require('../helpers/util').text,
   path = require('path'),config = require('meanio').getConfig(),jwt = require('jsonwebtoken'),expressJwt = require('express-jwt');
 
   var authentic  = expressJwt({ 
@@ -17,16 +20,53 @@ var Mongoose = require('mongoose'),
         var settings = Backend.settingscontroller;   
         var authentication = Backend.authenticationcontroller;
         app.use(sidebar.theme);
-         
-        var adminu = new adminuser();
-        adminu.setPassword('shyammtp');
+        //app.use(expressJwt({ secret: config.sessionSecret}));
 
-        app.get('/api/adminconfig',function(req,res) { 
-            
-            res.status(200); 
-            
+        app.get('/api/adminconfig',function(req,res) {             
+            res.status(200);             
             res.json(Backend.adminconfig(req.query['index']));
-        })
+        });
+
+        app.post('/api/category/save',authentic,function(req,res){ 
+            res.status(200);
+            var cat = new category();
+            if(typeof req.query['parent']!= 'undefined') {            
+                var query = category.where({category_url : req.query['parent']});
+                query.findOne(function(err,cate) {
+                    if(cate) {
+                        cat.category_parent_id = cate._id;
+                        cat.level = cate.level++;
+                        if(typeof cate.tree_path!= 'undefined') {
+                            cat.tree_path = cate.tree_path+'/'+cate._id;
+                            cat.tree_url = cate.tree_url+'/'+cate.category_url;
+                        } else {
+                            cat.tree_path = cate._id;
+                            cat.tree_url = cate.category_url;
+                        }
+                        cat.category_url = textutil.url_title(arrayutil.get(arrayutil.get(req.body,'category_name'),'en'));
+                        cat.category_name['en'] = arrayutil.get(arrayutil.get(req.body,'category_name'),'en');                
+                        cat.save(function(err,category,numAffected) {
+                            if(err) {
+                                res.json(err);
+                            } else {
+                                res.json({message: 'Inserted Successfully'});
+                            }
+                        }) 
+                    }
+                });
+            } else {
+                cat.category_url = textutil.url_title(arrayutil.get(arrayutil.get(req.body,'category_name'),'en'));
+                cat.category_name['en'] = arrayutil.get(arrayutil.get(req.body,'category_name'),'en');                
+                cat.save(function(err,category,numAffected) {
+                    if(err) {
+                        res.json(err);
+                    } else {
+                        res.json({message: 'Inserted Successfully'});
+                    }
+                }) 
+            }
+            
+        });
         
         app.get('/',function(req,res) { 
             Backend.render('index', {

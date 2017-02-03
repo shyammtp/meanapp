@@ -132,6 +132,7 @@
             login : login
         }
     }
+ 
 
     angular
         .module('mean.backend')
