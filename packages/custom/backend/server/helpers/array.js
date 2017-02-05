@@ -1,9 +1,9 @@
 'use strict';
 
-exports.get = function(object, key, deflt) {
-	deflt || (deflt = '');
-    if(object.hasOwnProperty(key)) {
-    	return typeof object[key]!= 'undefined' ? object[key] : deflt;
+exports.get = function(obj, key, deflt) {
+	deflt || (deflt = ''); 
+    if(typeof obj[key] != 'undefined') {
+    	return obj[key];
     }
     return deflt;
 }

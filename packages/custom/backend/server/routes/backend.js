@@ -19,6 +19,7 @@ var Mongoose = require('mongoose'),
         var sidebar = Backend.sidebarcontroller; 
         var settings = Backend.settingscontroller;   
         var authentication = Backend.authenticationcontroller;
+        var products = Backend.productscontroller;
         app.use(sidebar.theme);
         //app.use(expressJwt({ secret: config.sessionSecret}));
 
@@ -27,46 +28,21 @@ var Mongoose = require('mongoose'),
             res.json(Backend.adminconfig(req.query['index']));
         });
 
-        app.post('/api/category/save',authentic,function(req,res){ 
-            res.status(200);
-            var cat = new category();
-            if(typeof req.query['parent']!= 'undefined') {            
-                var query = category.where({category_url : req.query['parent']});
-                query.findOne(function(err,cate) {
-                    if(cate) {
-                        cat.category_parent_id = cate._id;
-                        cat.level = cate.level++;
-                        if(typeof cate.tree_path!= 'undefined') {
-                            cat.tree_path = cate.tree_path+'/'+cate._id;
-                            cat.tree_url = cate.tree_url+'/'+cate.category_url;
-                        } else {
-                            cat.tree_path = cate._id;
-                            cat.tree_url = cate.category_url;
-                        }
-                        cat.category_url = textutil.url_title(arrayutil.get(arrayutil.get(req.body,'category_name'),'en'));
-                        cat.category_name['en'] = arrayutil.get(arrayutil.get(req.body,'category_name'),'en');                
-                        cat.save(function(err,category,numAffected) {
-                            if(err) {
-                                res.json(err);
-                            } else {
-                                res.json({message: 'Inserted Successfully'});
-                            }
-                        }) 
-                    }
-                });
-            } else {
-                cat.category_url = textutil.url_title(arrayutil.get(arrayutil.get(req.body,'category_name'),'en'));
-                cat.category_name['en'] = arrayutil.get(arrayutil.get(req.body,'category_name'),'en');                
-                cat.save(function(err,category,numAffected) {
-                    if(err) {
-                        res.json(err);
-                    } else {
-                        res.json({message: 'Inserted Successfully'});
-                    }
-                }) 
-            }
-            
-        });
+        app.get('/api/category/getall',function(req,res){ 
+            category.getAll(function(err,cb) {  
+                res.send(cb);  
+            })
+        }); 
+        app.get('/api/category/gettree',function(req,res){ 
+            category.getCategories('',function(cb) {  
+                res.send(cb);  
+            });
+        }); 
+
+
+        /* For Products */
+        app.delete('/api/category/delete/:id',authentic,products.deleteCategory);
+        app.post('/api/category/save',authentic,products.saveCategory);
         
         app.get('/',function(req,res) { 
             Backend.render('index', {

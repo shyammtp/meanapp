@@ -20,6 +20,7 @@ var adminconfig = require('./server/config/adminconfig.json');
 Backend.register(function(app, auth, database, circles) {
 
   Backend.sidebarcontroller = require('./server/controllers/sidebar')(Backend, app);
+  Backend.productscontroller = require('./server/controllers/products')(Backend, app);
   Backend.settingscontroller = require('./server/controllers/settings')(Backend, app);
   Backend.authenticationcontroller = require('./server/controllers/authentication')(Backend, app);
   app.use(passport.initialize()); 

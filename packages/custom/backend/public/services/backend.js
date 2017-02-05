@@ -132,12 +132,25 @@
             login : login
         }
     }
+
+    function ArrayUtil() {
+        return {
+            get : function(obj, key, deflt) {
+                deflt || (deflt = ''); 
+                if(typeof obj[key] != 'undefined') {
+                    return obj[key];
+                }
+                return deflt;
+            }
+        }
+    }
  
 
     angular
         .module('mean.backend')
         .factory('Backend', Backend)
-        .factory('Authentication',Authentication);
+        .factory('Authentication',Authentication)
+        .factory('ArrayUtil',ArrayUtil);
 
     Backend.$inject = ['$http', '$q'];
     Authentication.$inject = ['$http', '$q','$window'];

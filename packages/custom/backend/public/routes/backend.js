@@ -26,7 +26,26 @@
             templateUrl: 'backend/views/settings/template/list.html',
             params: {title : 'Notification Template',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Settings', link: 'admin/settings'},{title : 'Notification Template'}]},
              
-        });
+        })
+         .state('products_category', {
+            url: '/admin/products/category',
+            templateUrl: 'backend/views/products/category/list.html',
+            params: {title : 'Products Category',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Category'}]},
+             
+        })
+          .state('products_catalog', {
+            url: '/admin/products/catalog',
+            templateUrl: 'backend/views/products/catalog/list.html',
+            params: {title : 'Products Catalog',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Add a product'}]},
+             
+        })
+         .state('products_catalog_step1', {
+            url: '/admin/products/catalog/classify',
+            templateUrl: 'backend/views/products/catalog/classify.html',
+            params: {title : 'Products Catalog',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Add a product'}]},
+             
+        })
+ 
         ;
         $locationProvider
             .html5Mode({enabled:true, requireBase:false});

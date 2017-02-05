@@ -4,12 +4,17 @@
     /* jshint -W098 */
 
     function BackendController($scope, Global, Backend, $stateParams,$rootScope,$location,$state, Authentication) { 
-        var bm = this; 
-
+        var bm = this;  
         bm.credentials = {
             email : '',
             password: ''
         }
+
+        $scope.$on('child', function (event, data) {
+            if(typeof data.externaljs!== 'undefined') {
+                $scope.externaljs = data.externaljs;
+            } 
+        });
         $scope.global = Global;
         $scope.package = {
             name: 'backend'
@@ -61,6 +66,26 @@
         $rootScope.$on('$stateChangeStart', function(event, nextRoute, currentRoute) { 
               $scope.currenturl = nextRoute.url; 
         });
+        $scope.loadScript = function(url, type, charset) {
+            if (type===undefined) type = 'text/javascript';
+            if (url) {
+                var script = document.querySelector("script[src*='"+url+"']");
+                if (!script) {
+                    var heads = document.getElementsByTagName("head");
+                    if (heads && heads.length) {
+                        var head = heads[0];
+                        if (head) {
+                            script = document.createElement('script');
+                            script.setAttribute('src', url);
+                            script.setAttribute('type', type);
+                            if (charset) script.setAttribute('charset', charset);
+                            head.appendChild(script);
+                        }
+                    }
+                }
+                return script;
+            }
+        };
 
     }
  
