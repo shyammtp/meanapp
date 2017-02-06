@@ -17,7 +17,7 @@ var passport = require('passport'),Mongoose = require('mongoose'),
           token = user.generateJwt();
           res.status(200);
           res.json({
-            "token" : token
+            token : token
           });
         });
   	 	},
@@ -36,7 +36,7 @@ var passport = require('passport'),Mongoose = require('mongoose'),
             token = user.generateJwt();
             res.status(200);
             res.json({
-              "token" : token
+              token : token
             });
           } else {
             // If user is not found

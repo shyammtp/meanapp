@@ -44,7 +44,12 @@
             templateUrl: 'backend/views/products/catalog/classify.html',
             params: {title : 'Products Catalog',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Add a product'}]},
              
-        })
+        }) 
+         .state('product_catalog_info', {
+            url : '/admin/products/catalog/information',
+            templateUrl: 'backend/views/products/catalog/information.html',
+            params: {title : 'Products Catalog',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Add a product'}]},
+         })
  
         ;
         $locationProvider

@@ -13,7 +13,7 @@ var Mongoose = require('mongoose'),
                 query.findOne(function(err,cate) {
                     if(cate) {
                         cat.category_parent_id = cate._id;
-                        console.log(cate.level);
+                        //console.log(cate.level);
                         cat.level = cate.level+1;
                         if(typeof cate.tree_path!= 'undefined') {
                             cat.tree_path = cate.tree_path+'/'+cate._id;

@@ -68,13 +68,15 @@
         }
     }
 
-    function CatalogController($scope, Global, Backend,ArrayUtil, Product) {
+    function CatalogController($scope, Global, Backend,ArrayUtil, Product,$timeout) {
  		var vm = this;
         $scope.pickedcategory = {};
- 		$scope.getCategoryList = function(data) {
-            
-            $scope.pickedcategory = data; 
-            //$scope.$apply();  
+        var originalData = {}; 
+ 		$scope.getCategoryList = function(data) {			  
+			$timeout(function() {
+				Product.setCategoryTreeSet(data);
+	            $scope.pickedcategory = data; 
+	        }); 
         }   
         $scope.checkarrow = function(index) { 
             if(parseInt(index) > 1) {
@@ -83,13 +85,29 @@
             return false;
         }
     }
+    function CatalogAddController($scope,ArrayUtil, Product,$location) {
+ 		var vm = this,categoryset = Product.getCategoryTreeSetForAdd();
+
+ 		if(categoryset== undefined) {
+ 			$location.path('admin/products/catalog/classify');
+ 		}
+ 		$scope.checkarrow = function(index) { 
+            if(parseInt(index) > 1) {
+                return true;
+            } 
+            return false;
+        }
+ 		$scope.pickedcategory = categoryset;
+    }
   
 
     angular
         .module('mean.backend') 
         .controller('CategoryController', CategoryController)
-        .controller('CatalogController', CatalogController);
+        .controller('CatalogController', CatalogController)
+        .controller('CatalogAddController', CatalogAddController);
 
     CategoryController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product'];  
-    CatalogController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product']; 
+    CatalogController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product','$timeout'];  
+    CatalogAddController.$inject = ['$scope', 'ArrayUtil','Product','$location'];
 })();

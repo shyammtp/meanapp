@@ -21,7 +21,7 @@
                 methodToCall: '&method',
                 categoryupdated : '='
             }, 
-            loadCategoriesTree : function(scope,element) {
+            loadCategoriesTree : function(scope,element) { 
                 Product.getCategories().then(function(res) { 
                     var categoryset = [],catmap = {}; 
                     res.data.forEach(function(s) { 
@@ -90,7 +90,7 @@
         }
     }
 
-    function categoryselectslider(Product,$compile) {
+    function categoryselectslider(Product,$compile,$location) {
         return {    
             replace: 'true',
             scope: {
@@ -98,7 +98,9 @@
             }, 
             templateUrl : 'backend/views/products/catalog/classify/category.html',
             link : function(scope,element,attrs) {
-                var _obj = this;
+                var _obj = this,containerwidth = angular.element('.ca-container').width();
+                var c = Math.floor(containerwidth / 330);
+                angular.element('.ca-container').css('width',(330*4)+'px');
                 var el = angular.element('.ca-wrapper');
                 /*element.contentcarousel({
                     // speed for the sliding animation
@@ -112,18 +114,35 @@
                     // number of items to scroll at a time
                     scroll  : 4 
                 });*/
+
                 scope.categoriestree = {};
                 Product.getCategoryTree().then(function(res){
-                    scope.categoriestree = res.data;
-                    console.log(scope.categoriestree);
+                    scope.categoriestree = res.data;                   
                 }); 
-                var template = [],lev = 1,pickedcategory = [];
+                var template = [],lev = 1,pickedcategory = {};
                 scope.childrentree=[]; 
-                scope.savecategory = function(id) {
-                    console.log(id);
+                scope.savecategory = function(data) {
+                   Product.setCategory(data);
+                   $location.path('admin/products/catalog/information');
                 }
+                scope.getChildrencount = function(v) {
+                    if(v == undefined) return 0;
+                    return Object.keys(v).length;
+                }
+                scope.isactive = function(key) { 
+                    for(var k in scope.pickedcategoryset) {
+                        if(!scope.pickedcategoryset.hasOwnProperty(k)) continue;
+                        if(scope.pickedcategoryset[k]._id == key) {
+                            return true;
+                            break;
+                        }
+                    }
+                    return false;
+                }
+                scope.pickedcategoryset = {};
                 scope.loadsub = function(data,level) {
-                    scope.finalcategory = data._id; 
+                    scope.finalcategory = data;
+                    scope.pickedcategoryset = pickedcategory; 
                     level || (level = 1);
                     lev = level + 1; 
                     for(var i=0;i<template.length;i++) {
@@ -144,7 +163,7 @@
                         var t = angular.element('<div class="ca-item">\
                                             <div class="ca-item-main">  \
                                                 <ul>\
-                                                    <li ng-repeat="(k,v) in childrentree.children'+(lev-1)+'"><a href="javascript:;" ng-click="loadsub(v,'+lev+')">{{v.category_name.en}}</a></li>\
+                                                    <li ng-repeat="(k,v) in childrentree.children'+(lev-1)+'"><a href="javascript:;"  ng-class="{\'children\' : getChildrencount(v.children),\'active\' : isactive(v._id) }" ng-click="loadsub(v,'+lev+')">{{v.category_name.en}}</a></li>\
                                                 </ul>\
                                             </div> \
                                         </div> ');
@@ -152,17 +171,30 @@
                     } else {
                         var t = angular.element('<div class="ca-item">\
                                             <div class="ca-item-main">  \
+                                                <h2>{{finalcategory.category_name.en}}</h2>\
                                                 <button type="button" ng-click="savecategory(finalcategory)" class="btn btn-primary">Select</button> \
                                             </div> \
                                         </div> ');
                     }
                     pickedcategory[lev-1] = data;
-                    template[lev-1] = t;  
+                    template[lev-1] = t;
+                    _obj.updatestyle(template);
                     scope.methodToCall({value: pickedcategory}); 
                     el.append(t);
                     $compile(t)(scope);
                 }
 
+            }, updatestyle : function(template) {
+                var x = 0,  totalwidth = angular.element('.ca-wrapper').width(); 
+                for(var k in template) {
+                    if(!template.hasOwnProperty(k)) continue;
+                    x = x+330;
+                    template[k].css({left : x});
+                }
+                if(x >= totalwidth) { 
+                    var wi = (x+330)+'px';
+                   angular.element('.ca-wrapper').scrollLeft(wi);
+                }
             }
 
         }
@@ -215,5 +247,5 @@
         .directive('shModalLink', shModallink);
  
     jsTree.$inject = ['Product','ArrayUtil','$timeout'];
-    categoryselectslider = ['Product','$compile']
+    categoryselectslider = ['Product','$compile','$location']
 })();

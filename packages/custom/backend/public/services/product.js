@@ -1,7 +1,8 @@
 (function() {
     'use strict';
  
-    function Product($http, $q,$window, Authentication,ArrayUtil) {        
+    function Product($http, $q,$window, Authentication,ArrayUtil) { 
+        this.categoryset = {},this.categorytreeset = {};       
         var getCategories = function() {
             var deferred = $q.defer();
             $http.get('/api/category/getall',{headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
@@ -37,12 +38,29 @@
                 deferred.reject(response);
             });
             return deferred.promise;
+        },setCategory = function(cat) {
+            this.categoryset = cat; 
+            return this;
+        },
+        setCategoryTreeSet = function(categorytreeset) {
+            this.categorytreeset = categorytreeset; 
+            return this;
+        },
+        getCategoryForAdd = function() {
+            return this.categoryset;
+        },
+         getCategoryTreeSetForAdd = function() {
+            return this.categorytreeset;
         }
         return {    
             getCategories : getCategories,
             saveCategory : saveCategory,
             deleteCategory : deleteCategory,
-            getCategoryTree : getCategoryTree
+            getCategoryTree : getCategoryTree,
+            setCategory : setCategory,
+            getCategoryForAdd : getCategoryForAdd,
+            setCategoryTreeSet : setCategoryTreeSet,
+            getCategoryTreeSetForAdd : getCategoryTreeSetForAdd
         }
     }
  

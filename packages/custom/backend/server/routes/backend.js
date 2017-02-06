@@ -37,7 +37,15 @@ var Mongoose = require('mongoose'),
            category.getCategories('',function(cb) {  
                 res.send(cb);  
             })
-        }); 
+        });
+
+        app.get('/api/cache/flush',function(req,res) {
+            var Nodecache = require( "node-cache" ),
+                myCache = new Nodecache();
+                myCache.del( "category_tree" );
+           // myCache.flushAll();   
+            res.status(200).json({message : "Cache Cleared"}); 
+        }) 
 
 
         /* For Products */

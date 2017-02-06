@@ -3,7 +3,7 @@
 		<div class="ca-item">
 			<div class="ca-item-main">  
 				<ul>
-					<li ng-repeat="(k,v) in categoriestree"><a href="javascript:;" ng-click="loadsub(v,1)">{{v.category_name.en}}</a></li>
+					<li ng-repeat="(k,v) in categoriestree"><a href="javascript:;" ng-class="{'children' : getChildrencount(v.children),'active' : isactive(v._id) }" ng-click="loadsub(v,1)">{{v.category_name.en}}</a></li>
 
 				</ul>
 
