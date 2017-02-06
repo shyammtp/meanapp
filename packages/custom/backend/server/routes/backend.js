@@ -10,7 +10,7 @@ var Mongoose = require('mongoose'),
   path = require('path'),config = require('meanio').getConfig(),jwt = require('jsonwebtoken'),expressJwt = require('express-jwt');
 
   var authentic  = expressJwt({ 
-        secret: config.sessionSecret,
+        secret: config.secret,
         userProperty: 'payload'
     });
     /* jshint -W098 */
@@ -22,21 +22,21 @@ var Mongoose = require('mongoose'),
         var products = Backend.productscontroller;
         app.use(sidebar.theme);
         //app.use(expressJwt({ secret: config.sessionSecret}));
-
+        app.use(logErrors)
         app.get('/api/adminconfig',function(req,res) {             
             res.status(200);             
             res.json(Backend.adminconfig(req.query['index']));
         });
 
-        app.get('/api/category/getall',function(req,res){ 
+        app.get('/api/category/getall',authentic,function(req,res){ 
             category.getAll(function(err,cb) {  
                 res.send(cb);  
             })
         }); 
-        app.get('/api/category/gettree',function(req,res){ 
-            category.getCategories('',function(cb) {  
+        app.get('/api/category/getcattree',authentic,function(req,res){              
+           category.getCategories('',function(cb) {  
                 res.send(cb);  
-            });
+            })
         }); 
 
 
@@ -98,4 +98,9 @@ var Mongoose = require('mongoose'),
             });
         });*/
     };
+
+    function logErrors (err, req, res, next) {
+      console.error(err.stack)
+      next(err)
+    }
 })();

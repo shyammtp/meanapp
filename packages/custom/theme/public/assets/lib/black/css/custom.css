@@ -866,9 +866,7 @@ margin: 0 -3px 0 0;
 	position:relative;
 	float:left;
 	width:330px;
-	height:100%;
-	text-align:center;
-    background-color: #252525;
+	height:100%;   
 }
 
 .ca-item h3, .ca-item p {padding: 0 20px; font-family: arial; color: white;}
@@ -913,8 +911,10 @@ margin: 0 -3px 0 0;
 	top:5px;
 	left:5px;
 	right:5px;
+    background-color: #252525;
 	bottom:5px;
-	overflow:hidden;  
+    padding: 10px;
+	overflow:auto;  
 }
 
 

@@ -2,7 +2,9 @@
 
 var mongoose = require('mongoose'),
 Schema = mongoose.Schema,
- mongoosePaginate = require('mongoose-paginate');
+ mongoosePaginate = require('mongoose-paginate'),
+ Nodecache = require( "node-cache" ),
+ myCache = new Nodecache();
 
 var CategorySchema = new Schema({ 
 	category_name : { 
@@ -34,7 +36,7 @@ CategorySchema.pre('save',function(next) {
 
 function getChildren(data, menukey) { 
 	var childrens = [];
-	data.forEach(function(o,r) { 
+	data.forEach(function(o,r) {  
 		if(typeof o.category_parent_id != 'undefined' && o.category_parent_id == menukey) {
 			childrens.push(o);
 		}
@@ -48,14 +50,11 @@ function buildCategory(data,parent_id,obj) {
 	data.forEach(function(o,r) {
 		var parentid = typeof o.category_parent_id == 'undefined' ? '' : o.category_parent_id;
 		if(parentid == parent_id) {
-			var datas = o; 
-			datas['children'] = 'test';
-			var children = getChildren(data,o._id);   
-			if(children.length > 0) {
-				console.log(children);
+			var datas = o;  
+			var children = getChildren(_obj.data,o._id);   
+			if(children.length > 0) { 
 				datas.children = buildCategory(children,o._id,_obj);
-			}
-			console.log(datas);
+			} 
 			sets[o._id] = datas;
 		} 
 	});
@@ -67,16 +66,25 @@ CategorySchema.statics.getCategories = function(parent_id,cb) {
 	var _obj = this;
 	parent_id || (parent_id = '');
 	var promise = getPromise(this); 
-	promise.then(function(s) { 
-		var returns = sys(s,parent_id,_obj); 
-		cb(returns);
-	})
-
+	promise.then(function(s) {
+		myCache.get("category_tree",function(err,value) {
+			if(!err) {
+				if(value != undefined) {
+					cb(value);
+				} else { 
+					var returns = sys(JSON.parse(JSON.stringify(s)),parent_id,_obj);
+					myCache.set( "category_tree", returns, 10000 );
+					cb(returns);
+				}
+			}
+		});  
+	});
 };
 
 
 function sys(data,parent_id,obj) { 
-	return buildCategory(data, parent_id,obj);
+	obj.data = data;
+	return buildCategory(obj.data, parent_id,obj);
 }
 
 

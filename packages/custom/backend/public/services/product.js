@@ -4,7 +4,16 @@
     function Product($http, $q,$window, Authentication,ArrayUtil) {        
         var getCategories = function() {
             var deferred = $q.defer();
-            $http.get('/api/category/getall').then(function(response) {
+            $http.get('/api/category/getall',{headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                deferred.resolve(response);
+            }, function(response) {
+                deferred.reject(response);
+            });
+            return deferred.promise;
+        },
+        getCategoryTree = function() {
+            var deferred = $q.defer();
+            $http.get('/api/category/getcattree',{cache : true,headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {
                 deferred.reject(response);
@@ -32,7 +41,8 @@
         return {    
             getCategories : getCategories,
             saveCategory : saveCategory,
-            deleteCategory : deleteCategory
+            deleteCategory : deleteCategory,
+            getCategoryTree : getCategoryTree
         }
     }
  

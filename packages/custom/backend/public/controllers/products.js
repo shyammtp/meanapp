@@ -70,7 +70,18 @@
 
     function CatalogController($scope, Global, Backend,ArrayUtil, Product) {
  		var vm = this;
- 		   
+        $scope.pickedcategory = {};
+ 		$scope.getCategoryList = function(data) {
+            
+            $scope.pickedcategory = data; 
+            //$scope.$apply();  
+        }   
+        $scope.checkarrow = function(index) { 
+            if(parseInt(index) > 1) {
+                return true;
+            } 
+            return false;
+        }
     }
   
 

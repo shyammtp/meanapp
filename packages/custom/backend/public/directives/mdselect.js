@@ -90,14 +90,17 @@
         }
     }
 
-    function categoryselectslider(Product,ArrayUtil,$timeout) {
+    function categoryselectslider(Product,$compile) {
         return {    
             replace: 'true',
-            scope: true,  
+            scope: {
+                methodToCall: '&method'
+            }, 
             templateUrl : 'backend/views/products/catalog/classify/category.html',
             link : function(scope,element,attrs) {
                 var _obj = this;
-                element.contentcarousel({
+                var el = angular.element('.ca-wrapper');
+                /*element.contentcarousel({
                     // speed for the sliding animation
                     sliderSpeed : 500,
                     // easing for the sliding animation
@@ -108,7 +111,58 @@
                     itemEasing  : 'easeOutExpo',
                     // number of items to scroll at a time
                     scroll  : 4 
-                });
+                });*/
+                scope.categoriestree = {};
+                Product.getCategoryTree().then(function(res){
+                    scope.categoriestree = res.data;
+                    console.log(scope.categoriestree);
+                }); 
+                var template = [],lev = 1,pickedcategory = [];
+                scope.childrentree=[]; 
+                scope.savecategory = function(id) {
+                    console.log(id);
+                }
+                scope.loadsub = function(data,level) {
+                    scope.finalcategory = data._id; 
+                    level || (level = 1);
+                    lev = level + 1; 
+                    for(var i=0;i<template.length;i++) {
+                        var ind = level-1; // 1
+                        if(i > ind) { // 0 >= 1
+                            if(typeof template[i] !== 'undefined') {
+                                template[i].remove();
+                                delete template[i];
+                            }
+                            if(typeof pickedcategory[i] !== 'undefined') {
+                                delete pickedcategory[i];
+                            }
+                        } 
+                    }  
+                    if(data.children != undefined && Object.keys(data.children).length > 0) {
+                        
+                        scope.childrentree['children'+(lev-1)] = data.children;
+                        var t = angular.element('<div class="ca-item">\
+                                            <div class="ca-item-main">  \
+                                                <ul>\
+                                                    <li ng-repeat="(k,v) in childrentree.children'+(lev-1)+'"><a href="javascript:;" ng-click="loadsub(v,'+lev+')">{{v.category_name.en}}</a></li>\
+                                                </ul>\
+                                            </div> \
+                                        </div> ');
+                       
+                    } else {
+                        var t = angular.element('<div class="ca-item">\
+                                            <div class="ca-item-main">  \
+                                                <button type="button" ng-click="savecategory(finalcategory)" class="btn btn-primary">Select</button> \
+                                            </div> \
+                                        </div> ');
+                    }
+                    pickedcategory[lev-1] = data;
+                    template[lev-1] = t;  
+                    scope.methodToCall({value: pickedcategory}); 
+                    el.append(t);
+                    $compile(t)(scope);
+                }
+
             }
 
         }
@@ -161,4 +215,5 @@
         .directive('shModalLink', shModallink);
  
     jsTree.$inject = ['Product','ArrayUtil','$timeout'];
+    categoryselectslider = ['Product','$compile']
 })();
