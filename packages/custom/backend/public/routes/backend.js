@@ -50,6 +50,21 @@
             templateUrl: 'backend/views/products/catalog/information.html',
             params: {title : 'Products Catalog',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Add a product'}]},
          })
+         .state('product_catalog_attributes_list', {
+            url : '/admin/products/catalog/attributes',
+            templateUrl: 'backend/views/products/catalog/attributes/list.html',
+            params: {title : 'Products Catalog Attributes',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Add a product'}]},
+         })
+          .state('product_catalog_attributes_classify', {
+            url : '/admin/products/catalog/attributes/classify',
+            templateUrl: 'backend/views/products/catalog/attributes/classify.html',
+            params: {title : 'Products Catalog Attributes',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Add a product'}]},
+         })
+          .state('product_catalog_attributes_form', {
+            url : '/admin/products/catalog/attributes/form',
+            templateUrl: 'backend/views/products/catalog/attributes/form.html',
+            params: {title : 'Products Catalog Attribute Form',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Add a product'}]},
+         })
  
         ;
         $locationProvider

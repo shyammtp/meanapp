@@ -94,26 +94,15 @@
         return {    
             replace: 'true',
             scope: {
-                methodToCall: '&method'
+                methodToCall: '&method',
+                controllerSaveCategory : '&save'
             }, 
             templateUrl : 'backend/views/products/catalog/classify/category.html',
             link : function(scope,element,attrs) {
                 var _obj = this,containerwidth = angular.element('.ca-container').width();
-                var c = Math.floor(containerwidth / 330);
-                angular.element('.ca-container').css('width',(330*4)+'px');
-                var el = angular.element('.ca-wrapper');
-                /*element.contentcarousel({
-                    // speed for the sliding animation
-                    sliderSpeed : 500,
-                    // easing for the sliding animation
-                    sliderEasing: 'easeOutExpo',
-                    // speed for the item animation (open / close)
-                    itemSpeed   : 500,
-                    // easing for the item animation (open / close)
-                    itemEasing  : 'easeOutExpo',
-                    // number of items to scroll at a time
-                    scroll  : 4 
-                });*/
+                var c = Math.round(containerwidth / 330);
+                angular.element('.ca-wrapper').css('width',(330*c)+'px');
+                var el = angular.element('.ca-wrapper'); 
 
                 scope.categoriestree = {};
                 Product.getCategoryTree().then(function(res){
@@ -122,8 +111,7 @@
                 var template = [],lev = 1,pickedcategory = {};
                 scope.childrentree=[]; 
                 scope.savecategory = function(data) {
-                   Product.setCategory(data);
-                   $location.path('admin/products/catalog/information');
+                    scope.controllerSaveCategory({data : data});                   
                 }
                 scope.getChildrencount = function(v) {
                     if(v == undefined) return 0;
@@ -141,6 +129,7 @@
                 }
                 scope.pickedcategoryset = {};
                 scope.loadsub = function(data,level) {
+
                     scope.finalcategory = data;
                     scope.pickedcategoryset = pickedcategory; 
                     level || (level = 1);
@@ -179,10 +168,10 @@
                     pickedcategory[lev-1] = data;
                     template[lev-1] = t;
                     _obj.updatestyle(template);
-                    scope.methodToCall({value: pickedcategory}); 
-                    el.append(t);
+                    scope.methodToCall({value: pickedcategory});                 
+                    el.append(t);  
                     $compile(t)(scope);
-                }
+                } 
 
             }, updatestyle : function(template) {
                 var x = 0,  totalwidth = angular.element('.ca-wrapper').width(); 
@@ -193,10 +182,23 @@
                 }
                 if(x >= totalwidth) { 
                     var wi = (x+330)+'px';
-                   angular.element('.ca-wrapper').scrollLeft(wi);
+                   angular.element('.ca-wrapper').animate({'scrollLeft' : wi});
                 }
             }
 
+        }
+    }
+
+    function attributeManager(Product,$compile,$location) {
+         return {    
+            replace: 'true', 
+            template: '<div ng-include="getContentUrl()"></div>', 
+            link : function(scope,element,attrs) {
+                scope.getContentUrl = function() {
+                    console.log(attrs.type);
+                    return 'backend/views/products/catalog/attributes/form/' + attrs.type + '.html';
+               }
+            }
         }
     }
 
@@ -244,8 +246,10 @@
         .directive('shInput', shInput)
         .directive('jsdirtree', jsTree)
         .directive('categoryselectslider', categoryselectslider)
+        .directive('attributemanager',attributeManager)
         .directive('shModalLink', shModallink);
  
     jsTree.$inject = ['Product','ArrayUtil','$timeout'];
-    categoryselectslider = ['Product','$compile','$location']
+    categoryselectslider = ['Product','$compile','$location'];    
+    attributeManager = ['Product','$compile','$location']
 })();

@@ -17,6 +17,12 @@ var CategorySchema = new Schema({
 	level : {type : Number, default: 1},
 	sorting : {type: Number,default: 1},
 	status : {type : Boolean,default : true},
+	attributes : {
+		info : {},
+		pricing : {},
+		description : {},
+		more_details : {}
+	},
     created_on : { type: Date, default: Date.now },
     updated_on: { type: Date, default: Date.now }
 },{collection: "category"});

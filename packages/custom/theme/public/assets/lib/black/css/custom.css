@@ -1009,3 +1009,9 @@ margin: 0 -3px 0 0;
 }
 .ca-item-main a.children { background:url(../images/category-arrow.png) no-repeat center right; }
 .ca-item-main a.children.active { background:#2d2d2d url(../images/category-arrow.png) no-repeat center right; }
+
+.attributes-list li.drag-fields {    display: block;    width: 47%;    margin: 1%;  border-radius: 3px;  padding: 10px 15px;    background-color: #2b2b2b;    float: left;    color: #ccc;}
+.attributes-list li.drag-fields .actions-link a {text-decoration: none!important;}
+.attributes-list li.drag-fields .actions-link a:hover {color:#756BB0!important;}
+.attributes-list li.drag-fields .required-highlight {color:red;}
+.attributes-list li.drag-fields .sub-children li {background:#484848 url(../images/l_icon.png) no-repeat 7px 1px; padding: 5px 8px;border-radius: 3px; margin: 6px 8px; }

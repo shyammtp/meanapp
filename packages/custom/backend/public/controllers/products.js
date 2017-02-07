@@ -68,7 +68,7 @@
         }
     }
 
-    function CatalogController($scope, Global, Backend,ArrayUtil, Product,$timeout) {
+    function CatalogController($scope, Global, Backend,ArrayUtil, Product,$timeout,$location) {
  		var vm = this;
         $scope.pickedcategory = {};
         var originalData = {}; 
@@ -78,6 +78,10 @@
 	            $scope.pickedcategory = data; 
 	        }); 
         }   
+        $scope.saveCategory = function(data) {
+    		Product.setCategory(data);
+           $location.path('admin/products/catalog/information');
+        }
         $scope.checkarrow = function(index) { 
             if(parseInt(index) > 1) {
                 return true;
@@ -99,15 +103,62 @@
         }
  		$scope.pickedcategory = categoryset;
     }
+
+    function CatalogAttributesController($scope, Global, Backend,ArrayUtil, Product,$timeout,$location) 
+    {
+    	var vm = this,categoryset = Product.getCategoryTreeSetForAdd();
+    	if($location.path() == '/admin/products/catalog/attributes/form') {
+    		if(categoryset== undefined) {
+	 			$location.path('/admin/products/catalog/attributes/classify');
+	 		}
+    	}
+    	$scope.attributes = {"info" : {
+    		"title" : {"type" : "text", "is_system" : true, "label" : {"en" : "Title"}, "example" : "Kingston Data traveler","sort" : 1, "help_text" 	: "item Title","required" : true,"parent" : ""},
+    		"processor_speed" : {"type" :"text","label" : {"en" : "Processor Speed"},"sort" : 2,"help_text" : "","required" : false,"parent" : "", "children" : {
+    			"processor_hertz" : {"type" : "select", 
+    								"label" : {"en" : "processor hertz"},"parent" : "processor_speed","sort" : "1","options" : [{"value" : "MHz","label" : {"en" : "MHz"}}]}
+    				}
+    		}
+    	}}
+    	$scope.attribute_type = 'text';
+    	$scope.checkchildren = function(children) {
+    		if(children==undefined) return false;
+    		if(Object.keys(children).length) {
+    			return true;
+    		}
+    		return false;
+    	}
+        $scope.pickedcategory = {};
+	        var originalData = {}; 
+	        console.log($location.path());
+ 		$scope.getCategoryList = function(data) {			  
+			$timeout(function() {
+				Product.setCategoryTreeSet(data);
+	            $scope.pickedcategory = data; 
+	        }); 
+        }   
+        $scope.saveCategory = function(data) {
+    		Product.setCategory(data);
+           	$location.path('admin/products/catalog/attributes/form');
+        }
+        $scope.checkarrow = function(index) { 
+            if(parseInt(index) > 1) {
+                return true;
+            } 
+            return false;
+        }
+    }
   
 
     angular
         .module('mean.backend') 
         .controller('CategoryController', CategoryController)
         .controller('CatalogController', CatalogController)
-        .controller('CatalogAddController', CatalogAddController);
+        .controller('CatalogAddController', CatalogAddController)
+        .controller('CatalogAttributesController', CatalogAttributesController);
 
     CategoryController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product'];  
-    CatalogController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product','$timeout'];  
+    CatalogController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product','$timeout','$location'];  
+    CatalogAttributesController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product','$timeout','$location'];
     CatalogAddController.$inject = ['$scope', 'ArrayUtil','Product','$location'];
 })();
