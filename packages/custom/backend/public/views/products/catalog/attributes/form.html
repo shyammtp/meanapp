@@ -51,13 +51,63 @@
                             </ul>
                         </div>
                     </div>
+
+                    <div class="panel">
+                        <div class="panel-heading"><h3 class="panel-title">Offer Block</h3> 
+                        </div>
+                        <div class="panel-body"> 
+                            <ul class="attributes-list">
+                                <li ng-repeat="($inf, dats) in attributes.offer track by $inf" class="drag-fields z-depth-1">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                                <i ng-if="dats.required" class="fa fa-lock"></i>&nbsp; <span ng-class="{'required-highlight' : dats.required == true}">{{dats.label.en}}</span> 
+                                          
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="pull-right actions-link">
+                                                <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title=""  data-original-title="Expand/Collapse"><i class="fa fa-edit"></i></a>
+                                                &nbsp; 
+                                                <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title=""  data-original-title="Expand/Collapse"><i class="fa fa-eye"></i></a>
+                                                &nbsp; 
+                                                <a href="javascript:void(0);" ng-if="dats.required != true" data-toggle="tooltip" data-placement="top" title=""  data-original-title="Expand/Collapse"><i class="icon-close"></i></a>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                    <div class="childrenset" ng-if="checkchildren(dats.children)">
+                                            <ul class="sub-children">
+                                                <li ng-repeat="($cc, ds) in dats.children track by $cc"> 
+                                                    <div class="col-md-8">{{ds.label.en}}</div>
+                                                    <div class="col-md-4">
+                                                        <div class="pull-right actions-link">
+                                                            <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title=""  data-original-title="Expand/Collapse"><i class="fa fa-edit"></i></a>
+                                                            &nbsp; 
+                                                            <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title=""  data-original-title="Expand/Collapse"><i class="fa fa-eye"></i></a>
+                                                            &nbsp; 
+                                                            <a href="javascript:void(0);" ng-if="dats.required != true" data-toggle="tooltip" data-placement="top" title=""  data-original-title="Expand/Collapse"><i class="icon-close"></i></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                
+
+
+
                 </div>
                 <div class="col-md-5">
                     <div class="panel">
                         <div class="panel-heading"><h3 class="panel-title">Attribute Manage</h3></div>
                         <div class="panel-body">
+                        <form class="form-horizontal">
                             <div attributemanager type="{{attribute_type}}"></div> 
 
+                        </form>
                         </div>
                     </div>
                 </div>

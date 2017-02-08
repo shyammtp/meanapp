@@ -22,12 +22,21 @@ var Mongoose = require('mongoose'),
         var products = Backend.productscontroller;
         app.use(sidebar.theme);
         //app.use(expressJwt({ secret: config.sessionSecret}));
-        app.use(logErrors)
-        app.get('/api/adminconfig',function(req,res) {             
-            res.status(200);             
-            res.json(Backend.adminconfig(req.query['index']));
-        });
+        app.use(logErrors);
 
+        app.get('/',function(req,res) { 
+            Backend.render('index', {
+                package: 'backend',
+               // currenturl : req.originalUrl,
+                settings : app.locals
+            }, function(err, html) {
+                res.send(html);
+            });
+        });  
+
+        /* For Products */
+        app.delete('/api/category/delete/:id',authentic,products.deleteCategory);
+        app.post('/api/category/save',authentic,products.saveCategory);
         app.get('/api/category/getall',authentic,function(req,res){ 
             category.getAll(function(err,cb) {  
                 res.send(cb);  
@@ -38,29 +47,24 @@ var Mongoose = require('mongoose'),
                 res.send(cb);  
             })
         });
+        app.put('/api/category/attributesave/:id',authentic,products.savecatalogattributes);
+        app.delete('/api/category/attributedelete/:id',authentic,products.deletecatalogattribute);
 
+
+        /* General */
+        app.get('/api/adminconfig',function(req,res) {             
+            res.status(200);             
+            res.json(Backend.adminconfig(req.query['index']));
+        });
         app.get('/api/cache/flush',function(req,res) {
             var Nodecache = require( "node-cache" ),
                 myCache = new Nodecache();
-                myCache.del( "category_tree" );
+                myCache.del("category_tree");
            // myCache.flushAll();   
             res.status(200).json({message : "Cache Cleared"}); 
-        }) 
+        });
 
-
-        /* For Products */
-        app.delete('/api/category/delete/:id',authentic,products.deleteCategory);
-        app.post('/api/category/save',authentic,products.saveCategory);
-        
-        app.get('/',function(req,res) { 
-            Backend.render('index', {
-                package: 'backend',
-               // currenturl : req.originalUrl,
-                settings : app.locals
-            }, function(err, html) {
-                res.send(html);
-            });
-        });  
+         
         app.post('/api/adminlogin', authentication.login);
         app.post('/api/adminregister', authentication.register);
         app.use(function (err, req, res, next) {
@@ -68,14 +72,13 @@ var Mongoose = require('mongoose'),
             res.status(401);
             res.json({"message" : err.name + ": " + err.message});
           }
-        });
+        });        
+        app.post('/api/settings/save',settings.savesettings);
+        app.get('/api/settings/get',settings.getallsettings);
+        app.get('/api/settings/getpaginate',settings.getpaginate);
 
 
         app.get('/api/backend/menus',sidebar.menuslist);
-        app.post('/api/settings/save',settings.savesettings);
-        app.get('/api/settings/get',settings.getallsettings);
-
-        app.get('/api/settings/getpaginate',settings.getpaginate);
         app.get('/api/notificationtemplate/getall',function(req,res) { 
              NotificationTemplate.getAllPaginate(req.query,function(err,cb) {
                res.send(cb);

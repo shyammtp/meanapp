@@ -18,7 +18,7 @@
                         <div role="tabpanel" class="tab-pane active" id="maininfo">
                              <div class="row"> 
                                 <div class="col-md-12">
-                                    <p><span ng-repeat="(c,b) in pickedcategory track by c"><i ng-if="checkarrow(c)"> > </i>{{b.category_name.en}}</span></p>
+                                    <p><span><b>Categories: </b></span><span ng-repeat="(c,b) in pickedcategory track by c"><i ng-if="checkarrow(c)"> > </i>{{b.category_name.en}}</span></p>
                                 </div>
                                 <div class="col-md-12">
                                     <form class="form-horizontal">

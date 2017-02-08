@@ -23,6 +23,7 @@ textarea.materialize-textarea {
   transition: all 0.3s;
   width: 100%;
   color:white;
+  padding-left: 0!important;
 }
 
 input:not([type]):disabled, input:not([type])[readonly="readonly"],

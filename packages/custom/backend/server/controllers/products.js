@@ -88,6 +88,42 @@ var Mongoose = require('mongoose'),
             }  
           })
           
+        },
+        savecatalogattributes : function(req,res,next) { 
+          if(!arrayutil.get(req.params,'id')) {
+             return res.status(500).json({message: "Invalid Category ID"});
+          }
+          category.findOne({_id : arrayutil.get(req.params,'id')},function (err, cate) {
+            var ats = arrayutil.get(req.body,'attributes');
+            for(var kv in ats) { 
+              if(!ats.hasOwnProperty(kv)) continue; 
+              cate.insertAttribute(kv,arrayutil.get(ats,kv),arrayutil.get(req.params,'block','info'));
+            } 
+            cate.save(function(err,cat) {
+              if(err) return res.status(500).json(err);
+              res.status(200).json(cat);
+            });
+
+          }); 
+
+        },
+        deletecatalogattribute : function(req,res,next) { 
+          if(!arrayutil.get(req.params,'id')) {
+             return res.status(500).json({message: "Invalid Category ID"});
+          }
+          category.findOne({_id : arrayutil.get(req.params,'id')},function (err, cate) {             
+              try {
+                cate.deleteAttribute(arrayutil.get(req.query,'key'),arrayutil.get(req.query,'block','info'));
+              } catch (err) { 
+               return res.status(500).json({message:"Not Deleted"});
+              }  
+            cate.save(function(err,cat) {
+              if(err) return res.status(500).json(err);
+              res.status(200).json(cat);
+            });
+            
+          }); 
+          
         }
 
   	 }

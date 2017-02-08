@@ -4,7 +4,9 @@ var mongoose = require('mongoose'),
 Schema = mongoose.Schema,
  mongoosePaginate = require('mongoose-paginate'),
  Nodecache = require( "node-cache" ),
- myCache = new Nodecache();
+ myCache = new Nodecache(),
+	_ = require('lodash');
+
 
 var CategorySchema = new Schema({ 
 	category_name : { 
@@ -18,10 +20,10 @@ var CategorySchema = new Schema({
 	sorting : {type: Number,default: 1},
 	status : {type : Boolean,default : true},
 	attributes : {
-		info : {},
-		pricing : {},
-		description : {},
-		more_details : {}
+		info : { type: Schema.Types.Mixed},
+		pricing : {type: Schema.Types.Mixed},
+		description : {type: Schema.Types.Mixed},
+		more_details : {type: Schema.Types.Mixed}
 	},
     created_on : { type: Date, default: Date.now },
     updated_on: { type: Date, default: Date.now }
@@ -65,6 +67,31 @@ function buildCategory(data,parent_id,obj) {
 		} 
 	});
 	return sets;
+}
+
+CategorySchema.methods.insertAttribute = function(key, data,block) { 
+	if(!this.attributes.hasOwnProperty(block)) {
+		this.attributes[block] = {};
+	}
+	var attr = this.attributes[block];	 
+	var newdata = {};
+	newdata[key] =  data;
+	this.attributes[block] = _.extend({}, attr,newdata); 
+}
+CategorySchema.methods.deleteAttribute = function(key, block) { 
+	if(!this.attributes.hasOwnProperty(block)) {
+		this.attributes[block] = {};
+	}
+	if(this.attributes[block].hasOwnProperty(key)) {
+		var d = this.attributes[block][key];
+
+		if(d.is_system === true) {
+			throw new Error('System Attribute');
+		}
+		delete this.attributes[block][key]; 
+	} else {
+		return new Error('Invalid Attribute');
+	}
 }
 
 

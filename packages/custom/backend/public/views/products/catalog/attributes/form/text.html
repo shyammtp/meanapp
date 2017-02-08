@@ -1,13 +1,66 @@
-text
-
- <form class="form-horizontal">
-    <div class="row"> 
-        <div class="input-field m-t-20">
-            <div class="col-md-12"> 
-              <input id="sitename"  name="sitename" autocomplete="off" tabindex="1" required type="text"  class=""> 
-                <label for="input-Default" class="">Title</label>
-                <p class="help-block">Ex: Black, Small cup holder.</p>
-            </div> 
-        </div> 
+<div class="row"> 
+	<div class="col-md-12">
+		Text Field Manage
+		<input type="hidden" ng-model="attributefield.type" />
+		<input type="hidden" ng-model="attributefield.is_system" />
+	</div>
+	<div class="col-md-12"> 
+    	<div class="input-field m-t-20">        
+          <input id="attribute_name"  name="attribute_name" ng-model="attributefield.attribute_name" autocomplete="off" tabindex="1" required type="text"  class=""> 
+            <label for="input-Default" class="">Attribute Name</label>
+            <p class="help-block">Maximum length 50 characters</p>
+        </div>         
     </div>
-</form> 
+	<div class="col-md-12"> 
+    	<div class="input-field m-t-20">        
+          <input id="title"  name="title" ng-model="attributefield.title.en" autocomplete="off" tabindex="1" required type="text"  class=""> 
+            <label for="input-Default" class="">Title</label>
+            <p class="help-block">Maximum length 100 characters</p>
+        </div>         
+    </div> 
+	<div class="col-md-12"> 
+	     <div class="input-field m-t-20">
+	      	<textarea id="example"  ng-model="attributefield.example" class="materialize-textarea"></textarea>
+	      	<label for="example">Example placeholder</label>
+            <p class="help-block">Maximum length 300 characters long</p>
+	    </div>
+    </div>
+    <div class="col-md-12"> 
+    	<div class="input-field m-t-20">        
+          <input id="sort"  name="sort" ng-model="attributefield.sort" autocomplete="off" tabindex="1" required type="text"  class=""> 
+            <label for="sort" class="">Sort</label>
+        </div>         
+    </div> 
+    <div class="col-md-12"> 
+	     <div class="input-field m-t-20">
+	      	<textarea id="help_text" ng-model="attributefield.help_text" class="materialize-textarea"></textarea>
+	      	<label for="help_text">Help text</label>
+            <p class="help-block">Maximum length 200 characters long</p>
+	    </div>
+    </div> 
+    <!--<div class="col-md-12"> 
+	     <div class="m-t-20">
+		    <p>
+		      	<input type="checkbox" class="filled-in" id="filled-in-box" checked="checked" />
+      			<label for="filled-in-box">Filled in</label>
+      		</p>
+            <p class="help-block">Ex: Black, Small cup holder.</p>
+	    </div>
+    </div>-->
+    <div class="col-md-12"> 
+	     <div class="m-t-20">
+		    <div class="switch">
+			    <label>
+			      Is Required
+			      <input type="checkbox" ng-model="attributefield.required">
+			      <span class="lever"></span>			       
+			    </label>
+			  </div>            
+	    </div>
+    </div>
+    <div class="col-md-12">
+        <button type="submit" ng-click="saveAttribute(attributefield)" class="waves-effect waves-light btn btn-primary btn-cons pull-right">Save</button>
+    </div>
+
+
+</div> 

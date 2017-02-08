@@ -189,15 +189,32 @@
         }
     }
 
-    function attributeManager(Product,$compile,$location) {
+    function attributeManager(Product,$compile,$location,ArrayUtil) {
          return {    
             replace: 'true', 
+            /*scope : {
+                passformdata : '&method'
+            },*/
             template: '<div ng-include="getContentUrl()"></div>', 
             link : function(scope,element,attrs) {
-                scope.getContentUrl = function() {
-                    console.log(attrs.type);
+                var categoryset = Product.getCategoryForAdd();  
+                scope.attributefield = {};
+                scope.attributefield.type = attrs.type;
+                scope.attributefield.is_system = true;
+                scope.getContentUrl = function() { 
                     return 'backend/views/products/catalog/attributes/form/' + attrs.type + '.html';
-               }
+                }
+                scope.saveAttribute = function(attributefield) {
+                    if(ArrayUtil.get(attributefield,'type') == 'text') {
+                        var finaldata = {};
+                        if(ArrayUtil.get(attributefield,'attribute_name')) {
+                            finaldata[ArrayUtil.get(attributefield,'attribute_name')] = attributefield;
+                            Product.setCatalogAttributeData(finaldata);
+                            Product.saveCategoryAttribute({'category_id':ArrayUtil.get(categoryset,'_id')});
+                        } 
+                    }
+                }
+
             }
         }
     }
@@ -251,5 +268,5 @@
  
     jsTree.$inject = ['Product','ArrayUtil','$timeout'];
     categoryselectslider = ['Product','$compile','$location'];    
-    attributeManager = ['Product','$compile','$location']
+    attributeManager = ['Product','$compile','$location','ArrayUtil']
 })();

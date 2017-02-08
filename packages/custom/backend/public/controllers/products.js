@@ -119,7 +119,9 @@
     								"label" : {"en" : "processor hertz"},"parent" : "processor_speed","sort" : "1","options" : [{"value" : "MHz","label" : {"en" : "MHz"}}]}
     				}
     		}
-    	}}
+    	},"offer" : {
+            "title" : {"type" : "text", "is_system" : true, "label" : {"en" : "Title"}, "example" : "Kingston Data traveler","sort" : 1, "help_text"    : "item Title","required" : true,"parent" : ""},
+        }}
     	$scope.attribute_type = 'text';
     	$scope.checkchildren = function(children) {
     		if(children==undefined) return false;
@@ -146,7 +148,8 @@
                 return true;
             } 
             return false;
-        }
+        } 
+        
     }
   
 
