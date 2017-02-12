@@ -58,7 +58,7 @@
         },
         getCategoryTreeSetForAdd = function() {
             return this.categorytreeset;
-        },
+        }, 
         saveCategoryAttribute = function(params) {
             var deferred = $q.defer(); 
             params.attributes = this.getCatalogAttributeData();
@@ -68,7 +68,26 @@
                 deferred.reject(response);
             });
             return deferred.promise;
+        },
+        deleteCategoryAttribute = function(id,key,block,parent) {
+            var deferred = $q.defer();  
+            $http.delete('/api/category/attributedelete/'+id+'?key='+key+'&block='+block+'&parent='+parent,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                deferred.resolve(response);
+            }, function(response) {
+                deferred.reject(response);
+            });
+            return deferred.promise;
+        },
+        getCategoryAttribute = function(id) {
+            var deferred = $q.defer();  
+            $http.get('/api/category/getcategory/'+id,{ cache : true, headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                deferred.resolve(response);
+            }, function(response) {
+                deferred.reject(response);
+            });
+            return deferred.promise;
         }
+
         return {    
             getCategories : getCategories,
             saveCategory : saveCategory,
@@ -80,7 +99,9 @@
             getCategoryTreeSetForAdd : getCategoryTreeSetForAdd,
             setCatalogAttributeData : setCatalogAttributeData,
             getCatalogAttributeData : getCatalogAttributeData,
-            saveCategoryAttribute : saveCategoryAttribute
+            saveCategoryAttribute : saveCategoryAttribute,
+            getCategoryAttribute : getCategoryAttribute,
+            deleteCategoryAttribute : deleteCategoryAttribute
         }
     }
  

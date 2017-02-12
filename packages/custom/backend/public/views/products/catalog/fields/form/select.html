@@ -1,0 +1,9 @@
+<div>
+    <div class="col-md-12" style="width:{{getwidthpercent(parentattribute.children)}};"> 
+        <label for="input-Default" class="">{{catalogattributes.title.en}}</label>
+        <select name="{{catalogattributes.attribute_name}}" class="col-sm-12" id="{{catalogattributes.attribute_name}}"
+        ng-options="b.title.en for b in catalogattributes.options track by b.value"
+        ng-model="product[catalogattributes.attribute_name]"></select>
+        <p class="help-block">{{catalogattributes.help_text}}</p>
+    </div>  
+</div> 

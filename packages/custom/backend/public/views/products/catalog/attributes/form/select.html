@@ -1,21 +1,20 @@
 <div class="row"> 
 	<div class="col-md-12">
-		Text Field Manage
+		Select Field Manage
 		<input type="hidden" ng-model="attributefield.type" />
 		<input type="hidden" ng-model="attributefield.is_system" />
         <input type="hidden" ng-model="attributefield.previous_block" />
 	</div>
 	<div class="col-md-12"> 
     	<div class="input-field m-t-20">        
-          <input id="attribute_name"  name="attribute_name" ng-model="attributefield.attribute_name" value="{{attributefield.attribute_name}}" ng-value="{{attributefield.attribute_name}}" autocomplete="off" tabindex="1" required type="text" ng-maxlength="2"  class=""> 
+          <input id="attribute_name"  name="attribute_name" ng-model="attributefield.attribute_name" value="{{attributefield.attribute_name}}" ng-value="{{attributefield.attribute_name}}" autocomplete="off" tabindex="1" required type="text"  class=""> 
             <label for="input-Default" class="">Attribute Name</label>
-            <p class="help-block">Maximum length 50 characters</p> 
-            <span ng-show="attributemanager.attributefield.attribute_name.$valid">Username is required.</span>
+            <p class="help-block">Maximum length 50 characters</p>
         </div>         
     </div>
 	<div class="col-md-12"> 
     	<div class="input-field m-t-20">        
-          <input id="title"  name="title" ng-model="attributefield.title.en" autocomplete="off" ng-maxlength="100" tabindex="2" required type="text"  class=""> 
+          <input id="title"  name="title" ng-model="attributefield.title.en" autocomplete="off" tabindex="2" required type="text"  class=""> 
             <label for="input-Default" class="">Title</label>
             <p class="help-block">Maximum length 100 characters</p>
         </div>         
@@ -60,17 +59,6 @@
 			  </div>            
 	    </div>
     </div>
-    <div class="col-md-12 m-t-20">
-        <div class="input-field">
-            <div class="">
-                <select ng-model="attributefield.parent" class="initialized col-md-12" data-options="[{'title':'Black','value': 'black'}]" data-value="{{attributefield.parent}}"> 
-                    <option value="">Select Parent Block</option> 
-                    <option ng-repeat="($lb,fv) in parentselects track by $lb" value="{{fv.value}}">{{fv.title}}</option>
-                </select>
-            </div> 
-        </div>
-    </div>
-
     <div class="col-md-12"> 
          <div class="m-t-20">
              <div class="row">
@@ -92,6 +80,36 @@
                  </div>
              </div>        
         </div>
+    </div>
+
+    <div class="col-md-12 m-t-20">
+        <div class="input-field">
+            <div class="">
+                <select ng-model="attributefield.parent" class="initialized col-md-12" data-options="[{'title':'Black','value': 'black'}]" data-value="{{attributefield.parent}}"> 
+                    <option value="">Select Parent Block</option> 
+                    <option ng-repeat="($lb,fv) in parentselects track by $lb" value="{{fv.value}}">{{fv.title}}</option>
+                </select>
+            </div> 
+        </div>
+    </div>
+
+    <div class="col-md-12"> 
+      <div class="m-t-20">
+        <div class="row" ng-repeat="($k, items) in optionsfield track by $k"> 
+        <div class="col-md-6"> 
+           <div class="input-field m-t-20">
+              <input id="title"  name="title" ng-model="attributefield.options[$k].value" placeholder="Option Value {{$k+1}}" autocomplete="off" tabindex="2" required type="text"  class="">                   
+          </div>
+          </div>
+          <div class="col-md-6"> 
+           <div class="input-field m-t-20">
+              <input id="title"  name="title" ng-model="attributefield.options[$k].title.en" placeholder="Option Label {{$k+1}}" autocomplete="off" tabindex="2" required type="text"  class="">                   
+          </div>
+          </div>
+        </div>
+        <a href="javascript:;" style="display: block;" class="m-t-10" ng-click="addMoreOptions()">Add Options</a> &nbsp;
+        <a href="javascript:;" style="display: block;" class="m-t-10" ng-click="removeLastOption(attributefield)">Remove Last</a>
+      </div>
     </div>
     <div class="col-md-12 m-t-20">
         <div class="btn-group pull-right">

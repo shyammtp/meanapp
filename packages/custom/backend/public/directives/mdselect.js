@@ -192,30 +192,152 @@
     function attributeManager(Product,$compile,$location,ArrayUtil) {
          return {    
             replace: 'true', 
-            /*scope : {
-                passformdata : '&method'
-            },*/
+            scope : {
+                passdirdata : '&method',
+                cancelmethod : '&cancelmethod'
+
+            },
             template: '<div ng-include="getContentUrl()"></div>', 
-            link : function(scope,element,attrs) {
-                var categoryset = Product.getCategoryForAdd();  
-                scope.attributefield = {};
-                scope.attributefield.type = attrs.type;
-                scope.attributefield.is_system = true;
+            link : function(scope,element,attrs) { 
+                scope.optionsfield = [];
+                var categoryset = Product.getCategoryForAdd(),_obj = this;  
+                _obj.resetAttr(scope,attrs);
                 scope.getContentUrl = function() { 
                     return 'backend/views/products/catalog/attributes/form/' + attrs.type + '.html';
                 }
+                /*Product.getCategoryAttribute(ArrayUtil.get(categoryset,'_id')).then(function(res) {
+                    $scope.attributedata = ArrayUtil.get(res.data,'attributes',{});
+
+                });*/
+                    /*scope.validateattributename = function(name) {
+                    console.log(name);
+                    //scope.attribute_name = name.toLowerCase().replace(/\s+/g,'');
+                });*/ 
+                scope.updatefields = function(block) {
+                    if(!block) {
+                        block = 'info';
+                    }
+                    console.log(block);
+                    var ats = ArrayUtil.get(categoryset,'attributes');
+                    var fobject = ArrayUtil.get(ats,block,{}),selectoptions = [];
+                    angular.forEach(fobject,function(v,k) {
+                        console.log(v);
+                        selectoptions.push({'value': v.attribute_name, 'title' : v.title.en});
+                    });
+                    scope.parentselects = selectoptions;
+                } 
+                scope.updatefields();
+
                 scope.saveAttribute = function(attributefield) {
-                    if(ArrayUtil.get(attributefield,'type') == 'text') {
+                    console.log(attributefield);
+                    if(ArrayUtil.get(attributefield,'type') == 'text' 
+                        || ArrayUtil.get(attributefield,'type') == 'select'
+                        || ArrayUtil.get(attributefield,'type') == 'number'
+                        || ArrayUtil.get(attributefield,'type') == 'date') {
                         var finaldata = {};
                         if(ArrayUtil.get(attributefield,'attribute_name')) {
                             finaldata[ArrayUtil.get(attributefield,'attribute_name')] = attributefield;
                             Product.setCatalogAttributeData(finaldata);
-                            Product.saveCategoryAttribute({'category_id':ArrayUtil.get(categoryset,'_id')});
+                            Product.saveCategoryAttribute({'category_id':ArrayUtil.get(categoryset,'_id'),'block' : ArrayUtil.get(attributefield,'block','info')}).then(function(res) {
+                                if(res.status == 200) { 
+                                    _obj.resetAttr(scope,attrs);
+                                    categoryset = ArrayUtil.get(res,'data',{});
+                                    scope.passdirdata({data : res});
+                                    Materialize.toast("Attribute Saved successfully", 4000); 
+                                     scope.cancel();
+                                } else {
+                                    Materialize.toast(res.message, 4000);
+                                }
+                            });
+
                         } 
                     }
                 }
+                scope.addMoreOptions = function() {
+                    scope.optionsfield.push({});
+                }
+                scope.hasparent = false;
+                 scope.$on('editattributes',function(event, data){
+                        scope.updatefields(ArrayUtil.get(data,'block'));
+                        scope.hasparent = ArrayUtil.get(data,'parent');
+                     _obj.loadAttribute(scope, data);
+                 });
+                 scope.cancel = function() {
+                    scope.cancelmethod();
+                 }
+                 scope.removeLastOption = function(attributefield) {                                         
+                    if(scope.optionsfield.length > 0) {
+                        delete attributefield.options[Object.keys(attributefield.options)[Object.keys(attributefield.options).length-1]];
+                        scope.optionsfield.splice(-1,1);
+                        scope.attributefield = attributefield;
+                    }
+                 }
 
+            },loadAttribute : function(scope, data) { 
+                scope.attributefield = data.attributes;
+                scope.attributefield.block = ArrayUtil.get(data,'block');
+                scope.attributefield.previous_block = ArrayUtil.get(data,'block'); 
+                var optionsfield = ArrayUtil.get( data.attributes,'options',{}),optf = [];
+                angular.forEach(optionsfield,function(sm,b){
+                    optf.push(sm);
+                });
+                scope.optionsfield = optf;
+                console.log(data.attributes);
+            }, resetAttr : function(scope,attrs) {
+                    scope.attributefield = {};
+                    scope.attributefield.type = attrs.type;
+                    scope.attributefield.block = 'info';
+                    scope.attributefield.is_system = false;
             }
+        }
+    }
+
+    function catalogfield(Product,$compile,$location,ArrayUtil) {
+        return {
+            template: '<div ng-include="getContentUrl()"></div>',
+            scope : {
+                catalogattributes : '=',
+                parentattribute : '='
+            },
+            link : function(scope,element,attrs) {  
+                if(attrs.type == 'text') {
+                    this.initText(scope,element,attrs);
+                } 
+                if(attrs.type == 'date') {
+                    this.initDate(scope,element,attrs);
+                }
+                scope.getContentUrl = function() { 
+                    return 'backend/views/products/catalog/fields/form/' + attrs.type + '.html';
+                }
+                scope.countObject = function(obd) {
+                    if(obd == undefined) {
+                        return false;
+                    }
+                    if(Object.keys(obd).length > 0) {
+                        return true;
+                    }
+                    return false;
+                }
+                scope.getwidthpercent = function(children) {
+                    if(children == undefined) return '100%';
+                    var le = Object.keys(children).length;
+                    if(le > 1) {
+                        le = le+1;
+                    }
+                    var percent = (100 / le);
+                    return percent+'%';
+                } 
+                console.log(scope.catalogattributes);
+            },
+            initText : function(scope,element,attrs) {
+               
+            },initDate : function(scope,element,attrs) {
+                 angular.element('.date-picker',element).datepicker({
+                    orientation: "top auto",
+                    autoclose: true
+                });
+            }
+
         }
     }
 
@@ -264,9 +386,11 @@
         .directive('jsdirtree', jsTree)
         .directive('categoryselectslider', categoryselectslider)
         .directive('attributemanager',attributeManager)
-        .directive('shModalLink', shModallink);
+        .directive('shModalLink', shModallink)
+        .directive('catalogfield',catalogfield);
  
     jsTree.$inject = ['Product','ArrayUtil','$timeout'];
     categoryselectslider = ['Product','$compile','$location'];    
-    attributeManager = ['Product','$compile','$location','ArrayUtil']
+    attributeManager = ['Product','$compile','$location','ArrayUtil'];    
+    catalogfield = ['Product','$compile','$location','ArrayUtil'];
 })();

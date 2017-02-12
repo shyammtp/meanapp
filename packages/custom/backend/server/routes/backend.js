@@ -35,6 +35,7 @@ var Mongoose = require('mongoose'),
         });  
 
         /* For Products */
+        app.get('/api/category/getcategory/:id',authentic,products.getCategory);
         app.delete('/api/category/delete/:id',authentic,products.deleteCategory);
         app.post('/api/category/save',authentic,products.saveCategory);
         app.get('/api/category/getall',authentic,function(req,res){ 

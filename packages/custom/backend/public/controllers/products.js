@@ -66,6 +66,7 @@
         $scope.addRootCategory = function() {
         	$scope.category = {};
         }
+
     }
 
     function CatalogController($scope, Global, Backend,ArrayUtil, Product,$timeout,$location) {
@@ -94,35 +95,63 @@
 
  		if(categoryset== undefined) {
  			$location.path('admin/products/catalog/classify');
- 		}
+ 		} 
+ 		$scope.infoattributes = $scope.pricing = $scope.description = $scope.more_details = {};
+
+    	var lastcat = Product.getCategoryForAdd(); 
+    	if(lastcat != undefined) {
+    		console.log(lastcat);
+	    	var attributes = ArrayUtil.get(lastcat,'attributes',{}); 
+	    	$scope.infoattributes = ArrayUtil.get(attributes,'info',{}); console.log($scope.infoattributes);
+	    	$scope.pricing = ArrayUtil.get(attributes,'pricing',{});
+	    	$scope.description = ArrayUtil.get(attributes,'description',{}); 
+	    	$scope.more_details = ArrayUtil.get(attributes,'more_details',{});
+	    }
  		$scope.checkarrow = function(index) { 
             if(parseInt(index) > 1) {
                 return true;
             } 
             return false;
         }
+        $scope.countObject = function(obd) {
+        	if(obd == undefined) {
+        		return false;
+        	}
+        	if(Object.keys(obd).length > 0) {
+        		return true;
+        	}
+        	return false;
+        }
+        $scope.getwidthpercent = function(children) {
+        	var le = Object.keys(children).length;
+        	if(le > 0) {
+        		le = le+1;
+        	}
+        	var percent = (100 / le);
+        	return percent+'%';
+        }
  		$scope.pickedcategory = categoryset;
     }
 
     function CatalogAttributesController($scope, Global, Backend,ArrayUtil, Product,$timeout,$location) 
     {
+    	//$scope.attribute_type = 'text';
     	var vm = this,categoryset = Product.getCategoryTreeSetForAdd();
     	if($location.path() == '/admin/products/catalog/attributes/form') {
     		if(categoryset== undefined) {
 	 			$location.path('/admin/products/catalog/attributes/classify');
+	 			return;
 	 		}
     	}
-    	$scope.attributes = {"info" : {
-    		"title" : {"type" : "text", "is_system" : true, "label" : {"en" : "Title"}, "example" : "Kingston Data traveler","sort" : 1, "help_text" 	: "item Title","required" : true,"parent" : ""},
-    		"processor_speed" : {"type" :"text","label" : {"en" : "Processor Speed"},"sort" : 2,"help_text" : "","required" : false,"parent" : "", "children" : {
-    			"processor_hertz" : {"type" : "select", 
-    								"label" : {"en" : "processor hertz"},"parent" : "processor_speed","sort" : "1","options" : [{"value" : "MHz","label" : {"en" : "MHz"}}]}
-    				}
-    		}
-    	},"offer" : {
-            "title" : {"type" : "text", "is_system" : true, "label" : {"en" : "Title"}, "example" : "Kingston Data traveler","sort" : 1, "help_text"    : "item Title","required" : true,"parent" : ""},
-        }}
-    	$scope.attribute_type = 'text';
+    	var lastcat = Product.getCategoryForAdd();
+    	$scope.attributes = vm.attributedata  = {}; 
+    	if(lastcat!= undefined) { 
+    		$scope.categoryname = ArrayUtil.get(ArrayUtil.get(lastcat,'category_name'),'en');
+	    	Product.getCategoryAttribute(ArrayUtil.get(lastcat,'_id')).then(function(res) {
+	    		vm.attributedata =  $scope.attributes = ArrayUtil.get(res.data,'attributes',{});
+
+	    	});
+	    }
     	$scope.checkchildren = function(children) {
     		if(children==undefined) return false;
     		if(Object.keys(children).length) {
@@ -131,8 +160,7 @@
     		return false;
     	}
         $scope.pickedcategory = {};
-	        var originalData = {}; 
-	        console.log($location.path());
+	        var originalData = {};  
  		$scope.getCategoryList = function(data) {			  
 			$timeout(function() {
 				Product.setCategoryTreeSet(data);
@@ -148,7 +176,51 @@
                 return true;
             } 
             return false;
+        }
+         $scope.getDirData = function(data) { 
+        	vm.attributedata = $scope.attributes = ArrayUtil.get(ArrayUtil.get(data,'data'),'attributes');
         } 
+
+        $scope.editAttribute = function(index,block,parent) {
+        	parent || (parent = '');  
+            var cattributes = ArrayUtil.get(vm.attributedata,block,{});
+            if(parent) { 
+            	var sca = ArrayUtil.get(cattributes,parent,{});
+            	var scopeattributes = ArrayUtil.get(sca.children,index,{});
+            } else {
+            	var scopeattributes = ArrayUtil.get(cattributes,index,{});
+            }
+            $scope.attribute_type = ArrayUtil.get(scopeattributes,'type','text');
+            $timeout(function() {
+        		$scope.$broadcast('editattributes',{index: index, block : block,attributes : scopeattributes,parent : parent});
+        	});
+        }
+
+        $scope.deleteAttribute = function(index,block,parent) {   
+        	var c = confirm ('Are you sure want to delete this attribute?');
+        	if(c) {
+	            Product.deleteCategoryAttribute(ArrayUtil.get(lastcat,'_id'),index,block,parent).then(function(res) {
+	            	console.log(res.data);
+		    		vm.attributedata =  $scope.attributes = ArrayUtil.get(res.data,'attributes',{});
+		    	});
+	        }
+        }
+
+        $scope.addNewAttribute = function(type) { 
+            $scope.attribute_type = type;
+        }
+        $scope.cancel = function() {
+        	$scope.attribute_type = false;
+        }
+        $scope.countObject = function(obd) {
+        	if(obd == undefined) {
+        		return false;
+        	}
+        	if(Object.keys(obd).length > 0) {
+        		return true;
+        	}
+        	return false;
+        }
         
     }
   

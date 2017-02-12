@@ -37,7 +37,7 @@ function getPromise(obj){
 }
 
 CategorySchema.pre('save',function(next) {
-	console.log('test');
+	console.log(this.attributes);
 	next();
 })
 
@@ -67,30 +67,93 @@ function buildCategory(data,parent_id,obj) {
 		} 
 	});
 	return sets;
-}
+} 
 
 CategorySchema.methods.insertAttribute = function(key, data,block) { 
+	
+	var childrens = {};
+	if(data.previous_block != '' && data.previous_block !== data.block) {
+		if(this.attributes.hasOwnProperty(data.previous_block )) {
+			if(this.attributes[data.previous_block].hasOwnProperty(key)) {
+				childrens = typeof this.attributes[data.previous_block][key].children != undefined ? 
+						this.attributes[data.previous_block][key].children : {};
+				delete this.attributes[data.previous_block][key];
+			}
+		} 
+	}
+
+
 	if(!this.attributes.hasOwnProperty(block)) {
 		this.attributes[block] = {};
 	}
 	var attr = this.attributes[block];	 
 	var newdata = {};
+	if(Object.keys(childrens).length > 0) {
+		data.children = childrens;
+	}
 	newdata[key] =  data;
-	this.attributes[block] = _.extend({}, attr,newdata); 
+	console.log(data.parent);
+	if(data.parent != undefined && data.parent != '' && typeof this.attributes[block][data.parent] != undefined) {
+		if(this.attributes[block].hasOwnProperty(key)) {
+			delete this.attributes[block][key];
+		}		 
+		var pr = this.attributes[block][data.parent];
+		if(!isParent(this.attributes[block],data.parent)) {
+			throw new Error('Not a valid parent block');
+		}
+		if(typeof this.attributes[block][data.parent]['children'] == undefined) {
+			this.attributes[block][data.parent]['children'] = {};
+		}
+		var newas = this.attributes[block][data.parent]['children'];
+		this.attributes[block][data.parent]['children'] = _.extend({}, newas, newdata);
+	} else {
+		this.attributes[block] = _.extend({}, attr,newdata); 
+	}
+	console.log(this.attributes);
+
 }
-CategorySchema.methods.deleteAttribute = function(key, block) { 
+
+function isParent(attributes,key) {
+	var c =false;
+	console.log(attributes);
+	for(var kv in attributes) { 
+		if(kv == key) {
+			c = true;
+			break;
+		}
+	}; 
+	return c;
+}
+
+CategorySchema.methods.deleteAttribute = function(key, block, parent) { 
 	if(!this.attributes.hasOwnProperty(block)) {
 		this.attributes[block] = {};
 	}
-	if(this.attributes[block].hasOwnProperty(key)) {
-		var d = this.attributes[block][key];
-
-		if(d.is_system === true) {
-			throw new Error('System Attribute');
+	if(parent) {
+		if(this.attributes[block].hasOwnProperty(parent)) {
+			var prattr = this.attributes[block][parent];
+			if(prattr.children.hasOwnProperty(key)) {
+				var d = this.attributes[block][parent]['children'][key];
+				if(d.is_system === true) {
+					throw new Error('System Attribute');
+				}
+				delete this.attributes[block][parent]['children'][key];
+			} else {
+				return new Error('Invalid Attribute');
+			}
 		}
-		delete this.attributes[block][key]; 
 	} else {
-		return new Error('Invalid Attribute');
+		if(this.attributes[block].hasOwnProperty(key)) {
+
+			var d = this.attributes[block][key];
+			if(d.is_system === true) {
+				throw new Error('System Attribute');
+			}
+			delete this.attributes[block][key]; 
+			console.log(this.attributes[block]);
+		} else {
+			return new Error('Invalid Attribute');
+		}
 	}
 }
 
@@ -113,6 +176,13 @@ CategorySchema.statics.getCategories = function(parent_id,cb) {
 		});  
 	});
 };
+
+CategorySchema.methods.saveAttributeUpdate = function(id,cb) {
+	var _obj = this;
+	this.model('Category').update({_id : id},{$set  : {attributes : this.attributes}},{upsert: true},function(err,doc) {
+		_obj.model('Category').findOne({_id : id},cb);
+	});
+}
 
 
 function sys(data,parent_id,obj) { 

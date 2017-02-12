@@ -1,16 +1,15 @@
 <div class="row"> 
 	<div class="col-md-12">
-		Text Field Manage
+		Date Field Manage
 		<input type="hidden" ng-model="attributefield.type" />
 		<input type="hidden" ng-model="attributefield.is_system" />
         <input type="hidden" ng-model="attributefield.previous_block" />
 	</div>
 	<div class="col-md-12"> 
     	<div class="input-field m-t-20">        
-          <input id="attribute_name"  name="attribute_name" ng-model="attributefield.attribute_name" value="{{attributefield.attribute_name}}" ng-value="{{attributefield.attribute_name}}" autocomplete="off" tabindex="1" required type="text" ng-maxlength="2"  class=""> 
+          <input id="attribute_name"  name="attribute_name" ng-model="attributefield.attribute_name" value="{{attributefield.attribute_name}}"  autocomplete="off" tabindex="1" required type="text" ng-maxlength="2"  class=""> 
             <label for="input-Default" class="">Attribute Name</label>
-            <p class="help-block">Maximum length 50 characters</p> 
-            <span ng-show="attributemanager.attributefield.attribute_name.$valid">Username is required.</span>
+            <p class="help-block">Maximum length 50 characters</p>  
         </div>         
     </div>
 	<div class="col-md-12"> 

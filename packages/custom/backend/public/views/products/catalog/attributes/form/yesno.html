@@ -1,6 +1,6 @@
 <div class="row"> 
 	<div class="col-md-12">
-		Text Field Manage
+		Yes/No Field Manage
 		<input type="hidden" ng-model="attributefield.type" />
 		<input type="hidden" ng-model="attributefield.is_system" />
         <input type="hidden" ng-model="attributefield.previous_block" />
@@ -20,13 +20,6 @@
             <p class="help-block">Maximum length 100 characters</p>
         </div>         
     </div> 
-	<div class="col-md-12"> 
-	     <div class="input-field m-t-20">
-	      	<textarea id="example"  ng-model="attributefield.example" tabindex="3" class="materialize-textarea"></textarea>
-	      	<label for="example">Example placeholder</label>
-            <p class="help-block">Maximum length 300 characters long</p>
-	    </div>
-    </div>
     <div class="col-md-12"> 
     	<div class="input-field m-t-20">        
           <input id="sort"  name="sort" ng-model="attributefield.sort" autocomplete="off" tabindex="4" required type="number"  class=""> 
@@ -59,17 +52,7 @@
 			    </label>
 			  </div>            
 	    </div>
-    </div>
-    <div class="col-md-12 m-t-20">
-        <div class="input-field">
-            <div class="">
-                <select ng-model="attributefield.parent" class="initialized col-md-12" data-options="[{'title':'Black','value': 'black'}]" data-value="{{attributefield.parent}}"> 
-                    <option value="">Select Parent Block</option> 
-                    <option ng-repeat="($lb,fv) in parentselects track by $lb" value="{{fv.value}}">{{fv.title}}</option>
-                </select>
-            </div> 
-        </div>
-    </div>
+    </div> 
 
     <div class="col-md-12"> 
          <div class="m-t-20">

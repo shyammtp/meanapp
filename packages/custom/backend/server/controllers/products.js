@@ -70,7 +70,17 @@ var Mongoose = require('mongoose'),
                 }
             }
         },
+        getCategory : function(req,res,next) {
+           if(!arrayutil.get(req.params,'id')) {
+             return res.status(500).json({message: "Invalid Category ID"});
+          }
+          category.findOne({_id : arrayutil.get(req.params,'id')},function (err, cate) {
+            
+              res.status(200).json(cate);
+            
 
+          }); 
+        },
         deleteCategory : function(req,res,next) {
           if(!arrayutil.get(req.params,'id')) {
              return res.status(500).json({message: "Invalid Category ID"});
@@ -89,7 +99,7 @@ var Mongoose = require('mongoose'),
           })
           
         },
-        savecatalogattributes : function(req,res,next) { 
+        savecatalogattributes : function(req,res,next) {  
           if(!arrayutil.get(req.params,'id')) {
              return res.status(500).json({message: "Invalid Category ID"});
           }
@@ -97,9 +107,9 @@ var Mongoose = require('mongoose'),
             var ats = arrayutil.get(req.body,'attributes');
             for(var kv in ats) { 
               if(!ats.hasOwnProperty(kv)) continue; 
-              cate.insertAttribute(kv,arrayutil.get(ats,kv),arrayutil.get(req.params,'block','info'));
+              cate.insertAttribute(kv,arrayutil.get(ats,kv),arrayutil.get(req.body,'block','info'));
             } 
-            cate.save(function(err,cat) {
+            cate.saveAttributeUpdate(arrayutil.get(req.params,'id'),function(err,cat) {
               if(err) return res.status(500).json(err);
               res.status(200).json(cat);
             });
@@ -111,15 +121,17 @@ var Mongoose = require('mongoose'),
           if(!arrayutil.get(req.params,'id')) {
              return res.status(500).json({message: "Invalid Category ID"});
           }
-          category.findOne({_id : arrayutil.get(req.params,'id')},function (err, cate) {             
+          category.findOne({_id : arrayutil.get(req.params,'id')},function (err, cate) {  
               try {
-                cate.deleteAttribute(arrayutil.get(req.query,'key'),arrayutil.get(req.query,'block','info'));
+                cate.deleteAttribute(arrayutil.get(req.query,'key'),arrayutil.get(req.query,'block','info'),arrayutil.get(req.query,'parent',false));
               } catch (err) { 
-               return res.status(500).json({message:"Not Deleted"});
+               return res.status(500).json({message:"Problem in Deleting"});
               }  
-            cate.save(function(err,cat) {
-              if(err) return res.status(500).json(err);
-              res.status(200).json(cat);
+              var obj = "attributes."+arrayutil.get(req.query,'block','info')+"."+arrayutil.get(req.query,'key');              
+              
+            cate.saveAttributeUpdate(arrayutil.get(req.params,'id'),function(err,doc) {
+              if(err)  return res.status(500).json({message:"Problem in Deleting"});
+              res.status(200).json(doc);
             });
             
           }); 

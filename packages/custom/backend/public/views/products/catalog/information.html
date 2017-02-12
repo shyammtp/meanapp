@@ -12,6 +12,7 @@
                     <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active "><a href="#maininfo" role="tab" data-toggle="tab">Main Info</a></li>
                         <li role="presentation"><a href="#variations" role="tab" data-toggle="tab">Variations</a></li> 
+                        <li role="presentation"><a href="#pricing" role="tab" data-toggle="tab">Pricing</a></li> 
                     </ul>
                 </div>
                  <div class="tab-content z-depth-2">
@@ -20,28 +21,68 @@
                                 <div class="col-md-12">
                                     <p><span><b>Categories: </b></span><span ng-repeat="(c,b) in pickedcategory track by c"><i ng-if="checkarrow(c)"> > </i>{{b.category_name.en}}</span></p>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-12"> 
                                     <form class="form-horizontal">
-                                        <div class="row"> 
-                                            <div class="input-field ">
-                                                <div class="col-md-12"> 
-                                                  <input id="sitename"  name="sitename" autocomplete="off" tabindex="1" required type="text"  class=""> 
-                                                    <label for="input-Default" class="">Title</label>
-                                                    <p class="help-block">Ex: Black, Small cup holder.</p>
-                                                </div> 
-                                            </div> 
+                                        <div class="row" ng-repeat="(scc,gh) in infoattributes track by scc">  
+                                            <catalogfield type="{{gh.type}}" catalogattributes="gh" parentattribute="gh"></catalogfield> 
                                         </div>
                                     </form>
                                 </div>
+
                              </div>
                         </div> 
                         <div role="tabpanel" class="tab-pane" id="variations">
                              <div class="row"> 
                                  <div class="col-md-12">
-                                    <p><span ng-repeat="(c,b) in pickedcategory track by c"><i ng-if="checkarrow(c)"> > </i>{{b.category_name.en}}</span></p>
+                                    <p><span><b>Categories: </b></span><span ng-repeat="(c,b) in pickedcategory track by c"><i ng-if="checkarrow(c)"> > </i>{{b.category_name.en}}</span></p>
                                 </div>
                              </div>
                         </div>
+
+
+                        <div role="tabpanel" class="tab-pane" id="pricing">
+                             <div class="row"> 
+                                 <div class="col-md-12">
+                                    <p><span><b>Categories: </b></span><span ng-repeat="(c,b) in pickedcategory track by c"><i ng-if="checkarrow(c)"> > </i>{{b.category_name.en}}</span></p>
+                                </div>
+                                <div class="col-md-12"> 
+                                    <form class="form-horizontal">
+                                        <div class="row" ng-repeat="(scc,gh) in pricing track by scc"> 
+
+                                            <div ng-if="gh.type == 'text'" class="">
+                                                <div>
+                                                    <div class="col-md-12" style="width:{{getwidthpercent(gh.children)}};"> 
+                                                    <label for="input-Default" class="">{{gh.title.en}}</label>
+                                                      <input id="{{gh.attribute_name}}" placeholder="{{gh.example}}" name="{{gh.attribute_name}}" ng-model="product[gh.attribute_name]" autocomplete="off" tabindex="1" required type="text"  class="">
+                                                        <p class="help-block">{{gh.help_text}}</p>
+                                                    </div>  
+                                                </div>
+                                                <div ng-if="countObject(gh.children)">
+                                                    <div ng-repeat="(chl, vd) in gh.children track by chl">  
+                                                        <div ng-if="vd.type == 'text'" class="col-md-12" style="width:{{getwidthpercent(gh.children)}};"> 
+                                                            <label for="input-Default" class="">{{vd.title.en}}</label>
+                                                            <input id="{{vd.attribute_name}}" placeholder="{{vd.example}}" name="{{vd.attribute_name}}" ng-model="product[vd.attribute_name]" autocomplete="off" tabindex="1" required type="text"  class="">
+                                                            <p class="help-block">{{vd.help_text}}</p>
+                                                        </div> 
+                                                        <div ng-if="vd.type == 'select'" class="col-md-12" style="width:{{getwidthpercent(gh.children)}};"> 
+                                                            <label for="input-Default" class="">{{vd.title.en}}</label>
+                                                            <select name="{{vd.attribute_name}}" class="col-sm-12" id="{{vd.attribute_name}}"
+                                                            ng-options="b.title.en for b in vd.options track by b.value"
+                                                            ng-model="product[vd.attribute_name]"></select>
+                                                            <p class="help-block">{{vd.help_text}}</p>
+                                                        </div> 
+                                                    </div>
+                                                </div>
+
+                                            </div> 
+
+                                        </div>
+                                    </form>
+                                </div>
+                             </div>
+                        </div>
+
+
                     </div>
             </div>
             </div>
