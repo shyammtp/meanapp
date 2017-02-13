@@ -66,7 +66,6 @@
         $scope.addRootCategory = function() {
         	$scope.category = {};
         }
-
     }
 
     function CatalogController($scope, Global, Backend,ArrayUtil, Product,$timeout,$location) {
@@ -220,8 +219,7 @@
         		return true;
         	}
         	return false;
-        }
-        
+        }        
     }
   
 
@@ -232,7 +230,7 @@
         .controller('CatalogAddController', CatalogAddController)
         .controller('CatalogAttributesController', CatalogAttributesController);
 
-    CategoryController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product'];  
+    CategoryController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product'];
     CatalogController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product','$timeout','$location'];  
     CatalogAttributesController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product','$timeout','$location'];
     CatalogAddController.$inject = ['$scope', 'ArrayUtil','Product','$location'];

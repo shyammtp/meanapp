@@ -71,6 +71,7 @@
         },
         deleteCategoryAttribute = function(id,key,block,parent) {
             var deferred = $q.defer();  
+            parent || (parent = '');
             $http.delete('/api/category/attributedelete/'+id+'?key='+key+'&block='+block+'&parent='+parent,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {

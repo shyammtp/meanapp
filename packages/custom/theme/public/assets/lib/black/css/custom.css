@@ -1021,3 +1021,6 @@ margin: 0 -3px 0 0;
 
 .theme-green {color:#76b900;}
 .small-font12 {font-size: 12px; font-weight: normal;}
+.required-star {color:red;}
+.bullet-list li {list-style-type: circle!important;margin: 5px 50px; }
+.bright-text {color:#A2A2A2;}

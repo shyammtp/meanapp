@@ -227,7 +227,7 @@
                     scope.parentselects = selectoptions;
                 } 
                 scope.updatefields();
-
+                
                 scope.saveAttribute = function(attributefield) {
                     console.log(attributefield);
                     if(ArrayUtil.get(attributefield,'type') == 'text' 

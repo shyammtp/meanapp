@@ -125,6 +125,7 @@ var Mongoose = require('mongoose'),
               try {
                 cate.deleteAttribute(arrayutil.get(req.query,'key'),arrayutil.get(req.query,'block','info'),arrayutil.get(req.query,'parent',false));
               } catch (err) { 
+                console.log(err);
                return res.status(500).json({message:"Problem in Deleting"});
               }  
               var obj = "attributes."+arrayutil.get(req.query,'block','info')+"."+arrayutil.get(req.query,'key');              
