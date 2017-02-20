@@ -67,7 +67,7 @@
                 return deferred.promise;
             },
             upload: function(fd) {
-                $http.post("/api/settings/upload", fd, {
+                $http.post('/api/settings/upload', fd, {
                     withCredentials: false,
                     headers: {
                       'Content-Type': undefined
@@ -76,7 +76,7 @@
                     params: {
                       fd
                     },
-                    responseType: "arraybuffer"
+                    responseType: 'arraybuffer'
                   });
             },
             getAdminConfig : function(index) {
@@ -137,7 +137,7 @@
         return {
             get : function(obj, key, deflt) {
                 deflt || (deflt = ''); 
-                if(typeof obj[key] != 'undefined') {
+                if(typeof obj[key] !== 'undefined') {
                     return obj[key];
                 }
                 return deflt;

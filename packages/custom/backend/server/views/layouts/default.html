@@ -4,7 +4,8 @@
 
 <body data-ng-controller="BackendController" data-curl="{{currenturl}}"  ng-cloak class="ng-cloak compact-menu" ng-class="state">  
 <main class="page-content content-wrap">  
-<div ng-if="currenturl !== '/admin/login'">
+
+<div ng-if="loadheader(params)">
         {% block header %}{% endblock %} 
     <shmenu-sidebar></shmenu-sidebar> 
 </div>

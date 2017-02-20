@@ -69,6 +69,10 @@ function buildCategory(data,parent_id,obj) {
 	return sets;
 } 
 
+CategorySchema.methods.overrideAttribute = function(data) {
+	this.attributes = data;
+}
+
 CategorySchema.methods.insertAttribute = function(key, data,block) { 
 	
 	var childrens = {};
@@ -108,8 +112,7 @@ CategorySchema.methods.insertAttribute = function(key, data,block) {
 		this.attributes[block][data.parent]['children'] = _.extend({}, newas, newdata);
 	} else {
 		this.attributes[block] = _.extend({}, attr,newdata); 
-	}
-	console.log(this.attributes);
+	} 
 
 }
 

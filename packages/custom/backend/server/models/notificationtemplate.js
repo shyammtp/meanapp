@@ -13,11 +13,11 @@ var NotificationTemplateSchema = new Schema({
 	from_email : String,
     reply_to : String,
     subject : String,
-    html_template : "",
-    template_type : ["system","custom"],
+    html_template : '',
+    template_type : ['system','custom'],
     created_on : { type: Date, default: Date.now },
     updated_on: { type: Date, default: Date.now }
-},{collection: "notification_template"});
+},{collection: 'notification_template'});
 
 NotificationTemplateSchema.plugin(mongoosePaginate);
  
@@ -43,16 +43,16 @@ function parseFilter(filter,obj) {
 	var schemaarray = Object.keys(obj.model('NotificationTemplate').schema.paths);
 	for(var k in schemaarray) { 
 		var d = decryptedData[schemaarray[k]];
-		if(typeof d != 'undefined') {
+		if(typeof d !== 'undefined') {
 			switch(typeof d) {
-				case "string":
-				    var re = new RegExp(d,"i");
+				case 'string':
+				    var re = new RegExp(d,'i');
 					filtercollection[schemaarray[k]] = re;
 				break;
-				case "object":
+				case 'object':
 					if(d.hasOwnProperty('id')) {
 						var value = d['id'];
-						var re = new RegExp(value,"i");
+						var re = new RegExp(value,'i');
 						filtercollection[schemaarray[k]] = re;
 					}
 					if(d.hasOwnProperty('from') || d.hasOwnProperty('to')) { 
@@ -60,7 +60,7 @@ function parseFilter(filter,obj) {
 
 						if(d.hasOwnProperty('from')) {
 							obj.$gte = d.from;  
-							d.from != ''? c++ : '';
+							d.from !== ''? c++ : '';
 						}
 						if(d.hasOwnProperty('to')) {
 							obj.$lte = d.to;  							

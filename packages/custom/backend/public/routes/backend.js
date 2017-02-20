@@ -65,6 +65,11 @@
             templateUrl: 'backend/views/products/catalog/attributes/form.html',
             params: {title : 'Products Catalog Attribute Form',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Add a product'}]},
          })
+          .state('product_catalog_attributes_copy_form', {
+            url : '/admin/products/catalog/attributes/copy',
+            templateUrl: 'backend/views/products/catalog/attributes/copy.html',
+            params: {title : 'Products Catalog Attribute Form', hasheader : 'false',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Add a product'}]},
+         })
  
         ;
         $locationProvider

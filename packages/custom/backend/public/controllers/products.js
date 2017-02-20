@@ -99,7 +99,6 @@
 
     	var lastcat = Product.getCategoryForAdd(); 
     	if(lastcat != undefined) {
-    		console.log(lastcat);
 	    	var attributes = ArrayUtil.get(lastcat,'attributes',{}); 
 	    	$scope.infoattributes = ArrayUtil.get(attributes,'info',{}); console.log($scope.infoattributes);
 	    	$scope.pricing = ArrayUtil.get(attributes,'pricing',{});
@@ -131,7 +130,7 @@
         }
  		$scope.pickedcategory = categoryset;
     }
-
+ 
     function CatalogAttributesController($scope, Global, Backend,ArrayUtil, Product,$timeout,$location) 
     {
     	//$scope.attribute_type = 'text';
@@ -145,10 +144,9 @@
     	var lastcat = Product.getCategoryForAdd();
     	$scope.attributes = vm.attributedata  = {}; 
     	if(lastcat!= undefined) { 
-    		$scope.categoryname = ArrayUtil.get(ArrayUtil.get(lastcat,'category_name'),'en');
+    		$scope.categoryname = ArrayUtil.get(ArrayUtil.get(lastcat,'category_name'),'en'); 
 	    	Product.getCategoryAttribute(ArrayUtil.get(lastcat,'_id')).then(function(res) {
 	    		vm.attributedata =  $scope.attributes = ArrayUtil.get(res.data,'attributes',{});
-
 	    	});
 	    }
     	$scope.checkchildren = function(children) {
@@ -166,10 +164,22 @@
 	            $scope.pickedcategory = data; 
 	        }); 
         }   
-        $scope.saveCategory = function(data) {
+        $scope.saveCategory = function(data) { 
     		Product.setCategory(data);
            	$location.path('admin/products/catalog/attributes/form');
         }
+
+        $scope.copyattributes = function(data) {   
+            var finalcat = Product.getCategoryForAdd();
+            
+            if(data.attributes !== undefined) {  
+                Product.overrideCategoryAttribute(finalcat._id, data.attributes).then(function(res) {                     
+                    vm.attributedata =  $scope.attributes = ArrayUtil.get(res.data,'attributes',{});  
+                });
+            }
+            $location.path('admin/products/catalog/attributes/form');
+        }
+
         $scope.checkarrow = function(index) { 
             if(parseInt(index) > 1) {
                 return true;
@@ -177,7 +187,7 @@
             return false;
         }
          $scope.getDirData = function(data) { 
-        	vm.attributedata = $scope.attributes = ArrayUtil.get(ArrayUtil.get(data,'data'),'attributes');
+        	vm.attributedata = $scope.attributes = ArrayUtil.get(ArrayUtil.get(data,'data'),'attributes'); 
         } 
 
         $scope.editAttribute = function(index,block,parent) {
@@ -189,7 +199,7 @@
             } else {
             	var scopeattributes = ArrayUtil.get(cattributes,index,{});
             }
-            $scope.attribute_type = ArrayUtil.get(scopeattributes,'type','text');
+            $scope.attribute_type = ArrayUtil.get(scopeattributes,'type','text'); 
             $timeout(function() {
         		$scope.$broadcast('editattributes',{index: index, block : block,attributes : scopeattributes,parent : parent});
         	});
@@ -198,8 +208,7 @@
         $scope.deleteAttribute = function(index,block,parent) {   
         	var c = confirm ('Are you sure want to delete this attribute?');
         	if(c) {
-	            Product.deleteCategoryAttribute(ArrayUtil.get(lastcat,'_id'),index,block,parent).then(function(res) {
-	            	console.log(res.data);
+	            Product.deleteCategoryAttribute(ArrayUtil.get(lastcat,'_id'),index,block,parent).then(function(res) { 
 		    		vm.attributedata =  $scope.attributes = ArrayUtil.get(res.data,'attributes',{});
 		    	});
 	        }
@@ -228,10 +237,10 @@
         .controller('CategoryController', CategoryController)
         .controller('CatalogController', CatalogController)
         .controller('CatalogAddController', CatalogAddController)
-        .controller('CatalogAttributesController', CatalogAttributesController);
+        .controller('CatalogAttributesController', CatalogAttributesController) ;
 
     CategoryController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product'];
     CatalogController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product','$timeout','$location'];  
-    CatalogAttributesController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product','$timeout','$location'];
+    CatalogAttributesController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product','$timeout','$location']; 
     CatalogAddController.$inject = ['$scope', 'ArrayUtil','Product','$location'];
 })();

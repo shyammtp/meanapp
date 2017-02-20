@@ -117,6 +117,22 @@ var Mongoose = require('mongoose'),
           }); 
 
         },
+        overwritecatalogattributes : function(req,res,next) {  
+          if(!arrayutil.get(req.params,'id')) {
+             return res.status(500).json({message: "Invalid Category ID"});
+          }
+          category.findOne({_id : arrayutil.get(req.params,'id')},function (err, cate) {
+            //var ats = arrayutil.get(req.body,'attributes');
+            cate.overrideAttribute(req.body);
+             
+            cate.saveAttributeUpdate(arrayutil.get(req.params,'id'),function(err,cat) {
+              if(err) return res.status(500).json(err);
+              res.status(200).json(cat);
+            });
+
+          }); 
+
+        },
         deletecatalogattribute : function(req,res,next) { 
           if(!arrayutil.get(req.params,'id')) {
              return res.status(500).json({message: "Invalid Category ID"});

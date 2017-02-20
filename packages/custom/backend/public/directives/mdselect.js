@@ -101,6 +101,9 @@
             link : function(scope,element,attrs) {
                 var _obj = this,containerwidth = angular.element('.ca-container').width();
                 var c = Math.round(containerwidth / 330);
+                if(c == 0) {
+                    c = 1;
+                }
                 angular.element('.ca-wrapper').css('width',(330*c)+'px');
                 var el = angular.element('.ca-wrapper'); 
 
@@ -216,20 +219,17 @@
                 scope.updatefields = function(block) {
                     if(!block) {
                         block = 'info';
-                    }
-                    console.log(block);
+                    } 
                     var ats = ArrayUtil.get(categoryset,'attributes');
                     var fobject = ArrayUtil.get(ats,block,{}),selectoptions = [];
-                    angular.forEach(fobject,function(v,k) {
-                        console.log(v);
+                    angular.forEach(fobject,function(v,k) { 
                         selectoptions.push({'value': v.attribute_name, 'title' : v.title.en});
                     });
                     scope.parentselects = selectoptions;
                 } 
                 scope.updatefields();
                 
-                scope.saveAttribute = function(attributefield) {
-                    console.log(attributefield);
+                scope.saveAttribute = function(attributefield) { 
                     if(ArrayUtil.get(attributefield,'type') == 'text' 
                         || ArrayUtil.get(attributefield,'type') == 'select'
                         || ArrayUtil.get(attributefield,'type') == 'number'
@@ -281,8 +281,7 @@
                 angular.forEach(optionsfield,function(sm,b){
                     optf.push(sm);
                 });
-                scope.optionsfield = optf;
-                console.log(data.attributes);
+                scope.optionsfield = optf; 
             }, resetAttr : function(scope,attrs) {
                     scope.attributefield = {};
                     scope.attributefield.type = attrs.type;
@@ -326,8 +325,7 @@
                     }
                     var percent = (100 / le);
                     return percent+'%';
-                } 
-                console.log(scope.catalogattributes);
+                }  
             },
             initText : function(scope,element,attrs) {
                
@@ -352,45 +350,53 @@
         }
     }
      function shModal() { 
-        return {  
-            templateUrl: 'backend/views/widget/modal.html', 
+        return { 
+            transclude: true, 
+            templateUrl: 'backend/views/widget/modal.html',
             link : function(scope,element,attrs) { 
-                element.modal({
-                    dismissible: false,
+                scope.open = function(){
+                    angular.element('.modal',element).modal('open');
+                    scope.inctemplate = attrs.templateinc;
+                };
+                
+                angular.element('.modal',element).modal({
+                    dismissible: true,
                     starting_top: '0%', // Starting top style attribute
                     ending_top: '0%', // Ending top style attribute
                     opacity : .9
-                }); 
-                scope.modalelement = element;
+                });   
             }
 
         }
     }
+ 
 
-    function shModallink() { 
-        return {    
-            link : function(scope,element,attrs) { 
-                element.bind('click',function(){
-                    scope.modalelement.modal('open');
-                })   
+    function filterrange() {
+        return function(input,total) {
+            total = parseInt(total);
+
+            for (var i=0; i<total; i++) {
+              input.push(i);
             }
 
+            return input;
         }
     }
+ 
 
     angular
         .module('mean.backend')
+        .filter('filterrange',filterrange)
         .directive('mdSelect', mdSelect)
         .directive('shModal', shModal)
         .directive('shInput', shInput)
         .directive('jsdirtree', jsTree)
         .directive('categoryselectslider', categoryselectslider)
-        .directive('attributemanager',attributeManager)
-        .directive('shModalLink', shModallink)
+        .directive('attributemanager',attributeManager) 
         .directive('catalogfield',catalogfield);
  
     jsTree.$inject = ['Product','ArrayUtil','$timeout'];
     categoryselectslider = ['Product','$compile','$location'];    
     attributeManager = ['Product','$compile','$location','ArrayUtil'];    
-    catalogfield = ['Product','$compile','$location','ArrayUtil'];
+    catalogfield = ['Product','$compile','$location','ArrayUtil']; 
 })();

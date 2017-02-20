@@ -57,12 +57,22 @@
             });
             
         }
+        $scope.currenturl = $location.path();
+        $scope.loadheader = function(params) {
+            if($scope.currenturl !== '/admin/login')  {
+                if(params.hasheader === 'false') {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+            return true;
+        }
         $scope.logout = function() {
             Authentication.logout();
             $state.go('login'); 
             Materialize.toast('Logged out Successfully', 4000);            
         }
-        $scope.currenturl = $location.path();
         $rootScope.$on('$stateChangeStart', function(event, nextRoute, currentRoute) { 
               $scope.currenturl = nextRoute.url; 
         });

@@ -34,8 +34,8 @@ SettingsSchema.statics.getAllConfig = function(place_id, cb) {
 
 SettingsSchema.statics.getAllConfigPaginate = function(place_id, page, cb) {
 	var pid = place_id || 1;
-	var page = page || 1;
-	return this.model('Settings').paginate({place_id : pid}, { page: page, limit: 1 }, cb); 
+	var pg = page || 1;
+	return this.model('Settings').paginate({place_id : pid}, { page: pg, limit: 1 }, cb); 
 }
 
 SettingsSchema.pre('save', function(next) {

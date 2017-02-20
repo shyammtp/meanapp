@@ -49,20 +49,21 @@ var Mongoose = require('mongoose'),
             })
         });
         app.put('/api/category/attributesave/:id',authentic,products.savecatalogattributes);
+        app.put('/api/category/attributeoverride/:id',authentic,products.overwritecatalogattributes);
         app.delete('/api/category/attributedelete/:id',authentic,products.deletecatalogattribute);
 
 
         /* General */
         app.get('/api/adminconfig',function(req,res) {             
             res.status(200);             
-            res.json(Backend.adminconfig(req.query['index']));
+            res.json(Backend.adminconfig(req.query.index));
         });
         app.get('/api/cache/flush',function(req,res) {
-            var Nodecache = require( "node-cache" ),
+            var Nodecache = require('node-cache'),
                 myCache = new Nodecache();
-                myCache.del("category_tree");
+                myCache.del('category_tree');
            // myCache.flushAll();   
-            res.status(200).json({message : "Cache Cleared"}); 
+            res.status(200).json({message : 'Cache Cleared'}); 
         });
 
          
@@ -71,7 +72,7 @@ var Mongoose = require('mongoose'),
         app.use(function (err, req, res, next) {
           if (err.name === 'UnauthorizedError') {
             res.status(401);
-            res.json({"message" : err.name + ": " + err.message});
+            res.json({'message' : err.name + ': ' + err.message});
           }
         });        
         app.post('/api/settings/save',settings.savesettings);

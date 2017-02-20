@@ -61,8 +61,17 @@
         }, 
         saveCategoryAttribute = function(params) {
             var deferred = $q.defer(); 
-            params.attributes = this.getCatalogAttributeData();
+            params.attributes = this.getCatalogAttributeData(); 
             $http.put('/api/category/attributesave/'+ArrayUtil.get(params,'category_id'),params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                deferred.resolve(response);
+            }, function(response) {
+                deferred.reject(response);
+            });
+            return deferred.promise;
+        },
+        overrideCategoryAttribute = function(id,params) {
+            var deferred = $q.defer();  
+            $http.put('/api/category/attributeoverride/'+id,params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {
                 deferred.reject(response);
@@ -102,7 +111,8 @@
             getCatalogAttributeData : getCatalogAttributeData,
             saveCategoryAttribute : saveCategoryAttribute,
             getCategoryAttribute : getCategoryAttribute,
-            deleteCategoryAttribute : deleteCategoryAttribute
+            deleteCategoryAttribute : deleteCategoryAttribute,
+            overrideCategoryAttribute :overrideCategoryAttribute
         }
     }
  

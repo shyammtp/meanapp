@@ -1024,3 +1024,7 @@ margin: 0 -3px 0 0;
 .required-star {color:red;}
 .bullet-list li {list-style-type: circle!important;margin: 5px 50px; }
 .bright-text {color:#A2A2A2;}
+table.outsideborder {border:1px solid #2d2d2d;}
+.gall-list li {float: left; border:1px solid #2d2d2d;margin: 0 3px;}
+.gall-list li .imagecover {    text-align: center;    padding: 5px 3px;}
+.gall-list li .filecover {    text-align: center; padding: 5px 0px;}
