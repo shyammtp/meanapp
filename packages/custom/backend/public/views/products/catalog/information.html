@@ -13,7 +13,9 @@
                         <li role="presentation" class="active "><a href="#maininfo" role="tab" data-toggle="tab">Main Info</a></li>
                         <li role="presentation"><a href="#variations" role="tab" data-toggle="tab">Variations</a></li> 
                         <li role="presentation"><a href="#pricing" role="tab" data-toggle="tab">Pricing</a></li>  
-                        <li role="presentation"><a href="#images" role="tab" data-toggle="tab">Images</a></li> 
+                        <li role="presentation"><a href="#description" role="tab" data-toggle="tab">Description</a></li>  
+                        <li role="presentation"><a href="#more_details" role="tab" data-toggle="tab">More Information</a></li> 
+                        <li role="presentation"><a href="#images" role="tab" data-toggle="tab">Images</a></li>   
                     </ul>
                 </div>
                  <div class="tab-content z-depth-2">
@@ -49,6 +51,34 @@
                                 <div class="col-md-12"> 
                                     <form class="form-horizontal">
                                         <div class="row" ng-repeat="(scc,gh) in pricing track by scc"> 
+                                            <catalogfield type="{{gh.type}}" catalogattributes="gh" parentattribute="gh"></catalogfield>
+                                        </div>
+                                    </form>
+                                </div>
+                             </div>
+                        </div>
+                         <div role="tabpanel" class="tab-pane" id="description">
+                             <div class="row"> 
+                                 <div class="col-md-12">
+                                    <p><span><b>Categories: </b></span><span ng-repeat="(c,b) in pickedcategory track by c"><i ng-if="checkarrow(c)"> > </i>{{b.category_name.en}}</span></p>
+                                </div>
+                                <div class="col-md-12"> 
+                                    <form class="form-horizontal">
+                                        <div class="row" ng-repeat="(scc,gh) in description track by scc"> 
+                                            <catalogfield type="{{gh.type}}" catalogattributes="gh" parentattribute="gh"></catalogfield>
+                                        </div>
+                                    </form>
+                                </div>
+                             </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="more_details">
+                             <div class="row"> 
+                                 <div class="col-md-12">
+                                    <p><span><b>Categories: </b></span><span ng-repeat="(c,b) in pickedcategory track by c"><i ng-if="checkarrow(c)"> > </i>{{b.category_name.en}}</span></p>
+                                </div>
+                                <div class="col-md-12"> 
+                                    <form class="form-horizontal">
+                                        <div class="row" ng-repeat="(scc,gh) in more_details track by scc"> 
                                             <catalogfield type="{{gh.type}}" catalogattributes="gh" parentattribute="gh"></catalogfield>
                                         </div>
                                     </form>

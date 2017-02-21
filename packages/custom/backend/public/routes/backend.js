@@ -65,10 +65,15 @@
             templateUrl: 'backend/views/products/catalog/attributes/form.html',
             params: {title : 'Products Catalog Attribute Form',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Add a product'}]},
          })
-          .state('product_catalog_attributes_copy_form', {
+          .state('product_catalog_attributes_copy_classify', {
             url : '/admin/products/catalog/attributes/copy',
-            templateUrl: 'backend/views/products/catalog/attributes/copy.html',
+            templateUrl: 'backend/views/products/catalog/attributes/copy/classify.html',
             params: {title : 'Products Catalog Attribute Form', hasheader : 'false',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Add a product'}]},
+         })
+          .state('product_catalog_attributes_copy_form', {
+            url : '/admin/products/catalog/attributes/copy/form',
+            templateUrl: 'backend/views/products/catalog/attributes/copy/form.html',
+            params: {title : 'Products Catalog Attribute Form',hasheader : 'false',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Add a product'}]},
          })
  
         ;

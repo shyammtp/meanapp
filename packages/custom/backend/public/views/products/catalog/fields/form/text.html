@@ -1,5 +1,5 @@
 <div>
-    <div class="col-md-12" style="width:{{getwidthpercent(parentattribute.children)}};"> 
+    <div class="col-md-12 m-t-20" style="width:{{getwidthpercent(parentattribute.children)}};"> 
     <label for="input-Default" class="">{{catalogattributes.title.en}}<i class="required-star" ng-if="catalogattributes.required === true">*</i></label>
       <input id="{{catalogattributes.attribute_name}}" placeholder="{{catalogattributes.example}}" name="{{catalogattributes.attribute_name}}" ng-model="product[catalogattributes.attribute_name]" autocomplete="off" tabindex="1" required type="text"  class="">
         <p class="help-block">{{catalogattributes.help_text}}</p>

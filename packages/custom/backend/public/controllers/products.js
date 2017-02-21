@@ -96,15 +96,18 @@
  			$location.path('admin/products/catalog/classify');
  		} 
  		$scope.infoattributes = $scope.pricing = $scope.description = $scope.more_details = {};
+        
 
     	var lastcat = Product.getCategoryForAdd(); 
     	if(lastcat != undefined) {
 	    	var attributes = ArrayUtil.get(lastcat,'attributes',{}); 
-	    	$scope.infoattributes = ArrayUtil.get(attributes,'info',{}); console.log($scope.infoattributes);
-	    	$scope.pricing = ArrayUtil.get(attributes,'pricing',{});
-	    	$scope.description = ArrayUtil.get(attributes,'description',{}); 
-	    	$scope.more_details = ArrayUtil.get(attributes,'more_details',{});
+	    	$scope.infoattributes = ArrayUtil.sort(ArrayUtil.get(attributes,'info',{}));  
+	    	$scope.pricing = ArrayUtil.sort(ArrayUtil.get(attributes,'pricing',{}));
+	    	$scope.description = ArrayUtil.sort(ArrayUtil.get(attributes,'description',{})); 
+	    	$scope.more_details = ArrayUtil.sort(ArrayUtil.get(attributes,'more_details',{}));
 	    }
+
+        
  		$scope.checkarrow = function(index) { 
             if(parseInt(index) > 1) {
                 return true;
@@ -145,7 +148,7 @@
     	$scope.attributes = vm.attributedata  = {}; 
     	if(lastcat!= undefined) { 
     		$scope.categoryname = ArrayUtil.get(ArrayUtil.get(lastcat,'category_name'),'en'); 
-	    	Product.getCategoryAttribute(ArrayUtil.get(lastcat,'_id')).then(function(res) {
+	    	Product.getCategoryAttribute(ArrayUtil.get(lastcat,'_id'),false).then(function(res) {
 	    		vm.attributedata =  $scope.attributes = ArrayUtil.get(res.data,'attributes',{});
 	    	});
 	    }
@@ -169,15 +172,30 @@
            	$location.path('admin/products/catalog/attributes/form');
         }
 
-        $scope.copyattributes = function(data) {   
-            var finalcat = Product.getCategoryForAdd();
-            
+        $scope.savecopyCategory = function(data) { 
+            Product.setCopyCategoryAttribute(Product.getCategoryForAdd());
+            Product.setCategory(data);
+            $location.path('admin/products/catalog/attributes/copy/form');
+        }
+
+        $scope.copyattributes = function() {  
+            var data = Product.getCategoryForAdd();
+            var finalcat = Product.getCopyCategoryAttribute();
+            var conf = confirm('Heads up!!! You are copying the attributes to this category. This will override other added attribute inside the category. Are you sure?');
             if(data.attributes !== undefined) {  
-                Product.overrideCategoryAttribute(finalcat._id, data.attributes).then(function(res) {                     
-                    vm.attributedata =  $scope.attributes = ArrayUtil.get(res.data,'attributes',{});  
-                });
+                if(conf) {
+                    Product.overrideCategoryAttribute(finalcat._id, data.attributes).then(function(res) {   
+                        Materialize.toast('Attributes copied to this category', 4000);
+                        Product.setCategory(finalcat);
+                        $location.path('admin/products/catalog/attributes/form');
+                    });
+                }
             }
-            $location.path('admin/products/catalog/attributes/form');
+        }
+        $scope.cancelcopy = function() {   
+            var finalcat = Product.getCopyCategoryAttribute();
+            Product.setCategory(finalcat);
+            $location.path('admin/products/catalog/attributes/form'); 
         }
 
         $scope.checkarrow = function(index) { 

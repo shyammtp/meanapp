@@ -141,6 +141,21 @@
                     return obj[key];
                 }
                 return deflt;
+            },
+            sort : function(arra) {
+                var ref = [];
+                for (var sv in arra) {
+                    ref.push({key : sv,sort : this.get(arra[sv],'sort',1) })
+                }
+                ref.sort(function(a,b){
+                    return a.sort - b.sort;
+                    }
+                );
+                var finalset = {};
+                for (var dg in ref) {
+                    finalset[this.get(ref[dg],'key')] = this.get(arra,this.get(ref[dg],'key'),{})
+                }
+                return finalset;
             }
         }
     }

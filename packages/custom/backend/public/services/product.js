@@ -2,7 +2,7 @@
     'use strict';
  
     function Product($http, $q,$window, Authentication,ArrayUtil) { 
-        this.categoryset = {},this.categorytreeset = {},this.catalogattributedata = {};       
+        this.categoryset = {},this.categorytreeset = {},this.catalogattributedata = {},this.parentcategorycopy = {};       
         var getCategories = function() {
             var deferred = $q.defer();
             $http.get('/api/category/getall',{headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
@@ -59,6 +59,12 @@
         getCategoryTreeSetForAdd = function() {
             return this.categorytreeset;
         }, 
+        setCopyCategoryAttribute = function(data) {
+            this.parentcategorycopy  = data;
+        },
+        getCopyCategoryAttribute = function() {
+            return this.parentcategorycopy;
+        },
         saveCategoryAttribute = function(params) {
             var deferred = $q.defer(); 
             params.attributes = this.getCatalogAttributeData(); 
@@ -88,9 +94,13 @@
             });
             return deferred.promise;
         },
-        getCategoryAttribute = function(id) {
+        getCategoryAttribute = function(id,cache) {
             var deferred = $q.defer();  
-            $http.get('/api/category/getcategory/'+id,{ cache : true, headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+            var ca = true;
+            if(cache === false) {
+                ca = false;
+            }
+            $http.get('/api/category/getcategory/'+id,{ cache : ca, headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {
                 deferred.reject(response);
@@ -112,7 +122,9 @@
             saveCategoryAttribute : saveCategoryAttribute,
             getCategoryAttribute : getCategoryAttribute,
             deleteCategoryAttribute : deleteCategoryAttribute,
-            overrideCategoryAttribute :overrideCategoryAttribute
+            overrideCategoryAttribute :overrideCategoryAttribute,
+            setCopyCategoryAttribute : setCopyCategoryAttribute,
+            getCopyCategoryAttribute : getCopyCategoryAttribute
         }
     }
  
