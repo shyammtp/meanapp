@@ -1,7 +1,7 @@
 'use strict';
 
 var Mongoose = require('mongoose'),
-  AdminUser = Mongoose.model('AdminUser'),category = Mongoose.model('Category'),
+  AdminUser = Mongoose.model('AdminUser'),category = Mongoose.model('Category'),product = Mongoose.model('Product'),
   arrayutil = require('../helpers/util').array,
   textutil = require('../helpers/util').text,config = require('meanio').getConfig(); 
   module.exports = function (Backend, app) {
@@ -116,6 +116,17 @@ var Mongoose = require('mongoose'),
 
           }); 
 
+        },
+        saveProduct : function(req,res,next) {
+          var product = new product();
+          console.log(req.body);
+          /*product.save(function(err,category,numAffected) {
+              if(err) {
+                  res.status(500).json(err);
+              } else {
+                  res.status(200).json({message: 'Inserted Successfully'});
+              }
+          }) */
         },
         overwritecatalogattributes : function(req,res,next) {  
           if(!arrayutil.get(req.params,'id')) {

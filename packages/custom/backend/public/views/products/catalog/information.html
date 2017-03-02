@@ -7,6 +7,12 @@
         <div ng-controller="CatalogAddController">
             <div class="row">
             <div class="col-md-12">
+                <div class="btn-group pull-right">
+                    <button type="button" class="btn btn-default">Cancel</button>
+                    <button type="button" class="btn btn-primary" ng-click="saveproduct()">Save</button>
+                </div>
+            </div>
+            <div class="col-md-12">
                 <div role="tabpanel">
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs" role="tablist">
@@ -27,7 +33,7 @@
                                 <div class="col-md-12"> 
                                     <form class="form-horizontal">
                                         <div class="row" ng-repeat="(scc,gh) in infoattributes track by scc">  
-                                            <catalogfield type="{{gh.type}}" catalogattributes="gh" parentattribute="gh"></catalogfield> 
+                                            <catalogfield type="{{gh.type}}" catalogattributes="gh" parentattribute="gh" data-productscope="getScope(productscope)"></catalogfield> 
                                         </div>
                                     </form>
                                 </div>

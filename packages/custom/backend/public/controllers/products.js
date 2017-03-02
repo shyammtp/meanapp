@@ -131,6 +131,13 @@
         	var percent = (100 / le);
         	return percent+'%';
         }
+        vm.product= {};
+        $scope.saveproduct = function() { 
+            Product.addProductData(vm.product).saveProduct();
+        }
+        $scope.getScope = function(s) {
+           vm.product = s; 
+        }
  		$scope.pickedcategory = categoryset;
     }
  

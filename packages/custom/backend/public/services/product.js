@@ -2,7 +2,7 @@
     'use strict';
  
     function Product($http, $q,$window, Authentication,ArrayUtil) { 
-        this.categoryset = {},this.categorytreeset = {},this.catalogattributedata = {},this.parentcategorycopy = {};       
+        this.categoryset = {},this.categorytreeset = {},this.catalogattributedata = {},this.parentcategorycopy = {},this.productData = {};       
         var getCategories = function() {
             var deferred = $q.defer();
             $http.get('/api/category/getall',{headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
@@ -30,6 +30,15 @@
             });
             return deferred.promise;
         },
+        saveProduct = function() {
+            var deferred = $q.defer(), params = this.getProductData();
+            $http.post('/api/product/save',params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                deferred.resolve(response);
+            }, function(response) {
+                deferred.reject(response);
+            });
+            return deferred.promise;
+        },
         deleteCategory = function(params) {
             var deferred = $q.defer(); 
             $http.delete('/api/category/delete/'+ArrayUtil.get(params,'id'),{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
@@ -38,7 +47,15 @@
                 deferred.reject(response);
             });
             return deferred.promise;
-        },setCategory = function(cat) {
+        },
+        addProductData = function(data) {
+            this.productData = angular.extend({}, this.productData, data);
+            return this;
+        },
+        getProductData = function() {
+            return this.productData;
+        },
+        setCategory = function(cat) {
             this.categoryset = cat; 
             return this;
         },
@@ -124,7 +141,10 @@
             deleteCategoryAttribute : deleteCategoryAttribute,
             overrideCategoryAttribute :overrideCategoryAttribute,
             setCopyCategoryAttribute : setCopyCategoryAttribute,
-            getCopyCategoryAttribute : getCopyCategoryAttribute
+            getCopyCategoryAttribute : getCopyCategoryAttribute,
+            saveProduct : saveProduct,
+            addProductData : addProductData,
+            getProductData : getProductData
         }
     }
  

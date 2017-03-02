@@ -294,11 +294,19 @@
     function catalogfield(Product,$compile,$location,ArrayUtil) {
         return {
             template: '<div ng-include="getContentUrl()"></div>',
+            products : {},
             scope : {
                 catalogattributes : '=',
-                parentattribute : '='
+                parentattribute : '=',                
+                productscope : '&productscope'
             },
-            link : function(scope,element,attrs) {  
+            link : function(scope,element,attrs) {
+                scope.product = {}; 
+                var _obj = this;
+                scope.$watchCollection('product', function() { 
+                    _obj.products = angular.extend({}, _obj.products, scope.product);  
+                    scope.productscope({productscope : _obj.products});
+                });  
                 if(attrs.type == 'text') {
                     this.initText(scope,element,attrs);
                 } 
@@ -317,6 +325,7 @@
                     }
                     return false;
                 }
+                
                 scope.getwidthpercent = function(children) {
                     if(children == undefined) return '100%';
                     var le = Object.keys(children).length;
