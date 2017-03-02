@@ -5,7 +5,8 @@ Schema = mongoose.Schema,
  mongoosePaginate = require('mongoose-paginate'),
  Nodecache = require( "node-cache" ),
  myCache = new Nodecache(),
-	_ = require('lodash');
+	_ = require('lodash'),
+	textutil = require('../helpers/util').text;
 
 
 var ProductSchema = new Schema({ 
@@ -15,7 +16,8 @@ var ProductSchema = new Schema({
     created_on : { type: Date, default: Date.now },
     updated_on: { type: Date, default: Date.now },
     category_id : {type : String},
-    category_collection :  { type: Schema.Types.Mixed}
+    category_collection :  [],
+    data : { type: Schema.Types.Mixed}
 
 },{collection: "product"});
  
@@ -25,8 +27,22 @@ ProductSchema.pre('save',function(next) {
 
  
 
-ProductSchema.methods.saveData = function(data) {
-	var _obj = this; 
+ProductSchema.methods.addData = function(data) {
+	var _obj = this;
+	if(data.title) {
+		this.product_url = textutil.url_title(data.title);
+	}
+	this.status = 1;
+	this.parent_id = 0;
+	if(data.category_id) {
+		this.category_id = data.category_id;
+		delete data.category_id;
+	}
+	if(data.category_collection) {
+		this.category_collection = data.category_collection;
+		delete data.category_collection;
+	}
+	this.data = data;
 }
 
 ProductSchema.plugin(mongoosePaginate);

@@ -133,7 +133,16 @@
         }
         vm.product= {};
         $scope.saveproduct = function() { 
-            Product.addProductData(vm.product).saveProduct();
+            vm.product.category_id = ArrayUtil.get(lastcat,'_id');
+            vm.product.category_collection = [];
+            vm.product.category_collection = ArrayUtil.get(lastcat,'tree_path').split("/");
+            vm.product.category_collection.push(ArrayUtil.get(lastcat,'_id'));  
+            Product.addProductData(vm.product).saveProduct().then(function(res) {
+                $scope.$broadcast('savedproduct',{response: res.data}); 
+                $scope._id = ArrayUtil.get(res.data.data,'_id');  
+                Materialize.toast('Product added successfully', 4000); 
+            });
+
         }
         $scope.getScope = function(s) {
            vm.product = s; 

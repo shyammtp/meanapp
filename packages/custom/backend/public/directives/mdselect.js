@@ -307,6 +307,11 @@
                     _obj.products = angular.extend({}, _obj.products, scope.product);  
                     scope.productscope({productscope : _obj.products});
                 });  
+                scope.$on('savedproduct',function(event, data){ 
+                    console.log(data);
+                    scope.product._id = ArrayUtil.get(ArrayUtil.get(data.response,'data'),'_id');
+                    //scope.product = {};    
+                });
                 if(attrs.type == 'text') {
                     this.initText(scope,element,attrs);
                 } 

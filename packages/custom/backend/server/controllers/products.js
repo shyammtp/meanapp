@@ -118,15 +118,16 @@ var Mongoose = require('mongoose'),
 
         },
         saveProduct : function(req,res,next) {
-          var product = new product();
-          console.log(req.body);
-          /*product.save(function(err,category,numAffected) {
+          var pr = new product();
+          pr.addData(req.body);
+
+          pr.save(function(err,products) { 
               if(err) {
                   res.status(500).json(err);
               } else {
-                  res.status(200).json({message: 'Inserted Successfully'});
+                  res.status(200).json({message: 'Inserted Successfully',data : products});
               }
-          }) */
+          });
         },
         overwritecatalogattributes : function(req,res,next) {  
           if(!arrayutil.get(req.params,'id')) {
