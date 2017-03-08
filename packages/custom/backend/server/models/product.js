@@ -45,6 +45,14 @@ ProductSchema.methods.addData = function(data) {
 	this.data = data;
 }
 
+ProductSchema.methods.updateData = function(id,cb) {
+	var _obj = this;
+	this.model('Product').update({_id : id},{$set  : {data : this.data}},{upsert: true},function(err,doc) {
+		_obj.model('Product').findOne({_id : id},cb);
+	});
+
+}
+
 ProductSchema.plugin(mongoosePaginate);
  
 

@@ -24,7 +24,7 @@
                         <li role="presentation"><a href="#images" role="tab" data-toggle="tab">Images</a></li>   
                     </ul>
                 </div>
-                <input type="text" ng-model="_id" />
+                <input type="hidden" ng-model="_id" />
                  <div class="tab-content z-depth-2">
                         <div role="tabpanel" class="tab-pane active" id="maininfo">
                              <div class="row"> 
@@ -102,9 +102,12 @@
                                         <div class="col-md-4">
                                             <table class="table outsideborder">
                                                 <tr>
-                                                    <td><img src="{{assetspath}}/img/no-image.png" /></td>
+                                                    <td> 
+                                                        <div ngf-select ng-model="file0">Upload</div>   
+                                                        <img ngf-src="file0" width="100" class="thumb" ngf-size="{width: 20, height: 20, quality: 0.9}" /> 
+                                                    </td>
                                                 </tr>
-                                                <tr><td><input type="file" style="border:none;" /></td></tr>
+                                                <tr><td></td></tr>
                                             </table>
                                         </div>
                                         <div class="col-md-8 bright-text">
@@ -122,16 +125,17 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-12">
+                                 <div class="col-md-12">
                                     <ul class="gall-list">
                                         <li ng-repeat="n in [] | filterrange:8">
                                             <div class="imagecover">
-                                                <img src="{{assetspath}}/img/no-image.png" />
+                                                
+                                                 <img ngf-src="file[n+1]" width="100" class="thumb" ngf-size="{width: 20, height: 20, quality: 0.9}" /> 
                                             </div>
-                                            <div class="filecover"><input type="file" style="border:none;" /></div>
+                                            <div class="filecover"><div class="button" ngf-select="upload(file[n+1],'file'+(n+1))" ng-model="file[n+1]">Upload on file select</div> </div>
                                         </li>
                                     </ul>
-                                </div>
+                                </div> 
 
                              </div>
                         </div>

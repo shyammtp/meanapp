@@ -120,14 +120,21 @@ var Mongoose = require('mongoose'),
         saveProduct : function(req,res,next) {
           var pr = new product();
           pr.addData(req.body);
-
-          pr.save(function(err,products) { 
-              if(err) {
-                  res.status(500).json(err);
-              } else {
-                  res.status(200).json({message: 'Inserted Successfully',data : products});
-              }
-          });
+          console.log(req.body);
+          if(arrayutil.get(req.body,'_id')) {
+            pr.updateData(arrayutil.get(req.body,'_id'),function(err,sd) {
+                if(err) return res.status(500).json(err);
+                res.status(200).json(sd);
+            });
+          } else {
+            pr.save(function(err,products) { 
+                if(err) {
+                    res.status(500).json(err);
+                } else {
+                    res.status(200).json({message: 'Inserted Successfully',data : products});
+                }
+            });
+          }
         },
         overwritecatalogattributes : function(req,res,next) {  
           if(!arrayutil.get(req.params,'id')) {

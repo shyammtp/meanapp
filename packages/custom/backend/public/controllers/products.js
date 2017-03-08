@@ -132,18 +132,36 @@
         	return percent+'%';
         }
         vm.product= {};
+        vm.product.images = {};
         $scope.saveproduct = function() { 
-            vm.product.category_id = ArrayUtil.get(lastcat,'_id');
+            console.log(vm.product);
+            /*vm.product.category_id = ArrayUtil.get(lastcat,'_id');
             vm.product.category_collection = [];
             vm.product.category_collection = ArrayUtil.get(lastcat,'tree_path').split("/");
             vm.product.category_collection.push(ArrayUtil.get(lastcat,'_id'));  
             Product.addProductData(vm.product).saveProduct().then(function(res) {
+                console.log(res);
                 $scope.$broadcast('savedproduct',{response: res.data}); 
                 $scope._id = ArrayUtil.get(res.data.data,'_id');  
                 Materialize.toast('Product added successfully', 4000); 
-            });
+            });*/
 
         }
+        $scope.upload = function (file,s) {
+            vm.product.images[s] = file; 
+            /*Upload.upload({
+                url: 'upload/url',
+                data: {file: file, 'username': $scope.username}
+            }).then(function (resp) {
+                console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+            }, function (resp) {
+                console.log('Error status: ' + resp.status);
+            }, function (evt) {
+                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+            });*/
+
+        };
         $scope.getScope = function(s) {
            vm.product = s; 
         }
