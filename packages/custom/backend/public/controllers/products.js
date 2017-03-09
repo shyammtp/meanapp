@@ -89,7 +89,7 @@
             return false;
         }
     }
-    function CatalogAddController($scope,ArrayUtil, Product,$location) {
+    function CatalogAddController($scope,ArrayUtil, Product,$location,$timeout) {
  		var vm = this,categoryset = Product.getCategoryTreeSetForAdd();
 
  		if(categoryset== undefined) {
@@ -132,9 +132,10 @@
         	return percent+'%';
         }
         vm.product= {};
-        vm.product.images = {};
+
         $scope.saveproduct = function() { 
-            console.log(vm.product);
+
+            //console.log(vm.product);
             /*vm.product.category_id = ArrayUtil.get(lastcat,'_id');
             vm.product.category_collection = [];
             vm.product.category_collection = ArrayUtil.get(lastcat,'tree_path').split("/");
@@ -146,8 +147,27 @@
                 Materialize.toast('Product added successfully', 4000); 
             });*/
 
+        }  
+        $scope.validateClass = function(elementid) {
+            var ele = angular.element('#'+elementid);
+            console.log(ele);
         }
+        $timeout(function(){
+            console.log(vm.productForm);
+        })
+        $scope.submitForm = function(isValid) {
+             
+            if(isValid) {
+                alert('Our Form is amazing');
+            } else {
+                $scope.maininfoclass = 'test';
+            }
+         }
+
         $scope.upload = function (file,s) {
+            if(typeof vm.product.images == 'undefined') {
+                vm.product.images = {};
+            }
             vm.product.images[s] = file; 
             /*Upload.upload({
                 url: 'upload/url',
@@ -294,5 +314,5 @@
     CategoryController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product'];
     CatalogController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product','$timeout','$location'];  
     CatalogAttributesController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product','$timeout','$location']; 
-    CatalogAddController.$inject = ['$scope', 'ArrayUtil','Product','$location'];
+    CatalogAddController.$inject = ['$scope', 'ArrayUtil','Product','$location','$timeout'];
 })();

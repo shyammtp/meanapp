@@ -227,8 +227,7 @@
                     });
                     scope.parentselects = selectoptions;
                 } 
-                scope.updatefields();
-                
+                scope.updatefields(); 
                 scope.saveAttribute = function(attributefield) { 
                     if(ArrayUtil.get(attributefield,'type') == 'text' 
                         || ArrayUtil.get(attributefield,'type') == 'select'

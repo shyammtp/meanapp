@@ -1025,6 +1025,8 @@ margin: 0 -3px 0 0;
 .bullet-list li {list-style-type: circle!important;margin: 5px 50px; }
 .bright-text {color:#A2A2A2;}
 table.outsideborder {border:1px solid #2d2d2d;}
-.gall-list li {float: left; border:1px solid #2d2d2d;margin: 0 3px;}
-.gall-list li .imagecover {    text-align: center;    padding: 5px 3px;}
+.gall-list li {float: left;margin: 0 3px;}
+.gall-list li .imagecover { overflow: hidden; background: url("../img/no-image.png") no-repeat center center; background-size: 60px 60px; min-width:150px; min-height: 150px;   text-align: center;  position: relative;   padding: 5px 3px;}
 .gall-list li .filecover {    text-align: center; padding: 5px 0px;}
+.filebox {border:1px dashed #5d5d5d; width: 100%; left:0;position: absolute;height: 100%;top:0; cursor: pointer;}
+.gall-list li .imagecover .thumb {position: absolute;left:0;top:0; width:150px;}

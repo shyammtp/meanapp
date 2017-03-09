@@ -5,18 +5,19 @@
     </div> 
     <div id="main-wrapper">  
         <div ng-controller="CatalogAddController">
+        <form name="productForm" novalidate ng-submit="submitForm(productForm.$valid)">
             <div class="row">
             <div class="col-md-12">
                 <div class="btn-group pull-right">
-                    <button type="button" class="btn btn-default">Cancel</button>
-                    <button type="button" class="btn btn-primary" ng-click="saveproduct()">Save</button>
+                    <button type="button" class="btn btn-default" ng-click="cancelproduct()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" ng-disabled="productForm.$invalid">Save</button>
                 </div>
             </div>
             <div class="col-md-12">
                 <div role="tabpanel">
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active "><a href="#maininfo" role="tab" data-toggle="tab">Main Info</a></li>
+                        <li role="presentation" class="active" ng-class="maininfoclass"><a href="#maininfo" role="tab" data-toggle="tab">Main Info</a></li>
                         <li role="presentation"><a href="#variations" role="tab" data-toggle="tab">Variations</a></li> 
                         <li role="presentation"><a href="#pricing" role="tab" data-toggle="tab">Pricing</a></li>  
                         <li role="presentation"><a href="#description" role="tab" data-toggle="tab">Description</a></li>  
@@ -31,12 +32,10 @@
                                 <div class="col-md-12">
                                     <p><span><b>Categories: </b></span><span ng-repeat="(c,b) in pickedcategory track by c"><i ng-if="checkarrow(c)"> > </i>{{b.category_name.en}}</span></p>
                                 </div>
-                                <div class="col-md-12"> 
-                                    <form class="form-horizontal">
-                                        <div class="row" ng-repeat="(scc,gh) in infoattributes track by scc">  
-                                            <catalogfield type="{{gh.type}}" catalogattributes="gh" parentattribute="gh" data-productscope="getScope(productscope)"></catalogfield> 
-                                        </div>
-                                    </form>
+                                <div class="col-md-12">  
+                                    <div class="row" ng-repeat="(scc,gh) in infoattributes track by scc">  
+                                        <catalogfield type="{{gh.type}}" catalogattributes="gh" parentattribute="gh" data-productscope="getScope(productscope)"></catalogfield> 
+                                    </div> 
                                 </div>
 
                              </div>
@@ -55,12 +54,10 @@
                                  <div class="col-md-12">
                                     <p><span><b>Categories: </b></span><span ng-repeat="(c,b) in pickedcategory track by c"><i ng-if="checkarrow(c)"> > </i>{{b.category_name.en}}</span></p>
                                 </div>
-                                <div class="col-md-12"> 
-                                    <form class="form-horizontal">
+                                <div class="col-md-12">  
                                         <div class="row" ng-repeat="(scc,gh) in pricing track by scc"> 
                                             <catalogfield type="{{gh.type}}" catalogattributes="gh" parentattribute="gh"></catalogfield>
-                                        </div>
-                                    </form>
+                                        </div> 
                                 </div>
                              </div>
                         </div>
@@ -70,11 +67,9 @@
                                     <p><span><b>Categories: </b></span><span ng-repeat="(c,b) in pickedcategory track by c"><i ng-if="checkarrow(c)"> > </i>{{b.category_name.en}}</span></p>
                                 </div>
                                 <div class="col-md-12"> 
-                                    <form class="form-horizontal">
                                         <div class="row" ng-repeat="(scc,gh) in description track by scc"> 
                                             <catalogfield type="{{gh.type}}" catalogattributes="gh" parentattribute="gh"></catalogfield>
                                         </div>
-                                    </form>
                                 </div>
                              </div>
                         </div>
@@ -83,12 +78,10 @@
                                  <div class="col-md-12">
                                     <p><span><b>Categories: </b></span><span ng-repeat="(c,b) in pickedcategory track by c"><i ng-if="checkarrow(c)"> > </i>{{b.category_name.en}}</span></p>
                                 </div>
-                                <div class="col-md-12"> 
-                                    <form class="form-horizontal">
-                                        <div class="row" ng-repeat="(scc,gh) in more_details track by scc"> 
-                                            <catalogfield type="{{gh.type}}" catalogattributes="gh" parentattribute="gh"></catalogfield>
-                                        </div>
-                                    </form>
+                                <div class="col-md-12">  
+                                    <div class="row" ng-repeat="(scc,gh) in more_details track by scc"> 
+                                        <catalogfield type="{{gh.type}}" catalogattributes="gh" parentattribute="gh"></catalogfield>
+                                    </div> 
                                 </div>
                              </div>
                         </div>
@@ -102,7 +95,7 @@
                                         <div class="col-md-4">
                                             <table class="table outsideborder">
                                                 <tr>
-                                                    <td> 
+                                                    <td>  
                                                         <div ngf-select ng-model="file0">Upload</div>   
                                                         <img ngf-src="file0" width="100" class="thumb" ngf-size="{width: 20, height: 20, quality: 0.9}" /> 
                                                     </td>
@@ -128,11 +121,11 @@
                                  <div class="col-md-12">
                                     <ul class="gall-list">
                                         <li ng-repeat="n in [] | filterrange:8">
-                                            <div class="imagecover">
-                                                
-                                                 <img ngf-src="file[n+1]" width="100" class="thumb" ngf-size="{width: 20, height: 20, quality: 0.9}" /> 
+                                            <div class="imagecover">                                               
+                                                 <img ngf-src="file[n+1]" width="140" class="thumb" /> 
+                                                 <div class="filebox" ngf-select="upload(file[n+1],'file'+(n+1))" ng-model="file[n+1]"></div>
                                             </div>
-                                            <div class="filecover"><div class="button" ngf-select="upload(file[n+1],'file'+(n+1))" ng-model="file[n+1]">Upload on file select</div> </div>
+                                            <div class="filecover"> </div>
                                         </li>
                                     </ul>
                                 </div> 
@@ -143,8 +136,8 @@
 
                     </div>
             </div>
-            </div>
-
+        </div>
+        </form>
         </div>
     </div><!-- Main Wrapper -->
     <div class="page-footer"> 
