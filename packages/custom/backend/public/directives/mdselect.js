@@ -229,12 +229,14 @@
                 } 
                 scope.updatefields(); 
                 scope.saveAttribute = function(attributefield) { 
+                    console.log(attributefield);
                     if(ArrayUtil.get(attributefield,'type') == 'text' 
                         || ArrayUtil.get(attributefield,'type') == 'select'
                         || ArrayUtil.get(attributefield,'type') == 'number'
                         || ArrayUtil.get(attributefield,'type') == 'date') {
                         var finaldata = {};
                         if(ArrayUtil.get(attributefield,'attribute_name')) {
+                            console.log('in');
                             finaldata[ArrayUtil.get(attributefield,'attribute_name')] = attributefield;
                             Product.setCatalogAttributeData(finaldata);
                             Product.saveCategoryAttribute({'category_id':ArrayUtil.get(categoryset,'_id'),'block' : ArrayUtil.get(attributefield,'block','info')}).then(function(res) {

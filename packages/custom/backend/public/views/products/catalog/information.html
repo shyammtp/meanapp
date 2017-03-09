@@ -5,23 +5,23 @@
     </div> 
     <div id="main-wrapper">  
         <div ng-controller="CatalogAddController">
-        <form name="productForm" novalidate ng-submit="submitForm(productForm.$valid)">
+        
             <div class="row">
             <div class="col-md-12">
                 <div class="btn-group pull-right">
                     <button type="button" class="btn btn-default" ng-click="cancelproduct()">Cancel</button>
-                    <button type="submit" class="btn btn-primary" ng-disabled="productForm.$invalid">Save</button>
+                    <button type="submit" class="btn btn-primary" ng-disabled="form.productForm.maininfo.$invalid || form.productForm.pricing.$invalid || form.productForm.more_details.$invalid">Save</button>
                 </div>
             </div>
             <div class="col-md-12">
                 <div role="tabpanel">
                     <!-- Nav tabs -->
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active" ng-class="maininfoclass"><a href="#maininfo" role="tab" data-toggle="tab">Main Info</a></li>
+                    <ul class="nav nav-tabs productformtab" role="tablist">
+                        <li role="presentation" class="active" ng-class="{'focuserror': form.productForm.maininfo.$invalid}"><a href="#maininfo" role="tab" data-toggle="tab">Main Info</a></li>
                         <li role="presentation"><a href="#variations" role="tab" data-toggle="tab">Variations</a></li> 
-                        <li role="presentation"><a href="#pricing" role="tab" data-toggle="tab">Pricing</a></li>  
+                        <li role="presentation" ng-class="{'focuserror': form.productForm.pricing.$invalid}"><a href="#pricing" role="tab" data-toggle="tab">Pricing</a></li>  
                         <li role="presentation"><a href="#description" role="tab" data-toggle="tab">Description</a></li>  
-                        <li role="presentation"><a href="#more_details" role="tab" data-toggle="tab">More Information</a></li> 
+                        <li role="presentation"  ng-class="{'focuserror': form.productForm.more_details.$invalid}"><a href="#more_details" role="tab" data-toggle="tab">More Information</a></li> 
                         <li role="presentation"><a href="#images" role="tab" data-toggle="tab">Images</a></li>   
                     </ul>
                 </div>
@@ -33,9 +33,11 @@
                                     <p><span><b>Categories: </b></span><span ng-repeat="(c,b) in pickedcategory track by c"><i ng-if="checkarrow(c)"> > </i>{{b.category_name.en}}</span></p>
                                 </div>
                                 <div class="col-md-12">  
-                                    <div class="row" ng-repeat="(scc,gh) in infoattributes track by scc">  
-                                        <catalogfield type="{{gh.type}}" catalogattributes="gh" parentattribute="gh" data-productscope="getScope(productscope)"></catalogfield> 
-                                    </div> 
+                                    <form name="form.productForm.maininfo" novalidate>
+                                        <div class="row" ng-repeat="(scc,gh) in infoattributes track by scc">  
+                                            <catalogfield type="{{gh.type}}" catalogattributes="gh" parentattribute="gh" data-productscope="getScope(productscope)"></catalogfield> 
+                                        </div> 
+                                    </form>
                                 </div>
 
                              </div>
@@ -55,9 +57,11 @@
                                     <p><span><b>Categories: </b></span><span ng-repeat="(c,b) in pickedcategory track by c"><i ng-if="checkarrow(c)"> > </i>{{b.category_name.en}}</span></p>
                                 </div>
                                 <div class="col-md-12">  
+                                        <form name="form.productForm.pricing" novalidate>
                                         <div class="row" ng-repeat="(scc,gh) in pricing track by scc"> 
                                             <catalogfield type="{{gh.type}}" catalogattributes="gh" parentattribute="gh"></catalogfield>
                                         </div> 
+                                        </form>
                                 </div>
                              </div>
                         </div>
@@ -79,9 +83,11 @@
                                     <p><span><b>Categories: </b></span><span ng-repeat="(c,b) in pickedcategory track by c"><i ng-if="checkarrow(c)"> > </i>{{b.category_name.en}}</span></p>
                                 </div>
                                 <div class="col-md-12">  
+                                    <form name="form.productForm.more_details" novalidate>
                                     <div class="row" ng-repeat="(scc,gh) in more_details track by scc"> 
                                         <catalogfield type="{{gh.type}}" catalogattributes="gh" parentattribute="gh"></catalogfield>
                                     </div> 
+                                    </form>
                                 </div>
                              </div>
                         </div>
@@ -136,8 +142,7 @@
 
                     </div>
             </div>
-        </div>
-        </form>
+        </div> 
         </div>
     </div><!-- Main Wrapper -->
     <div class="page-footer"> 

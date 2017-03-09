@@ -1030,3 +1030,5 @@ table.outsideborder {border:1px solid #2d2d2d;}
 .gall-list li .filecover {    text-align: center; padding: 5px 0px;}
 .filebox {border:1px dashed #5d5d5d; width: 100%; left:0;position: absolute;height: 100%;top:0; cursor: pointer;}
 .gall-list li .imagecover .thumb {position: absolute;left:0;top:0; width:150px;}
+.productformtab li.focuserror { background: url("../img/exclamation.png") no-repeat 0% 58%;  background-size:24px 24px;}
+.productformtab li a {padding: 12px 24px;}
