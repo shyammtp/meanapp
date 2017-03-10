@@ -23,9 +23,9 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="pull-right actions-link">
-                                                <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" ng-click="editAttribute($in,'info')" title=""  data-original-title="Expand/Collapse"><i class="fa fa-edit"></i></a>
+                                                <a href="javascript:void(0);" ng-if="datas.is_system != true" data-toggle="tooltip" data-placement="top" ng-click="editAttribute($in,'info')" title=""  data-original-title="Expand/Collapse"><i class="fa fa-edit"></i></a>
                                                 &nbsp; 
-                                                <a href="javascript:void(0);"   data-toggle="tooltip"  ng-click="deleteAttribute($in,'info')" data-placement="top" title=""  data-original-title="Expand/Collapse"><i class="icon-close"></i></a>
+                                                <a href="javascript:void(0);"  ng-if="datas.is_system != true" data-toggle="tooltip"  ng-click="deleteAttribute($in,'info')" data-placement="top" title=""  data-original-title="Expand/Collapse"><i class="icon-close"></i></a>
                                             </div>
                                         </div>
                                     </div> 
@@ -64,9 +64,9 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="pull-right actions-link">
-                                                <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="" ng-click="editAttribute($inf,'pricing')"  data-original-title="Expand/Collapse"><i class="fa fa-edit"></i></a>
+                                                <a href="javascript:void(0);" ng-if="dats.is_system != true" data-toggle="tooltip" data-placement="top" title="" ng-click="editAttribute($inf,'pricing')"  data-original-title="Expand/Collapse"><i class="fa fa-edit"></i></a>
                                                 &nbsp;  
-                                                <a href="javascript:void(0);" ng-if="dats.required != true" ng-click="deleteAttribute($inf,'pricing')" data-toggle="tooltip" data-placement="top" title=""  data-original-title="Expand/Collapse"><i class="icon-close"></i></a>
+                                                <a href="javascript:void(0);" ng-if="dats.is_system != true" ng-click="deleteAttribute($inf,'pricing')" data-toggle="tooltip" data-placement="top" title=""  data-original-title="Expand/Collapse"><i class="icon-close"></i></a>
                                             </div>
                                         </div>
                                     </div> 
@@ -106,9 +106,9 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="pull-right actions-link">
-                                                <a href="javascript:void(0);" ng-click="editAttribute($in1,'description')" data-toggle="tooltip"    data-placement="top" title=""  data-original-title="Expand/Collapse"><i class="fa fa-edit"></i></a>
+                                                <a href="javascript:void(0);" ng-if="dats.is_system != true" ng-click="editAttribute($in1,'description')" data-toggle="tooltip"    data-placement="top" title=""  data-original-title="Expand/Collapse"><i class="fa fa-edit"></i></a>
                                                 &nbsp;  
-                                                <a href="javascript:void(0);" ng-click="deleteAttribute($in1,'description')" ng-if="dats.required != true" data-toggle="tooltip" data-placement="top" title=""  data-original-title="Expand/Collapse"><i class="icon-close"></i></a>
+                                                <a href="javascript:void(0);" ng-click="deleteAttribute($in1,'description')" ng-if="dats.is_system != true" data-toggle="tooltip" data-placement="top" title=""  data-original-title="Expand/Collapse"><i class="icon-close"></i></a>
                                             </div>
                                         </div>
                                     </div> 
@@ -149,9 +149,9 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="pull-right actions-link">
-                                                <a href="javascript:void(0);" data-toggle="tooltip" ng-click="editAttribute($inu,'more_details')" data-placement="top" title=""  data-original-title="Expand/Collapse"><i class="fa fa-edit"></i></a>
+                                                <a href="javascript:void(0);" ng-if="dats.is_system != true" data-toggle="tooltip" ng-click="editAttribute($inu,'more_details')" data-placement="top" title=""  data-original-title="Expand/Collapse"><i class="fa fa-edit"></i></a>
                                                 &nbsp;  
-                                                <a href="javascript:void(0);" ng-click="deleteAttribute($inu,'more_details')" ng-if="dats.required != true" data-toggle="tooltip" data-placement="top" title=""  data-original-title="Expand/Collapse"><i class="icon-close"></i></a>
+                                                <a href="javascript:void(0);" ng-click="deleteAttribute($inu,'more_details')" ng-if="dats.is_system != true" data-toggle="tooltip" data-placement="top" title=""  data-original-title="Expand/Collapse"><i class="icon-close"></i></a>
                                             </div>
                                         </div>
                                     </div> 

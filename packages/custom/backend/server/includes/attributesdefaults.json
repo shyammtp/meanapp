@@ -1,0 +1,44 @@
+{
+	"info" : {
+	    "item_name" : {
+	        "sort" : 0,
+	        "example" : "Maxlength character should be 50 Characters long",
+	        "title" : {
+	            "en" : "Item Name"
+	        },
+	        "attribute_name" : "item_name",
+	        "is_system" : true,
+	        "block" : "info",
+	        "type" : "text",
+	        "previous_block" : "info",
+	        "required" : true
+	    }
+	},
+	"pricing" : {
+		"price" : {
+	        "type" : "text",
+	        "block" : "pricing",
+	        "is_system" : true,
+	        "attribute_name" : "standard_price",
+	        "title" : {
+	            "en" : "Standard Price"
+	        },
+	        "example" : "Input the standard price",
+	        "sort" : -1,
+	        "required" : true
+		},
+	    "quantity" : {
+	        "type" : "number",
+	        "block" : "pricing",
+	        "is_system" : true,
+	        "attribute_name" : "quantity",
+	        "title" : {
+	            "en" : "Quantity"
+	        },
+	        "example" : "Integer value will be given",
+	        "sort" : 0,
+	        "required" : true
+	    }
+
+	}
+}

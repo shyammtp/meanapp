@@ -233,6 +233,7 @@
                     if(ArrayUtil.get(attributefield,'type') == 'text' 
                         || ArrayUtil.get(attributefield,'type') == 'select'
                         || ArrayUtil.get(attributefield,'type') == 'number'
+                        || ArrayUtil.get(attributefield,'type') == 'textarea'
                         || ArrayUtil.get(attributefield,'type') == 'date') {
                         var finaldata = {};
                         if(ArrayUtil.get(attributefield,'attribute_name')) {

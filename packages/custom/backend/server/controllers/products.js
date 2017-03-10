@@ -3,7 +3,9 @@
 var Mongoose = require('mongoose'),
   AdminUser = Mongoose.model('AdminUser'),category = Mongoose.model('Category'),product = Mongoose.model('Product'),
   arrayutil = require('../helpers/util').array,
+  attrdefaults = require('../includes/attributesdefaults.json'),
   textutil = require('../helpers/util').text,config = require('meanio').getConfig(); 
+
   module.exports = function (Backend, app) {
   	 return { 
         saveCategory : function(req,res) {
@@ -23,14 +25,15 @@ var Mongoose = require('mongoose'),
                             cat.tree_url = cate.category_url;
                         }
                         cat.category_url = textutil.url_title(arrayutil.get(arrayutil.get(req.body,'category_name'),'en'));
-                        cat.category_name['en'] = arrayutil.get(arrayutil.get(req.body,'category_name'),'en');                
+                        cat.category_name['en'] = arrayutil.get(arrayutil.get(req.body,'category_name'),'en');  
+                        cat.attributes = attrdefaults;               
                         cat.save(function(err,category,numAffected) {
                             if(err) {
                                 res.status(500).json(err);
                             } else {
                                 res.status(200).json({message: 'Inserted Successfully'});
                             }
-                        }) 
+                        }); 
                     }
                 });
             } else {
@@ -42,7 +45,7 @@ var Mongoose = require('mongoose'),
                         // Render not found error
                         if(!catey) {
                           return res.status(404).json({
-                            message: 'Course with id ' + id + ' can not be found.'
+                            message: 'category with id ' + id + ' can not be found.'
                           });
                         }
                         var data = {};
@@ -59,7 +62,8 @@ var Mongoose = require('mongoose'),
                       });
                 } else {
                     cat.category_url = textutil.url_title(arrayutil.get(arrayutil.get(req.body,'category_name'),'en'));
-                    cat.category_name['en'] = arrayutil.get(arrayutil.get(req.body,'category_name'),'en');                
+                    cat.category_name['en'] = arrayutil.get(arrayutil.get(req.body,'category_name'),'en');
+                    cat.attributes = attrdefaults;                 
                     cat.save(function(err,category,numAffected) {
                         if(err) {
                            res.status(500).json(err);
