@@ -1,0 +1,31 @@
+<div class="form-group file-upload-wrapper">
+     <label for="input-Default" class="">File types</label>
+     <input type="radio" id="selecsst" ng-model="typedata.filetype" value="all"/><label style="font-size: 12px;" for="selecsst">Allow all file types to be uploaded</label>
+     <input type="radio" id="selecsst1" ng-model="typedata.filetype" value="specific"/><label style="font-size: 12px;" for="selecsst1">Only allow these file types to be uploaded</label>
+	<div class="subaction" ng-if="typedata.filetype == 'specific'">
+		<img src="/theme/assets/lib/black/images/nodejoin.gif" />
+		<div class="allowed-types-container">
+			<div class="form-group">
+				<input type="checkbox" id="altype1" ng-model="typedata.allowedfiletype1" value="1"/><label style="font-size: 12px;" for="altype1">Images and Photos</label>
+			</div>
+			<div class="form-group">
+				<input type="checkbox" id="altype2" ng-model="typedata.allowedfiletype2" value="2"/><label style="font-size: 12px;" for="altype2">Document and text files</label>
+			</div>
+			<div class="form-group">
+				<input type="checkbox" id="altype3" ng-model="typedata.allowedfiletype3" value="3"/><label style="font-size: 12px;" for="altype3">Other (Specify below)</label>
+			</div>
+			<div class="form-group" ng-if="typedata.allowedfiletype3 == true">
+				<input placeholder="" ng-model="typedata.otherfiletype" autocomplete="off"  type="text"  class="">
+				<p class="help-block"><strong>Other File Types</strong><p>Enter the extension of each file type you would like to allow separated by a comma.<br /><br />eg. pdf,zip,psd</p></p>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+</div>
+<div class="form-group">
+ 		<label for="input-Default" class="">Maximum file size</label>
+ 		<div class="input-group m-b-sm">
+			<input placeholder="" ng-model="typedata.maxfilesize" autocomplete="off"  type="text"  class=""> <span class="input-group-addon">KB</span>
+		</div>
+	<p class="help-block">The maximum size of the file that is allowed to be uploaded in kilobytes (KB). Enter 0 for no limit (NB: the maximum size will still be limited by the server configuration).</p>
+</div>

@@ -52,6 +52,9 @@ var Mongoose = require('mongoose'),
         app.put('/api/category/attributeoverride/:id',authentic,products.overwritecatalogattributes);
         app.delete('/api/category/attributedelete/:id',authentic,products.deletecatalogattribute);
         app.post('/api/product/save',authentic,products.saveProduct);
+        app.post('/api/variant/save',authentic,products.saveVariant);
+        app.get('/api/catalog/listvariants',authentic,products.cataloglistvariants);
+        app.get('/api/variant/get/:id',authentic,products.getVariants);
 
         /* General */
         app.get('/api/adminconfig',function(req,res) {             

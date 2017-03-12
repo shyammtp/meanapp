@@ -1,0 +1,29 @@
+<div class="form-group">
+	<label for="input-Default" class="">Colors/Patterns</label> 
+	<ul ui-sortable="sortableOptions" class="form-group">
+		<li ng-repeat="(ls, choices) in listchoices">
+			<img src="/theme/assets/lib/black/images/moveicon.png" class="movepointer" />
+			<input type="text"  ng-model="typedata.listvalues[ls].swatchname" style="width: auto;min-height: 24px;" />  
+			<select ng-model="typedata.listvalues[ls].swatchtype">
+				<option value="onecolor">One Color</option>
+				<option value="twocolor">Two Color</option>
+				<option value="threecolor">Three Color</option>
+				<option value="pattern">Pattern</option>
+			</select>
+			<span ng-if="typedata.listvalues[ls].swatchtype == 'onecolor'">
+				Hex <input type="text" ng-model="typedata.listvalues[ls].color1" style="width: auto;min-height: 24px;" />
+			</span>
+			<span ng-if="typedata.listvalues[ls].swatchtype == 'twocolor'">
+				Hex <input type="text" ng-model="typedata.listvalues[ls].color1" style="width: auto;min-height: 24px;" /><input type="text" ng-model="typedata.listvalues[ls].color2" style="width: auto;min-height: 24px;"/>
+			</span>
+			<span ng-if="typedata.listvalues[ls].swatchtype == 'threecolor'">
+				Hex <input type="text" ng-model="typedata.listvalues[ls].color1" style="width: auto;min-height: 24px;"/><input type="text" ng-model="typedata.listvalues[ls].color2" style="width: auto;min-height: 24px;"/>
+				<input type="text" ng-model="typedata.listvalues[ls].color3" style="width: auto;min-height: 24px;"/>
+			</span>
+			<span ng-if="typedata.listvalues[ls].swatchtype == 'pattern'">
+				<input type="file" ng-select ng-model="typedata.listvalues[ls].patternfile" />
+			</span>
+			<a ng-click="addchoicerow()"><img src="/theme/assets/lib/black/images/addrow.png" /></a><a ng-click="removechoicerow(ls)" ng-if="listchoices.length > 1"><img src="/theme/assets/lib/black/images/deleterow.png" /></a>
+		</li>
+	</ul> 
+</div>

@@ -1,0 +1,29 @@
+<div class="page-inner">
+    <div class="page-title">
+        <h3 class="breadcrumb-header">{{params.title}}</h3>
+        <p>Product options (such as color, size and style) can be created and assigned to products as part of an option set, which you can also create below.</p>
+        <div breadcrumbs></div>
+    </div> 
+    <div id="main-wrapper">  
+        <div ng-controller="CatalogVariantsListController">
+            <div class="row">
+                <div class="col-md-12">
+                    <div role="tabpanel">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs variantstab" role="tablist">
+                            <li role="presentation" class="active"><a href="#variants" role="tab" data-toggle="tab">Variants</a></li>
+                            <li role="presentation"><a href="#variants_set" role="tab" data-toggle="tab">Variants Set</a></li>  
+                        </ul>
+                    </div>
+                    <div class="tab-content z-depth-2">
+                        <div role="tabpanel" class="tab-pane active" id="variants">
+                            <listwidget></listwidget>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div><!-- Main Wrapper -->
+    <div class="page-footer"> 
+    </div>
+</div><!-- Page Inner --> 

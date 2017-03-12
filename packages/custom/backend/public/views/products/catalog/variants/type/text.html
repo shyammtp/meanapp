@@ -1,0 +1,14 @@
+<div class="form-group">
+     <label for="input-Default" class="">Default Value</label>
+     <input ng-model="typedata.default_value" class="date-picker" type="text" />
+     <p class="help-block">The value that prefilled on the product page.</p>
+</div>
+<div class="form-group">
+     <label for="input-Default" class="">Limit Input</label>
+     <input type="checkbox" id="selecsst" ng-model="typedata.validatelength"/><label style="font-size: 12px;" for="selecsst">I want to control the number of characters entered</label>
+	<div class="subaction" ng-if="typedata.validatelength == true">
+		<img src="/theme/assets/lib/black/images/nodejoin.gif" /> 
+		<span id=""><b>Least:</b> <input  style="width: auto;min-height: 24px;" ng-model="typedata.valuefrom" min="0"  type="number" />  <b>Most:</b><input style="width: auto;min-height: 24px;" ng-model="typedata.valueto"  type="number" min="0" /></span>
+	</div>
+	<p class="help-block">Enable this option if you'd like to restrict the amount of characters the customer can enter to a minimum or maximum. Use a value of '0' for no limit</p>
+</div> 

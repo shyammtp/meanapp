@@ -296,7 +296,7 @@
     function catalogfield(Product,$compile,$location,ArrayUtil) {
         return {
             template: '<div ng-include="getContentUrl()"></div>',
-            products : {},
+            products : {}, 
             scope : {
                 catalogattributes : '=',
                 parentattribute : '=',                
@@ -346,6 +346,118 @@
             initText : function(scope,element,attrs) {
                
             },initDate : function(scope,element,attrs) {
+                 angular.element('.date-picker',element).datepicker({
+                    orientation: "top auto",
+                    autoclose: true
+                });
+            }
+
+        }
+    }
+
+    function catalogvariantfield(Product,$timeout,$location,ArrayUtil) {
+        return {
+            template: '<div ng-include="getContentUrl()" onload="childOnLoad()"></div>',
+            products : {}, 
+            scope : {           
+                variantscope : '&variantscope'
+            },
+            initAfter : function(scope,element,attrs) {
+                if(attrs.datatype == 'date') {
+                     this.initDate(scope,element,attrs);
+                      //scope.typedata.limit_type =  'earliest';
+                } 
+
+            },
+            link : function(scope,element,attrs) {
+                scope.typedata = {};
+                var editmode = false;
+                var _obj = this;
+                _obj.typedata = {};
+                scope.$watchCollection('typedata', function() {  
+                    _obj.typedata = angular.extend({}, _obj.typedata, scope.typedata);  
+                    scope.variantscope({variantscope : _obj.typedata});
+                    //editmode = false;
+                }); 
+                scope.$on('loadedvariant',function(event, data) {
+                    var d = data.res;
+                    scope.typedata = d.type_datas;
+                    editmode = true;
+                    console.log(data.res);
+                })   
+
+                scope.childOnLoad = function() {
+                    _obj.initAfter(scope,element,attrs);
+                    if(!editmode) {
+                        scope.typedata = {}; 
+                        _obj.typedata = {};
+                        scope.listchoices = [{id: '1',value: '',default: true}];
+                    }
+                    $timeout(function() {
+                        editmode = false;
+                    })
+
+                }
+
+
+                scope.$watch('typedata.limit_range',function() {
+                    if(attrs.datatype == 'date') {
+                        if(scope.typedata.limit_range == true) {
+                            scope.typedata.limit_type =  'earliest';
+                        }
+                    }
+                    if(attrs.datatype == 'number') {
+                        if(scope.typedata.limit_range == true) {
+                            scope.typedata.limit_type =  'lowest';
+                        }
+                    }
+
+                });
+                scope.listchoices = [{id: '1',value: '',default: true}]; 
+                scope.addchoicerow = function() {
+                   
+                    var newItemNo = scope.listchoices.length+1;
+                    scope.listchoices.push({id: '1',value: '',default: true});
+                    console.log(scope.listchoices);
+                };
+                /*scope.sortableOptions = {
+                    update: function(e, ui) {
+                        console.log(scope.listchoices);
+                    },
+                    axis: 'y'
+                };*/
+                    
+                  scope.removechoicerow = function(index) {
+                    console.log(index);
+                    var appe = [];
+                    for(var k in scope.listchoices) {
+                        console.log(k);
+                        if(parseInt(k) != parseInt(index)) {
+                            appe.push(scope.listchoices[k]);
+                        }
+                    }
+                    console.log(appe);
+                    scope.listchoices = [];
+                    $timeout(function() {
+                        scope.listchoices = appe;  
+                     console.log(scope.listchoices);  
+                    })
+                    
+                  };
+                scope.getContentUrl = function() { 
+                    return 'backend/views/products/catalog/variants/type/' + attrs.datatype + '.html';
+                }
+                scope.countObject = function(obd) {
+                    if(obd == undefined) {
+                        return false;
+                    }
+                    if(Object.keys(obd).length > 0) {
+                        return true;
+                    }
+                    return false;
+                }
+                 
+            },initDate : function(scope,element,attrs) { 
                  angular.element('.date-picker',element).datepicker({
                     orientation: "top auto",
                     autoclose: true
@@ -409,10 +521,12 @@
         .directive('jsdirtree', jsTree)
         .directive('categoryselectslider', categoryselectslider)
         .directive('attributemanager',attributeManager) 
-        .directive('catalogfield',catalogfield);
+        .directive('catalogfield',catalogfield)
+        .directive('catalogvariantfield',catalogvariantfield);
  
     jsTree.$inject = ['Product','ArrayUtil','$timeout'];
     categoryselectslider = ['Product','$compile','$location'];    
     attributeManager = ['Product','$compile','$location','ArrayUtil'];    
     catalogfield = ['Product','$compile','$location','ArrayUtil']; 
+    catalogvariantfield = ['Product','$timeout','$location','ArrayUtil']; 
 })();

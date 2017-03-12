@@ -8,12 +8,12 @@
 				<th colspan="{{columns.length}}">
 					<div class="row">
 						<div class="col-sm-12" ng-hide="filterdependant">
-							<button type="button" class="btn btn-default pull-right z-depth-2 waves-effect m-t-xs m-b-xs" ng-click="enablefilter(true)"><span class="icon-magnifier" style="font-size:14px;"></span></button>
-							<button type="button" class="btn btn-primary pull-right m-r-5 waves-effect m-t-xs m-b-xs">Add Template</button>
+							<button type="button" class="btn btn-default pull-right z-depth-2 waves-effect m-t-xs m-b-xs" ng-click="enablefilter(true)"><span class="icon-magnifier" style="font-size:14px;"></span></button> 
 
-							<div class="fixed-action-btn">
-						      <a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
-						  </div>
+
+							<div class="fixed-action-btn" ng-if="add_link">
+					      		<a href="{{add_link}}" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
+						  	</div>
 						</div>
 						<div class="col-sm-12 filterdependant" ng-show="filterdependant">								
 							<div class="pull-right btn-group"> 

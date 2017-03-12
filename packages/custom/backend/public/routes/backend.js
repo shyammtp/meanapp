@@ -75,6 +75,17 @@
             templateUrl: 'backend/views/products/catalog/attributes/copy/form.html',
             params: {title : 'Products Catalog Attribute Form',hasheader : 'false',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Add a product'}]},
          })
+          .state('product_catalog_variants', {
+            url : '/admin/products/catalog/variants',
+            templateUrl: 'backend/views/products/catalog/variants/list.html',
+            params: {title : 'Products Catalog Variants',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Variants'}]},
+         })
+          .state('product_catalog_variants_form', {
+            url : '/admin/products/catalog/variants/form/{variantid}',
+            templateUrl: 'backend/views/products/catalog/variants/form.html',
+            params: {title : 'Create new variant',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Variants','link' : '/admin/products/catalog/variants'},{title : 'Add/Edit Variants'}]},
+         })
+
  
         ;
         $locationProvider

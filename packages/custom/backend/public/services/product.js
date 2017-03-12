@@ -2,7 +2,8 @@
     'use strict';
  
     function Product($http, $q,$window, Authentication,ArrayUtil) { 
-        this.categoryset = {},this.categorytreeset = {},this.catalogattributedata = {},this.parentcategorycopy = {},this.productData = {};       
+        this.categoryset = {},this.categorytreeset = {},this.catalogattributedata = {},this.parentcategorycopy = {},this.productData = {};  
+         
         var getCategories = function() {
             var deferred = $q.defer();
             $http.get('/api/category/getall',{headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
@@ -33,6 +34,23 @@
         saveProduct = function() {
             var deferred = $q.defer(), params = this.getProductData();
             $http.post('/api/product/save',params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                deferred.resolve(response);
+            }, function(response) {
+                deferred.reject(response);
+            });
+            return deferred.promise;
+        },
+        saveVariant = function(data) { 
+            var deferred = $q.defer(), params = data;
+            $http.post('/api/variant/save',params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                deferred.resolve(response);
+            }, function(response) {
+                deferred.reject(response);
+            });
+            return deferred.promise;
+        },getVariantById = function(params) {
+            var deferred = $q.defer();
+            $http.get('/api/variant/get/'+ArrayUtil.get(params,'id'),{headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {
                 deferred.reject(response);
@@ -123,10 +141,26 @@
                 deferred.reject(response);
             });
             return deferred.promise;
+        },
+        getVariantTypes = function() {
+            return {
+                'checkbox': {title : 'Checkbox'},
+                'date':  {title : 'Date'},
+                'file_upload': {title : 'File Upload'},
+                'textarea': {title : 'Multi Line'},
+                'multichoice': {title : 'Multi Choice'},
+                'number': {title : 'Number'},
+                'subproducts': {title : 'Product List'},
+                'swatch': {title : 'Swatch'},
+                'text': {title : 'Text'}
+            };
         }
 
-        return {    
+        return {   
+            getVariantTypes : getVariantTypes,
+            getVariantById : getVariantById, 
             getCategories : getCategories,
+            saveVariant : saveVariant,
             saveCategory : saveCategory,
             deleteCategory : deleteCategory,
             getCategoryTree : getCategoryTree,

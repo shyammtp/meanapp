@@ -3,7 +3,7 @@
 
     var CryptoJS = require("crypto-js");
     var secretKey = 'SHYAMPRADEEP';
-    function listwidget(ListWidget) { 
+    function listwidget(ListWidget,$sce) { 
         return { 
             templateUrl : 'backend/views/widget/list.html',
             replace: true,
@@ -11,6 +11,7 @@
                 scope.dbresult = ListWidget.getDbResults(); 
                 scope.columns = ListWidget.getColumnsData(); 
                 scope.widgetfilter = {}; 
+                scope.add_link = ListWidget.getAddLink();
                 scope.sortcolumn = ListWidget.getSortColumn();
                 scope.sortdir = ListWidget.getSortDir();
                 scope.widgetsearchfilter = function() {  
@@ -18,7 +19,7 @@
                     console.log(ListWidget.getRequestParams());
                     var params = angular.merge(ListWidget.getRequestParams(),{page : 1, filter : encryptedData});
                    
-                   ListWidget.request({page : 1, filter : encryptedData}).then(function(res) {
+                   ListWidget.request({page : 1, filter : encryptedData,passtoken : true}).then(function(res) {
                         ListWidget.setTotalItems(res.data.total)
                                  .setPage(1)
                                 .setDBResults(res.data.docs);   
@@ -33,7 +34,7 @@
                     } else {
                         ListWidget.defaultSortDirection = 1;
                     }
-                    ListWidget.request({page : 1}).then(function(res) { 
+                    ListWidget.request({page : 1,passtoken : true}).then(function(res) { 
                         ListWidget.setTotalItems(res.data.total)
                                  .setPage(1)
                                 .setDBResults(res.data.docs);   
@@ -53,7 +54,7 @@
                 }
                 scope.resetwidgetsearchfilter = function() {
 
-                   ListWidget.request({page : 1},['filter']).then(function(res) { 
+                   ListWidget.request({page : 1,passtoken : true},['filter']).then(function(res) { 
                         ListWidget.setTotalItems(res.data.total)
                                  .setPage(1,true)
                                 .setDBResults(res.data.docs);   
@@ -87,6 +88,7 @@
                 scope.getContentUrl = function() {
                     return attrs.template;
                } 
+               scope.rowobject = JSON.parse(attrs.rowObject);
             }
 
         }
@@ -161,7 +163,7 @@
 
     angular
         .module('mean.backend')
-        .directive('listwidget', listwidget)        
+        .directive('listwidget',['ListWidget','$sce',listwidget])        
         .filter('columnrender',['ListWidget','$sce',columnrender])
         .filter('columnfilter',['ListWidget','$sce',columnfilter])
         .directive('widgetCustomRender', widgetCustomRender)

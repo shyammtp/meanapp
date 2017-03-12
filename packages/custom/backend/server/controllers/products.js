@@ -1,7 +1,7 @@
 'use strict';
 
 var Mongoose = require('mongoose'),
-  AdminUser = Mongoose.model('AdminUser'),category = Mongoose.model('Category'),product = Mongoose.model('Product'),
+  AdminUser = Mongoose.model('AdminUser'),category = Mongoose.model('Category'),product = Mongoose.model('Product'),variants = Mongoose.model('Variants'),
   arrayutil = require('../helpers/util').array,
   attrdefaults = require('../includes/attributesdefaults.json'),
   textutil = require('../helpers/util').text,config = require('meanio').getConfig(); 
@@ -84,6 +84,14 @@ var Mongoose = require('mongoose'),
             
 
           }); 
+        },
+        getVariants : function(req,res,next) {
+            if(!arrayutil.get(req.params,'id')) {
+                 return res.status(500).json({message: "Invalid Variant ID"});
+              }
+            variants.findOne({_id : arrayutil.get(req.params,'id')},function (err, vars) { 
+                  res.status(200).json(vars); 
+              }); 
         },
         deleteCategory : function(req,res,next) {
           if(!arrayutil.get(req.params,'id')) {
@@ -176,6 +184,30 @@ var Mongoose = require('mongoose'),
             
           }); 
           
+        },
+        cataloglistvariants : function(req,res,next) {
+            variants.getAllPaginate(req.query,function(err,cb) {
+               res.send(cb);
+            });
+        },
+        saveVariant : function(req,res,next) {
+          var vr = new variants();
+          vr.addData(req.body); 
+          console.log(req.body)
+          if(arrayutil.get(req.body,'_id')) {
+            vr.updateData(arrayutil.get(req.body,'_id'),function(err,sd) {
+                if(err) return res.status(500).json(err);
+                res.status(200).json(sd);
+            });
+          } else {
+            vr.save(function(err,products) { 
+                if(err) {
+                    res.status(500).json(err);
+                } else {
+                    res.status(200).json({message: 'Inserted Successfully',data : products});
+                }
+            });
+          }
         }
 
   	 }

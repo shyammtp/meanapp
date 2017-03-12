@@ -1,0 +1,25 @@
+<div class="form-group">
+	<label for="input-Default" class="">Default Value</label> 		
+	<textarea placeholder="" ng-model="typedata.default_value" class="materialize-textarea"></textarea>
+	<p class="help-block">The value that is prefilled on the product page.</p>
+</div>
+<div class="form-group">
+	<label for="input-Default" class="">Default Value</label> 
+	<div class="form-group">
+		<input type="checkbox" id="characters" ng-model="typedata.validatecharacter" /><label style="font-size: 12px;" for="characters">I want to control the number of characters entered</label> 
+		<div class="subaction" ng-if="typedata.validatecharacter == true">
+			<img src="/theme/assets/lib/black/images/nodejoin.gif" /> 
+			<span id=""><b>Least:</b> <input style="width: auto;min-height: 24px;" ng-model="typedata.characterleastvalue" min="0"  type="number" /></span>
+			<span id=""><b>Most:</b> <input style="width: auto;min-height: 24px;" ng-model="typedata.charactermostvalue" min="0" type="number" /></span>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+	<div class="form-group">
+		<input type="checkbox" id="lines" ng-model="typedata.validatelines" /><label style="font-size: 12px;" for="lines">I want to control the number of lines entered</label>
+		<div class="subaction" ng-if="typedata.validatelines == true">
+			<img src="/theme/assets/lib/black/images/nodejoin.gif" /> 
+			<span id=""><b>Most:</b> <input style="width: auto;min-height: 24px;" ng-model="typedata.linesmostvalue" min="0" type="number" /></span> 
+			<div class="clearfix"></div>
+		</div>
+	</div>
+</div>

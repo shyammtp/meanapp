@@ -129,16 +129,18 @@
       return this;
     }
 
-    function Widget($http, $q,Util,ListPaginate) { 
+    function Widget($http, $q,Util,ListPaginate,Authentication) { 
         return { 
             columns : {},
             pager : {},
             dbResults : [],
             totalItems : 0,
+            add_link : '',
             pageSize: 10,
             defaultSortColumn : '',
             defaultSortDirection : 1,
             requestUrl : '', 
+            custom_links : '',
             addColumn : function(columnname, columndata) {
                 if(!columnname) {
                     return this;
@@ -159,6 +161,15 @@
             setDefaultSortColumn : function(sort) {
                 this.defaultSortColumn = sort;
                 return this;
+            },
+            init : function() {
+                this.columns = {};
+                this.defaultSortColumn = '';
+                this.pager = {};
+                this.requestUrl = '';
+                this.dbResults = [];
+                this.custom_links = '';
+                this.add_link = '';
             },
             getColumns : function() { 
                 //console.log(this.columns);
@@ -197,6 +208,16 @@
                     }                    
                 }
                 return columns;
+            },
+            setCustomLinks : function(html) {
+                this.custom_links = html;
+                return this;
+            },
+            getCustomLinks : function() {
+                return this.custom_links;
+            },
+            getAddLink : function() {
+                return this.add_link;
             },
             getPager : function() {
                 return this.pager;
@@ -238,7 +259,13 @@
                     }
                 } 
                 var deferred = $q.defer(); 
-                $http.get(this.requestUrl,{params: this.requestParams,cache  : true}).then(function(response) {
+                var passq = {};
+                passq.params = this.requestParams;
+                passq.cache = true;
+                if(params.passtoken) {
+                    passq.headers = {'Authorization' : 'Bearer '+Authentication.getToken()};
+                }
+                $http.get(this.requestUrl,passq).then(function(response) {
                     deferred.resolve(response);
                 }, function(response) {
                     deferred.reject(response);
@@ -307,6 +334,6 @@
         .factory('Util',Utility)
         .factory('ListPaginate', Paginate)
         .factory('ListWidget', Widget);
-    Widget.$inject = ['$http', '$q','Util','ListPaginate'];
+    Widget.$inject = ['$http', '$q','Util','ListPaginate','Authentication'];
 
 })();

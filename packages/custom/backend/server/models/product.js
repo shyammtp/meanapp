@@ -31,7 +31,7 @@ ProductSchema.methods.addData = function(data) {
 	var _obj = this;
 	if(data.title) {
 		this.product_url = textutil.url_title(data.title);
-	}
+	} 
 	this.status = 1;
 	this.parent_id = 0;
 	if(data.category_id) {

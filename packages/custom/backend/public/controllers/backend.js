@@ -22,6 +22,7 @@
         $scope.params =  $stateParams; 
         Backend.getAssetsData().then(function(res) { 
             $scope.assetspath = res.path;
+            console.log(res.path);
             $scope.theme = res.theme; 
         }); 
         Backend.getMenus().then(function(response) { 
@@ -122,9 +123,9 @@
     }
 
     function WidgetController($scope,ListWidget,$location,Backend,$rootScope,$state) { 
-
          var vm = this;  
-         vm.setPage = setPage;
+         vm.setPage = setPage; 
+         ListWidget.init();
          ListWidget.defaultSortColumn = 'template_type';
          ListWidget.addColumn('name',{'type' : 'text','title' : 'Name',defaultValue : '--',width : '30%'});
          ListWidget.addColumn('from_name',{'type' : 'number','title' : 'Username',width : '30%'}); 
