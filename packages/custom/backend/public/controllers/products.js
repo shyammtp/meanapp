@@ -352,19 +352,21 @@
         var vm = this;   
         $scope.varianttypes = Product.getVariantTypes();  
         $scope.type = '';
-        Product.getVariantById({id : $stateParams.variantid}).then(function(response) {
-            var d = response.data;
-            if(!response.data._id) {
-                Materialize.toast('Invalid Variant', 4000,'errortoast');
-                $location.path('admin/products/catalog/variants');
-            }
-            $scope.variant_name = d.variant_name;
-            $scope.display_name = d.display_name; 
-            vm.variantdata._id = d._id;
-            $scope.type = ArrayUtil.get(d.type,0);
-            $scope.$broadcast('loadedvariant',{res : d});
-            console.log(response);
-        })
+        if(typeof $stateParams.variantid != 'undefined') {
+            Product.getVariantById({id : $stateParams.variantid}).then(function(response) {
+                var d = response.data;
+                if(!response.data._id) {
+                    Materialize.toast('Invalid Variant', 4000,'errortoast');
+                    $location.path('admin/products/catalog/variants');
+                }
+                $scope.variant_name = d.variant_name;
+                $scope.display_name = d.display_name; 
+                vm.variantdata._id = d._id;
+                $scope.type = ArrayUtil.get(d.type,0);
+                $scope.$broadcast('loadedvariant',{res : d});
+                console.log(response);
+            })
+        }
         console.log($stateParams);
         $scope.settype = function(type) {
             $scope.type = type;
