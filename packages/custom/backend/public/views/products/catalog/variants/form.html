@@ -30,7 +30,7 @@
                         </div>
                         <catalogvariantfield datatype="{{type}}" data-variantscope="getScope(variantscope)"></catalogvariantfield>
                         <div class="fixed-action-btn">
-                            <a ng-click="savevariant()" ng-disabled="variantform.$invalid"   class="btn btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
+                            <a ng-click="variantform.$invalid || savevariant()" ng-disabled="variantform.$invalid"   class="btn btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
                         </div>
                     </div>
                 </div>

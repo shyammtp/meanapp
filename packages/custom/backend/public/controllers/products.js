@@ -380,6 +380,7 @@
             vm.variantdata.display_name = $scope.display_name; 
             vm.variantdata.type = $scope.type; 
             vm.variantdata.data = vm.data;
+            console.log(vm.variantdata);
             Product.saveVariant(vm.variantdata).then(function(res){
                 Materialize.toast('Variant Added Successfully', 4000);
                 $location.path('admin/products/catalog/variants');
