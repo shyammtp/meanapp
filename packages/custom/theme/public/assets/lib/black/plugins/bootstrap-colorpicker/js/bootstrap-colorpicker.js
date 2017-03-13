@@ -814,7 +814,7 @@
             val = alias;
           }
         }
-        this.input.prop('value', val);
+        this.input.val(val);
       }
       return val;
     },

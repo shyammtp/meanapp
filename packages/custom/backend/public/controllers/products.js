@@ -374,17 +374,20 @@
         } 
         $scope.assetspath = $scope.$parent.assetspath;
         vm.variantdata = {};
-        $scope.savevariant = function() {
-
-            vm.variantdata.variant_name = $scope.variant_name;
-            vm.variantdata.display_name = $scope.display_name; 
-            vm.variantdata.type = $scope.type; 
-            vm.variantdata.data = vm.data;
-            console.log(vm.variantdata);
-            Product.saveVariant(vm.variantdata).then(function(res){
-                Materialize.toast('Variant Added Successfully', 4000);
-                $location.path('admin/products/catalog/variants');
-            });
+        $scope.savevariant = function() { 
+            $scope.$broadcast('formsubmitted',true);
+            
+                console.log(vm.data);
+                /*vm.variantdata.variant_name = $scope.variant_name;
+                vm.variantdata.display_name = $scope.display_name; 
+                vm.variantdata.type = $scope.type; 
+                vm.variantdata.data = vm.data;
+                console.log(vm.variantdata);
+                Product.saveVariant(vm.variantdata).then(function(res){
+                    Materialize.toast('Variant Added Successfully', 4000);
+                    $location.path('admin/products/catalog/variants');
+                });*/ 
+            
         }
 
         $scope.getScope = function(s) {

@@ -367,6 +367,9 @@
                      this.initDate(scope,element,attrs);
                       //scope.typedata.limit_type =  'earliest';
                 } 
+                if(attrs.datatype == 'swatch') {
+                    this.initSwatch(scope,element,attrs);
+                }
 
             },
             link : function(scope,element,attrs) {
@@ -374,17 +377,29 @@
                 var editmode = false;
                 var _obj = this;
                 _obj.typedata = {};
-                scope.$watchCollection('typedata', function() {  
+               /* scope.$watch('typedata', function() {  
                     _obj.typedata = angular.extend({}, _obj.typedata, scope.typedata);  
-                    scope.variantscope({variantscope : _obj.typedata});
+                    console.log(_obj.typedata);
+                    
                     //editmode = false;
-                }); 
+                }); */
                 scope.$on('loadedvariant',function(event, data) {
                     var d = data.res;
                     scope.typedata = d.type_datas;
+                    var aps = [];
+                    angular.forEach(d.type_datas.listvalues,function(k,v) {
+                        aps.push(k);
+                    });
+                    scope.listchoices = aps;
                     editmode = true;
-                    console.log(data.res);
-                })   
+                });
+
+                scope.$on('formsubmitted',function(event, d) { 
+                    if(d) {
+                        console.log(scope.typedata);
+                        scope.variantscope({variantscope : scope.typedata});
+                    }
+                })
 
                 scope.childOnLoad = function() {
                     _obj.initAfter(scope,element,attrs);
@@ -414,11 +429,10 @@
 
                 });
                 scope.listchoices = [{id: '1',value: '',default: true}]; 
-                scope.addchoicerow = function() {
-                   
+                scope.addchoicerow = function() {                   
                     var newItemNo = scope.listchoices.length+1;
                     scope.listchoices.push({id: '1',value: '',default: true});
-                    console.log(scope.listchoices);
+                    //console.log(scope.listchoices);
                 };
                 /*scope.sortableOptions = {
                     update: function(e, ui) {
@@ -426,6 +440,16 @@
                     },
                     axis: 'y'
                 };*/
+
+                scope.checkswatch = function(type,color) {
+                    angular.element('.color-picker',element).colorpicker({
+                        format: 'hex'
+                    });
+                    if(type == color) {
+                        return true;
+                    }
+                    return false;
+                }
                     
                   scope.removechoicerow = function(index) {
                     console.log(index);
@@ -462,6 +486,7 @@
                     orientation: "top auto",
                     autoclose: true
                 });
+            },initSwatch : function(scope,element,attrs) {               
             }
 
         }
