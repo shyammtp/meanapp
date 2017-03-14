@@ -19,15 +19,13 @@ VariantsSchema.plugin(mongoosePaginate);
 
 VariantsSchema.methods.addData = function(data) {
 	var _obj = this;  
-	this.type_datas = data.data;
-	this.variant_name = data.variant_name;
-	this.display_name = data.display_name;
-	this.type = data.type;
+	this.option_set = data.option_set;
+	this.set_name = data.set_name;  
 }
 
 VariantsSchema.methods.updateData = function(id,cb) {
 	var _obj = this;
-	this.model('Variantset').update({_id : id},{$set  : {variant_name : this.variant_name, display_name: this.display_name, type: this.type, type_datas : this.type_datas}},{upsert: true},function(err,doc) {
+	this.model('Variantset').update({_id : id},{$set  : {set_name : this.set_name,  option_set : this.option_set}},{upsert: true},function(err,doc) {
 		_obj.model('Variantset').findOne({_id : id},cb);
 	});
 

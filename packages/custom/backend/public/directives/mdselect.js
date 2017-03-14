@@ -546,11 +546,12 @@
             templateUrl: 'backend/views/widget/modal.html',
             link : function(scope,element,attrs) { 
                 scope.open = function(){
-                    console.log('asd');
                     angular.element('.modal',element).modal('open');
                     scope.inctemplate = attrs.templateinc;
                 };
-                
+                scope.$on('modaltemplate',function(event, template) {
+                    scope.inctemplate = 'backend/views/widget/elements/input.html';
+                }) 
                 angular.element('.modal').modal({
                     dismissible: true,
                     starting_top: '0%', // Starting top style attribute

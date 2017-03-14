@@ -431,10 +431,12 @@
         var vm = this,vtypes = Product.getVariantTypes();
         $scope.variantoptions = [];  
         $scope.choosedoptions = []; 
+        $scope.editindex = -1;
         Product.getAllVariants().then(function(res) {
-            console.log(vtypes);
+            
             if(res.status === 200) {
                 var d = res.data,options = [];
+                console.log(d);
                 angular.forEach(d, function(v,k) {
                     var dg = {};
 
@@ -442,14 +444,56 @@
                     dg.typename = ArrayUtil.get(ArrayUtil.get(vtypes,dg.type),'title');
                     dg.variant_name = ArrayUtil.get(v,'variant_name');
                     dg.display_name = ArrayUtil.get(v,'display_name');
+                    if(dg.type === 'swatch') {
+                         var listval = ArrayUtil.get(ArrayUtil.get(v,'type_datas'),'listvalues');
+                         var sfg = [];
+                         angular.forEach(listval,function(sv,sk){
+                            sv.required = ArrayUtil.get(sv,'required',true);
+                            sfg.push(sv);
+                        });
+                        v.type_datas.listvalues = sfg;
+                    }
+                    dg.typedata = ArrayUtil.get(v,'type_datas');
+                    dg.required = ArrayUtil.get(v,'required',true);
+
                     dg.id = v._id;
                     options.push(dg);
                 });
-                $scope.variantoptions = options;
-                console.log($scope.variantoptions);
+                $scope.variantoptions = options; 
+                //console.log($scope.updatedoptions);
             }
         });
+
+        $scope.saveupdated = function() {
+            Materialize.toast('Saved the data temporarly. Please save this whole form to update', 4000);
+            $scope.editindex = -1;
+        }
+
+        $scope.edititem = function(index) {
+            $scope.editindex = index;
+        }
+
+        $scope.hasIndex =  function(obj,key) { 
+            if(ArrayUtil.get(obj,key,false)) {
+                return true;
+            }
+            return false;
+        }
+
+        $scope.getenabledoptions = function(options) {
+            var opt = [];
+            if(ArrayUtil.get(options,'type') == 'swatch') {
+                angular.forEach(ArrayUtil.get(ArrayUtil.get(options,'typedata'),'listvalues'),function(v,k){
+                    var g = {};
+                    g.name = ArrayUtil.get(v,'swatchname');
+                    opt.push(g);
+                });
+                return opt;
+            }
+        }
         $scope.openmodal = function() { 
+            angular.element('.modal').modal('open');
+            $scope.$broadcast('modaltemplate','backend/views/widget/elements/input.html');
         }
         $scope.appendtoset = function(opt) {
             
@@ -459,7 +503,19 @@
             $scope.choosedoptions.splice(index,1);
         }
         $scope.sortableOptions = {
+            update : function(e,ui) {
+                $scope.editindex = -1;
+            },
             axis : 'y'
+        }
+        vm.variantdata = {};
+        $scope.savevariant = function() {
+            vm.variantdata.set_name = $scope.set_name;  
+            vm.variantdata.option_set = $scope.choosedoptions;
+            Product.saveVariantSet(vm.variantdata).then(function(res){
+                Materialize.toast('Variant Set Added Successfully', 4000);
+                $location.path('admin/products/catalog/variants/set');
+            });
         }
         /*$scope.varianttypes = Product.getVariantTypes();  
         $scope.type = '';

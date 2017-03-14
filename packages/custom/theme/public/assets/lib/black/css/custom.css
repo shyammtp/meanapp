@@ -1299,7 +1299,7 @@ a.ui-button:active,
 .file-upload-wrapper .subaction img {float:left;}
 .input-group-addon {    background-color: rgba(23, 23, 23, 0);  border:0; border-bottom: 1px solid #292929;}
 .movepointer {cursor: move;}
-.errorborder {border:1px solid #690000!important;}
+.errorborder {border:1px solid #F44336!important;}
 .color-sort li{ margin-top: 8px; }
 .addchoice,.removechoice{padding:0 5px; cursor: pointer;}
 .inline-spacing {margin: 0 5px;}
@@ -1313,3 +1313,4 @@ a.ui-button:active,
 .choosedoptions .blockc {background-color:#1F1F1F; padding: 6px;}
 .choosedoptions li {margin:5px 0;}
 .choosedoptions .opt-header {border-bottom: 1px solid #2d2d2d; padding: 5px 0;}
+.choosedoptions .editmodecontainer {border-top:1px solid #2d2d2d;margin-top: 10px;padding-top: 10px;}

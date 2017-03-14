@@ -53,6 +53,7 @@ var Mongoose = require('mongoose'),
         app.delete('/api/category/attributedelete/:id',authentic,products.deletecatalogattribute);
         app.post('/api/product/save',authentic,products.saveProduct);
         app.post('/api/variant/save',authentic,products.saveVariant);
+        app.post('/api/variantset/save',authentic,products.saveVariantSet);
         app.get('/api/catalog/listvariants',authentic,products.cataloglistvariants);
         app.get('/api/catalog/listvariantset',authentic,products.cataloglistvariantset);
         app.get('/api/variant/get/:id',authentic,products.getVariants);

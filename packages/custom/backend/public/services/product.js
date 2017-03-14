@@ -48,7 +48,15 @@
                 deferred.reject(response);
             });
             return deferred.promise;
-        },getVariantById = function(params) {
+        }, saveVariantSet = function(data) {
+            var deferred = $q.defer(), params = data;
+            $http.post('/api/variantset/save',params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                deferred.resolve(response);
+            }, function(response) {
+                deferred.reject(response);
+            });
+            return deferred.promise;
+        }, getVariantById = function(params) {
             var deferred = $q.defer();
             $http.get('/api/variant/get/'+ArrayUtil.get(params,'id'),{headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
                 deferred.resolve(response);
@@ -171,6 +179,7 @@
             getCategories : getCategories,
             getAllVariants : getAllVariants,
             saveVariant : saveVariant,
+            saveVariantSet : saveVariantSet,
             saveCategory : saveCategory,
             deleteCategory : deleteCategory,
             getCategoryTree : getCategoryTree,

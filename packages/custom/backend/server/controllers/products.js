@@ -220,6 +220,25 @@ var Mongoose = require('mongoose'),
             });
           }
         },
+        saveVariantSet : function(req,res,next) {
+          var vr = new variantset();
+          vr.addData(req.body);  
+          //console.log(req.body);
+          if(arrayutil.get(req.body,'_id')) {
+            vr.updateData(arrayutil.get(req.body,'_id'),function(err,sd) {
+                if(err) return res.status(500).json(err);
+                res.status(200).json(sd);
+            });
+          } else {
+            vr.save(function(err,products) { 
+                if(err) {
+                    res.status(500).json(err);
+                } else {
+                    res.status(200).json({message: 'Inserted Successfully',data : products});
+                }
+            });
+          }
+        },
         upload : function(req,res,next) { 
             var storage = multer.diskStorage({ 
                 destination: function (req, file, cb) {
