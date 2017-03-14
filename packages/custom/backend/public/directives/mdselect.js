@@ -355,7 +355,7 @@
         }
     }
 
-    function catalogvariantfield(Product,$timeout,$location,ArrayUtil) {
+    function catalogvariantfield(Product,$timeout,$location,ArrayUtil,Upload) {
         return {
             template: '<div ng-include="getContentUrl()" onload="childOnLoad()"></div>',
             products : {}, 
@@ -399,7 +399,27 @@
                         console.log(scope.typedata);
                         scope.variantscope({variantscope : scope.typedata});
                     }
-                })
+                });
+
+                scope.upload = function(file,index) {
+                    Upload.upload({
+                        url : '/api/fileupload',
+                        data : {image : file},
+                        method : 'POST'
+                    }).then(function(resp) { 
+                        if(resp.status === 200) {
+                            if(resp.data.filedata) {
+                                scope.typedata.listvalues[index].patternfilepath = resp.data.filedata.path;
+                            }
+                        }
+                        
+                    }, function (resp) {
+                        console.log('Error status: ' + resp.status);
+                    }, function (evt) {
+                        var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                        console.log('progress: ' + progressPercentage + '% ');
+                    })
+                }
 
                 scope.childOnLoad = function() {
                     _obj.initAfter(scope,element,attrs);
@@ -419,6 +439,10 @@
                     if(attrs.datatype == 'date') {
                         if(scope.typedata.limit_range == true) {
                             scope.typedata.limit_type =  'earliest';
+                            angular.element('.date-picker',element).datepicker({
+                                orientation: "top auto",
+                                autoclose: true
+                            });
                         }
                     }
                     if(attrs.datatype == 'number') {
@@ -434,18 +458,29 @@
                     scope.listchoices.push({id: '1',value: '',default: true});
                     //console.log(scope.listchoices);
                 };
-                /*scope.sortableOptions = {
-                    update: function(e, ui) {
-                        console.log(scope.listchoices);
+                scope.sortableOptions = {
+                    stop: function(e, ui) {
+                        scope.typedata.listvalues = scope.listchoices;
                     },
                     axis: 'y'
-                };*/
+                };
 
                 scope.checkswatch = function(type,color) {
                     angular.element('.color-picker',element).colorpicker({
                         format: 'hex'
                     });
                     if(type == color) {
+                        return true;
+                    }
+                    return false;
+                }
+
+                scope.checkdate = function(type,d) {
+                    angular.element('.date-picker',element).datepicker({
+                        orientation: "top auto",
+                        autoclose: true
+                    });
+                    if(type == d) {
                         return true;
                     }
                     return false;
@@ -469,6 +504,9 @@
                     
                   };
                 scope.getContentUrl = function() { 
+                    if(!attrs.datatype) {
+                        return false;
+                    }
                     return 'backend/views/products/catalog/variants/type/' + attrs.datatype + '.html';
                 }
                 scope.countObject = function(obd) {
@@ -508,11 +546,12 @@
             templateUrl: 'backend/views/widget/modal.html',
             link : function(scope,element,attrs) { 
                 scope.open = function(){
+                    console.log('asd');
                     angular.element('.modal',element).modal('open');
                     scope.inctemplate = attrs.templateinc;
                 };
                 
-                angular.element('.modal',element).modal({
+                angular.element('.modal').modal({
                     dismissible: true,
                     starting_top: '0%', // Starting top style attribute
                     ending_top: '0%', // Ending top style attribute
@@ -553,5 +592,5 @@
     categoryselectslider = ['Product','$compile','$location'];    
     attributeManager = ['Product','$compile','$location','ArrayUtil'];    
     catalogfield = ['Product','$compile','$location','ArrayUtil']; 
-    catalogvariantfield = ['Product','$timeout','$location','ArrayUtil']; 
+    catalogvariantfield = ['Product','$timeout','$location','ArrayUtil','Upload']; 
 })();

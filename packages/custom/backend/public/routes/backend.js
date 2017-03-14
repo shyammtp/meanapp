@@ -90,9 +90,20 @@
             templateUrl: 'backend/views/products/catalog/variants/form.html',
             params: {title : 'Create new variant',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Variants','link' : '/admin/products/catalog/variants'},{title : 'Add/Edit Variants'}]},
          })
-
- 
-        ;
+          .state('product_catalog_variants_set_list', {
+            url : '/admin/products/catalog/variants/set',
+            templateUrl: 'backend/views/products/catalog/variants/set/list.html',
+            params: {title : 'Product catalog variants set',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Variants Set'}]},
+         }).state('product_catalog_variants_set_form', {
+            url : '/admin/products/catalog/variants/set/form',
+            templateUrl: 'backend/views/products/catalog/variants/set/form.html',
+            params: {title : 'Create new variant set',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Variants set','link' : '/admin/products/catalog/variants/set'},{title : 'Add/Edit Variants'}]},
+         })
+          .state('product_catalog_variants_set_form_edit', {
+            url : '/admin/products/catalog/variants/set/form/{variantid}',
+            templateUrl: 'backend/views/products/catalog/variants/form.html',
+            params: {title : 'Create new variant set',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Variants Set','link' : '/admin/products/catalog/variants/set'},{title : 'Add/Edit Variants'}]},
+         });
         $locationProvider
             .html5Mode({enabled:true, requireBase:false});
           

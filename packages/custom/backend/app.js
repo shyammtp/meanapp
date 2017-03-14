@@ -24,6 +24,7 @@ Backend.register(function(app, auth, database, circles) {
   Backend.settingscontroller = require('./server/controllers/settings')(Backend, app);
   Backend.authenticationcontroller = require('./server/controllers/authentication')(Backend, app);
   app.use(passport.initialize()); 
+  
   //We enable routing. By default the Package Object is passed to the routes 
   Backend.routes(app, auth, database, circles);
   //app.use(session({ secret: config.secret, resave: false, saveUninitialized: true }));

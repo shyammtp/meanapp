@@ -57,6 +57,15 @@
             });
             return deferred.promise;
         },
+        getAllVariants = function() {
+            var deferred = $q.defer();
+            $http.get('/api/variants/getall',{cache : true,headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                deferred.resolve(response);
+            }, function(response) {
+                deferred.reject(response);
+            });
+            return deferred.promise;
+        },
         deleteCategory = function(params) {
             var deferred = $q.defer(); 
             $http.delete('/api/category/delete/'+ArrayUtil.get(params,'id'),{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
@@ -160,6 +169,7 @@
             getVariantTypes : getVariantTypes,
             getVariantById : getVariantById, 
             getCategories : getCategories,
+            getAllVariants : getAllVariants,
             saveVariant : saveVariant,
             saveCategory : saveCategory,
             deleteCategory : deleteCategory,

@@ -9,7 +9,7 @@ var Mongoose = require('mongoose'),
   textutil = require('../helpers/util').text,
   path = require('path'),config = require('meanio').getConfig(),jwt = require('jsonwebtoken'),expressJwt = require('express-jwt');
 
-  var authentic  = expressJwt({ 
+    var authentic  = expressJwt({ 
         secret: config.secret,
         userProperty: 'payload'
     });
@@ -54,7 +54,10 @@ var Mongoose = require('mongoose'),
         app.post('/api/product/save',authentic,products.saveProduct);
         app.post('/api/variant/save',authentic,products.saveVariant);
         app.get('/api/catalog/listvariants',authentic,products.cataloglistvariants);
+        app.get('/api/catalog/listvariantset',authentic,products.cataloglistvariantset);
         app.get('/api/variant/get/:id',authentic,products.getVariants);
+        app.get('/api/variants/getall',authentic,products.getVariantsAll);
+        app.post('/api/fileupload',products.upload);
 
         /* General */
         app.get('/api/adminconfig',function(req,res) {             

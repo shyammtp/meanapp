@@ -1,11 +1,12 @@
 'use strict';
 
 var Mongoose = require('mongoose'),
-  AdminUser = Mongoose.model('AdminUser'),category = Mongoose.model('Category'),product = Mongoose.model('Product'),variants = Mongoose.model('Variants'),
+  AdminUser = Mongoose.model('AdminUser'),category = Mongoose.model('Category'),product = Mongoose.model('Product'),variants = Mongoose.model('Variants'),variantset = Mongoose.model('Variantset'),
   arrayutil = require('../helpers/util').array,
   attrdefaults = require('../includes/attributesdefaults.json'),
+  multer  = require('multer'),
   textutil = require('../helpers/util').text,config = require('meanio').getConfig(); 
-
+    
   module.exports = function (Backend, app) {
   	 return { 
         saveCategory : function(req,res) {
@@ -92,6 +93,11 @@ var Mongoose = require('mongoose'),
             variants.findOne({_id : arrayutil.get(req.params,'id')},function (err, vars) { 
                   res.status(200).json(vars); 
               }); 
+        },
+        getVariantsAll : function(req,res,next) {
+            variants.find({},function (err, vars) { 
+                  res.status(200).json(vars); 
+              });
         },
         deleteCategory : function(req,res,next) {
           if(!arrayutil.get(req.params,'id')) {
@@ -190,10 +196,15 @@ var Mongoose = require('mongoose'),
                res.send(cb);
             });
         },
+        cataloglistvariantset : function(req,res,next) {
+            variantset.getAllPaginate(req.query,function(err,cb) {
+               res.send(cb);
+            });
+        },
         saveVariant : function(req,res,next) {
           var vr = new variants();
-          vr.addData(req.body); 
-          console.log(req.body)
+          vr.addData(req.body);  
+          //console.log(req.body);
           if(arrayutil.get(req.body,'_id')) {
             vr.updateData(arrayutil.get(req.body,'_id'),function(err,sd) {
                 if(err) return res.status(500).json(err);
@@ -208,6 +219,37 @@ var Mongoose = require('mongoose'),
                 }
             });
           }
+        },
+        upload : function(req,res,next) { 
+            var storage = multer.diskStorage({ 
+                destination: function (req, file, cb) {
+                    cb(null, './uploads/variants/')
+                },
+                filename: function (req, file, cb) {  
+                    var ext =  file.originalname.split('.').pop();
+                    cb(null, file.fieldname + '-' + Date.now()+'.'+ext)
+                }
+            });
+            var upload = multer({storage : storage,fileFilter : function(req,file,cb) {
+                var ext =  file.originalname.split('.').pop();
+               
+                if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg' ) {
+                    cb(null,true);
+                    return;
+                } 
+                req.fileValidationError = 'Invalid file error';
+                cb(null, false);
+                return;
+                
+            } }).single('image');
+            upload(req,res, function(err) { 
+                if(err) res.status(200).send(err);
+                if(req.fileValidationError) {
+                    res.send({ error: req.fileValidationError });
+                    return;
+                }
+                res.status(200).json({filedata : req.file});
+            });            
         }
 
   	 }

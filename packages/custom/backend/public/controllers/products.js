@@ -348,6 +348,41 @@
         
     }
 
+    function CatalogVariantsetListController($scope,ArrayUtil,ListWidget) {
+        var vm = this;  
+         vm.setPage = setPage;
+         ListWidget.init();
+         ListWidget.add_link = '/admin/products/catalog/variants/set/form';
+         ListWidget.defaultSortColumn = 'type';
+         ListWidget.addColumn('set_name',{'type' : 'text','title' : 'Set Name',defaultValue : '--',width : '60%'}); 
+         ListWidget.addColumn('nocolumn',{'type' : 'notype','title' : 'Actions',defaultValue : '--',width : '40%',sortable : false,filterable : false,'render' : 'backend/views/products/catalog/variants/set/list/renderer/action.html'});
+         ListWidget.setDataRequestUrl('/api/catalog/listvariantset'); 
+         
+        function setPage(page) { 
+            if(page < 1) {
+                page = 1;
+            }
+            ListWidget.request({page: page,limit : 20,passtoken : true}).then(function(res){  
+                ListWidget.setTotalItems(res.data.total)
+                        .setPageSize(20).setPage(page)
+                        .setDBResults(res.data.docs);   
+                $scope.pager = ListWidget.getPager();  
+                $scope.dbresult = ListWidget.getDbResults();
+            });    
+        }  
+        $scope.widgetlimitchange = function(selected) {
+            ListWidget.request({page: 1,limit : selected,passtoken : true}).then(function(res){  
+                ListWidget.setTotalItems(res.data.total)
+                        .setPageSize(selected).setPage(1)
+                        .setDBResults(res.data.docs);   
+                $scope.pager = ListWidget.getPager();  
+                $scope.dbresult = ListWidget.getDbResults();
+            }); 
+        }
+        setPage(1);
+        
+    }
+
     function CatalogVariantsFormController($scope,ArrayUtil,Product,$location,$stateParams) {
         var vm = this;   
         $scope.varianttypes = Product.getVariantTypes();  
@@ -363,11 +398,9 @@
                 $scope.display_name = d.display_name; 
                 vm.variantdata._id = d._id;
                 $scope.type = ArrayUtil.get(d.type,0);
-                $scope.$broadcast('loadedvariant',{res : d});
-                console.log(response);
+                $scope.$broadcast('loadedvariant',{res : d}); 
             })
-        }
-        console.log($stateParams);
+        } 
         $scope.settype = function(type) {
             $scope.type = type;
             vm.data = {};
@@ -375,24 +408,98 @@
         $scope.assetspath = $scope.$parent.assetspath;
         vm.variantdata = {};
         $scope.savevariant = function() { 
-            $scope.$broadcast('formsubmitted',true);
-            
-                console.log(vm.data);
-                /*vm.variantdata.variant_name = $scope.variant_name;
-                vm.variantdata.display_name = $scope.display_name; 
-                vm.variantdata.type = $scope.type; 
-                vm.variantdata.data = vm.data;
-                console.log(vm.variantdata);
-                Product.saveVariant(vm.variantdata).then(function(res){
-                    Materialize.toast('Variant Added Successfully', 4000);
-                    $location.path('admin/products/catalog/variants');
-                });*/ 
+            $scope.$broadcast('formsubmitted',true);            
+                //console.log(vm.data);
+            vm.variantdata.variant_name = $scope.variant_name;
+            vm.variantdata.display_name = $scope.display_name; 
+            vm.variantdata.type = $scope.type; 
+            vm.variantdata.data = vm.data;
+            Product.saveVariant(vm.variantdata).then(function(res){
+                Materialize.toast('Variant Added Successfully', 4000);
+                $location.path('admin/products/catalog/variants');
+            });
             
         }
 
         $scope.getScope = function(s) {
            vm.data = s; 
         } 
+
+    }
+
+    function CatalogVariantsetFormController($scope,ArrayUtil,Product,$location,$stateParams) {
+        var vm = this,vtypes = Product.getVariantTypes();
+        $scope.variantoptions = [];  
+        $scope.choosedoptions = []; 
+        Product.getAllVariants().then(function(res) {
+            console.log(vtypes);
+            if(res.status === 200) {
+                var d = res.data,options = [];
+                angular.forEach(d, function(v,k) {
+                    var dg = {};
+
+                    dg.type = ArrayUtil.get(ArrayUtil.get(v,'type'),0);
+                    dg.typename = ArrayUtil.get(ArrayUtil.get(vtypes,dg.type),'title');
+                    dg.variant_name = ArrayUtil.get(v,'variant_name');
+                    dg.display_name = ArrayUtil.get(v,'display_name');
+                    dg.id = v._id;
+                    options.push(dg);
+                });
+                $scope.variantoptions = options;
+                console.log($scope.variantoptions);
+            }
+        });
+        $scope.openmodal = function() { 
+        }
+        $scope.appendtoset = function(opt) {
+            
+            $scope.choosedoptions.push(opt);
+        }
+        $scope.removeoption = function(index) {
+            $scope.choosedoptions.splice(index,1);
+        }
+        $scope.sortableOptions = {
+            axis : 'y'
+        }
+        /*$scope.varianttypes = Product.getVariantTypes();  
+        $scope.type = '';
+        if(typeof $stateParams.variantid != 'undefined') {
+            Product.getVariantById({id : $stateParams.variantid}).then(function(response) {
+                var d = response.data;
+                if(!response.data._id) {
+                    Materialize.toast('Invalid Variant', 4000,'errortoast');
+                    $location.path('admin/products/catalog/variants');
+                }
+                $scope.variant_name = d.variant_name;
+                $scope.display_name = d.display_name; 
+                vm.variantdata._id = d._id;
+                $scope.type = ArrayUtil.get(d.type,0);
+                $scope.$broadcast('loadedvariant',{res : d}); 
+            })
+        } 
+        $scope.settype = function(type) {
+            $scope.type = type;
+            vm.data = {};
+        } 
+        $scope.assetspath = $scope.$parent.assetspath;
+        vm.variantdata = {};
+        $scope.savevariant = function() { 
+            $scope.$broadcast('formsubmitted',true);            
+                //console.log(vm.data);
+            vm.variantdata.variant_name = $scope.variant_name;
+            vm.variantdata.display_name = $scope.display_name; 
+            vm.variantdata.type = $scope.type; 
+            vm.variantdata.data = vm.data;
+            Product.saveVariant(vm.variantdata).then(function(res){
+                Materialize.toast('Variant Added Successfully', 4000);
+                $location.path('admin/products/catalog/variants');
+            });
+            
+        }
+
+        $scope.getScope = function(s) {
+           vm.data = s; 
+        } */
 
     }
   
@@ -404,12 +511,16 @@
         .controller('CatalogAddController', CatalogAddController)
         .controller('CatalogAttributesController', CatalogAttributesController) 
         .controller('CatalogVariantsListController', CatalogVariantsListController)
-        .controller('CatalogVariantsFormController', CatalogVariantsFormController) ;
+        .controller('CatalogVariantsetListController', CatalogVariantsetListController)
+        .controller('CatalogVariantsFormController', CatalogVariantsFormController) 
+        .controller('CatalogVariantsetFormController', CatalogVariantsetFormController) ;
 
     CategoryController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product'];
     CatalogController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product','$timeout','$location'];  
     CatalogAttributesController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product','$timeout','$location']; 
     CatalogAddController.$inject = ['$scope', 'ArrayUtil','Product','$location','$timeout'];
     CatalogVariantsListController.$inject = ['$scope', 'ArrayUtil','ListWidget'];
+    CatalogVariantsetListController.$inject = ['$scope', 'ArrayUtil','ListWidget'];
     CatalogVariantsFormController.$inject = ['$scope', 'ArrayUtil','Product','$location','$stateParams'];
+    CatalogVariantsetFormController.$inject = ['$scope', 'ArrayUtil','Product','$location','$stateParams'];
 })();

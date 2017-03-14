@@ -1,6 +1,6 @@
 <div class="form-group">
 	<label for="input-Default" class="">Colors/Patterns</label>  
-	<ul ui-sortable="sortableOptions" class="form-group color-sort">
+	<ul ui-sortable="sortableOptions" ng-model="listchoices" class="form-group color-sort">
 		<li ng-repeat="(ls, choices) in listchoices">
 			<img src="/theme/assets/lib/black/images/moveicon.png" class="movepointer" />
 			<input type="text"  class="inline-spacing inline-textbox-sm" ng-model="typedata.listvalues[ls].swatchname" />  
@@ -21,7 +21,7 @@
 				<input type="text" class="inline-spacing inline-textbox-sm  color-picker" ng-model="typedata.listvalues[ls].color3" name="typedata.listvalues[ls].color3" value=""/>
 			</span>
 			<span ng-if="typedata.listvalues[ls].swatchtype == 'pattern'" class="patter-bl">
-				<input type="file" ng-select ng-model="typedata.listvalues[ls].patternfile" />
+				<input type="file" ngf-select="upload(patternfile[ls],ls)" ng-model="patternfile[ls]" /><img ngf-src="patternfile[ls] || '/'+typedata.listvalues[ls].patternfilepath || ''" width="24" class="thumb" /> <input type="hidden" class="inline-textbox-sm" ng-model="typedata.listvalues[ls].patternfilepath"/>
 			</span>
 			<a ng-click="addchoicerow()" class="addchoice"><img src="/theme/assets/lib/black/images/addrow.png" /></a><a ng-click="removechoicerow(ls)" ng-if="listchoices.length > 1"  class="removechoice"><img src="/theme/assets/lib/black/images/deleterow.png" /></a>
 		</li>

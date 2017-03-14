@@ -1293,15 +1293,23 @@ a.ui-button:active,
 }
 
 
-.subaction {margin-top: 25px; padding-left: 21px;}
+.subaction {/*margin-top: 25px;*/ padding-left: 21px;}
 .subaction b {margin: 5px 6px;    display: inline-block;}
 .allowed-types-container { float:left;border:1px solid #2d2d2d;     padding: 15px;    min-width: 50%;}
 .file-upload-wrapper .subaction img {float:left;}
 .input-group-addon {    background-color: rgba(23, 23, 23, 0);  border:0; border-bottom: 1px solid #292929;}
 .movepointer {cursor: move;}
-.errorborder {border:1px solid #690000;}
+.errorborder {border:1px solid #690000!important;}
 .color-sort li{ margin-top: 8px; }
 .addchoice,.removechoice{padding:0 5px; cursor: pointer;}
 .inline-spacing {margin: 0 5px;}
 .inline-textbox-sm {width:100px!important; min-height: 24px!important;}
 .patter-bl input[type='file'] {display: inline; border: none;}
+.inline-select-sm {height:23px!important; min-height: 23px!important;}
+.availableoptions,.choosedoptions{border:1px solid #2d2d2d; padding: 6px;}
+.var-options-lis li .addln ,.var-optionsst-lis li .editln{text-align: right;}
+.var-options-lis li .addln a{color:#76b900;}
+.var-options-lis li {margin:5px 0;}
+.choosedoptions .blockc {background-color:#1F1F1F; padding: 6px;}
+.choosedoptions li {margin:5px 0;}
+.choosedoptions .opt-header {border-bottom: 1px solid #2d2d2d; padding: 5px 0;}
