@@ -22,6 +22,8 @@ VariantsSchema.methods.addData = function(data) {
 	var _obj = this;   
 	if(data.rules) {
 		this.rules = data.rules;
+		this.ruleindex = -1;	
+		if(typeof data.index !== 'undefined') this.ruleindex = data.index;
 	} else {		
 		this.option_set = data.option_set;
 		this.set_name = data.set_name; 
@@ -44,12 +46,36 @@ VariantsSchema.methods.saveRule = function(id,cb) {
 		} 
 		if(typeof d.rules == 'undefined') {
 			d.rules = [];
+		} 
+		if(_obj.ruleindex >= 0) {
+			d.rules[_obj.ruleindex] = _obj.rules;
+		} else {
+			d.rules.push(_obj.rules); 
 		}
-		d.rules.push(_obj.rules); 
 		_obj.model('Variantset').update({_id : d._id},{$set  : {rules : d.rules}},{upsert: true},function(err,doc) { 
 			cb(null,d.rules); 
 		});
 	});
+}
+
+function updaterulesarray(rules) {
+	var ons = {};
+	for(var rule in rules.params) {
+		var sh = {}
+		for(var i in rules.params[rule]) {
+			var dg = [];
+			for(var s in rules.params[rule][i]) {
+				if(rules.params[rule][i][s] !== false) {
+					dg.push(rules.params[rule][i][s]);
+				}
+			}
+
+			sh[i] = dg;
+		}
+		ons[rule] = sh;
+	}
+	rules.params = ons;
+	return rules;
 }
 
 VariantsSchema.statics.getAllPaginate = function(params, cb) { 

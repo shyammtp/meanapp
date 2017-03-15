@@ -185,16 +185,15 @@ span.active-page {
 }
 
 .cbp-spmenu {
-    background: #181818;
-    overflow: auto;
+    background: #181818; 
 }
 
 .cbp-spmenu h3 {
-    background: #fff;
+    background: #191919;
     color: #5f5f5f;
     padding: 25px 20px 16px 25px;
     height: 64px;
-    margin-bottom: 0;
+    margin-bottom: 20px;
 }
 
 .cbp-spmenu .showRight2 {

@@ -102,6 +102,19 @@ var Mongoose = require('mongoose'),
                   res.status(200).json(vars); 
               }); 
         },
+        getVariantRuleset : function(req,res,next) {
+            if(!arrayutil.get(req.params,'id')) {
+                 return res.status(500).json({message: "Invalid Variant ID"});
+              }
+                variantset.findOne({_id : arrayutil.get(req.params,'id')},function (err, vars) { 
+                    console.log(arrayutil.get(vars,'rules'));
+                    var rule = {};
+                    if(arrayutil.get(arrayutil.get(vars,'rules'),arrayutil.get(req.query,'index'))) {
+                        rule = arrayutil.get(arrayutil.get(vars,'rules'),arrayutil.get(req.query,'index'));
+                    }  
+                    res.status(200).json(rule);
+                }); 
+        },
         getVariantsAll : function(req,res,next) {
             variants.find({},function (err, vars) { 
                   res.status(200).json(vars); 

@@ -91,6 +91,7 @@
                     return attrs.template;
                } 
                scope.rowobject = JSON.parse(attrs.rowObject);
+               scope.resultindex = attrs.resultindex;
                scope.checkobjectLength = function(obj,ln) {
                     if(Object.keys(obj).length > ln) {
                         return true;

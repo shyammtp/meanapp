@@ -73,6 +73,15 @@
             });
             return deferred.promise;
         },
+        getVariantRuleByIndex = function(params) {
+            var deferred = $q.defer();
+            $http.get('/api/variantset/rule/get/'+ArrayUtil.get(params,'id')+'?index='+ArrayUtil.get(params,'index'),{headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                deferred.resolve(response);
+            }, function(response) {
+                deferred.reject(response);
+            });
+            return deferred.promise;
+        },
         saveVariantRule = function(id, params) {
             var deferred = $q.defer();
             $http.post('/api/catalog/savevariantsetrule?id='+id,params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
@@ -196,6 +205,7 @@
             getVariantsetById : getVariantsetById, 
             getCategories : getCategories,
             getAllVariants : getAllVariants,
+            getVariantRuleByIndex : getVariantRuleByIndex,
             saveVariant : saveVariant,
             saveVariantRule : saveVariantRule,
             saveVariantSet : saveVariantSet,

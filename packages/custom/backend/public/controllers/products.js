@@ -434,6 +434,7 @@
         $scope.editindex = -1;
         vm.variantdata = {};
         $scope.variantid = false;
+        $scope.ruleslength = 0;
         if(typeof $stateParams.variantid != 'undefined') {
             $scope.variantid = $stateParams.variantid;
             Product.getVariantsetById({id : $stateParams.variantid}).then(function(response) {
@@ -444,7 +445,7 @@
                 }
                 $scope.set_name = d.set_name;
                 $scope.choosedoptions = $scope.option_set = d.option_set; 
-
+                $scope.ruleslength = ArrayUtil.get(d,'rules',[]).length;
                 vm.variantdata._id = d._id;
                // $scope.type = ArrayUtil.get(d.type,0);
                // $scope.$broadcast('loadedvariant',{res : d}); 
@@ -538,52 +539,93 @@
 
     }
 
-    function CatalogVariantsetrulesListController($scope,ArrayUtil,ListWidget,$stateParams,Backend,Product) {
+    function CatalogVariantsetrulesListController($scope,ArrayUtil,ListWidget,$stateParams,Backend,Product,$location,$state) {
         var vm = this;
         vm.setPage = setPage;
         $scope.rules = {};
-        ListWidget.init();
          vm.variantdata = {};
+         $scope.set_name = '';
         $scope.variantid = false;
-        if(typeof $stateParams.variantid != 'undefined') {
-            $scope.variantid = $stateParams.variantid;
-            Product.getVariantsetById({id : $stateParams.variantid}).then(function(response) {
-                var d = response.data;
-                if(!response.data._id) {
-                    Materialize.toast('Invalid Variant Set', 4000,'errortoast');
-                    $location.path('admin/products/catalog/variants/set');
-                } 
-                $scope.option_set = d.option_set;  
+        $scope.hasParams = false;
+        var loadrule = function() {
+            if(typeof $stateParams.variantid != 'undefined') {
+
+                $scope.variantid = $stateParams.variantid;
+                Product.getVariantsetById({id : $stateParams.variantid}).then(function(response) {
+                    var d = response.data; 
+                    if(!response.data._id) {
+                        Materialize.toast('Invalid Variant Set', 4000,'errortoast');
+                        $location.path('admin/products/catalog/variants/set');
+                    } 
+                    $scope.set_name = d.set_name;
+                    $scope.option_set = d.option_set; 
+                    var s = 0;
+                    angular.forEach(d.option_set,function(vvb,fg){
+                        var listvalues = ArrayUtil.get(vvb.typedata,'listvalues',false);
+                        if(listvalues) {
+                            s++;
+                        }
+                    });
+                    $scope.hasParams = (s > 0);
+                });
+            } 
+        }
+        loadrule();
+        $scope.closethis = function() { 
+            classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );
+        }
+
+        $scope.editrule = function(index) { 
+            Product.getVariantRuleByIndex({id : $scope.variantid, index : index}).then(function(res) { 
+                $scope.editid = index;
+                $scope.rules = res.data;
+                $scope.opensider();
             });
-        } 
+            
+        }
+
         $scope.saverule = function() {
             if(!$scope.variantid) {
                 return false;
             } 
-            Product.saveVariantRule($scope.variantid,{'rules' :$scope.rules}).then(function(res) {
+            if(!$scope.hasParams) {
+                return false;
+            }
+            var params = {};
+            params.rules = $scope.rules;
+            if($scope.editid) {
+                params.index = $scope.editid;
+            } 
+            Product.saveVariantRule($scope.variantid,params).then(function(res) {
                 var d = res.data;
                 $scope.rules = {};
                 classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );
                 Materialize.toast('Rule saved successfully', 4000); 
+               loadlist(); 
             });
         }
         $scope.opensider = function() {
             classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );
             Backend.loadSider($scope,'cbp-spmenu-s2','backend/views/products/catalog/variants/set/rules/form.html'); 
         }
-        //ListWidget.add_link = '/admin/products/catalog/variants/set/form';
-        ListWidget.defaultSortColumn = 'type';
-        ListWidget.isFilter = false;
-        ListWidget.isPaging = false;
-        ListWidget.addColumn('name',{'type' : 'text','title' : 'Set Name',defaultValue : '--',width : '60%','render' : 'backend/views/products/catalog/variants/set/rules/renderer/name.html'}); 
-        ListWidget.addColumn('nocolumn',{'type' : 'notype','title' : 'Actions',defaultValue : '--',width : '40%',sortable : false,filterable : false,'render' : 'backend/views/products/catalog/variants/set/list/renderer/action.html'});
-        ListWidget.setDataRequestUrl('/api/catalog/listvariantrulesset?id='+$stateParams.variantid); 
 
+        var loadlist = function() { 
+            ListWidget.init();
+            ListWidget.defaultSortColumn = 'type';
+            ListWidget.isFilter = false;
+            ListWidget.isPaging = false;
+            ListWidget.addColumn('name',{'type' : 'text','title' : 'When This Is Selected',defaultValue : '--',width : '40%','render' : 'backend/views/products/catalog/variants/set/rules/renderer/name.html'}); 
+            ListWidget.addColumn('change',{'type' : 'text','title' : 'Make this change',defaultValue : '--',width : '40%','render' : 'backend/views/products/catalog/variants/set/rules/renderer/change.html'});
+            ListWidget.addColumn('nocolumn',{'type' : 'notype','title' : 'Actions',defaultValue : '--',width : '20%',sortable : false,filterable : false,'render' : 'backend/views/products/catalog/variants/set/rules/renderer/action.html'});
+            ListWidget.setDataRequestUrl('/api/catalog/listvariantrulesset?id='+$stateParams.variantid);  
+            setPage(1);
+        }
+        loadlist();
         function setPage(page) { 
             if(page < 1) {
                 page = 1;
             }
-            ListWidget.request({page: page,limit : 20,passtoken : true}).then(function(res){  
+            ListWidget.request({page: page,limit : 20,passtoken : true,nocache : true}).then(function(res){  
                 ListWidget.setTotalItems(res.data.total)
                         .setPageSize(20).setPage(page)
                         .setDBResults(res.data.docs);   
@@ -592,7 +634,7 @@
             });    
         }  
         $scope.widgetlimitchange = function(selected) {
-            ListWidget.request({page: 1,limit : selected,passtoken : true}).then(function(res){  
+            ListWidget.request({page: 1,limit : selected,passtoken : true,nocache : true}).then(function(res){  
                 ListWidget.setTotalItems(res.data.total)
                         .setPageSize(selected).setPage(1)
                         .setDBResults(res.data.docs);   
@@ -600,7 +642,7 @@
                 $scope.dbresult = ListWidget.getDbResults();
             }); 
         }
-        setPage(1);
+        
     }
   
 
@@ -622,7 +664,7 @@
     CatalogAddController.$inject = ['$scope', 'ArrayUtil','Product','$location','$timeout'];
     CatalogVariantsListController.$inject = ['$scope', 'ArrayUtil','ListWidget'];
     CatalogVariantsetListController.$inject = ['$scope', 'ArrayUtil','ListWidget'];
-    CatalogVariantsetrulesListController.$inject = ['$scope', 'ArrayUtil','ListWidget','$stateParams','Backend','Product'];
+    CatalogVariantsetrulesListController.$inject = ['$scope', 'ArrayUtil','ListWidget','$stateParams','Backend','Product','$location','$state'];
     CatalogVariantsFormController.$inject = ['$scope', 'ArrayUtil','Product','$location','$stateParams'];
     CatalogVariantsetFormController.$inject = ['$scope', 'ArrayUtil','Product','$location','$stateParams'];
 })();

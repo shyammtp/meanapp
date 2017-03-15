@@ -270,7 +270,10 @@
                 var deferred = $q.defer(); 
                 var passq = {};
                 passq.params = this.requestParams;
-                passq.cache = true;
+                 passq.cache = true;
+                if(params.nocache) {
+                    passq.cache = false;
+                }
                 if(params.passtoken) {
                     passq.headers = {'Authorization' : 'Bearer '+Authentication.getToken()};
                 }

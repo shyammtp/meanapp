@@ -1,0 +1,33 @@
+<div class="update">
+	<div ng-if="rowobject.adjustprice === true">
+		<span ng-switch="rowobject.adjustpricetype">
+			<span ng-switch-when="-1">
+				<span ng-if="rowobject.adjustpricestate == 1">
+					Remove {{rowobject.adjustpricevalue}} from price
+				</span>
+				<span ng-if="rowobject.adjustpricestate == 2">
+					Remove {{rowobject.adjustpricevalue}}% from price
+				</span>
+			</span>
+			<span ng-switch-when="1">
+				<span ng-if="rowobject.adjustpricestate == 1">
+					Add {{rowobject.adjustpricevalue}} to price
+				</span>
+				<span ng-if="rowobject.adjustpricestate == 2">
+					Add {{rowobject.adjustpricevalue}}% to price
+				</span>
+			</span> 
+			<span ng-switch-when="0">
+				<span ng-if="rowobject.adjustpricestate == 1">
+					Set the price to {{rowobject.adjustpricevalue}}
+				</span> 
+			</span>
+		</span> 
+	</div>
+	<div ng-if="rowobject.unavailable === true">
+		 Disable Purchasing
+	</div>
+	<div ng-if="rowobject.stopprocessing === true">
+		 <span style="color:red;">Stop</span> processing more rules
+	</div>
+</div>

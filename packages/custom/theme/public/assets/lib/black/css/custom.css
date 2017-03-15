@@ -1315,7 +1315,13 @@ a.ui-button:active,
 .choosedoptions .opt-header {border-bottom: 1px solid #2d2d2d; padding: 5px 0;}
 .choosedoptions .editmodecontainer {border-top:1px solid #2d2d2d;margin-top: 10px;padding-top: 10px;}
 .sider-container {padding: 10px;}
-.rules-form .form-group > label {border-bottom: 1px solid #2d2d2d;}
+.rules-form .form-group > label {border-bottom: 1px solid #2d2d2d; font-weight: bold;color: #868686;}
 .rules-form .form-group .tree {border:1px solid #2d2d2d; margin-left: 20px; padding: 8px;}
 .rules-form .form-group > ul > li {margin-top: 5px;}
 .rules-form .form-group .list-gs {max-height: 200px; overflow: auto;}
+#cbp-spmenu-s2 {
+    width: 30%;
+}
+#cbp-spmenu-s2:not(.cbp-spmenu-open) {
+    right: -30%;
+}
