@@ -9,6 +9,9 @@
         <div class="alert alert-info" ng-if="variantid && ruleslength <= 0" role="alert">
             This variant set has no rules yet. <a href="admin/products/catalog/variants/set/rules/{{variantid}}">Click here</a> to create rules for this option set which will apply to all products assigned to it.
         </div>
+         <div class="alert alert-info" ng-if="variantid && ruleslength >= 0" role="alert">
+            This option set has {{ruleslength}} rule which apply to all products assigned to it. <a href="admin/products/catalog/variants/set/rules/{{variantid}}">Click here</a> here to manage rules for this option set.
+        </div>
             <form name="variantsetform">
                 <div class="row">
                     <div class="col-md-12">
