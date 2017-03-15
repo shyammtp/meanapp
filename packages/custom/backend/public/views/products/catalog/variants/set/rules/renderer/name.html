@@ -1,0 +1,14 @@
+{{rowobject}}
+<div class="update">
+	<span ng-repeat="(k,sc) in rowobject.params track by k" ng-init="i=0;">
+		<span ng-repeat="(sd,gf) in sc track by sd" ng-init="i=i+1;"> 
+		 
+			<span ng-if="getobjectLength(rowobject.params) > 1">AND</span>
+			<span ng-repeat="(s,f) in gf track by $index"> 
+				{{$index}}
+				<span ng-if="checkobjectLength(sc,1)">OR</span> {{sd}} = {{f}} 
+				
+			</span> 
+		</span>
+	</span>
+</div>

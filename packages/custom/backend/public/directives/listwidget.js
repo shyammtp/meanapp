@@ -12,6 +12,8 @@
                 scope.columns = ListWidget.getColumnsData(); 
                 scope.widgetfilter = {}; 
                 scope.add_link = ListWidget.getAddLink();
+                scope.hasPaging = ListWidget.hasPaging();
+                scope.hasFilter = ListWidget.hasFilter();
                 scope.sortcolumn = ListWidget.getSortColumn();
                 scope.sortdir = ListWidget.getSortDir();
                 scope.widgetsearchfilter = function() {  
@@ -89,6 +91,15 @@
                     return attrs.template;
                } 
                scope.rowobject = JSON.parse(attrs.rowObject);
+               scope.checkobjectLength = function(obj,ln) {
+                    if(Object.keys(obj).length > ln) {
+                        return true;
+                    }
+                    return false;
+               }
+               scope.getobjectLength = function(obj,ln) {
+                    return Object.keys(obj).length;
+               }
             }
 
         }

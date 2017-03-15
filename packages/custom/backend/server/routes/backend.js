@@ -56,7 +56,10 @@ var Mongoose = require('mongoose'),
         app.post('/api/variantset/save',authentic,products.saveVariantSet);
         app.get('/api/catalog/listvariants',authentic,products.cataloglistvariants);
         app.get('/api/catalog/listvariantset',authentic,products.cataloglistvariantset);
+        app.get('/api/catalog/listvariantrulesset',authentic,products.cataloglistvariantrulesset);
+        app.post('/api/catalog/savevariantsetrule',authentic,products.savevariantsetrule);
         app.get('/api/variant/get/:id',authentic,products.getVariants);
+        app.get('/api/variantset/get/:id',authentic,products.getVariantset);
         app.get('/api/variants/getall',authentic,products.getVariantsAll);
         app.post('/api/fileupload',products.upload);
 

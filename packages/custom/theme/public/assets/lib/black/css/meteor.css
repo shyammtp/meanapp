@@ -309,8 +309,9 @@ h5 {
 }
 
 .alert-info {
-    background: #e9f3f8;
-    border: 1px solid #D3E6F0;
+    background: #171717;
+    border: 1px solid #272727;
+    border-left: 3px solid #31708f;
 }
 
 .alert-warning {

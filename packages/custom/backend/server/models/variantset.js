@@ -10,6 +10,7 @@ Schema = mongoose.Schema,
 var VariantsSchema = new Schema({
 	set_name : {type : String,required: true,unique : true}, 
     option_set : {type: Schema.Types.Mixed},
+    rules : {type: Schema.Types.Mixed},
     created_on : { type: Date, default: Date.now },
     updated_on: { type: Date, default: Date.now }
 },{collection: 'variantset'});
@@ -18,9 +19,13 @@ VariantsSchema.plugin(mongoosePaginate);
  
 
 VariantsSchema.methods.addData = function(data) {
-	var _obj = this;  
-	this.option_set = data.option_set;
-	this.set_name = data.set_name;  
+	var _obj = this;   
+	if(data.rules) {
+		this.rules = data.rules;
+	} else {		
+		this.option_set = data.option_set;
+		this.set_name = data.set_name; 
+	}
 }
 
 VariantsSchema.methods.updateData = function(id,cb) {
@@ -29,6 +34,22 @@ VariantsSchema.methods.updateData = function(id,cb) {
 		_obj.model('Variantset').findOne({_id : id},cb);
 	});
 
+}
+VariantsSchema.methods.saveRule = function(id,cb) {
+	var _obj = this;  
+	_obj.model('Variantset').findOne({_id : id},function(err,d) {
+		if(!d._id) {
+			cb('Not a valid variant set');
+			return;
+		} 
+		if(typeof d.rules == 'undefined') {
+			d.rules = [];
+		}
+		d.rules.push(_obj.rules); 
+		_obj.model('Variantset').update({_id : d._id},{$set  : {rules : d.rules}},{upsert: true},function(err,doc) { 
+			cb(null,d.rules); 
+		});
+	});
 }
 
 VariantsSchema.statics.getAllPaginate = function(params, cb) { 
@@ -39,6 +60,15 @@ VariantsSchema.statics.getAllPaginate = function(params, cb) {
 		sort[params['sort']] = (typeof params.sortDir != 'undefined' ?params.sortDir : -1);
 	}
 	return this.model('Variantset').paginate(fcollection, { page: parseInt(params.page), sort : sort,limit: limit }, cb); 
+} 
+
+VariantsSchema.statics.getAllRules = function(params, cb) { 
+	var filter = params.filter || false, fcollection = parseFilter(params.filter,this); 
+	var sort = {};
+	if( typeof params.sort != 'undefined') {
+		sort[params['sort']] = (typeof params.sortDir != 'undefined' ?params.sortDir : -1);
+	}
+	return this.model('Variantset').findOne({"_id" : params.id},cb); 
 } 
 
 function parseFilter(filter,obj) {

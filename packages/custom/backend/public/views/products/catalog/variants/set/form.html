@@ -6,11 +6,14 @@
     </div> 
     <div id="main-wrapper">  
         <div ng-controller="CatalogVariantsetFormController">
+        <div class="alert alert-info" ng-if="variantid" role="alert">
+            This variant set has no rules yet. <a href="admin/products/catalog/variants/set/rules/{{variantid}}">Click here</a> to create rules for this option set which will apply to all products assigned to it.
+        </div>
             <form name="variantsetform">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                             <label for="input-Default" class="">Name<i class="required-star">*</i></label>
+                            <label for="input-Default" class="">Name<i class="required-star">*</i></label>
                             <input id="set_name" placeholder="" name="set_name" ng-model="set_name" autocomplete="off" tabindex="1" ng-required="true" type="text"  class="" ng-class="{'invalid' : variantsetform.set_name.$invalid}">
                             <p class="help-block">Used Internally</p>
                         </div>
@@ -60,7 +63,7 @@
                                                             <label>Enabled Option Values</label>
                                                             <ul>
                                                                 <li ng-repeat="(d,fg) in choosedoptions[k].typedata.listvalues track by d">
-                                                                    <input type="checkbox" id="options{{k}}{{d}}" ng-model="choosedoptions[k].typedata.listvalues[d].required" /><label style="font-size: 12px;" for="options{{k}}{{d}}">{{fg.swatchname}}</label>
+                                                                    <input type="checkbox" id="options{{k}}{{d}}" ng-model="choosedoptions[k].typedata.listvalues[d].required" /><label style="font-size: 12px;" for="options{{k}}{{d}}" ng-if="fg.swatchname">{{fg.swatchname}}</label><label style="font-size: 12px;" for="options{{k}}{{d}}" ng-if="fg.name">{{fg.name}}</label>
                                                                     
                                                                 </li>
                                                             </ul>

@@ -101,8 +101,12 @@
          })
           .state('product_catalog_variants_set_form_edit', {
             url : '/admin/products/catalog/variants/set/form/{variantid}',
-            templateUrl: 'backend/views/products/catalog/variants/form.html',
+            templateUrl: 'backend/views/products/catalog/variants/set/form.html',
             params: {title : 'Create new variant set',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Variants Set','link' : '/admin/products/catalog/variants/set'},{title : 'Add/Edit Variants'}]},
+         }).state('product_catalog_variants_set_rules_edit', {
+            url : '/admin/products/catalog/variants/set/rules/{variantid}',
+            templateUrl: 'backend/views/products/catalog/variants/set/rules/list.html',
+            params: {title : 'Create new variant set',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Variants Set','link' : '/admin/products/catalog/variants/set'},{title : 'Manage Rules'}]},
          });
         $locationProvider
             .html5Mode({enabled:true, requireBase:false});

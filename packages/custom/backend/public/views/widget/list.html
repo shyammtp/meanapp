@@ -4,7 +4,7 @@
 			<col ng-repeat="(sh,vh) in columns" width="{{vh.width}}">
 		</colgroup>
 		<thead> 
-			<tr class="filter">
+			<tr class="filter" ng-if="hasFilter">
 				<th colspan="{{columns.length}}">
 					<div class="row">
 						<div class="col-sm-12" ng-hide="filterdependant">
@@ -67,5 +67,5 @@
 			</tr>
 		</tbody>
 	</table>
-	<div widget-pagination></div>
+	<div ng-if="hasPaging" widget-pagination></div>
 </div>

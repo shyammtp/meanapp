@@ -185,7 +185,8 @@ span.active-page {
 }
 
 .cbp-spmenu {
-    background: #fff;
+    background: #181818;
+    overflow: auto;
 }
 
 .cbp-spmenu h3 {

@@ -55,10 +55,27 @@
             }, function(response) {
                 deferred.reject(response);
             });
-            return deferred.promise;
+            return deferred.promise; 
         }, getVariantById = function(params) {
             var deferred = $q.defer();
             $http.get('/api/variant/get/'+ArrayUtil.get(params,'id'),{headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                deferred.resolve(response);
+            }, function(response) {
+                deferred.reject(response);
+            });
+            return deferred.promise; 
+        },getVariantsetById = function(params) {
+            var deferred = $q.defer();
+            $http.get('/api/variantset/get/'+ArrayUtil.get(params,'id'),{headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                deferred.resolve(response);
+            }, function(response) {
+                deferred.reject(response);
+            });
+            return deferred.promise;
+        },
+        saveVariantRule = function(id, params) {
+            var deferred = $q.defer();
+            $http.post('/api/catalog/savevariantsetrule?id='+id,params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {
                 deferred.reject(response);
@@ -176,9 +193,11 @@
         return {   
             getVariantTypes : getVariantTypes,
             getVariantById : getVariantById, 
+            getVariantsetById : getVariantsetById, 
             getCategories : getCategories,
             getAllVariants : getAllVariants,
             saveVariant : saveVariant,
+            saveVariantRule : saveVariantRule,
             saveVariantSet : saveVariantSet,
             saveCategory : saveCategory,
             deleteCategory : deleteCategory,

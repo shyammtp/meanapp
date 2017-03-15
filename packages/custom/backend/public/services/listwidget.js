@@ -141,6 +141,8 @@
             defaultSortDirection : 1,
             requestUrl : '', 
             custom_links : '',
+            isFilter : true,
+            isPaging : true,
             addColumn : function(columnname, columndata) {
                 if(!columnname) {
                     return this;
@@ -170,6 +172,8 @@
                 this.dbResults = [];
                 this.custom_links = '';
                 this.add_link = '';
+                this.isFilter = true;
+                this.isPaging = true;
             },
             getColumns : function() { 
                 //console.log(this.columns);
@@ -191,6 +195,11 @@
             },
             getTotalItems : function() {
                 return this.totalItems;
+            },
+            hasFilter : function() { 
+                return this.isFilter;
+            },hasPaging : function() { 
+                return this.isPaging;
             },
             setPageSize : function(size) {
                 this.pageSize = size;

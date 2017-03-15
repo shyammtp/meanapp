@@ -94,6 +94,14 @@ var Mongoose = require('mongoose'),
                   res.status(200).json(vars); 
               }); 
         },
+        getVariantset : function(req,res,next) {
+            if(!arrayutil.get(req.params,'id')) {
+                 return res.status(500).json({message: "Invalid Variant ID"});
+              }
+            variantset.findOne({_id : arrayutil.get(req.params,'id')},function (err, vars) { 
+                  res.status(200).json(vars); 
+              }); 
+        },
         getVariantsAll : function(req,res,next) {
             variants.find({},function (err, vars) { 
                   res.status(200).json(vars); 
@@ -193,12 +201,18 @@ var Mongoose = require('mongoose'),
         },
         cataloglistvariants : function(req,res,next) {
             variants.getAllPaginate(req.query,function(err,cb) {
+
                res.send(cb);
             });
         },
         cataloglistvariantset : function(req,res,next) {
             variantset.getAllPaginate(req.query,function(err,cb) {
                res.send(cb);
+            });
+        },
+        cataloglistvariantrulesset : function(req,res,next) {
+            variantset.getAllRules(req.query,function(err,cb) { 
+               res.send({'docs' : arrayutil.get(cb,'rules',{}),'total' : 0 });
             });
         },
         saveVariant : function(req,res,next) {
@@ -219,6 +233,17 @@ var Mongoose = require('mongoose'),
                 }
             });
           }
+        },
+        savevariantsetrule : function(req,res,next) {
+            var vr = new variantset();
+            vr.addData(req.body); 
+            vr.saveRule(arrayutil.get(req.query,'id'),function(err,sr) {
+                if(err) {
+                    res.status(500).json(err);
+                } else {
+                    res.status(200).json({message: 'Inserted Successfully',data : sr});
+                }
+            })  
         },
         saveVariantSet : function(req,res,next) {
           var vr = new variantset();

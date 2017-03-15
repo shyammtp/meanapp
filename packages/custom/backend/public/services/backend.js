@@ -1,7 +1,7 @@
 (function() {
     'use strict';
 
-    function Backend($http, $q) {
+    function Backend($http, $q,$compile) {
         return {
             name: 'backend',
             localsdata : {},
@@ -87,6 +87,11 @@
                     deferred.reject(response);
                 });
                 return deferred.promise;
+            },
+            loadSider : function(scope,elementid,template) {
+                var t = '<div class="sider-container" ng-include="\''+template+'\'"></div>'
+                angular.element('#'+elementid).html(t);
+                $compile(angular.element('#'+elementid))(scope);
             }
         };
     }
@@ -167,7 +172,7 @@
         .factory('Authentication',Authentication)
         .factory('ArrayUtil',ArrayUtil);
 
-    Backend.$inject = ['$http', '$q'];
+    Backend.$inject = ['$http', '$q','$compile'];
     Authentication.$inject = ['$http', '$q','$window'];
 
 })();

@@ -18,7 +18,7 @@
         $scope.global = Global;
         $scope.package = {
             name: 'backend'
-        };    
+        };     
         $scope.params =  $stateParams; 
         Backend.getAssetsData().then(function(res) { 
             $scope.assetspath = res.path;

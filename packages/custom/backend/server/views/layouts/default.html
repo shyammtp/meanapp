@@ -2,8 +2,12 @@
 <html>
 {% include '../includes/head.html' %}
 
-<body data-ng-controller="BackendController" data-curl="{{currenturl}}"  ng-cloak class="ng-cloak compact-menu" ng-class="state">  
-<main class="page-content content-wrap">  
+<body data-ng-controller="BackendController" data-curl="{{currenturl}}"  ng-cloak class="ng-cloak compact-menu" ng-class="state"> 
+<main class="page-content content-wrap">   
+<nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right" id="cbp-spmenu-s2">
+{{navtemplate}}
+    <div ng-include="{{navtemplate}}"></div>
+</nav>
 
 <div ng-if="loadheader(params)">
         {% block header %}{% endblock %} 

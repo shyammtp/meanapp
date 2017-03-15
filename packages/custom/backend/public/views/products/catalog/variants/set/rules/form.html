@@ -1,0 +1,81 @@
+<div class="row rules-form">
+	<div class="col-sm-12">
+		<div class="form-group">
+			<label>When these are selected</label>
+			<ul class="list-gs">
+				<li ng-repeat="(f,os) in option_set track by f">
+					<span class="labels">{{os.display_name}}({{os.typename}})</span>
+					<div class="tree" ng-if="os.typedata.listvalues">
+						<ul class="tree-list">
+							<li ng-repeat="(fs,ods) in os.typedata.listvalues track by fs">
+								<span ng-if="ods.name"><input id="os{{os.id}}{{fs}}" ng-model="rules.params[os.id][os.variant_name][fs]" type="checkbox" ng-true-value="'{{ods.name}}'"  /><label for="os{{os.id}}{{fs}}">{{ods.name}}</label></span>
+								<span ng-if="ods.swatchname"><input id="os{{os.id}}{{fs}}" type="checkbox" ng-model="rules.params[os.id][os.variant_name][fs]" ng-true-value="'{{ods.swatchname}}'"/><label for="os{{os.id}}{{fs}}">{{ods.swatchname}}</label></span>
+							</li>
+						</ul>
+					</div>
+					
+				</li>
+			</ul>
+		</div>
+		<div class="form-group">
+			<label>Make these changes</label> 
+				<div class="forms-group"> 
+				    <input type="checkbox" id="selecsst" ng-model="rules.adjustprice" />
+				     	<label style="font-size: 12px;" for="selecsst">Adjust its price</label>
+					<div class="subaction" ng-if="rules.adjustprice == true">
+						<div class="col-sm-2">
+							<img src="/theme/assets/lib/black/images/nodejoin.gif" /> 							
+						</div>
+						<div class="col-sm-3">
+							<span>
+								<select class="inline-select-sm"  ng-model="rules.adjustpricetype"  style="width:50px;">
+									<option value="1">Add</option>
+									<option value="-1">Remove</option>
+									<option value="0">Fixed</option>
+								</select>
+							</span>
+						</div>
+						<div class="col-sm-3">
+							<span>
+								<input type="number"  ng-model="rules.adjustpricevalue" class="inline-textbox-sm" style="width:50px!important;" name="price" pattern="[0-9]+([\.,][0-9]+)?" step="0.01"
+	            title="This should be a number with up to 2 decimal places." />
+							</span>
+						</div> 
+						<div class="col-sm-4">
+							<span>
+								<select  style="width:50px;"  ng-model="rules.adjustpricestate" class="inline-select-sm" >
+									<option value="1">(Price)</option>
+									<option value="2">% (Percent)</option> 
+								</select>
+							</span>
+						</div>
+					</div> 
+				</div> 
+
+				<div class="forms-group"> 
+				    <input type="checkbox" id="unavailable" ng-model="rules.unavailable" />
+				     	<label style="font-size: 12px;" for="unavailable">Make it unavailable for purchase</label>
+					<div class="subaction" ng-if="rules.unavailable == true">
+						<div class="col-sm-2">
+							<img src="/theme/assets/lib/black/images/nodejoin.gif" /> 							
+						</div>
+						<div class="col-sm-10">
+							<div class="form">
+								<input type="text" class="inline-textbox-sm" style="width:100%!important;" placeholder="Your custom message" ng-model="rules.unavailablecustom" />
+							</div>
+						</div> 
+					</div> 
+				
+				</div>
+
+				<div class="forms-group"> 
+				    <input type="checkbox" id="stopprocessing" ng-model="rules.stopprocessing" />
+				     	<label style="font-size: 12px;" for="stopprocessing">Stop proceesing further rules</label>
+				</div>
+
+				<div class="form-group">
+					<button type="button" ng-click="saverule()" class="btn btn-primary">Save and Close</button>
+				</div>
+		</div>
+	</div>
+</div>
