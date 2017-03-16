@@ -8,6 +8,10 @@ Schema = mongoose.Schema,
 	_ = require('lodash'),
 	textutil = require('../helpers/util').text;
 
+var subproductSchema = new Schema ({
+	sku : {type: String, unique: true, required: true},
+	price : {type : Number}
+})
 
 var ProductSchema = new Schema({ 
 	product_url : {type: String, unique: true, required: true,lowercase : true},
@@ -17,7 +21,8 @@ var ProductSchema = new Schema({
     updated_on: { type: Date, default: Date.now },
     category_id : {type : String},
     category_collection :  [],
-    data : { type: Schema.Types.Mixed}
+    data : { type: Schema.Types.Mixed},
+    subproducts : 
 
 },{collection: "product"});
  

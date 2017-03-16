@@ -89,6 +89,8 @@
             return false;
         }
     }
+
+
     function CatalogAddController($scope,ArrayUtil, Product,$location,$timeout) { 
  		var vm = this,categoryset = Product.getCategoryTreeSetForAdd();
         //console.log(categoryset);
@@ -110,7 +112,24 @@
 	    	$scope.description = ArrayUtil.sort(ArrayUtil.get(attributes,'description',{})); 
 	    	$scope.more_details = ArrayUtil.sort(ArrayUtil.get(attributes,'more_details',{}));
 	    }
-         
+        
+        $scope.variantsetoptions = [];
+        var variationset = {};
+        Product.getAllVariantset().then(function(response) {
+            var data = response.data;
+            angular.forEach(data, function(v,l){
+                var gg = {};
+                variationset[v._id] = v;
+                gg.name = v.set_name;
+                gg.value = v._id;
+                $scope.variantsetoptions.push(gg);
+            });
+        });
+        $scope.variantslist = {};
+        $scope.updateset = function(d) {
+            $scope.variantslist = ArrayUtil.get(variationset,d,{});
+            console.log($scope.variantslist);
+        }
 
  		$scope.checkarrow = function(index) { 
             if(parseInt(index) > 1) {
@@ -579,7 +598,7 @@
             Product.getVariantRuleByIndex({id : $scope.variantid, index : index}).then(function(res) { 
                 $scope.editid = index;
                 $scope.rules = res.data;
-                $scope.opensider();
+                $scope.opensider(false);
             });
             
         }
@@ -604,7 +623,10 @@
                loadlist(); 
             });
         }
-        $scope.opensider = function() {
+        $scope.opensider = function(newinit) {
+            if(newinit) {
+                $scope.rules = {};
+            }
             classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );
             Backend.loadSider($scope,'cbp-spmenu-s2','backend/views/products/catalog/variants/set/rules/form.html'); 
         }

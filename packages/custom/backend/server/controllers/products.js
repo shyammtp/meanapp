@@ -119,6 +119,10 @@ var Mongoose = require('mongoose'),
             variants.find({},function (err, vars) { 
                   res.status(200).json(vars); 
               });
+        },getVariantsetAll : function(req,res,next) {
+            variantset.find({},function (err, vars) { 
+                  res.status(200).json(vars); 
+              });
         },
         deleteCategory : function(req,res,next) {
           if(!arrayutil.get(req.params,'id')) {

@@ -100,6 +100,15 @@
             });
             return deferred.promise;
         },
+        getAllVariantset = function() {
+            var deferred = $q.defer();
+            $http.get('/api/variantset/getall',{cache : true,headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                deferred.resolve(response);
+            }, function(response) {
+                deferred.reject(response);
+            });
+            return deferred.promise;
+        },
         deleteCategory = function(params) {
             var deferred = $q.defer(); 
             $http.delete('/api/category/delete/'+ArrayUtil.get(params,'id'),{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
@@ -205,6 +214,7 @@
             getVariantsetById : getVariantsetById, 
             getCategories : getCategories,
             getAllVariants : getAllVariants,
+            getAllVariantset : getAllVariantset,
             getVariantRuleByIndex : getVariantRuleByIndex,
             saveVariant : saveVariant,
             saveVariantRule : saveVariantRule,

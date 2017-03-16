@@ -47,6 +47,11 @@
                                  <div class="col-md-12">
                                     <p><span><b>Categories: </b></span><span ng-repeat="(c,b) in pickedcategory track by c"><i ng-if="checkarrow(c)"> > </i>{{b.category_name.en}}</span></p>
                                 </div>
+                                <div class="col-md-12"> 
+                                    <form name="form.productForm.variations" novalidate>
+                                        <div ng-include="'backend/views/products/catalog/variants.html'"></div>
+                                    </form>
+                                </div>
                              </div>
                         </div>
 
