@@ -1,0 +1,36 @@
+<div class="tabs-left" role="tabpanel">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class=""><a href="#variants" role="tab" data-toggle="tab" aria-expanded="false">Variants</a></li>
+        <li role="presentation" class=""><a href="#skus" role="tab" data-toggle="tab" aria-expanded="false">SKU's</a></li> 
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade" id="variants">
+            <div class="form-group">
+                <label>Option set</label>
+                <select ng-model="product.optionset" ng-change="updateset(product.optionset)">
+                    <option ng-repeat="opt in variantsetoptions" value="{{opt.value}}">{{opt.name}}</option>
+                </select>
+            </div> 
+            <div class="options-wrapper">
+                <table class="table">
+                    <thead> 
+                        <th>Option Name</th>
+                        <th>Option Type</th> 
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="variant in variantslist.option_set">
+                            <td>{{variant.variant_name}}</td>
+                            <td>{{variant.typename}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane fade" id="skus">
+            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+        </div> 
+    </div>
+</div>
