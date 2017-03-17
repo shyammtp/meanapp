@@ -231,6 +231,11 @@ var Mongoose = require('mongoose'),
             variantset.getAllRules(req.query,function(err,cb) { 
                res.send({'docs' : arrayutil.get(cb,'rules',{}),'total' : 0 });
             });
+        }, 
+        subproductlist : function(req,res,next) {
+            product.getAllsubproducts(req.query,function(err,cb) { 
+               res.send({'docs' : arrayutil.get(cb,'rules',{}),'total' : 0 });
+            });
         },
         saveVariant : function(req,res,next) {
           var vr = new variants();

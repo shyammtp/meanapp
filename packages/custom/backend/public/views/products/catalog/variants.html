@@ -1,12 +1,12 @@
 <div class="tabs-left" role="tabpanel">
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class=""><a href="#variants" role="tab" data-toggle="tab" aria-expanded="false">Variants</a></li>
-        <li role="presentation" class=""><a href="#skus" role="tab" data-toggle="tab" aria-expanded="false">SKU's</a></li> 
+        <li role="presentation" class="active"><a href="#variants" role="tab" data-toggle="tab" aria-expanded="false">Variants</a></li>
+        <li role="presentation" class="" ng-if="checkobjectlength(variantslist)"><a href="#skus" role="tab" data-toggle="tab" aria-expanded="false">SKU's</a></li> 
     </ul>
     <!-- Tab panes -->
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane fade" id="variants">
+        <div role="tabpanel" class="tab-pane active" id="variants">
             <div class="form-group">
                 <label>Option set</label>
                 <select ng-model="product.optionset" ng-change="updateset(product.optionset)">
@@ -29,8 +29,37 @@
             </div>
         </div>
 
-        <div role="tabpanel" class="tab-pane fade" id="skus">
-            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+        <div role="tabpanel" class="tab-pane fade" id="skus"  ng-if="checkobjectlength(variantslist)">
+            <div class="btns btn-group">
+                <button type="button" ng-click="createsku()" class="btn btn-primary">Create SKU</button>
+                <button type="button" class="btn btn-primary">Generate SKU</button>
+            </div>
+             <table class="table table-striped">
+                <thead> 
+                    <th>Image</th>
+                    <th>SKU</th>
+                    <th>Cost</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </thead>
+                <tbody>
+                    <tr ng-if="subproducts.length > 0" ng-repeat="(sk, sv) in subproducts">
+                        <td></td>
+                        <td>
+                            {{sv.sku}}
+                            <div class="" ng-repeat="(fgh,jie) in sv.options">
+                                <span ng-repeat="(gh,ry) in jie"><b>{{gh}}</b>: {{ry}}</span>
+                            </div>
+                        </td>
+                        <td>{{sv.cost}}</td>
+                        <td>{{sv.price}}</td>
+                        <td><a href="javascript:;" ng-click="editsku(sk)">Edit</a></td>
+                    </tr>
+                    <tr ng-if="subproducts.length <= 0">
+                        <td colspan="5">No results found</td>
+                    </tr>
+                </tbody>
+             </table>
         </div> 
     </div>
 </div>

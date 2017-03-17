@@ -304,8 +304,9 @@ xshadow layer
   width: 100%;
   top: 0;
   left: 0;
+  z-index:800;
   cursor: pointer;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0,0,0,0.8);
   visibility: hidden;
   opacity: 0;
   -webkit-backface-visibility: hidden;

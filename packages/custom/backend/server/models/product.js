@@ -22,7 +22,7 @@ var ProductSchema = new Schema({
     category_id : {type : String},
     category_collection :  [],
     data : { type: Schema.Types.Mixed},
-    subproducts : 
+    subproducts : [subproductSchema]
 
 },{collection: "product"});
  
@@ -70,5 +70,58 @@ ProductSchema.statics.getAllPaginate = function(params, cb) {
 	}
 	return this.model('Product').paginate(fcollection, { page: parseInt(params.page), sort : sort,limit: limit }, cb); 
 }  
+
+ProductSchema.statics.getAllsubproducts = function(params,cb) {
+	this.model('Product').findOne({"_id" : params.id},function(err,res) {
+		console.log(res);
+	})
+}
+
+function parseFilter(filter,obj) {
+	if(!filter) {
+		return {};
+	}
+
+	var bytes  = CryptoJS.AES.decrypt(filter, secretKey);
+	var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8)),filtercollection = {}; 
+	console.log(decryptedData);
+	var schemaarray = Object.keys(obj.model('Category').schema.paths);
+	for(var k in schemaarray) { 
+		var d = decryptedData[schemaarray[k]];
+		if(typeof d != 'undefined') {
+			switch(typeof d) {
+				case "string":
+				    var re = new RegExp(d,"i");
+					filtercollection[schemaarray[k]] = re;
+				break;
+				case "object":
+					if(d.hasOwnProperty('id')) {
+						var value = d['id'];
+						var re = new RegExp(value,"i");
+						filtercollection[schemaarray[k]] = re;
+					}
+					if(d.hasOwnProperty('from') || d.hasOwnProperty('to')) { 
+						var obj = {},c = 0;
+
+						if(d.hasOwnProperty('from')) {
+							obj.$gte = d.from;  
+							d.from != ''? c++ : '';
+						}
+						if(d.hasOwnProperty('to')) {
+							obj.$lte = d.to;  							
+							d.to != ''? c++ : '';
+						}
+						if(c <= 0) {
+							continue;
+						}
+						filtercollection[schemaarray[k]] = obj;
+					}
+				break;
+			}
+			
+		}
+	} 
+	return filtercollection;
+}
 
 mongoose.model('Product',ProductSchema);

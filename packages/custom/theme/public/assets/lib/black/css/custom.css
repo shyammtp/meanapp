@@ -1318,10 +1318,11 @@ a.ui-button:active,
 .rules-form .form-group > label {border-bottom: 1px solid #2d2d2d; font-weight: bold;color: #868686;}
 .rules-form .form-group .tree {border:1px solid #2d2d2d; margin-left: 20px; padding: 8px;}
 .rules-form .form-group > ul > li {margin-top: 5px;}
-.rules-form .form-group .list-gs {max-height: 200px; overflow: auto;}
+.rules-form .form-group .list-gs {max-height: 200px; overflow: auto;} 
 #cbp-spmenu-s2 {
-    width: 30%;
+    width: 30%;overflow: auto;
 }
 #cbp-spmenu-s2:not(.cbp-spmenu-open) {
     right: -30%;
 }
+.img-browser {border:2px dashed #2d2d2d; cursor:pointer; padding: 10px; font-size:14px; text-align: center;}

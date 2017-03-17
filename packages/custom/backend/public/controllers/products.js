@@ -91,7 +91,7 @@
     }
 
 
-    function CatalogAddController($scope,ArrayUtil, Product,$location,$timeout) { 
+    function CatalogAddController($scope,ArrayUtil, Product,$location,$timeout, Backend) { 
  		var vm = this,categoryset = Product.getCategoryTreeSetForAdd();
         //console.log(categoryset);
         $scope.form = {};
@@ -107,13 +107,13 @@
     	if(lastcat != undefined) {
 	    	var attributes = ArrayUtil.get(lastcat,'attributes',{}); 
 	    	$scope.infoattributes = ArrayUtil.sort(ArrayUtil.get(attributes,'info',{}));  
-            console.log($scope.infoattributes);
 	    	$scope.pricing = ArrayUtil.sort(ArrayUtil.get(attributes,'pricing',{}));
 	    	$scope.description = ArrayUtil.sort(ArrayUtil.get(attributes,'description',{})); 
 	    	$scope.more_details = ArrayUtil.sort(ArrayUtil.get(attributes,'more_details',{}));
 	    }
         
         $scope.variantsetoptions = [];
+        $scope.optionset = [];
         var variationset = {};
         Product.getAllVariantset().then(function(response) {
             var data = response.data;
@@ -121,14 +121,22 @@
                 var gg = {};
                 variationset[v._id] = v;
                 gg.name = v.set_name;
-                gg.value = v._id;
+                gg.value = v._id;                
                 $scope.variantsetoptions.push(gg);
             });
+
+            console.log(data);
         });
         $scope.variantslist = {};
+        $scope.checkobjectlength = function(obj) { 
+            if(Object.keys(obj).length > 0) {
+                return true;
+            }
+            return false;
+        }
+
         $scope.updateset = function(d) {
-            $scope.variantslist = ArrayUtil.get(variationset,d,{});
-            console.log($scope.variantslist);
+            $scope.variantslist = ArrayUtil.get(variationset,d,{}); 
         }
 
  		$scope.checkarrow = function(index) { 
@@ -177,11 +185,8 @@
         $scope.validateClass = function(elementid) {
             var ele = angular.element('#'+elementid);
             console.log(ele);
-        }
-        $timeout(function(){ 
-        })
-        $scope.submitForm = function(isValid) {
-             
+        } 
+        $scope.submitForm = function(isValid) {             
             if(isValid) {
                 alert('Our Form is amazing');
             } else {
@@ -193,24 +198,79 @@
             if(typeof vm.product.images == 'undefined') {
                 vm.product.images = {};
             }
-            vm.product.images[s] = file; 
-            /*Upload.upload({
-                url: 'upload/url',
-                data: {file: file, 'username': $scope.username}
-            }).then(function (resp) {
-                console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
-            }, function (resp) {
-                console.log('Error status: ' + resp.status);
-            }, function (evt) {
-                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
-            });*/
+            vm.product.images[s] = file;  
 
         };
         $scope.getScope = function(s) {
            vm.product = s; 
         }
  		$scope.pickedcategory = categoryset;
+        $scope.subproducts = [{"sku":"fsdfsd","upc":"fsdfsdf","cost":2342,"price":234,"options":{"58c7ce651056e742d7338570":{"sizes":"XL"},"58c66dad2a30702f6916696d":{"Pick":"s"}},"weight":"fdgfg","bpn":"fgdfg","status":true},{"sku":"asdsad","upc":"asda","cost":3,"price":5,"options":{"58c7ce651056e742d7338570":{"sizes":"L"},"58c66dad2a30702f6916696d":{"Pick":"s"}},"weight":"43","bpn":"34","status":true}];
+        $scope.subproduct = {}; 
+        $scope.createsku = function() {
+            $scope.subproduct = {}; 
+            classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );
+            Backend.loadSider($scope,'cbp-spmenu-s2','backend/views/products/catalog/fields/createsku.html'); 
+            angular.element('.cd-overlay').addClass('is-visible');
+        }
+        $scope.closethis = function() { 
+            $scope.subproduct = {}; 
+            angular.element('.cd-overlay').removeClass('is-visible');
+            classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );
+        }
+        $scope.subproducteditindex = -1;
+        $scope.savesubproduct = function() {
+            var validone = validatesku();
+            if(validone && $scope.subproducteditindex === -1) {
+                $scope.subproducts.push($scope.subproduct);
+                console.log($scope.subproducts); 
+                angular.element('.cd-overlay').removeClass('is-visible');
+                classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );
+                $scope.subproduct = {};
+            } else {
+                alert('Already SKU Attached to this product');
+            }
+        }
+        $scope.editsku = function(index) {
+            $scope.subproducteditindex = index;
+            $scope.subproduct = ArrayUtil.get($scope.subproducts,index,{});
+            angular.element('.cd-overlay').addClass('is-visible');
+            classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );
+        }
+
+        var validatesku = function() {
+            var s = $scope.subproducts, cpr = $scope.subproduct,error = 0,alist = [],clist = [];
+            angular.forEach(s, function(gh,ht){
+                var hsd = [];
+                angular.forEach(gh.options , function(gv,hh) {                    
+                    angular.forEach(gv, function(h,jf){
+                        hsd.push(h+":"+jf);
+                    });                    
+                });
+                alist.push(hsd);
+            });
+            angular.forEach(cpr.options , function(gv,hh) {
+                angular.forEach(gv, function(h,jf){
+                    clist.push(h+":"+jf);
+                });
+            });
+            var tl = clist.length;
+            angular.forEach(alist, function(v,z){
+                var k = 0;
+                angular.forEach(v, function(i,u){                    
+                    var kgd = clist.indexOf(i);
+                    if(kgd > -1) {
+                        k++;
+                    }
+                }); 
+                if(k === tl) {
+                    error = 1;
+                    return;
+                }
+            }); 
+            return (error == 0) ? true : false;      
+        }
+
     }
  
     function CatalogAttributesController($scope, Global, Backend,ArrayUtil, Product,$timeout,$location) 
@@ -683,7 +743,7 @@
     CategoryController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product'];
     CatalogController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product','$timeout','$location'];  
     CatalogAttributesController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product','$timeout','$location']; 
-    CatalogAddController.$inject = ['$scope', 'ArrayUtil','Product','$location','$timeout'];
+    CatalogAddController.$inject = ['$scope', 'ArrayUtil','Product','$location','$timeout','Backend'];
     CatalogVariantsListController.$inject = ['$scope', 'ArrayUtil','ListWidget'];
     CatalogVariantsetListController.$inject = ['$scope', 'ArrayUtil','ListWidget'];
     CatalogVariantsetrulesListController.$inject = ['$scope', 'ArrayUtil','ListWidget','$stateParams','Backend','Product','$location','$state'];
