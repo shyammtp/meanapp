@@ -1,6 +1,8 @@
 (function() {
     'use strict';
- 
+    function removeempty(value) {
+      return value != '';
+    }
     function Product($http, $q,$window, Authentication,ArrayUtil) { 
         this.categoryset = {},this.categorytreeset = {},this.catalogattributedata = {},this.parentcategorycopy = {},this.productData = {};  
          
@@ -16,6 +18,16 @@
         getCategoryTree = function() {
             var deferred = $q.defer();
             $http.get('/api/category/getcattree',{cache : true,headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                deferred.resolve(response);
+            }, function(response) {
+                deferred.reject(response);
+            });
+            return deferred.promise;
+        },
+        getCategoryPath = function(params) {
+            var ids = params.filter(removeempty);
+            var deferred = $q.defer();
+            $http.get('/api/category/getpath?catpath='+ids.join(","),{cache : true,headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {
                 deferred.reject(response);
@@ -59,6 +71,22 @@
         }, getVariantById = function(params) {
             var deferred = $q.defer();
             $http.get('/api/variant/get/'+ArrayUtil.get(params,'id'),{headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                deferred.resolve(response);
+            }, function(response) {
+                deferred.reject(response);
+            });
+            return deferred.promise; 
+        },getProductById = function(id) {
+            var deferred = $q.defer();
+            $http.get('/api/catalog/get/'+id,{headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                deferred.resolve(response);
+            }, function(response) {
+                deferred.reject(response);
+            });
+            return deferred.promise; 
+        },getCategoryById = function(id) {
+            var deferred = $q.defer();
+            $http.get('/api/category/get/'+id,{headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {
                 deferred.reject(response);
@@ -109,6 +137,7 @@
             });
             return deferred.promise;
         },
+        
         deleteCategory = function(params) {
             var deferred = $q.defer(); 
             $http.delete('/api/category/delete/'+ArrayUtil.get(params,'id'),{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
@@ -212,7 +241,9 @@
             getVariantTypes : getVariantTypes,
             getVariantById : getVariantById, 
             getVariantsetById : getVariantsetById, 
+            getProductById : getProductById,
             getCategories : getCategories,
+            getCategoryPath : getCategoryPath,
             getAllVariants : getAllVariants,
             getAllVariantset : getAllVariantset,
             getVariantRuleByIndex : getVariantRuleByIndex,

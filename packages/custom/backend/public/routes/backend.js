@@ -30,35 +30,40 @@
          .state('products_category', {
             url: '/admin/products/category',
             templateUrl: 'backend/views/products/category/list.html',
-            params: {title : 'Products Category',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Category'}]},
+            params: {title : 'Products Category',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products/catalog'},{title : 'Category'}]},
              
         })
           .state('products_catalog', {
             url: '/admin/products/catalog',
             templateUrl: 'backend/views/products/catalog/list.html',
-            params: {title : 'Products Catalog',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Add a product'}]},
+            params: {title : 'Products Catalog',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products/catalog'},{title : 'Add a product'}]},
              
         })
          .state('products_catalog_step1', {
             url: '/admin/products/catalog/classify',
             templateUrl: 'backend/views/products/catalog/classify.html',
-            params: {title : 'Products Catalog',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Add a product'}]},
+            params: {title : 'Products Catalog',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products/catalog'},{title : 'Add a product'}]},
              
         }) 
          .state('product_catalog_info', {
             url : '/admin/products/catalog/information',
             templateUrl: 'backend/views/products/catalog/information.html',
-            params: {title : 'Products Catalog',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Add a product'}]},
+            params: {title : 'Products Catalog',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products'}]},
+         })
+         .state('product_catalog_editmode', {
+            url : '/admin/products/catalog/information/{product_id}',
+            templateUrl: 'backend/views/products/catalog/information.html',
+            params: {title : 'Products Catalog',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products/catalog'},{title : 'Add a product'}]},
          })
          .state('product_catalog_attributes_list', {
             url : '/admin/products/catalog/attributes',
             templateUrl: 'backend/views/products/catalog/attributes/list.html',
-            params: {title : 'Products Catalog Attributes',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Add a product'}]},
+            params: {title : 'Products Catalog Attributes',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products'}]},
          })
           .state('product_catalog_attributes_classify', {
             url : '/admin/products/catalog/attributes/classify',
             templateUrl: 'backend/views/products/catalog/attributes/classify.html',
-            params: {title : 'Products Catalog Attributes',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Add a product'}]},
+            params: {title : 'Products Catalog Attributes',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products/catalog'},{title : 'Add a product'}]},
          })
           .state('product_catalog_attributes_form', {
             url : '/admin/products/catalog/attributes/form',

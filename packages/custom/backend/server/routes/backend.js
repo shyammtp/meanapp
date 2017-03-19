@@ -38,6 +38,7 @@ var Mongoose = require('mongoose'),
         app.get('/api/category/getcategory/:id',authentic,products.getCategory);
         app.delete('/api/category/delete/:id',authentic,products.deleteCategory);
         app.post('/api/category/save',authentic,products.saveCategory);
+        app.get('/api/category/getpath',authentic,products.getpath);
         app.get('/api/category/getall',authentic,function(req,res){ 
             category.getAll(function(err,cb) {  
                 res.send(cb);  
@@ -54,17 +55,19 @@ var Mongoose = require('mongoose'),
         app.post('/api/product/save',authentic,products.saveProduct);
         app.post('/api/variant/save',authentic,products.saveVariant);
         app.post('/api/variantset/save',authentic,products.saveVariantSet);
+        app.get('/api/catalog/list',authentic,products.cataloglist);
         app.get('/api/catalog/listvariants',authentic,products.cataloglistvariants);
         app.get('/api/catalog/listvariantset',authentic,products.cataloglistvariantset);
         app.get('/api/catalog/listvariantrulesset',authentic,products.cataloglistvariantrulesset);
         app.post('/api/catalog/savevariantsetrule',authentic,products.savevariantsetrule);
         app.get('/api/variant/get/:id',authentic,products.getVariants);
         app.get('/api/variantset/get/:id',authentic,products.getVariantset);
+        app.get('/api/catalog/get/:id',authentic,products.getProduct);
         app.get('/api/variantset/rule/get/:id',authentic,products.getVariantRuleset);
         app.get('/api/variants/getall',authentic,products.getVariantsAll);
         app.get('/api/variantset/getall',authentic,products.getVariantsetAll);
         app.get('/api/catalog/subproductlist',authentic,products.subproductlist);
-        app.post('/api/fileupload',products.upload);
+        app.post('/api/fileupload',products.uploads);
 
         /* General */
         app.get('/api/adminconfig',function(req,res) {             
@@ -89,6 +92,7 @@ var Mongoose = require('mongoose'),
           }
         });        
         app.post('/api/settings/save',settings.savesettings);
+        app.post('/api/settings/saveall',settings.saveAllsettings);
         app.get('/api/settings/get',settings.getallsettings);
         app.get('/api/settings/getpaginate',settings.getpaginate);
 

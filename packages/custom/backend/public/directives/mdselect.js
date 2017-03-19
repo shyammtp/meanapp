@@ -9,7 +9,7 @@
                 if(attrs.value) {
                     element.val(attrs.value);
                 }
-                element.material_select();
+                //element.material_select();
             }
 
         }
@@ -296,18 +296,28 @@
             scope : {
                 catalogattributes : '=',
                 parentattribute : '=',                
-                productscope : '&productscope'
-            },
+                productscope : '&productscope',
+                editproduct : '=editproduct'
+            }, 
             link : function(scope,element,attrs) {
                 scope.product = {}; 
+                scope.product.availabilitytype = 1;
                 var _obj = this;
                 scope.$watchCollection('product', function() { 
                     _obj.products = angular.extend({}, _obj.products, scope.product);  
                     scope.productscope({productscope : _obj.products});
                 });  
+                if(Object.keys(scope.editproduct).length > 0) {
+                    scope.product = scope.editproduct.data;
+                } 
                 scope.$on('savedproduct',function(event, data){ 
                     console.log(data);
                     scope.product._id = ArrayUtil.get(ArrayUtil.get(data.response,'data'),'_id');
+                    //scope.product = {};    
+                });
+                scope.$on('editproduct',function(event, data){ 
+                    scope.product = ArrayUtil.get(data,data,{});
+                     
                     //scope.product = {};    
                 });
                 if(attrs.type === 'text') {

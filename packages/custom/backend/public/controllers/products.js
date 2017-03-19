@@ -68,6 +68,45 @@
         }
     }
 
+    function CatalogListController($scope, ListWidget, Backend,ArrayUtil, Product,$timeout,$location) {
+        var vm = this;
+        vm.setPage = setPage;
+         ListWidget.init();
+         
+         ListWidget.defaultSortColumn = 'type';
+         ListWidget.isFilter = false;
+         ListWidget.addColumn('mainimage',{'type' : 'text','title' : 'Image',defaultValue : '--',width : '30%','render' : 'backend/views/products/catalog/list/renderer/image.html'});
+         ListWidget.addColumn('product_title',{'type' : 'number','title' : 'Product Name',width : '30%','render' : 'backend/views/products/catalog/list/renderer/name.html'});  
+         ListWidget.addColumn('nocolumn',{'type' : 'notype','title' : 'Actions',defaultValue : '--',width : '20%',sortable : false,filterable : false,'render' : 'backend/views/products/catalog/list/renderer/action.html'});
+         ListWidget.setDataRequestUrl('/api/catalog/list'); 
+         
+        function setPage(page) { 
+            if(page < 1) {
+                page = 1;
+            }
+            ListWidget.request({page: page,limit : 20,passtoken : true,nocache : true}).then(function(res){  
+                console.log(res.data.docs);
+                ListWidget.setTotalItems(res.data.total)
+                        .setPageSize(20).setPage(page)
+                        .setDBResults(res.data.docs);   
+                $scope.pager = ListWidget.getPager();  
+                $scope.dbresult = ListWidget.getDbResults();
+            });    
+        }  
+        $scope.widgetlimitchange = function(selected) {
+            ListWidget.request({page: 1,limit : selected,passtoken : true,nocache : true}).then(function(res){  
+                ListWidget.setTotalItems(res.data.total)
+                        .setPageSize(selected).setPage(1)
+                        .setDBResults(res.data.docs);   
+                $scope.pager = ListWidget.getPager();  
+                $scope.dbresult = ListWidget.getDbResults();
+            }); 
+        }
+        setPage(1);
+         
+    }
+
+
     function CatalogController($scope, Global, Backend,ArrayUtil, Product,$timeout,$location) {
  		var vm = this;
         $scope.pickedcategory = {};
@@ -91,43 +130,115 @@
     }
 
 
-    function CatalogAddController($scope,ArrayUtil, Product,$location,$timeout, Backend) { 
+    function CatalogAddController($scope,ArrayUtil, Product,$location,$timeout, Backend,Upload,$stateParams) { 
  		var vm = this,categoryset = Product.getCategoryTreeSetForAdd();
-        //console.log(categoryset);
+        console.log(categoryset);
         $scope.form = {};
- 		if(categoryset== undefined) {
+ 		if(categoryset === undefined && typeof $stateParams.product_id === 'undefined') {
  			$location.path('admin/products/catalog/classify');
  		} 
  		$scope.infoattributes = $scope.pricing = $scope.description = $scope.more_details = {};
         
-
-    	var lastcat = Product.getCategoryForAdd(); 
-        //console.log(lastcat);
-
-    	if(lastcat != undefined) {
-	    	var attributes = ArrayUtil.get(lastcat,'attributes',{}); 
-	    	$scope.infoattributes = ArrayUtil.sort(ArrayUtil.get(attributes,'info',{}));  
-	    	$scope.pricing = ArrayUtil.sort(ArrayUtil.get(attributes,'pricing',{}));
-	    	$scope.description = ArrayUtil.sort(ArrayUtil.get(attributes,'description',{})); 
-	    	$scope.more_details = ArrayUtil.sort(ArrayUtil.get(attributes,'more_details',{}));
-	    }
-        
         $scope.variantsetoptions = [];
         $scope.optionset = [];
         var variationset = {};
+        $scope.subproducts = [];
+        $scope.subproduct = {};
+        $scope.product = {}; 
+        $scope.variantslist = {};
+        vm.product= {};
+        $scope.subproducteditindex = -1;
+        $scope.variants = {}
+
+        $scope.$on('loadattributesfields',function() {
+            var attributes = ArrayUtil.get(lastcat,'attributes',{}); 
+            $scope.infoattributes = ArrayUtil.sort(ArrayUtil.get(attributes,'info',{}));  
+            $scope.pricing = ArrayUtil.sort(ArrayUtil.get(attributes,'pricing',{}));
+            $scope.description = ArrayUtil.sort(ArrayUtil.get(attributes,'description',{})); 
+            $scope.more_details = ArrayUtil.sort(ArrayUtil.get(attributes,'more_details',{}));
+
+            
+        })
+
+    	var lastcat = Product.getCategoryForAdd(); 
+        console.log(lastcat);
+
+    	if(lastcat !== undefined) {
+	    	$scope.$broadcast('loadattributesfields');
+	    }
+
+        var publishdata = function(data) { 
+            $scope.product = data;
+            $scope.product.optionset = ArrayUtil.get(data,'variantsetid'); 
+            $scope.product.filepath = ArrayUtil.get(data,'gallery',{}); 
+            $scope.product.mainimagepath = ArrayUtil.get(data,'mainimage');
+            $scope.updateset(ArrayUtil.get(data,'variantsetid'));
+            $scope.product = angular.extend({},$scope.product, data.data); 
+            $scope.subproducts = parseproducts(ArrayUtil.get(data,'subproducts'));  
+            $scope.variantslist[ArrayUtil.get(data,'variantsetid')] = $scope.subproducts;
+            $scope.variants[ArrayUtil.get(data,'variantsetid')] = $scope.subproducts;
+            $scope.$broadcast('editproduct',{data: data.data}); 
+        }
+
+        function parseproducts(ds) {
+            var gd = []; 
+            angular.forEach(ds,function(df,h){
+                var fghg = {} ,opt = df.options;
+                fghg = df;
+                fghg.options = {};
+                var ks = [];
+                angular.forEach(opt,function(gh,ss) {     
+                    var hj = {}               
+                    hj[gh.key] = gh.value;
+                    fghg.options[ss] = hj;
+                });  
+                gd.push(fghg);
+            }); 
+            console.log(gd);
+            return gd;
+        }
+
         Product.getAllVariantset().then(function(response) {
-            var data = response.data;
-            angular.forEach(data, function(v,l){
-                var gg = {};
-                variationset[v._id] = v;
-                gg.name = v.set_name;
-                gg.value = v._id;                
-                $scope.variantsetoptions.push(gg);
+                var data = response.data;
+                angular.forEach(data, function(v,l){
+                    var gg = {};
+                    variationset[v._id] = v;
+                    gg.name = v.set_name;
+                    gg.value = v._id;                
+                    $scope.variantsetoptions.push(gg);
+
+                });
+                 if(typeof $stateParams.product_id !== 'undefined') {
+                     Product.getProductById($stateParams.product_id).then(function(res){ 
+                        console.log(res);
+                        if(res.data === null) { 
+                            console.log('asdasd');
+                            Materialize.toast('Invalid Product', 4000,'errortoast'); 
+                            $location.path('admin/products/catalog/classify');
+                            return;
+                        }
+                        Product.getCategoryPath(res.data.category_collection).then(function(cre){ 
+                            var gfgsa = {};
+                            var k = 1;
+                            angular.forEach(cre.data, function(ghh, fg) {
+                                gfgsa[k] = ghh;
+                                k++;
+                            })
+                            Product.setCategoryTreeSet(gfgsa);
+                            $scope.pickedcategory = categoryset = Product.getCategoryTreeSetForAdd();
+                            console.log($scope.pickedcategory);
+                        });
+                        Product.getCategoryAttribute(res.data.category_id).then(function(ress) {
+                            Product.setCategory(ress.data);
+                            lastcat = Product.getCategoryForAdd();
+                            $scope.$broadcast('loadattributesfields');                    
+                            publishdata(res.data);
+                        }); 
+                    }) 
+                }
+                 
             });
 
-            console.log(data);
-        });
-        $scope.variantslist = {};
         $scope.checkobjectlength = function(obj) { 
             if(Object.keys(obj).length > 0) {
                 return true;
@@ -136,7 +247,10 @@
         }
 
         $scope.updateset = function(d) {
+            console.log($scope.product);
+            $scope.choosedvariantset = d; 
             $scope.variantslist = ArrayUtil.get(variationset,d,{}); 
+            $scope.subproducts = ArrayUtil.get($scope.variants,d,[]);
         }
 
  		$scope.checkarrow = function(index) { 
@@ -162,29 +276,30 @@
         	var percent = (100 / le);
         	return percent+'%';
         }
-        vm.product= {};
-
-        $scope.saveproduct = function() { 
-
-            console.log($scope.product);
-            vm.product.category_id = ArrayUtil.get(lastcat,'_id');
+        $scope.saveproduct = function() {  
+            vm.product.category_id = ArrayUtil.get(lastcat,'_id'); 
             vm.product.category_collection = [];
             vm.product.category_collection = ArrayUtil.get(lastcat,'tree_path').split("/");
             vm.product.category_collection.push(ArrayUtil.get(lastcat,'_id'));  
-            Product.addProductData(vm.product).saveProduct().then(function(res) {
-                console.log(res);
+            vm.product.variants = ArrayUtil.get($scope.variants,$scope.choosedvariantset,[]);
+            vm.product.mainimage = $scope.product.mainimagepath;
+            vm.product.gallery = $scope.product.filepath; 
+            vm.product.variantsetid = $scope.choosedvariantset; 
+            vm.product._id = $scope.product._id; 
+            Product.addProductData(vm.product).saveProduct().then(function(res) { 
                 $scope.$broadcast('savedproduct',{response: res.data}); 
-                $scope._id = ArrayUtil.get(res.data.data,'_id');  
-                Materialize.toast('Product added successfully', 4000); 
+                $scope.product._id = ArrayUtil.get(res.data.data,'_id');  
+                $location.path('admin/products/catalog');
+                if(vm.product._id ) {
+                    Materialize.toast('Product updated successfully', 4000);
+                } else {
+                    Materialize.toast('Product saved successfully', 4000); 
+                }
             });
 
-        }  
-        $scope.$watch('product',function() {
-            console.log($scope.form.productForm);
-        })
+        }   
         $scope.validateClass = function(elementid) {
-            var ele = angular.element('#'+elementid);
-            console.log(ele);
+            var ele = angular.element('#'+elementid); 
         } 
         $scope.submitForm = function(isValid) {             
             if(isValid) {
@@ -195,20 +310,22 @@
          }
 
         $scope.upload = function (file,s) {
-            if(typeof vm.product.images == 'undefined') {
+            if(typeof vm.product.images === 'undefined') {
                 vm.product.images = {};
             }
             vm.product.images[s] = file;  
 
         };
         $scope.getScope = function(s) {
-           vm.product = s; 
+            console.log(s);
+           vm.product = s;  
+           $scope.product = angular.extend({},$scope.product,s); 
         }
  		$scope.pickedcategory = categoryset;
-        $scope.subproducts = [{"sku":"fsdfsd","upc":"fsdfsdf","cost":2342,"price":234,"options":{"58c7ce651056e742d7338570":{"sizes":"XL"},"58c66dad2a30702f6916696d":{"Pick":"s"}},"weight":"fdgfg","bpn":"fgdfg","status":true},{"sku":"asdsad","upc":"asda","cost":3,"price":5,"options":{"58c7ce651056e742d7338570":{"sizes":"L"},"58c66dad2a30702f6916696d":{"Pick":"s"}},"weight":"43","bpn":"34","status":true}];
-        $scope.subproduct = {}; 
+        
         $scope.createsku = function() {
             $scope.subproduct = {}; 
+            $scope.subproducteditindex  = -1;
             classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );
             Backend.loadSider($scope,'cbp-spmenu-s2','backend/views/products/catalog/fields/createsku.html'); 
             angular.element('.cd-overlay').addClass('is-visible');
@@ -218,42 +335,109 @@
             angular.element('.cd-overlay').removeClass('is-visible');
             classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );
         }
-        $scope.subproducteditindex = -1;
-        $scope.savesubproduct = function() {
+        $scope.savesubproduct = function() { 
             var validone = validatesku();
-            if(validone && $scope.subproducteditindex === -1) {
-                $scope.subproducts.push($scope.subproduct);
-                console.log($scope.subproducts); 
+            if(validone) {
+                if($scope.subproducteditindex !== -1 && ArrayUtil.get($scope.subproducts,$scope.subproducteditindex)){
+                    $scope.subproducts[$scope.subproducteditindex] = $scope.subproduct; 
+                } else {
+                    $scope.subproducts.push($scope.subproduct); 
+                }
+                
+                $scope.variants[$scope.variantslist._id] = $scope.subproducts;
                 angular.element('.cd-overlay').removeClass('is-visible');
                 classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );
-                $scope.subproduct = {};
+                $scope.subproduct = {}; 
+                Materialize.toast('Date stored temporarly. Save the whole product form and store it permanantly',4000); 
             } else {
                 alert('Already SKU Attached to this product');
             }
         }
         $scope.editsku = function(index) {
             $scope.subproducteditindex = index;
-            $scope.subproduct = ArrayUtil.get($scope.subproducts,index,{});
+            $scope.subproduct = ArrayUtil.get($scope.subproducts,index,{}); 
             angular.element('.cd-overlay').addClass('is-visible');
+            Backend.loadSider($scope,'cbp-spmenu-s2','backend/views/products/catalog/fields/createsku.html'); 
             classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );
         }
 
+
+        $scope.upload = function(file) {
+            Upload.upload({
+                url : '/api/fileupload?temppath=./uploads/variants/',
+                data : {image : file,temppath : './uploads/'},
+                method : 'POST'
+            }).then(function(resp) { 
+                if(resp.status === 200) {
+                    if(resp.data.filedata) {
+                       $scope.subproduct.image = resp.data.filedata.path;
+                    }
+                }
+                
+            }, function (resp) {
+                console.log('Error status: ' + resp.status);
+            }, function (evt) {
+                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                console.log('progress: ' + progressPercentage + '% ');
+            })
+        }
+
+
+        $scope.uploadimage = function(file,hidden) {
+            Upload.upload({
+                url : '/api/fileupload?temppath=./uploads/products/',
+                data : {image : file,temppath : './uploads/'},
+                method : 'POST'
+            }).then(function(resp) { 
+                if(resp.status === 200) {
+                    if(resp.data.filedata) {
+                        if(hidden == 'mainimage') {
+                            $scope.product.mainimagepath = resp.data.filedata.path;
+                        } else { 
+                            if($scope.product.filepath === undefined) {
+                                $scope.product.filepath = {};
+                            }
+                           $scope.product.filepath[hidden] = resp.data.filedata.path;
+                        }
+                            console.log($scope.product);
+                            console.log(hidden);
+                    }
+                }
+                console.log(resp);
+            }, function (resp) {
+                console.log('Error status: ' + resp.status);
+            }, function (evt) {
+                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                console.log('progress: ' + progressPercentage + '% ');
+            })
+        }
+
         var validatesku = function() {
-            var s = $scope.subproducts, cpr = $scope.subproduct,error = 0,alist = [],clist = [];
+            var s = $scope.subproducts, cpr = $scope.subproduct,error = 0,alist = [],clist = [],loop = true;
             angular.forEach(s, function(gh,ht){
-                var hsd = [];
-                angular.forEach(gh.options , function(gv,hh) {                    
-                    angular.forEach(gv, function(h,jf){
-                        hsd.push(h+":"+jf);
-                    });                    
-                });
-                alist.push(hsd);
+                console.log($scope.subproducteditindex+"---"+ht);
+                loop = true;
+                if($scope.subproducteditindex !== -1 && parseInt($scope.subproducteditindex) === parseInt(ht)) {
+                    loop = false;
+                } 
+                if(loop) {
+                    var hsd = [];
+                    angular.forEach(gh.options , function(gv,hh) {                    
+                        angular.forEach(gv, function(h,jf){
+                            hsd.push(h+":"+jf);
+                        });                    
+                    });
+                    alist.push(hsd);
+                }
             });
+            console.log(cpr);
             angular.forEach(cpr.options , function(gv,hh) {
                 angular.forEach(gv, function(h,jf){
                     clist.push(h+":"+jf);
                 });
             });
+            console.log(clist);
+            console.log(alist);
             var tl = clist.length;
             angular.forEach(alist, function(v,z){
                 var k = 0;
@@ -731,6 +915,7 @@
     angular
         .module('mean.backend') 
         .controller('CategoryController', CategoryController)
+        .controller('CatalogListController', CatalogListController)
         .controller('CatalogController', CatalogController)
         .controller('CatalogAddController', CatalogAddController)
         .controller('CatalogAttributesController', CatalogAttributesController) 
@@ -742,8 +927,9 @@
 
     CategoryController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product'];
     CatalogController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product','$timeout','$location'];  
+    CatalogListController.$inject = ['$scope', 'ListWidget', 'Backend','ArrayUtil','Product','$timeout','$location'];  
     CatalogAttributesController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product','$timeout','$location']; 
-    CatalogAddController.$inject = ['$scope', 'ArrayUtil','Product','$location','$timeout','Backend'];
+    CatalogAddController.$inject = ['$scope', 'ArrayUtil','Product','$location','$timeout','Backend','Upload','$stateParams'];
     CatalogVariantsListController.$inject = ['$scope', 'ArrayUtil','ListWidget'];
     CatalogVariantsetListController.$inject = ['$scope', 'ArrayUtil','ListWidget'];
     CatalogVariantsetrulesListController.$inject = ['$scope', 'ArrayUtil','ListWidget','$stateParams','Backend','Product','$location','$state'];

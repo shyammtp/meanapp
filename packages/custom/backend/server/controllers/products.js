@@ -102,6 +102,14 @@ var Mongoose = require('mongoose'),
                   res.status(200).json(vars); 
               }); 
         },
+        getProduct : function(req,res,next) {
+            if(!arrayutil.get(req.params,'id')) {
+                 return res.status(500).json({message: "Invalid Product ID"});
+              }
+            product.findOne({_id : arrayutil.get(req.params,'id')},function (err, vars) { 
+                  res.status(200).json(vars); 
+              }); 
+        },
         getVariantRuleset : function(req,res,next) {
             if(!arrayutil.get(req.params,'id')) {
                  return res.status(500).json({message: "Invalid Variant ID"});
@@ -163,8 +171,8 @@ var Mongoose = require('mongoose'),
         saveProduct : function(req,res,next) {
           var pr = new product();
           pr.addData(req.body);
-          console.log(req.body);
           if(arrayutil.get(req.body,'_id')) {
+            console.log('update');
             pr.updateData(arrayutil.get(req.body,'_id'),function(err,sd) {
                 if(err) return res.status(500).json(err);
                 res.status(200).json(sd);
@@ -178,6 +186,13 @@ var Mongoose = require('mongoose'),
                 }
             });
           }
+        },
+        getpath : function(req,res,next) {
+            var ids = arrayutil.get(req.query,'catpath').split(","); 
+            category.find().where('_id').in(ids).exec(function (err, records) {
+                if(err) return res.status(500).json(err);
+                res.status(200).json(records);              
+          });
         },
         overwritecatalogattributes : function(req,res,next) {  
           if(!arrayutil.get(req.params,'id')) {
@@ -227,6 +242,11 @@ var Mongoose = require('mongoose'),
                res.send(cb);
             });
         },
+        cataloglist : function(req,res,next) {
+            product.getAllPaginate(req.query,function(err,cb) {
+               res.send(cb);
+            });
+        },
         cataloglistvariantrulesset : function(req,res,next) {
             variantset.getAllRules(req.query,function(err,cb) { 
                res.send({'docs' : arrayutil.get(cb,'rules',{}),'total' : 0 });
@@ -235,6 +255,10 @@ var Mongoose = require('mongoose'),
         subproductlist : function(req,res,next) {
             product.getAllsubproducts(req.query,function(err,cb) { 
                res.send({'docs' : arrayutil.get(cb,'rules',{}),'total' : 0 });
+            });
+        },
+        subproductlist : function(req,res,next) { 
+            product.getAllPaginate(req.query,function(err,cb) {  
             });
         },
         saveVariant : function(req,res,next) {
@@ -286,10 +310,12 @@ var Mongoose = require('mongoose'),
             });
           }
         },
-        upload : function(req,res,next) { 
+        uploads : function(req,res,next) { 
+            var temppath = arrayutil.get(req.query,'temppath','./uploads/variants/'); 
+
             var storage = multer.diskStorage({ 
                 destination: function (req, file, cb) {
-                    cb(null, './uploads/variants/')
+                    cb(null, temppath)
                 },
                 filename: function (req, file, cb) {  
                     var ext =  file.originalname.split('.').pop();
@@ -307,15 +333,16 @@ var Mongoose = require('mongoose'),
                 cb(null, false);
                 return;
                 
-            } }).single('image');
+            } }).single('image'); 
             upload(req,res, function(err) { 
-                if(err) res.status(200).send(err);
+                if(err) { res.status(500).send(err); return; }
                 if(req.fileValidationError) {
                     res.send({ error: req.fileValidationError });
                     return;
+                } else {
+                    res.status(200).json({filedata : req.file});
                 }
-                res.status(200).json({filedata : req.file});
-            });            
+            });  
         }
 
   	 }

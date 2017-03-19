@@ -48,6 +48,16 @@
                 });
                 return deferred.promise;
             },
+            saveAllSettings : function(datas) { 
+                var deferred = $q.defer();
+                 
+                $http.post('/api/settings/saveall',datas).then(function(response) {
+                    deferred.resolve(response);
+                }, function(response) {
+                    deferred.reject(response);
+                });
+                return deferred.promise;
+            },
             getSettings: function(place_id) {
                 var deferred = $q.defer();
                 $http.get('/api/settings/get',{place_id : place_id}).then(function(response) {

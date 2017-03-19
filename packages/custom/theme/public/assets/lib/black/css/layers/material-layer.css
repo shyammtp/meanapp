@@ -189,10 +189,10 @@ span.active-page {
 }
 
 .cbp-spmenu h3 {
-    background: #191919;
-    color: #5f5f5f;
-    padding: 25px 20px 16px 25px;
-    height: 64px;
+    background: #76b900;
+    color: white;
+    /*padding: 25px 20px 16px 25px;
+    height: 64px;*/
     margin-bottom: 20px;
 }
 

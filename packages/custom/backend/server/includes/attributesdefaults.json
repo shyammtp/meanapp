@@ -12,6 +12,20 @@
 	        "type" : "text",
 	        "previous_block" : "info",
 	        "required" : true
+	    },
+	    "availability" : {
+	        "sort" : -1,
+	        "example" : "Maxlength character should be 50 Characters long",
+	        "title" : {
+	            "en" : "Availability"
+	        },
+	        "attribute_name" : "Availability",
+	        "is_system" : true,
+	        "block" : "info",
+	        "type" : "text",
+	        "previous_block" : "info",
+	        "required" : true, 
+	        "renderer" : "backend/views/products/catalog/fields/customrenderer/availability.html"
 	    }
 	},
 	"pricing" : {
@@ -24,8 +38,21 @@
 	            "en" : "Standard Price"
 	        },
 	        "example" : "Input the standard price",
-	        "sort" : -1,
+	        "sort" : -2,
 	        "required" : true
+		},
+		"inventory" : {
+			"type" : "text",
+	        "block" : "pricing",
+	        "is_system" : true,
+	        "attribute_name" : "inventory",
+	        "title" : {
+	            "en" : "Inventory"
+	        },
+	        "example" : "Integer value will be given",
+	        "sort" : -1,
+	        "required" : true, 
+	        "renderer" : "backend/views/products/catalog/fields/customrenderer/inventory.html"
 		},
 	    "quantity" : {
 	        "type" : "number",

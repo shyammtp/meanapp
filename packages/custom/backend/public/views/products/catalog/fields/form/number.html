@@ -1,12 +1,18 @@
-<div>
-    <div class="col-md-12" style="width:{{getwidthpercent(parentattribute.children)}};"> 
-    <label for="input-Default" class="">{{catalogattributes.title.en}}<i class="required-star" ng-if="catalogattributes.required === true">*</i></label>
-      <input id="{{catalogattributes.attribute_name}}" placeholder="{{catalogattributes.example}}" name="{{catalogattributes.attribute_name}}" ng-model="product[catalogattributes.attribute_name]" autocomplete="off"  type="number" ng-required="{{catalogattributes.required}}" class="">
-        <p class="help-block">{{catalogattributes.help_text}}</p>
-    </div>  
+<div ng-if="!catalogattributes.renderer">
+	<div>
+	    <div class="col-md-12" style="width:{{getwidthpercent(parentattribute.children)}};"> 
+	    <label for="input-Default" class="formlabel">{{catalogattributes.title.en}}<i class="required-star" ng-if="catalogattributes.required === true">*</i></label>
+	      <input id="{{catalogattributes.attribute_name}}" placeholder="{{catalogattributes.example}}" name="{{catalogattributes.attribute_name}}" ng-model="product[catalogattributes.attribute_name]" autocomplete="off"  type="number" ng-required="{{catalogattributes.required}}" class="">
+	        <p class="help-block">{{catalogattributes.help_text}}</p>
+	    </div>  
+	</div>
+	<div ng-if="countObject(catalogattributes.children)">
+	    <div ng-repeat="(chl, vd) in catalogattributes.children track by chl">  
+	         <catalogfield type="{{vd.type}}" catalogattributes="vd" parentattribute="catalogattributes"></catalogfield>  
+	    </div>
+	</div>
 </div>
-<div ng-if="countObject(catalogattributes.children)">
-    <div ng-repeat="(chl, vd) in catalogattributes.children track by chl">  
-         <catalogfield type="{{vd.type}}" catalogattributes="vd" parentattribute="catalogattributes"></catalogfield>  
-    </div>
+
+<div ng-if="catalogattributes.renderer">
+	<div ng-include="catalogattributes.renderer"></div>
 </div>

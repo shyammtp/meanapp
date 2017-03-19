@@ -7,11 +7,20 @@ var Mongoose = require('mongoose'),
 
   module.exports = function (Backend, app) {
   	 return {
-  	 	savesettings : function(req,res) { 
+      savesettings : function(req,res) { 
         var params = req.body;
         Settings.addSettings(params.name,params.value,params.place_id,function(cb) {
           res.send(cb);
         });
+      }, 
+  	 	saveAllsettings : function(req,res) { 
+            var params = req.body;
+            for(var jg in params) {
+                Settings.addSettings(jg,params[jg],1,function(cb) {
+
+                });
+            }
+            res.send({message: "Saved"});
   	 	}, 
       getSetting : function(req,res) {
         var params = req.body;
@@ -19,6 +28,7 @@ var Mongoose = require('mongoose'),
           res.send(cb);
         });
       },
+
       getallsettings : function(req,res) {  
         Settings.getAllConfig(req.param('place_id'),function(err,cb) {
            res.send(cb);

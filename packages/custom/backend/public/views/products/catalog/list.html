@@ -3,20 +3,28 @@
         <h3 class="breadcrumb-header">{{params.title}}</h3>
         <div breadcrumbs></div>
     </div> 
-    <div id="main-wrapper">  
-        <div>
+    <div id="main-wrapper"> 
+        <div class="fixed-action-btn">
+            <a href="/admin/products/catalog/classify" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
+        </div> 
+         <div ng-controller="CatalogListController">
             <div class="row">
-                <h2>Add a product</h2>
-                <div class="panel">
-                    <div class="panel-body">
-                        <div class="">
-                            <p><a href="/admin/products/catalog/classify">Create a new product listing</a></p>
+                <div class="col-md-12">
+                    <div role="tabpanel">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs productstab" role="tablist">
+                            <li role="presentation" class="active"><a href="#allprds" role="tab" data-toggle="tab">All Products</a></li>
+                            <li role="presentation"><a href="/admin/products/catalog/variants/set">Featured Products</a></li>  
+                        </ul>
+                    </div>
+                    <div class="tab-content z-depth-2">
+                        <div role="tabpanel" class="tab-pane active" id="allprds">
+                            <listwidget></listwidget>
                         </div>
-
                     </div>
                 </div>
             </div>
-        </div>
+        </div> 
     </div><!-- Main Wrapper -->
     <div class="page-footer"> 
     </div>

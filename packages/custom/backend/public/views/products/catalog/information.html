@@ -4,14 +4,17 @@
         <div breadcrumbs></div>
     </div> 
     <div id="main-wrapper">  
-        <div ng-controller="CatalogAddController">
-        
+    <angular-filemanager></angular-filemanager>
+        <div ng-controller="CatalogAddController"> 
             <div class="row">
             <div class="col-md-12">
-                <div class="btn-group pull-right">
+                <div class="fixed-action-btn">
+                    <a ng-click="(form.productForm.maininfo.$invalid || form.productForm.pricing.$invalid  || form.productForm.more_details.$invalid || form.productForm.description.$invalid) || saveproduct()" ng-disabled="form.productForm.maininfo.$invalid || form.productForm.pricing.$invalid || form.productForm.description.$invalid || form.productForm.more_details.$invalid"   class="btn btn-floating btn-large waves-effect waves-light red"><i class="fa fa-floppy-o"></i></a>
+                </div>
+                <!-- <div class="btn-group pull-right">
                     <button type="button" class="btn btn-default" ng-click="cancelproduct()">Cancel</button>
                     <button type="submit" class="btn btn-primary" ng-click="saveproduct()" ng-disabled="form.productForm.maininfo.$invalid || form.productForm.pricing.$invalid || form.productForm.more_details.$invalid">Save</button>
-                </div>
+                </div> -->
             </div>
             <div class="col-md-12">
                 <div role="tabpanel">
@@ -25,7 +28,7 @@
                         <li role="presentation"><a href="#images" role="tab" data-toggle="tab">Images</a></li>   
                     </ul>
                 </div>
-                <input type="hidden" ng-model="_id" />
+                <input type="hidden" ng-model="product._id" />
                  <div class="tab-content z-depth-2">
                         <div role="tabpanel" class="tab-pane active" id="maininfo">
                              <div class="row"> 
@@ -35,7 +38,7 @@
                                 <div class="col-md-12">  
                                     <form name="form.productForm.maininfo" novalidate>
                                         <div class="row" ng-repeat="(scc,gh) in infoattributes track by scc">  
-                                            <catalogfield type="{{gh.type}}" catalogattributes="gh" parentattribute="gh" data-productscope="getScope(productscope)"></catalogfield> 
+                                            <catalogfield type="{{gh.type}}" catalogattributes="gh" parentattribute="gh" editproduct="product" data-productscope="getScope(productscope)"></catalogfield> 
                                         </div> 
                                     </form>
                                 </div>
@@ -64,7 +67,7 @@
                                 <div class="col-md-12">  
                                         <form name="form.productForm.pricing" novalidate>
                                         <div class="row" ng-repeat="(scc,gh) in pricing track by scc"> 
-                                            <catalogfield type="{{gh.type}}" catalogattributes="gh" parentattribute="gh"></catalogfield>
+                                            <catalogfield type="{{gh.type}}" catalogattributes="gh" parentattribute="gh"  editproduct="product"  data-productscope="getScope(productscope)"></catalogfield>
                                         </div> 
                                         </form>
                                 </div>
@@ -76,9 +79,11 @@
                                     <p><span><b>Categories: </b></span><span ng-repeat="(c,b) in pickedcategory track by c"><i ng-if="checkarrow(c)"> > </i>{{b.category_name.en}}</span></p>
                                 </div>
                                 <div class="col-md-12"> 
+                                        <form name="form.productForm.description" novalidate>
                                         <div class="row" ng-repeat="(scc,gh) in description track by scc"> 
-                                            <catalogfield type="{{gh.type}}" catalogattributes="gh" parentattribute="gh"></catalogfield>
+                                            <catalogfield type="{{gh.type}}" catalogattributes="gh" parentattribute="gh"  editproduct="product" data-productscope="getScope(productscope)"></catalogfield>
                                         </div>
+                                        </form>
                                 </div>
                              </div>
                         </div>
@@ -90,7 +95,7 @@
                                 <div class="col-md-12">  
                                     <form name="form.productForm.more_details" novalidate>
                                     <div class="row" ng-repeat="(scc,gh) in more_details track by scc"> 
-                                        <catalogfield type="{{gh.type}}" catalogattributes="gh" parentattribute="gh"></catalogfield>
+                                        <catalogfield type="{{gh.type}}" catalogattributes="gh" parentattribute="gh"  editproduct="product"  data-productscope="getScope(productscope)"></catalogfield>
                                     </div> 
                                     </form>
                                 </div>
@@ -107,8 +112,9 @@
                                             <table class="table outsideborder">
                                                 <tr>
                                                     <td>  
-                                                        <div ngf-select ng-model="file0">Upload</div>   
-                                                        <img ngf-src="file0" width="100" class="thumb" ngf-size="{width: 20, height: 20, quality: 0.9}" /> 
+                                                        <div ngf-select="uploadimage(product.mainimage,'mainimage')" ng-model="product.mainimage">Upload</div>   
+                                                        <img ngf-src="product.mainimage || '/'+product.mainimagepath" width="100" class="thumb" ngf-size="{width: 20, height: 20, quality: 0.9}" ng-if="product.mainimagepath" />
+                                                        <input type="hidden" ng-model="product.mainimagepath" /> 
                                                     </td>
                                                 </tr>
                                                 <tr><td></td></tr>
@@ -133,8 +139,9 @@
                                     <ul class="gall-list">
                                         <li ng-repeat="n in [] | filterrange:8">
                                             <div class="imagecover">                                               
-                                                 <img ngf-src="file[n+1]" width="140" class="thumb" /> 
-                                                 <div class="filebox" ngf-select="upload(file[n+1],'file'+(n+1))" ng-model="file[n+1]"></div>
+                                                 <img ngf-src="product.file[n] || '/'+product.filepath[n]" width="140" class="thumb" ng-if="product.filepath[n] || product.file[n]"/> 
+                                                 <div class="filebox" ngf-select="uploadimage(product.file[n],n)" ng-model="product.file[n]"></div>
+                                                        <input type="hidden" ng-model="product.filepath[n]" /> 
                                             </div>
                                             <div class="filecover"> </div>
                                         </li>

@@ -5,7 +5,7 @@ $( document ).ready(function() {
     $('.sidebar .accordion-menu li.open .sub-menu').slideDown(0);
     $('.small-sidebar .sidebar .accordion-menu li.open .sub-menu').hide(0);
     $('.sidebar .accordion-menu > li.droplink > a').click(function(){
-        
+        alert('adasd');
         if(!($('body').hasClass('small-sidebar'))&&(!$('body').hasClass('page-horizontal-bar'))&&(!$('body').hasClass('hover-menu'))) {
         
         var menu = $('.sidebar .menu'),

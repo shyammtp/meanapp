@@ -1,0 +1,37 @@
+<div class="col-sm-12 form-group" style="margin-top: 26px;">
+	<label class="formlabel">Availability</label> 
+	<div class="form-group">
+		<div>
+			<input type="radio" id="availabilitytype1" ng-model="product.availabilitytype" ng-value="1" /><label for="availabilitytype1">This product can be purchased in my online store</label>
+		</div>
+		<div>
+			<input type="radio" id="availabilitytype3" ng-model="product.availabilitytype" ng-value="2" /><label for="availabilitytype3">Track inventory for this product</label>
+
+			<div class="stockient" ng-if="product.availabilitytype === 2" style="margin-left: 35px;">
+				 <div class="form-group">
+				 	<label class="">Message</label>
+				 	<input type="text" ng-model="product.availabilityreleasemessage" />
+				 	<p class="help-block"><strong>Pre-Order Message?</strong><p>The message to be shown in your store when a release date is specified for this pre-order product. You can also set a store-wide default message via the Settings section of the control panel. Leave this message blank to reset it back to the store-wide default. To place the product's release date into the message, use the %%DATE%% placeholder.</p></p>
+				 </div>
+				 <div class="form-group">
+				 	<label class="">Release Date</label>
+				 	<input type="text" ng-model="product.availabilityreleasedate" class="inline-textbox-sm" /><input type="checkbox"  ng-model="product.removepreorderstatus" id="removepreorderstatus"/><label for="removepreorderstatus">Remove pre-order status on this date</label>
+				 	<p class="help-block"><strong>Remove pre-order status on this date?</strong><p>If you know when you will receive stock for this product, or you know it's release date then select it here. The release date will appear under the 'Pre-order: Add to Cart' button, like this: <br><br>(<em>Expected release date: 6th April 2013</em>)<br><br>If you'd like to have the pre-order status removed automatically for this product on the release date then tick the checkbox. On the release date the product will automatically appear as a regular product in your store and the release date label and pre-order text on the 'Add to Cart' will be gone.</p></p>
+				 </div>
+			</div>
+		</div>
+
+		<div>
+			<input type="radio" id="availabilitytype2" ng-model="product.availabilitytype" ng-value="3" /><label for="availabilitytype2">This product cannot be purchased in my online store</label>
+			<div  style="margin-left: 35px;">
+				<div class="form-group" ng-if="product.availabilitytype===3"> 
+				 	 <input type="checkbox"  ng-model="product.callforpricing" id="callforpricing"/><label for="callforpricing">Show “Call for pricing” message instead of the price</label>
+				 </div>
+				 <div class="form-group" ng-if="product.callforpricing === true && product.availabilitytype === 3">
+				 	<label>Call for pricing label</label>
+				 	 <input type="text"  ng-model="product.pricingcallnumber"/> 
+				 </div>
+			  </div>
+		</div>
+	</div>
+</div>

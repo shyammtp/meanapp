@@ -103,20 +103,19 @@
 
      function SettingsController($scope,Backend) { 
         
-        $scope.saveSettings = function(settings) {  
+        $scope.toggleformatcurrency = function() {
+            if($scope.formatcurrency === undefined || !$scope.formatcurrency) {
+                $scope.formatcurrency = true;
+            } else {
+                 $scope.formatcurrency = false;
+            }
+        }
+        $scope.savesettings = function(settings) {  
             console.log(settings);
             var success = 0,error = 0;
-            for(var key in settings)  { 
-               Backend.saveSettings(key,settings[key],1).then(function(res) {
-                    //return res;
-                    success++;
-                },function(err){
-                    error++;
-                });              
-            } 
-            if(error <=0) {
+            Backend.saveAllSettings(settings).then(function(res){
                 Materialize.toast('Settings Saved Successfully', 4000);
-            } 
+            });
         }
 
 
