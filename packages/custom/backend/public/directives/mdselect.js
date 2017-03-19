@@ -9,7 +9,7 @@
                 if(attrs.value) {
                     element.val(attrs.value);
                 }
-                //element.material_select();
+                element.material_select();
             }
 
         }
