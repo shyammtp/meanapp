@@ -67,6 +67,15 @@
                 });
                 return deferred.promise;
             },
+            getAllDirectories: function() {
+                var deferred = $q.defer();
+                $http.get('/api/settings/getcountries',{cache  : true}).then(function(response) {
+                    deferred.resolve(response);
+                }, function(response) {
+                    deferred.reject(response);
+                });
+                return deferred.promise;
+            },
             getAllNotificationTemplate: function(params) {
                 var deferred = $q.defer(); 
                 $http.get('/api/notificationtemplate/getall',{params: params,cache  : true}).then(function(response) {

@@ -139,7 +139,7 @@ function parseFilter(filter,obj) {
 	var bytes  = CryptoJS.AES.decrypt(filter, secretKey);
 	var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8)),filtercollection = {}; 
 	console.log(decryptedData);
-	var schemaarray = Object.keys(obj.model('Category').schema.paths);
+	var schemaarray = Object.keys(obj.model('Product').schema.paths);
 	for(var k in schemaarray) { 
 		var d = decryptedData[schemaarray[k]];
 		if(typeof d != 'undefined') {

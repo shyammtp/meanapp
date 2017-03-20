@@ -2,7 +2,10 @@
 
 var Mongoose = require('mongoose'),
   Settings = Mongoose.model('Settings'),
+  Directory = Mongoose.model('directory'),
   path = require('path'),
+  Nodecache = require( "node-cache" ),
+  myCache = new Nodecache(),
   formidable = require('formidable');
 
   module.exports = function (Backend, app) {
@@ -38,6 +41,20 @@ var Mongoose = require('mongoose'),
         Settings.getAllConfigPaginate(req.param('place_id'),req.param('page'),function(err,cb) {
            res.send(cb);
         });
+      },
+      getAllCountries : function(req,res) {
+        myCache.get("directories",function(err,value) {
+            if(!err) {
+                if(value != undefined) { 
+                    res.send(value);
+                } else {
+                    Directory.find({},null,{sort : {country_name : 1}},function(err,cb) { 
+                        myCache.set('directories',JSON.parse(JSON.stringify(cb)),10000);
+                       res.send(JSON.parse(JSON.stringify(cb)));
+                    });
+                }
+            }
+        }); 
       },
       upload : function(req,res) {
         var form = new formidable.IncomingForm();

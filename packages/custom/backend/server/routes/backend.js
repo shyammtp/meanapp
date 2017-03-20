@@ -95,6 +95,7 @@ var Mongoose = require('mongoose'),
         app.post('/api/settings/saveall',settings.saveAllsettings);
         app.get('/api/settings/get',settings.getallsettings);
         app.get('/api/settings/getpaginate',settings.getpaginate);
+        app.get('/api/settings/getcountries',settings.getAllCountries);
 
 
         app.get('/api/backend/menus',sidebar.menuslist);

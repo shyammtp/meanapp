@@ -20,6 +20,12 @@
             params: {title : 'General Settings',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Settings', link: 'admin/settings'},{title : 'General'}]},
              
         })
+        .state('payment_settings', {
+            url: '/admin/settings/payments',
+            templateUrl: 'backend/views/settings/payments.html',
+            params: {title : 'Payment Settings',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Settings', link: 'admin/settings'},{title : 'Payments'}]},
+             
+        })
 
         .state('settings_notification_template', {
             url: '/admin/settings/template',

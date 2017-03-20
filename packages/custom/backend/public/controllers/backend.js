@@ -28,6 +28,10 @@
         Backend.getMenus().then(function(response) { 
             $scope.datas = response.data;    
         }); 
+        $scope.directories = [];
+        Backend.getAllDirectories().then(function(response){
+            $scope.directories = response.data;
+        })
         $scope.objectLength = function(obj) {
             return Object.keys(obj).length;
         } 
@@ -102,7 +106,8 @@
  
 
      function SettingsController($scope,Backend) { 
-        
+         
+        $scope.directories = $scope.$parent.$parent.directories;
         $scope.toggleformatcurrency = function() {
             if($scope.formatcurrency === undefined || !$scope.formatcurrency) {
                 $scope.formatcurrency = true;
@@ -163,7 +168,7 @@
     angular
         .module('mean.backend')
         .controller('BackendController', BackendController)
-        .controller('SettingsController', SettingsController)
+        .controller('SettingController', SettingsController)
         .controller('WidgetController', WidgetController);
 
     BackendController.$inject = ['$scope', 'Global', 'Backend', '$stateParams','$rootScope','$location','$state','Authentication'];

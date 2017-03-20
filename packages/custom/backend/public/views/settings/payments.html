@@ -1,0 +1,70 @@
+<div class="page-inner" ng-controller="SettingController"> 
+    <div class="page-title">
+        <h3 class="breadcrumb-header">{{params.title}}</h3>
+        <div breadcrumbs></div>
+    </div> 
+    <div id="main-wrapper"> 
+        <div class="row boxedform">
+            <div class="col-md-4">
+                <h2 class="panel-headtext">Offline Payments</h2>
+                <p class="panel-headtext">Provide customers with instructions to pay outside of your online store. Choose from cash on delivery (COD), money order, bank deposit, or create a custom solution.</p>
+            </div>
+            <div class="col-md-8 rightbox no-padding z-depth-2"> 
+                  <div class="m-t-10">
+                        <div class="row padding15"> 
+                            <div class="col-md-10"> 
+                              <label for="storename" class="formlabel">Bank Deposit</label> 
+                              <p>Bank deposit payment</p>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-primary">Activate</button>
+                            </div> 
+                        </div>
+                        <div class="form-block"> 
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">  
+                                        <label for="bankdeposit_dname" class=" formlabel">Display name</label> 
+                                        <input id="bankdeposit_dname" ng-model="settings.bankdeposit_dname" name="bankdeposit_dname" type="text" class=""> 
+                                        <p class="help-block">If you enable more than one payment provider then your customers will need to choose which payment method they want to use. The text in this box will be used to describe this payment method on your site.</p>
+                                    </div> 
+                                    <div class="form-group">  
+                                        <label for="bankdeposit_countries" class=" formlabel">Available Countries</label> 
+                                        <select class="fullwidth" id="bankdeposit_countries" multiple="" name="bankdeposit_countries" ng-model="settings.bankdeposit_countries"><option value="all" selected="selected">-- All Countries --</option><option ng-repeat="(fg,gs) in directories track by fg" value="{{gs._id}}">{{gs.country_name}}</option></select> 
+                                        <p class="help-block">Which countries do you want to offer Bank Deposit to? If the customers billing country matches any of the selected countries then they will have the option to pay by Bank Deposit.</p>
+                                    </div>
+
+                                     <div class="form-group">  
+                                        <label for="bankdeposit_information" class=" formlabel">Account information</label> 
+                                        <textarea id="bankdeposit_information" ng-model="settings.bankdeposit_information" name="bankdeposit_information" class="materialize-textarea">Bank Name: ACME Bank
+Bank Branch: New York
+Account Name: John Smith
+Account Number: XXXXXXXXXXXX
+
+Type any special instructions in here.</textarea>
+                                        <p class="help-block">If a customer chooses to pay via bank deposit then he will be shown the text you type into this box once he completes his order. <br><br> You should include your bank details and other information here so the customer can pay for his order by bank deposit. The amount of the order will automatically be displayed. <br><br> Type in <b>%%OrderID%%</b> to insert the current Order ID</p>
+                                    </div>
+
+
+                                </div>
+                                <div class="col-md-6">
+                                    To integrate Bank Deposit into your store simply complete the form above and click the 'Save' button.
+                                </div>
+                                
+                              </div>  
+                        </div>
+                  </div>  
+ 
+
+            </div> 
+        </div> 
+ 
+ 
+        <div class="fixed-action-btn">
+            <a ng-click="savesettings(settings)" class="btn btn-floating btn-large waves-effect waves-light red"><i class="fa fa-floppy-o"></i></a>
+        </div>
+
+    </div><!-- Main Wrapper -->
+    <div class="page-footer"> 
+    </div>
+</div><!-- Page Inner -->
