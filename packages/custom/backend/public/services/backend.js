@@ -1,5 +1,21 @@
 (function() {
     'use strict';
+    Array.prototype.contains = function(v) {
+        for(var i = 0; i < this.length; i++) {
+            if(this[i] === v) return true;
+        }
+        return false;
+    };
+
+    Array.prototype.unique = function() {
+        var arr = [];
+        for(var i = 0; i < this.length; i++) {
+            if(!arr.contains(this[i])) {
+                arr.push(this[i]);
+            }
+        }
+        return arr; 
+    }
 
     function Backend($http, $q,$compile) {
         return {
@@ -180,6 +196,16 @@
                     finalset[this.get(ref[dg],'key')] = this.get(arra,this.get(ref[dg],'key'),{})
                 }
                 return finalset;
+            },
+            arrayunique : function(array) {
+                return array.unique();
+            },
+            remove : function(array, index) { 
+                var ind = array.indexOf(index);
+                if (ind > -1) {
+                   array.splice(ind, 1);
+                }
+                return array;
             }
         }
     }

@@ -17,10 +17,11 @@
                               <p>Bank deposit payment</p>
                             </div>
                             <div class="col-md-2">
-                                <button type="button" class="btn btn-primary">Activate</button>
+                                <button type="button" ng-if="!checkpaymentenabled('bankdeposit')" ng-click="activatepayment('bankdeposit')" class="btn btn-primary">Activate</button>
+                                <button type="button" ng-if="checkpaymentenabled('bankdeposit')" ng-click="deactivatepayment('bankdeposit')" class="btn btn-primary">De-Activate</button>
                             </div> 
                         </div>
-                        <div class="form-block"> 
+                        <div class="form-block" ng-if="checkpaymentenabled('bankdeposit')"> 
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">  
@@ -36,12 +37,7 @@
 
                                      <div class="form-group">  
                                         <label for="bankdeposit_information" class=" formlabel">Account information</label> 
-                                        <textarea id="bankdeposit_information" ng-model="settings.bankdeposit_information" name="bankdeposit_information" class="materialize-textarea">Bank Name: ACME Bank
-Bank Branch: New York
-Account Name: John Smith
-Account Number: XXXXXXXXXXXX
-
-Type any special instructions in here.</textarea>
+                                        <textarea id="bankdeposit_information" ng-model="settings.bankdeposit_information" name="bankdeposit_information" class="materialize-textarea"></textarea>
                                         <p class="help-block">If a customer chooses to pay via bank deposit then he will be shown the text you type into this box once he completes his order. <br><br> You should include your bank details and other information here so the customer can pay for his order by bank deposit. The amount of the order will automatically be displayed. <br><br> Type in <b>%%OrderID%%</b> to insert the current Order ID</p>
                                     </div>
 
@@ -54,7 +50,174 @@ Type any special instructions in here.</textarea>
                               </div>  
                         </div>
                   </div>  
- 
+
+                  <div class="m-t-10">
+                        <div class="row padding15"> 
+                            <div class="col-md-10"> 
+                              <label for="storename" class="formlabel">Cash on delivery</label> 
+                              <p>Cash on delivery payment</p>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" ng-if="!checkpaymentenabled('cashondelivery')" ng-click="activatepayment('cashondelivery')" class="btn btn-primary">Activate</button>
+                                <button type="button" ng-if="checkpaymentenabled('cashondelivery')" ng-click="deactivatepayment('cashondelivery')" class="btn btn-primary">De-Activate</button>
+                            </div> 
+                        </div>
+                        <div class="form-block" ng-if="checkpaymentenabled('cashondelivery')"> 
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">  
+                                        <label for="cashondelivery_dname" class=" formlabel">Display name</label> 
+                                        <input id="cashondelivery_dname" ng-model="settings.cashondelivery_dname" name="cashondelivery_dname" type="text" class=""> 
+                                        <p class="help-block">If you enable more than one payment provider then your customers will need to choose which payment method they want to use. The text in this box will be used to describe this payment method on your site.</p>
+                                    </div> 
+                                    <div class="form-group">  
+                                        <label for="cashondelivery_countries" class=" formlabel">Available Countries</label> 
+                                        <select class="fullwidth" id="cashondelivery_countries" multiple="" name="cashondelivery_countries" ng-model="settings.cashondelivery_countries"><option value="all" selected="selected">-- All Countries --</option><option ng-repeat="(fg,gs) in directories track by fg" value="{{gs._id}}">{{gs.country_name}}</option></select> 
+                                        <p class="help-block">Which countries do you want to offer Cash on delivery to? If the customers billing country matches any of the selected countries then they will have the option to pay by Cash on delivery.</p>
+                                    </div>
+
+                                     <div class="form-group">  
+                                        <label for="cashondelivery_information" class=" formlabel">Account information</label> 
+                                        <textarea id="cashondelivery_information" ng-model="settings.cashondelivery_information" name="cashondelivery_information" class="materialize-textarea" placeholder="Type instructions to cash on delivery in here."></textarea>
+                                        <p class="help-block">If a customer chooses to pay via cash on delivery then he will be shown the text you type into this box once he completes his order. <br><br> You should include your bank details and other information here so the customer can pay for his order by cash on delivery. The amount of the order will automatically be displayed. <br><br> Type in <b>%%OrderID%%</b> to insert the current Order ID</p>
+                                    </div>
+
+
+                                </div>
+                                <div class="col-md-6">
+                                    To integrate cash on deliery into your store simply complete the form above and click the 'Save' button.
+                                </div>
+                                
+                              </div>  
+                        </div>
+                  </div>  
+
+                  <div class="m-t-10">
+                        <div class="row padding15"> 
+                            <div class="col-md-10"> 
+                              <label for="storename" class="formlabel">Check</label> 
+                              <p>Pay by check payment</p>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" ng-if="!checkpaymentenabled('check')" ng-click="activatepayment('check')" class="btn btn-primary">Activate</button>
+                                <button type="button" ng-if="checkpaymentenabled('check')" ng-click="deactivatepayment('check')" class="btn btn-primary">De-Activate</button>
+                            </div> 
+                        </div>
+                        <div class="form-block" ng-if="checkpaymentenabled('check')"> 
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">  
+                                        <label for="check_dname" class=" formlabel">Display name</label> 
+                                        <input id="check_dname" ng-model="settings.check_dname" name="check_dname" type="text" class=""> 
+                                        <p class="help-block">If you enable more than one payment provider then your customers will need to choose which payment method they want to use. The text in this box will be used to describe this payment method on your site.</p>
+                                    </div> 
+                                    <div class="form-group">  
+                                        <label for="check_countries" class=" formlabel">Available Countries</label> 
+                                        <select class="fullwidth" id="check_countries" multiple="" name="check_countries" ng-model="settings.check_countries"><option value="all" selected="selected">-- All Countries --</option><option ng-repeat="(fg,gs) in directories track by fg" value="{{gs._id}}">{{gs.country_name}}</option></select> 
+                                        <p class="help-block">Which countries do you want to offer pay by check to? If the customers billing country matches any of the selected countries then they will have the option to pay by pay by check.</p>
+                                    </div>
+
+                                     <div class="form-group">  
+                                        <label for="check_information" class=" formlabel">Account information</label> 
+                                        <textarea id="check_information" ng-model="settings.check_information" name="check_information" class="materialize-textarea" placeholder="Type instructions to pay by check in here."></textarea>
+                                        <p class="help-block">If a customer chooses to pay via pay by check then he will be shown the text you type into this box once he completes his order. <br><br> You should include your bank details and other information here so the customer can pay for his order by pay by check. The amount of the order will automatically be displayed. <br><br> Type in <b>%%OrderID%%</b> to insert the current Order ID</p>
+                                    </div>
+
+
+                                </div>
+                                <div class="col-md-6">
+                                    To integrate pay by check into your store simply complete the form above and click the 'Save' button.
+                                </div>
+                                
+                              </div>  
+                        </div>
+                  </div> 
+
+                  <div class="m-t-10">
+                        <div class="row padding15"> 
+                            <div class="col-md-10"> 
+                              <label for="storename" class="formlabel">Money Order</label> 
+                              <p>Pay by money order payment</p>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" ng-if="!checkpaymentenabled('moneyorder')" ng-click="activatepayment('moneyorder')" class="btn btn-primary">Activate</button>
+                                <button type="button" ng-if="checkpaymentenabled('moneyorder')" ng-click="deactivatepayment('moneyorder')" class="btn btn-primary">De-Activate</button>
+                            </div> 
+                        </div>
+                        <div class="form-block" ng-if="checkpaymentenabled('moneyorder')"> 
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">  
+                                        <label for="moneyorder_dname" class=" formlabel">Display name</label> 
+                                        <input id="moneyorder_dname" ng-model="settings.moneyorder_dname" name="moneyorder_dname" type="text" class=""> 
+                                        <p class="help-block">If you enable more than one payment provider then your customers will need to choose which payment method they want to use. The text in this box will be used to describe this payment method on your site.</p>
+                                    </div> 
+                                    <div class="form-group">  
+                                        <label for="moneyorder_countries" class=" formlabel">Available Countries</label> 
+                                        <select class="fullwidth" id="moneyorder_countries" multiple="" name="moneyorder_countries" ng-model="settings.moneyorder_countries"><option value="all" selected="selected">-- All Countries --</option><option ng-repeat="(fg,gs) in directories track by fg" value="{{gs._id}}">{{gs.country_name}}</option></select> 
+                                        <p class="help-block">Which countries do you want to offer pay by money order to? If the customers billing country matches any of the selected countries then they will have the option to pay by pay by money order.</p>
+                                    </div>
+
+                                     <div class="form-group">  
+                                        <label for="moneyorder_information" class=" formlabel">Account information</label> 
+                                        <textarea id="moneyorder_information" ng-model="settings.moneyorder_information" name="moneyorder_information" class="materialize-textarea" placeholder="Type instructions to pay by moneyorder in here."></textarea>
+                                        <p class="help-block">If a customer chooses to pay via pay by money order then he will be shown the text you type into this box once he completes his order. <br><br> You should include your bank details and other information here so the customer can pay for his order by pay by money order. The amount of the order will automatically be displayed. <br><br> Type in <b>%%OrderID%%</b> to insert the current Order ID</p>
+                                    </div>
+
+
+                                </div>
+                                <div class="col-md-6">
+                                    To integrate pay by money order into your store simply complete the form above and click the 'Save' button.
+                                </div>
+                                
+                              </div>  
+                        </div>
+                  </div> 
+
+                  <div class="m-t-10">
+                        <div class="row padding15"> 
+                            <div class="col-md-10"> 
+                              <label for="storename" class="formlabel">Pay in store</label> 
+                              <p>Pay in store mode</p>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" ng-if="!checkpaymentenabled('storepayment')" ng-click="activatepayment('storepayment')" class="btn btn-primary">Activate</button>
+                                <button type="button" ng-if="checkpaymentenabled('storepayment')" ng-click="deactivatepayment('storepayment')" class="btn btn-primary">De-Activate</button>
+                            </div> 
+                        </div>
+                        <div class="form-block" ng-if="checkpaymentenabled('storepayment')"> 
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">  
+                                        <label for="storepayment_dname" class=" formlabel">Display name</label> 
+                                        <input id="storepayment_dname" ng-model="settings.storepayment_dname" name="storepayment_dname" type="text" class=""> 
+                                        <p class="help-block">If you enable more than one payment provider then your customers will need to choose which payment method they want to use. The text in this box will be used to describe this payment method on your site.</p>
+                                    </div> 
+                                    <div class="form-group">  
+                                        <label for="storepayment_countries" class=" formlabel">Available Countries</label> 
+                                        <select class="fullwidth" id="storepayment_countries" multiple="" name="storepayment_countries" ng-model="settings.storepayment_countries"><option value="all" selected="selected">-- All Countries --</option><option ng-repeat="(fg,gs) in directories track by fg" value="{{gs._id}}">{{gs.country_name}}</option></select> 
+                                        <p class="help-block">Which countries do you want to offer pay by store to? If the customers billing country matches any of the selected countries then they will have the option to pay by pay by store.</p>
+                                    </div>
+
+                                     <div class="form-group">  
+                                        <label for="storepayment_information" class=" formlabel">Account information</label> 
+                                        <textarea id="storepayment_information" ng-model="settings.storepayment_information" name="storepayment_information" class="materialize-textarea" placeholder="Type instructions to pay by visiting your retail store in here."></textarea>
+                                        <p class="help-block">If a customer chooses to pay via pay by store then he will be shown the text you type into this box once he completes his order. <br><br> You should include your bank details and other information here so the customer can pay for his order by pay by store. The amount of the order will automatically be displayed. <br><br> Type in <b>%%OrderID%%</b> to insert the current Order ID</p>
+                                    </div>
+
+
+                                </div>
+                                <div class="col-md-6">
+                                    To integrate pay by store into your store simply complete the form above and click the 'Save' button.
+                                </div>
+                                
+                              </div>  
+                        </div>
+                  </div> 
+
+
+
+
 
             </div> 
         </div> 

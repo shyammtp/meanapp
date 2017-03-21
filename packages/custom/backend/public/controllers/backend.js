@@ -105,8 +105,8 @@
     }
  
 
-     function SettingsController($scope,Backend) { 
-         
+     function SettingsController($scope,Backend,ArrayUtil) { 
+        $scope.settings = {};
         $scope.directories = $scope.$parent.$parent.directories;
         $scope.toggleformatcurrency = function() {
             if($scope.formatcurrency === undefined || !$scope.formatcurrency) {
@@ -115,14 +115,37 @@
                  $scope.formatcurrency = false;
             }
         }
-        $scope.savesettings = function(settings) {  
-            console.log(settings);
+        $scope.savesettings = function(settings) {   
             var success = 0,error = 0;
             Backend.saveAllSettings(settings).then(function(res){
                 Materialize.toast('Settings Saved Successfully', 4000);
             });
         }
+        $scope.paymentmethods = [];         
+        $scope.settings.cashondelivery_dname = 'Cash on delivery';
+        $scope.settings.check_dname = 'Pay by check';
+        $scope.settings.storepayment_dname = 'Pay in store';
+        $scope.settings.moneyorder_dname = 'Pay by Money Order';
+        $scope.settings.bankdeposit_countries = 'all';
+        $scope.settings.bankdeposit_information = 'Bank Name: ACME Bank\r\nBank Branch: New York\r\nAccount Name: John Smith\r\nAccount Number: XXXXXXXXXXXX\r\nType any special instructions in here.';
+        $scope.settings.bankdeposit_dname = 'Bank Deposit';
+        $scope.activatepayment = function(index) {
+            $scope.paymentmethods.push(index);
+            $scope.paymentmethods = ArrayUtil.arrayunique($scope.paymentmethods);
+            console.log($scope.paymentmethods);
+        } 
+        $scope.deactivatepayment = function(index) {            
+            $scope.paymentmethods = ArrayUtil.remove($scope.paymentmethods,index);
+            console.log($scope.paymentmethods);
+        }
 
+        $scope.checkpaymentenabled = function(index) {
+            var ud = $scope.paymentmethods;
+            if(ud.indexOf(index) > -1) {
+                return true;
+            }
+            return false;
+        }
 
     }
 
@@ -172,7 +195,7 @@
         .controller('WidgetController', WidgetController);
 
     BackendController.$inject = ['$scope', 'Global', 'Backend', '$stateParams','$rootScope','$location','$state','Authentication'];
-    SettingsController.$inject = ['$scope','Backend'];
+    SettingsController.$inject = ['$scope','Backend','ArrayUtil'];
     WidgetController.$inject = ['$scope','ListWidget','$location','Backend','$rootScope','$state'];
 
 })();
