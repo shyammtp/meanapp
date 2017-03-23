@@ -299,7 +299,7 @@
                 productscope : '&productscope',
                 editproduct : '=editproduct'
             }, 
-            initAfter : function(scope,element,attrs) {
+            initAfter : function(scope,element,attrs,obj) {
                 if(attrs.type === 'textarea') { 
                     $timeout(function() {
                          tinymce.init({
@@ -309,7 +309,9 @@
                             init_instance_callback: function (editor) {
                                 editor.on('blur', function (e) {
                                     scope.product[$(editor.getElement()).attr('name')] = editor.getContent();
-                                    console.log(scope);
+                                    obj.products = angular.extend({}, obj.products, scope.product);
+                                    scope.productscope({productscope : obj.products});
+                                    
                                 });
                                 editor.on('init', function (e) {
                                     if(ArrayUtil.get(scope.product,$(editor.getElement()).attr('name'))) {
@@ -342,6 +344,7 @@
                 });
                 scope.$on('editproduct',function(event, data){ 
                     scope.product = ArrayUtil.get(data,'data',{});
+                    scope.childOnLoad();
                     //scope.product = {};    
                 });
                 if(attrs.type === 'text') {
@@ -352,7 +355,7 @@
                 }
                
                 scope.childOnLoad = function() {
-                    _obj.initAfter(scope,element,attrs,ngModel);
+                    _obj.initAfter(scope,element,attrs,_obj);
                      
                 }
 
