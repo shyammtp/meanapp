@@ -75,7 +75,7 @@
          
          ListWidget.defaultSortColumn = 'type';
          ListWidget.isFilter = false;
-         ListWidget.addColumn('mainimage',{'type' : 'text','title' : 'Image',defaultValue : '--',width : '30%','render' : 'backend/views/products/catalog/list/renderer/image.html'});
+         ListWidget.addColumn('mainimage',{'type' : 'text','title' : 'Image',defaultValue : '--',width : '30%','render' : 'backend/views/products/catalog/list/renderer/image.html',sortable : false,filterable : false});
          ListWidget.addColumn('product_title',{'type' : 'number','title' : 'Product Name',width : '30%','render' : 'backend/views/products/catalog/list/renderer/name.html'});  
          ListWidget.addColumn('nocolumn',{'type' : 'notype','title' : 'Actions',defaultValue : '--',width : '20%',sortable : false,filterable : false,'render' : 'backend/views/products/catalog/list/renderer/action.html'});
          ListWidget.setDataRequestUrl('/api/catalog/list'); 
@@ -132,13 +132,13 @@
 
     function CatalogAddController($scope,ArrayUtil, Product,$location,$timeout, Backend,Upload,$stateParams) { 
  		var vm = this,categoryset = Product.getCategoryTreeSetForAdd();
-        console.log(categoryset);
+
         $scope.form = {};
  		if(categoryset === undefined && typeof $stateParams.product_id === 'undefined') {
  			$location.path('admin/products/catalog/classify');
  		} 
  		$scope.infoattributes = $scope.pricing = $scope.description = $scope.more_details = {};
-        
+
         $scope.variantsetoptions = [];
         $scope.optionset = [];
         var variationset = {};
@@ -161,7 +161,7 @@
         })
 
     	var lastcat = Product.getCategoryForAdd(); 
-        console.log(lastcat);
+        
 
     	if(lastcat !== undefined) {
 	    	$scope.$broadcast('loadattributesfields');
@@ -194,7 +194,7 @@
                 });  
                 gd.push(fghg);
             }); 
-            console.log(gd);
+        
             return gd;
         }
 
@@ -210,9 +210,9 @@
                 });
                  if(typeof $stateParams.product_id !== 'undefined') {
                      Product.getProductById($stateParams.product_id).then(function(res){ 
-                        console.log(res);
+        
                         if(res.data === null) { 
-                            console.log('asdasd');
+        
                             Materialize.toast('Invalid Product', 4000,'errortoast'); 
                             $location.path('admin/products/catalog/classify');
                             return;
@@ -226,7 +226,7 @@
                             })
                             Product.setCategoryTreeSet(gfgsa);
                             $scope.pickedcategory = categoryset = Product.getCategoryTreeSetForAdd();
-                            console.log($scope.pickedcategory);
+                            
                         });
                         Product.getCategoryAttribute(res.data.category_id).then(function(ress) {
                             Product.setCategory(ress.data);
@@ -246,8 +246,7 @@
             return false;
         }
 
-        $scope.updateset = function(d) {
-            console.log($scope.product);
+        $scope.updateset = function(d) { 
             $scope.choosedvariantset = d; 
             $scope.variantslist = ArrayUtil.get(variationset,d,{}); 
             $scope.subproducts = ArrayUtil.get($scope.variants,d,[]);
@@ -316,8 +315,7 @@
             vm.product.images[s] = file;  
 
         };
-        $scope.getScope = function(s) {
-            console.log(s);
+        $scope.getScope = function(s) {  
            vm.product = s;  
            $scope.product = angular.extend({},$scope.product,s); 
         }

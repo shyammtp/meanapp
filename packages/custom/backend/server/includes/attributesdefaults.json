@@ -19,7 +19,7 @@
 	        "title" : {
 	            "en" : "Availability"
 	        },
-	        "attribute_name" : "Availability",
+	        "attribute_name" : "availability",
 	        "is_system" : true,
 	        "block" : "info",
 	        "type" : "text",
@@ -67,5 +67,20 @@
 	        "required" : true
 	    }
 
+	},
+	"description" : {
+		"product_description" : {
+	        "sort" : -1,
+	        "example" : "Editor Product description",
+	        "title" : {
+	            "en" : "Product Description"
+	        },
+	        "attribute_name" : "product_description",
+	        "is_system" : true,
+	        "block" : "info",
+	        "editor" : true,
+	        "type" : "textarea", 
+	        "required" : true
+	    }
 	}
 }

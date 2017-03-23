@@ -289,35 +289,59 @@
         }
     }
 
-    function catalogfield(Product,$compile,$location,ArrayUtil) {
+    function catalogfield(Product,$compile,$location,ArrayUtil,$timeout) {
         return {
-            template: '<div ng-include="getContentUrl()"></div>',
-            products : {}, 
+            template: '<div ng-include="getContentUrl()"  onload="childOnLoad()"></div>',
+            products : {},  
             scope : {
                 catalogattributes : '=',
                 parentattribute : '=',                
                 productscope : '&productscope',
                 editproduct : '=editproduct'
             }, 
-            link : function(scope,element,attrs) {
+            initAfter : function(scope,element,attrs) {
+                if(attrs.type === 'textarea') { 
+                    $timeout(function() {
+                         tinymce.init({
+                            selector : '.editortextarea',body_class : 'colorwhite',
+                            content_css : '/theme/assets/lib/black/css/tinymcecontent.css',
+                            editor_css : '/theme/assets/lib/black/css/tinymceeditor.css',
+                            init_instance_callback: function (editor) {
+                                editor.on('blur', function (e) {
+                                    scope.product[$(editor.getElement()).attr('name')] = editor.getContent();
+                                    console.log(scope);
+                                });
+                                editor.on('init', function (e) {
+                                    if(ArrayUtil.get(scope.product,$(editor.getElement()).attr('name'))) {
+                                        editor.setContent(ArrayUtil.get(scope.product,$(editor.getElement()).attr('name')));
+                                    }
+                                });
+                            }
+                        });
+
+                    })
+                    
+                }
+
+            },
+            link : function(scope,element,attrs,ngModel) {
                 scope.product = {}; 
                 scope.product.availabilitytype = 1;
                 var _obj = this;
                 scope.$watchCollection('product', function() { 
+                    console.log(scope.product);
                     _obj.products = angular.extend({}, _obj.products, scope.product);  
                     scope.productscope({productscope : _obj.products});
                 });  
                 if(Object.keys(scope.editproduct).length > 0) {
                     scope.product = scope.editproduct.data;
                 } 
-                scope.$on('savedproduct',function(event, data){ 
-                    console.log(data);
+                scope.$on('savedproduct',function(event, data){                     
                     scope.product._id = ArrayUtil.get(ArrayUtil.get(data.response,'data'),'_id');
                     //scope.product = {};    
                 });
                 scope.$on('editproduct',function(event, data){ 
-                    scope.product = ArrayUtil.get(data,data,{});
-                     
+                    scope.product = ArrayUtil.get(data,'data',{});
                     //scope.product = {};    
                 });
                 if(attrs.type === 'text') {
@@ -326,7 +350,16 @@
                 if(attrs.type === 'date') {
                     this.initDate(scope,element,attrs);
                 }
+               
+                scope.childOnLoad = function() {
+                    _obj.initAfter(scope,element,attrs,ngModel);
+                     
+                }
+
                 scope.getContentUrl = function() { 
+                    if(!attrs.type) {
+                        return '';
+                    }
                     return 'backend/views/products/catalog/fields/form/' + attrs.type + '.html';
                 }
                 scope.countObject = function(obd) {
@@ -598,6 +631,6 @@
     jsTree.$inject = ['Product','ArrayUtil','$timeout'];
     categoryselectslider = ['Product','$compile','$location'];    
     attributeManager = ['Product','$compile','$location','ArrayUtil'];    
-    catalogfield = ['Product','$compile','$location','ArrayUtil']; 
+    catalogfield = ['Product','$compile','$location','ArrayUtil','$timeout']; 
     catalogvariantfield = ['Product','$timeout','$location','ArrayUtil','Upload']; 
 })();
