@@ -148,24 +148,20 @@
         $scope.variantslist = {};
         vm.product= {};
         $scope.subproducteditindex = -1;
-        $scope.variants = {}
+        $scope.variants = {} 
 
-        $scope.$on('loadattributesfields',function() {
+    	var lastcat = Product.getCategoryForAdd(); 
+
+        if(lastcat !== undefined) {
+            $scope.$broadcast('loadattributesfields');
+        } 
+         $scope.$on('loadattributesfields',function() { 
             var attributes = ArrayUtil.get(lastcat,'attributes',{}); 
             $scope.infoattributes = ArrayUtil.sort(ArrayUtil.get(attributes,'info',{}));  
             $scope.pricing = ArrayUtil.sort(ArrayUtil.get(attributes,'pricing',{}));
             $scope.description = ArrayUtil.sort(ArrayUtil.get(attributes,'description',{})); 
             $scope.more_details = ArrayUtil.sort(ArrayUtil.get(attributes,'more_details',{}));
-
-            
-        })
-
-    	var lastcat = Product.getCategoryForAdd(); 
-        
-
-    	if(lastcat !== undefined) {
-	    	$scope.$broadcast('loadattributesfields');
-	    }
+        });
 
         var publishdata = function(data) { 
             $scope.product = data;
@@ -231,6 +227,10 @@
                         Product.getCategoryAttribute(res.data.category_id).then(function(ress) {
                             Product.setCategory(ress.data);
                             lastcat = Product.getCategoryForAdd();
+                            if(!lastcat) {
+                                Materialize.toast('No Category Mapped to this product', 4000,'errortoast'); 
+                                $location.path('admin/products/catalog');
+                            }
                             $scope.$broadcast('loadattributesfields');                    
                             publishdata(res.data);
                         }); 
