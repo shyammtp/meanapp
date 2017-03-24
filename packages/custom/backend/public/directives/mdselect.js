@@ -301,9 +301,15 @@
             }, 
             initAfter : function(scope,element,attrs,obj) {
                 if(attrs.type === 'textarea') { 
-                    $timeout(function() {
+                    
+                    $timeout(function() { 
+                        tinymce.remove();
                          tinymce.init({
                             selector : '.editortextarea',body_class : 'colorwhite',
+                            menubar : false,
+                            document_base_url : '/bower_components/tinymce/',
+                            height:'450px',plugins: ["colorpicker code image textcolor"],
+                            toolbar1: "code | insertfile undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image preview | forecolor backcolor",
                             content_css : '/theme/assets/lib/black/css/tinymcecontent.css',
                             editor_css : '/theme/assets/lib/black/css/tinymceeditor.css',
                             init_instance_callback: function (editor) {
@@ -331,20 +337,20 @@
                 scope.product.availabilitytype = 1;
                 var _obj = this;
                 scope.$watchCollection('product', function() { 
-                    console.log(scope.product);
+                    //console.log(scope.product);
                     _obj.products = angular.extend({}, _obj.products, scope.product);  
                     scope.productscope({productscope : _obj.products});
                 });  
                 if(Object.keys(scope.editproduct).length > 0) {
                     scope.product = scope.editproduct.data;
-                } 
+                }  
                 scope.$on('savedproduct',function(event, data){                     
                     scope.product._id = ArrayUtil.get(ArrayUtil.get(data.response,'data'),'_id');
                     //scope.product = {};    
                 });
                 scope.$on('editproduct',function(event, data){ 
                     scope.product = ArrayUtil.get(data,'data',{});
-                    scope.childOnLoad();
+                   // scope.childOnLoad();
                     //scope.product = {};    
                 });
                 if(attrs.type === 'text') {

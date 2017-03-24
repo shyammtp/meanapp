@@ -29,7 +29,7 @@ Backend.register(function(app, auth, database, circles) {
   Backend.routes(app, auth, database, circles);
   //app.use(session({ secret: config.secret, resave: false, saveUninitialized: true }));
   //app.use('/api', expressJwt({ secret: config.sessionSecret }).unless({ path: ['/api/users/authenticate', '/api/users/register'] }));
-  Backend.angularDependencies(['ngSanitize','ui.router','ui.tinymce']); 
+  Backend.angularDependencies(['ngSanitize','ui.router','ui.tinymce','angular-loading-bar']); 
   app.set('views', path.join(__dirname, '/server/views'));
  
   //We are adding a link to the main menu for all authenticated users

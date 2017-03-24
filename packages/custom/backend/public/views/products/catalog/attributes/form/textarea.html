@@ -60,10 +60,23 @@
 			  </div>            
 	    </div>
     </div>
+
+    <div class="col-md-12"> 
+       <div class="m-t-20">
+        <div class="switch">
+          <label>
+            Is Editor
+            <input type="checkbox" ng-model="attributefield.editor" tabindex="7">
+            <span class="lever"></span>            
+          </label>
+        </div>            
+      </div>
+    </div>
+
     <div class="col-md-12 m-t-20">
         <div class="input-field">
             <div class="">
-                <select ng-model="attributefield.parent" class="initialized col-md-12" data-options="[{'title':'Black','value': 'black'}]" data-value="{{attributefield.parent}}"> 
+                <select ng-model="attributefield.parent" class="initialized col-md-12"  tabindex="8" data-options="[{'title':'Black','value': 'black'}]" data-value="{{attributefield.parent}}"> 
                     <option value="">Select Parent Block</option> 
                     <option ng-repeat="($lb,fv) in parentselects track by $lb" value="{{fv.value}}">{{fv.title}}</option>
                 </select>
@@ -75,19 +88,19 @@
          <div class="m-t-20">
              <div class="row">
                  <div class="col-md-3">
-                    <input name="block" ng-disabled="hasparent" ng-change="updatefields('info')"  ng-model="attributefield.block" tabindex="7" value="info" class="with-gap" type="radio" id="info" />
+                    <input name="block" ng-disabled="hasparent"  tabindex="9" ng-change="updatefields('info')"  ng-model="attributefield.block" tabindex="7" value="info" class="with-gap" type="radio" id="info" />
                     <label for="info">Info Block</label>
                  </div>
                  <div class="col-md-3">
-                    <input name="block" ng-model="attributefield.block" ng-disabled="hasparent"  ng-change="updatefields('pricing')"  value="pricing" tabindex="8"  class="with-gap"  type="radio" id="pricing" />
+                    <input name="block" ng-model="attributefield.block" ng-disabled="hasparent"  ng-change="updatefields('pricing')"  value="pricing" tabindex="10"  class="with-gap"  type="radio" id="pricing" />
                     <label for="pricing">Pricing Block</label>
                  </div>
                  <div class="col-md-3">
-                    <input name="block" ng-model="attributefield.block" ng-disabled="hasparent"  ng-change="updatefields('description')"  value="description" tabindex="9"  class="with-gap"  type="radio" id="description" />
+                    <input name="block" ng-model="attributefield.block" ng-disabled="hasparent"  ng-change="updatefields('description')"  value="description" tabindex="11"  class="with-gap"  type="radio" id="description" />
                     <label for="description">Description Block</label>
                  </div>
                  <div class="col-md-3">
-                    <input name="block" ng-model="attributefield.block" ng-disabled="hasparent"  ng-change="updatefields('more_details')"  value="more_details" tabindex="10"  class="with-gap"  type="radio" id="more_details" />
+                    <input name="block" ng-model="attributefield.block" ng-disabled="hasparent"  ng-change="updatefields('more_details')"  value="more_details" tabindex="12"  class="with-gap"  type="radio" id="more_details" />
                     <label for="more_details">More Details Block</label>
                  </div>
              </div>        
@@ -95,8 +108,8 @@
     </div>
     <div class="col-md-12 m-t-20">
         <div class="btn-group pull-right">
-            <button type="button" ng-click="cancel()" class="waves-effect waves-light btn btn-default">Cancel</button>        
-            <button type="submit" ng-click="saveAttribute(attributefield)" class="waves-effect waves-light btn btn-primary">Save</button>
+            <button type="button" ng-click="cancel()" tabindex="13"  class="waves-effect waves-light btn btn-default">Cancel</button>        
+            <button type="submit" ng-click="saveAttribute(attributefield)"  tabindex="14"  class="waves-effect waves-light btn btn-primary">Save</button>
         </div>
     </div>
 

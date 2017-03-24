@@ -209,13 +209,22 @@
             }
         }
     }
+
+    function Page() {
+        var title = '';
+        return {
+            title: function() { return title; },
+            setTitle: function(newTitle) { title = newTitle }
+        }
+    }
  
 
     angular
         .module('mean.backend')
         .factory('Backend', Backend)
         .factory('Authentication',Authentication)
-        .factory('ArrayUtil',ArrayUtil);
+        .factory('ArrayUtil',ArrayUtil)
+        .factory('Page',Page);
 
     Backend.$inject = ['$http', '$q','$compile'];
     Authentication.$inject = ['$http', '$q','$window'];

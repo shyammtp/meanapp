@@ -12,6 +12,18 @@
 	        "type" : "text",
 	        "previous_block" : "info",
 	        "required" : true
+	    }, 
+	    "sku" : {
+	        "sort" : -1,
+	        "example" : "Maxlength character should be 50 Characters long",
+	        "title" : {
+	            "en" : "Product Code / SKU"
+	        },
+	        "attribute_name" : "sku",
+	        "is_system" : true,
+	        "block" : "info",
+	        "type" : "text",
+	        "previous_block" : "info"  
 	    },
 	    "availability" : {
 	        "sort" : -1,

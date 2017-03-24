@@ -51,8 +51,7 @@ ProductSchema.post('save',function() {
 })
 
 ProductSchema.methods.addData = function(data) {
-	var _obj = this;
-	console.log(data);
+	var _obj = this; 
 	if(data.title) {
 		this.product_url = textutil.url_title(data.title);
 	} else if(data.item_name) {

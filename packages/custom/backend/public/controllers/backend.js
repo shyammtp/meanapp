@@ -2,6 +2,9 @@
     'use strict';
 
     /* jshint -W098 */
+    function TitleController($scope,Page) {
+         $scope.Page = Page; 
+    }
 
     function BackendController($scope, Global, Backend, $stateParams,$rootScope,$location,$state, Authentication) { 
         var bm = this;  
@@ -15,19 +18,30 @@
                 $scope.externaljs = data.externaljs;
             } 
         });
+        $scope.headtitle = 'test';
         $scope.global = Global;
         $scope.package = {
             name: 'backend'
         };     
         $scope.params =  $stateParams; 
         Backend.getAssetsData().then(function(res) { 
-            $scope.assetspath = res.path;
-            console.log(res.path);
+            $scope.assetspath = res.path; 
             $scope.theme = res.theme; 
         }); 
+        $scope.loadsubmenu = function() {
+
+        }
         Backend.getMenus().then(function(response) { 
-            $scope.datas = response.data;    
-        }); 
+                $scope.datas = response.data;
+                jQuery('.sidebar .accordion-menu li .sub-menu').slideUp(0);
+                jQuery('.sidebar .accordion-menu li.open .sub-menu').slideDown(0);
+                jQuery('.small-sidebar .sidebar .accordion-menu li.open .sub-menu').hide(0);
+            },function(reason) {
+                console.log("getMenus:Failed: "+ reason);
+            },function(update){
+                 console.log('in1');
+                 
+            }); 
         $scope.directories = [];
         Backend.getAllDirectories().then(function(response){
             $scope.directories = response.data;
@@ -105,9 +119,11 @@
     }
  
 
-     function SettingsController($scope,Backend,ArrayUtil) { 
+     function SettingsController($scope,Backend,ArrayUtil,Page) { 
         $scope.settings = {};
+        Page.setTitle('My new title');
         $scope.directories = $scope.$parent.$parent.directories;
+        console.log($scope);
         $scope.toggleformatcurrency = function() {
             if($scope.formatcurrency === undefined || !$scope.formatcurrency) {
                 $scope.formatcurrency = true;
@@ -129,6 +145,9 @@
         $scope.settings.bankdeposit_countries = 'all';
         $scope.settings.bankdeposit_information = 'Bank Name: ACME Bank\r\nBank Branch: New York\r\nAccount Name: John Smith\r\nAccount Number: XXXXXXXXXXXX\r\nType any special instructions in here.';
         $scope.settings.bankdeposit_dname = 'Bank Deposit';
+
+
+        $scope.settings = $scope.$parent.$parent.settings;
         $scope.activatepayment = function(index) {
             $scope.paymentmethods.push(index);
             $scope.paymentmethods = ArrayUtil.arrayunique($scope.paymentmethods);
@@ -191,11 +210,13 @@
     angular
         .module('mean.backend')
         .controller('BackendController', BackendController)
+        .controller('TitleController', TitleController)
         .controller('SettingController', SettingsController)
         .controller('WidgetController', WidgetController);
 
     BackendController.$inject = ['$scope', 'Global', 'Backend', '$stateParams','$rootScope','$location','$state','Authentication'];
-    SettingsController.$inject = ['$scope','Backend','ArrayUtil'];
+    TitleController.$inject = ['$scope','Page'];
+    SettingsController.$inject = ['$scope','Backend','ArrayUtil','Page'];
     WidgetController.$inject = ['$scope','ListWidget','$location','Backend','$rootScope','$state'];
 
 })();
