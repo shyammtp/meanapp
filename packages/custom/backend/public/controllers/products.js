@@ -75,7 +75,8 @@
          
          ListWidget.defaultSortColumn = 'type';
          ListWidget.isFilter = false;
-         ListWidget.addColumn('mainimage',{'type' : 'text','title' : 'Image',defaultValue : '--',width : '30%','render' : 'backend/views/products/catalog/list/renderer/image.html',sortable : false,filterable : false});
+         ListWidget.addColumn('mainimage',{'type' : 'text','title' : 'Image',defaultValue : '--',width : '20%','render' : 'backend/views/products/catalog/list/renderer/image.html',sortable : false,filterable : false});
+         ListWidget.addColumn('sku',{'type' : 'text','title' : 'SKU',width : '30%'});  
          ListWidget.addColumn('product_title',{'type' : 'number','title' : 'Product Name',width : '30%','render' : 'backend/views/products/catalog/list/renderer/name.html'});  
          ListWidget.addColumn('nocolumn',{'type' : 'notype','title' : 'Actions',defaultValue : '--',width : '20%',sortable : false,filterable : false,'render' : 'backend/views/products/catalog/list/renderer/action.html'});
          ListWidget.setDataRequestUrl('/api/catalog/list'); 
@@ -132,7 +133,7 @@
 
     function CatalogAddController($scope,ArrayUtil, Product,$location,$timeout, Backend,Upload,$stateParams) { 
  		var vm = this,categoryset = Product.getCategoryTreeSetForAdd();
-
+var lastcat = Product.getCategoryForAdd(); 
         $scope.form = {};
  		if(categoryset === undefined && typeof $stateParams.product_id === 'undefined') {
  			$location.path('admin/products/catalog/classify');
@@ -149,19 +150,19 @@
         vm.product= {};
         $scope.subproducteditindex = -1;
         $scope.variants = {} 
+ 
 
-    	var lastcat = Product.getCategoryForAdd(); 
-
-        if(lastcat !== undefined) {
-            $scope.$broadcast('loadattributesfields');
-        } 
-         $scope.$on('loadattributesfields',function() { 
+        $scope.$on('loadattributesfields',function() {  
             var attributes = ArrayUtil.get(lastcat,'attributes',{}); 
             $scope.infoattributes = ArrayUtil.sort(ArrayUtil.get(attributes,'info',{}));  
             $scope.pricing = ArrayUtil.sort(ArrayUtil.get(attributes,'pricing',{}));
             $scope.description = ArrayUtil.sort(ArrayUtil.get(attributes,'description',{})); 
             $scope.more_details = ArrayUtil.sort(ArrayUtil.get(attributes,'more_details',{}));
         });
+        if(lastcat !== undefined) { 
+            $scope.$broadcast('loadattributesfields');
+        } 
+         
 
         var publishdata = function(data) { 
             $scope.product = data;
@@ -193,7 +194,6 @@
         
             return gd;
         }
-
         Product.getAllVariantset().then(function(response) {
                 var data = response.data;
                 angular.forEach(data, function(v,l){
