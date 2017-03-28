@@ -124,8 +124,8 @@ ProductSchema.statics.getAllPaginate = function(params, cb) {
 		sort[params['sort']] = (typeof params.sortDir != 'undefined' ?params.sortDir : -1);
 	}
 	if( typeof params.productkeywords !== 'undefined') {
-		fcollection = {$or : [{'data.sku' : new RegExp(params.productkeywords,'ig'),
-								'data.item_name' :new RegExp(params.productkeywords,'ig')
+		fcollection = {$or : [{'data.sku' : {$regex : params.productkeywords, $options : 'i'}},
+								{'data.item_name' :{$regex : params.productkeywords, $options : 'i'}
 						 }]
 					}
 	}

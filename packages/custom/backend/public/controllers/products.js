@@ -77,7 +77,7 @@
         ListWidget.isFilter = false;
         ListWidget.addColumn('mainimage',{'type' : 'text','title' : 'Image',defaultValue : '--',width : '20%','render' : 'backend/views/products/catalog/list/renderer/image.html',sortable : false,filterable : false});
         ListWidget.addColumn('sku',{'type' : 'text','title' : 'SKU',width : '30%','index' : 'data.sku'});  
-        ListWidget.addColumn('product_title',{'type' : 'number','title' : 'Product Name',width : '30%','render' : 'backend/views/products/catalog/list/renderer/name.html'});  
+        ListWidget.addColumn('product_title',{'type' : 'number','title' : 'Product Name','index' : 'data.item_name',width : '30%','render' : 'backend/views/products/catalog/list/renderer/name.html'});  
         ListWidget.addColumn('nocolumn',{'type' : 'notype','title' : 'Actions',defaultValue : '--',width : '20%',sortable : false,filterable : false,'render' : 'backend/views/products/catalog/list/renderer/action.html'});
         ListWidget.setDataRequestUrl(url); 
          
@@ -163,6 +163,11 @@
             $scope.variants = {} 
         }
         resetVariables();
+
+        $scope.cancelmanage = function(){
+            resetVariables();
+            $location.path('admin/products/catalog');
+        }
 
         $scope.$on('loadattributesfields',function() {  
             var attributes = ArrayUtil.get(lastcat,'attributes',{}); 

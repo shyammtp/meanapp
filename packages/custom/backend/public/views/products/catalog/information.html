@@ -11,6 +11,9 @@
                 <div class="fixed-action-btn">
                     <a ng-click="(form.productForm.maininfo.$invalid || form.productForm.pricing.$invalid  || form.productForm.more_details.$invalid || form.productForm.description.$invalid) || saveproduct()" ng-disabled="form.productForm.maininfo.$invalid || form.productForm.pricing.$invalid || form.productForm.description.$invalid || form.productForm.more_details.$invalid"   class="btn btn-floating btn-large waves-effect waves-light red"><i class="fa fa-floppy-o"></i></a>
                 </div>  
+                <div class="fixed-action-btn-cancel">
+                    <a ng-click="cancelmanage()" class="btn btn-floatingcancel btn-large waves-effect waves-light "><i class="fa fa-times"></i></a>
+                </div> 
                 <!-- <div class="btn-group pull-right">
                     <button type="button" class="btn btn-default" ng-click="cancelproduct()">Cancel</button>
                     <button type="submit" class="btn btn-primary" ng-click="saveproduct()" ng-disabled="form.productForm.maininfo.$invalid || form.productForm.pricing.$invalid || form.productForm.more_details.$invalid">Save</button>
@@ -109,12 +112,15 @@
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <table class="table outsideborder">
+                                            <table class="table">
                                                 <tr>
                                                     <td>  
-                                                        <div ngf-select="uploadimage(product.mainimage,'mainimage')" ng-model="product.mainimage">Upload</div>   
-                                                        <img ngf-src="'/'+product.mainimagepath || product.mainimage" width="100" class="thumb" ngf-size="{width: 20, height: 20, quality: 0.9}" ng-if="product.mainimagepath" />
+                                                    <div class="imagecover1">  
+                                                            
+                                                        <div class="filebox" ngf-select="uploadimage(product.mainimage,'mainimage')" ng-model="product.mainimage"></div>   
+                                                        <img ngf-src="'/'+product.mainimagepath || product.mainimage"  class="thumb"   ng-if="product.mainimagepath" />
                                                         <input type="hidden" ng-model="product.mainimagepath" /> 
+                                                    </div>
                                                     </td>
                                                 </tr>
                                                 <tr><td></td></tr>

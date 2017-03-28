@@ -66,14 +66,14 @@
                 }
                 scope.getColumnRenderStatus = function(k) {
                     var c = ListWidget.getColumn(k);
-                    if(typeof c.data.render!='undefined') {
+                    if(typeof c.data.render!=='undefined') {
                         return true;
                     }
                     return false;
                 } 
                 scope.getColumnRender = function(k) {
                     var c = ListWidget.getColumn(k); 
-                    if(typeof c.data.render!='undefined') {
+                    if(typeof c.data.render!=='undefined') {
                         return c.data.render;
                     }
                     return '';
