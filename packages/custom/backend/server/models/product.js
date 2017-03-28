@@ -9,7 +9,7 @@ Schema = mongoose.Schema,
 	textutil = require('../helpers/util').text;
 
 var subproductSchema = new Schema ({
-	sku : {type: String, unique: true, required: true},
+	sku : {type: String},
 	price : {type : Number},
 	cost : {type : Number},
 	upc : {type : String},
@@ -67,7 +67,8 @@ ProductSchema.methods.addData = function(data) {
 		this.category_collection = data.category_collection;
 		delete data.category_collection;
 	}
-	if(data.variants) { 		
+	console.log(data.variants.length);
+	if(data.variants && data.variants.length > 0) { 		
 		this.subproducts = processsubproducts(data.variants); 
 		delete data.variants;
 	} if(data.variantsetid) { 		
@@ -121,6 +122,12 @@ ProductSchema.statics.getAllPaginate = function(params, cb) {
 	var sort = {};
 	if( typeof params.sort != 'undefined') {
 		sort[params['sort']] = (typeof params.sortDir != 'undefined' ?params.sortDir : -1);
+	}
+	if( typeof params.productkeywords !== 'undefined') {
+		fcollection = {$or : [{'data.sku' : new RegExp(params.productkeywords,'ig'),
+								'data.item_name' :new RegExp(params.productkeywords,'ig')
+						 }]
+					}
 	}
 	return this.model('Product').paginate(fcollection, { page: parseInt(params.page), sort : sort,limit: limit }, cb); 
 }  

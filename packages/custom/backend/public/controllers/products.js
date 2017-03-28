@@ -1,6 +1,7 @@
 (function() {
-    'use strict';
-  
+    'use strict';  
+    var CryptoJS = require("crypto-js");
+    var secretKey = 'SHYAMPRADEEP';
 
     function CategoryController($scope, Global, Backend,ArrayUtil, Product) { 
          var vm = this,categorymap;   
@@ -68,18 +69,17 @@
         }
     }
 
-    function CatalogListController($scope, ListWidget, Backend,ArrayUtil, Product,$timeout,$location) {
-        var vm = this;
-        vm.setPage = setPage;
-         ListWidget.init();
-         
-         ListWidget.defaultSortColumn = 'type';
-         ListWidget.isFilter = false;
-         ListWidget.addColumn('mainimage',{'type' : 'text','title' : 'Image',defaultValue : '--',width : '20%','render' : 'backend/views/products/catalog/list/renderer/image.html',sortable : false,filterable : false});
-         ListWidget.addColumn('sku',{'type' : 'text','title' : 'SKU',width : '30%'});  
-         ListWidget.addColumn('product_title',{'type' : 'number','title' : 'Product Name',width : '30%','render' : 'backend/views/products/catalog/list/renderer/name.html'});  
-         ListWidget.addColumn('nocolumn',{'type' : 'notype','title' : 'Actions',defaultValue : '--',width : '20%',sortable : false,filterable : false,'render' : 'backend/views/products/catalog/list/renderer/action.html'});
-         ListWidget.setDataRequestUrl('/api/catalog/list'); 
+    function loadProductList(controller, ListWidget, $scope,url)
+    {
+        controller.setPage = setPage;
+        ListWidget.init();         
+        ListWidget.defaultSortColumn = 'type';
+        ListWidget.isFilter = false;
+        ListWidget.addColumn('mainimage',{'type' : 'text','title' : 'Image',defaultValue : '--',width : '20%','render' : 'backend/views/products/catalog/list/renderer/image.html',sortable : false,filterable : false});
+        ListWidget.addColumn('sku',{'type' : 'text','title' : 'SKU',width : '30%','index' : 'data.sku'});  
+        ListWidget.addColumn('product_title',{'type' : 'number','title' : 'Product Name',width : '30%','render' : 'backend/views/products/catalog/list/renderer/name.html'});  
+        ListWidget.addColumn('nocolumn',{'type' : 'notype','title' : 'Actions',defaultValue : '--',width : '20%',sortable : false,filterable : false,'render' : 'backend/views/products/catalog/list/renderer/action.html'});
+        ListWidget.setDataRequestUrl(url); 
          
         function setPage(page) { 
             if(page < 1) {
@@ -104,7 +104,17 @@
             }); 
         }
         setPage(1);
-         
+    }
+
+    function CatalogListController($scope, ListWidget, Backend,ArrayUtil, Product,$timeout,$location) {
+        var vm = this;
+
+        $scope.$watch('filterproduct',function(oldval, newval) {
+            if(newval !== oldval && newval !== undefined) {
+                loadProductList(vm,ListWidget,$scope,'/api/catalog/list?productkeywords='+oldval);
+            } 
+        })
+        loadProductList(vm, ListWidget, $scope,'/api/catalog/list');         
     }
 
 
@@ -133,24 +143,26 @@
 
     function CatalogAddController($scope,ArrayUtil, Product,$location,$timeout, Backend,Upload,$stateParams) { 
  		var vm = this,categoryset = Product.getCategoryTreeSetForAdd();
-var lastcat = Product.getCategoryForAdd(); 
+        var lastcat = Product.getCategoryForAdd(); var variationset = {};
         $scope.form = {};
  		if(categoryset === undefined && typeof $stateParams.product_id === 'undefined') {
  			$location.path('admin/products/catalog/classify');
  		} 
- 		$scope.infoattributes = $scope.pricing = $scope.description = $scope.more_details = {};
 
-        $scope.variantsetoptions = [];
-        $scope.optionset = [];
-        var variationset = {};
-        $scope.subproducts = [];
-        $scope.subproduct = {};
-        $scope.product = {}; 
-        $scope.variantslist = {};
-        vm.product= {};
-        $scope.subproducteditindex = -1;
-        $scope.variants = {} 
- 
+        function resetVariables() {
+            $scope.infoattributes = $scope.pricing = $scope.description = $scope.more_details = {};
+            $scope.variantsetoptions = [];
+            $scope.optionset = [];
+            variationset = {};
+            $scope.subproducts = [];
+            $scope.subproduct = {};
+            $scope.product = {};  
+            $scope.variantslist = {};
+            vm.product= {};
+            $scope.subproducteditindex = -1;
+            $scope.variants = {} 
+        }
+        resetVariables();
 
         $scope.$on('loadattributesfields',function() {  
             var attributes = ArrayUtil.get(lastcat,'attributes',{}); 
@@ -165,15 +177,17 @@ var lastcat = Product.getCategoryForAdd();
          
 
         var publishdata = function(data) { 
-            $scope.product = data;
+            $scope.product = data; 
+            $scope.updateset(ArrayUtil.get(data,'variantsetid'));
+            $scope.product = angular.extend({},$scope.product, data.data); 
+
             $scope.product.optionset = ArrayUtil.get(data,'variantsetid'); 
             $scope.product.filepath = ArrayUtil.get(data,'gallery',{}); 
             $scope.product.mainimagepath = ArrayUtil.get(data,'mainimage');
-            $scope.updateset(ArrayUtil.get(data,'variantsetid'));
-            $scope.product = angular.extend({},$scope.product, data.data); 
             $scope.subproducts = parseproducts(ArrayUtil.get(data,'subproducts'));  
             $scope.variantslist[ArrayUtil.get(data,'variantsetid')] = $scope.subproducts;
             $scope.variants[ArrayUtil.get(data,'variantsetid')] = $scope.subproducts;
+            $scope.product._id = data._id;
             $scope.$broadcast('editproduct',{data: data.data}); 
         }
 
@@ -294,6 +308,13 @@ var lastcat = Product.getCategoryForAdd();
                 } else {
                     Materialize.toast('Product saved successfully', 4000); 
                 }
+                resetVariables();
+            },function(err) {
+                if(err.status === 500) { 
+                    Materialize.toast(err.statusText, 4000,'errortoast');
+                     Materialize.toast(err.data.errmsg, 4000,'errortoast');
+                }
+                console.log(err);
             });
 
         }   

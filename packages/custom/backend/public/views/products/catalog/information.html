@@ -113,7 +113,7 @@
                                                 <tr>
                                                     <td>  
                                                         <div ngf-select="uploadimage(product.mainimage,'mainimage')" ng-model="product.mainimage">Upload</div>   
-                                                        <img ngf-src="product.mainimage || '/'+product.mainimagepath" width="100" class="thumb" ngf-size="{width: 20, height: 20, quality: 0.9}" ng-if="product.mainimagepath" />
+                                                        <img ngf-src="'/'+product.mainimagepath || product.mainimage" width="100" class="thumb" ngf-size="{width: 20, height: 20, quality: 0.9}" ng-if="product.mainimagepath" />
                                                         <input type="hidden" ng-model="product.mainimagepath" /> 
                                                     </td>
                                                 </tr>
@@ -139,7 +139,7 @@
                                     <ul class="gall-list">
                                         <li ng-repeat="n in [] | filterrange:8">
                                             <div class="imagecover">                                               
-                                                 <img ngf-src="product.file[n] || '/'+product.filepath[n]" width="140" class="thumb" ng-if="product.filepath[n] || product.file[n]"/> 
+                                                 <img ngf-src="'/'+product.filepath[n] || product.file[n]" width="140" class="thumb" ng-if="product.filepath[n] || product.file[n]"/> 
                                                  <div class="filebox" ngf-select="uploadimage(product.file[n],n)" ng-model="product.file[n]"></div>
                                                         <input type="hidden" ng-model="product.filepath[n]" /> 
                                             </div>

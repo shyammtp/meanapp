@@ -9,6 +9,13 @@
         this._column = {};
     }
     _abstractRender.prototype.render = function(data) { 
+        if(_.includes(this._column.index,'.')) {
+            var sd = this._column.index.split(".");
+            var value = sd.reduce( function (prev, cur) {                
+                return prev[cur]; //|| {}; Might want to include the commented out part if keys might not be defined
+            }, data);
+            return value; 
+        }
         return data[this._column.index];
     }
     _abstractRender.prototype.setColumn = function(column) { 
