@@ -154,6 +154,10 @@
         getProductData = function() {
             return this.productData;
         },
+        resetProductData = function() {
+            this.productData = {};
+            return this;
+        },
         setCategory = function(cat) {
             this.categoryset = cat; 
             return this;
@@ -267,7 +271,8 @@
             getCopyCategoryAttribute : getCopyCategoryAttribute,
             saveProduct : saveProduct,
             addProductData : addProductData,
-            getProductData : getProductData
+            getProductData : getProductData,
+            resetProductData : resetProductData
         }
     }
  

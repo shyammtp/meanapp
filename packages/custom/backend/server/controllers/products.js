@@ -171,6 +171,9 @@ var Mongoose = require('mongoose'),
         saveProduct : function(req,res,next) {
           var pr = new product();
           pr.addData(req.body);
+          console.log(req.body);
+          console.log(arrayutil.get(req.body,'_id'));
+
           if(arrayutil.get(req.body,'_id')) {
             console.log('update');
             pr.updateData(arrayutil.get(req.body,'_id'),function(err,sd) {

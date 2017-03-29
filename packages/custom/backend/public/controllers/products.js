@@ -114,7 +114,17 @@
                 loadProductList(vm,ListWidget,$scope,'/api/catalog/list?productkeywords='+oldval);
             } 
         })
-        loadProductList(vm, ListWidget, $scope,'/api/catalog/list');         
+        loadProductList(vm, ListWidget, $scope,'/api/catalog/list');  
+        $scope.advancedsearch = function() {
+            classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );
+            Backend.loadSider($scope,'cbp-spmenu-s2','backend/views/products/catalog/list/customsearchform.html'); 
+        }     
+
+         $scope.closethis = function() { 
+           // $scope.subproduct = {}; 
+            angular.element('.cd-overlay').removeClass('is-visible');
+            classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );
+        }  
     }
 
 
@@ -304,7 +314,8 @@
             vm.product.gallery = $scope.product.filepath; 
             vm.product.variantsetid = $scope.choosedvariantset; 
             vm.product._id = $scope.product._id; 
-            Product.addProductData(vm.product).saveProduct().then(function(res) { 
+            console.log(vm.product._id);
+            Product.resetProductData().addProductData(vm.product).saveProduct().then(function(res) { 
                 $scope.$broadcast('savedproduct',{response: res.data}); 
                 $scope.product._id = ArrayUtil.get(res.data.data,'_id');  
                 $location.path('admin/products/catalog');
