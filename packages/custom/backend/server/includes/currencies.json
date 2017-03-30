@@ -1,0 +1,12 @@
+{
+      "usd" : {
+            "name" : "United States Dollars",
+            "currency_code" : "USD",
+            "currency_symbol" : "$"
+      },
+      "inr" : {
+            "name" : "Indian Rupee",
+            "currency_code" : "INR",
+            "currency_symbol" : "₹"
+      }
+}
