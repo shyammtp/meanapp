@@ -118,16 +118,41 @@ ProductSchema.plugin(mongoosePaginate);
 
 ProductSchema.statics.getAllPaginate = function(params, cb) { 
 	var limit = parseInt(params.limit) || 1;
-	var filter = params.filter || false, fcollection = parseFilter(params.filter,this); 
+	var filter = params.filter || false, fcollection = {},posfilter = {}; 
 	var sort = {};
 	if( typeof params.sort != 'undefined') {
 		sort[params['sort']] = (typeof params.sortDir != 'undefined' ?params.sortDir : -1);
 	}
 	if( typeof params.productkeywords !== 'undefined') {
-		fcollection = {$or : [{'data.sku' : {$regex : params.productkeywords, $options : 'i'}},
+		posfilter = {$or : [{'data.sku' : {$regex : params.productkeywords, $options : 'i'}},
 								{'data.item_name' :{$regex : params.productkeywords, $options : 'i'}
 						 }]
 					}
+	}
+	if( typeof params.searchkeyword !== 'undefined') {
+		posfilter = _.assign({},fcollection, {$or : [{'data.sku' : {$regex : params.searchkeyword, $options : 'i'}},
+								{'data.item_name' :{$regex : params.searchkeyword, $options : 'i'}
+						 }]
+					})
+	}
+	console.log(Object.keys(posfilter).length);
+	if(Object.keys(posfilter).length > 1) {
+		fcollection['$and'] = [];
+		fcollection['$and'].push(posfilter);
+	} else {
+		fcollection = posfilter;
+	}
+	if( typeof params.sortkey !== 'undefined') {
+		if(params.sortkey === 'id') {
+			sort['_id'] =  (typeof params.sortdir != 'undefined' ?params.sortdir : -1);
+		}
+		if(params.sortkey === 'name') {
+			sort['data.item_name'] =  (typeof params.sortdir != 'undefined' ?params.sortdir : -1);
+		}
+		if(params.sortkey === 'sku') {
+			sort['data.sku'] =  (typeof params.sortdir != 'undefined' ?params.sortdir : -1);
+		}
+		 
 	}
 	return this.model('Product').paginate(fcollection, { page: parseInt(params.page), sort : sort,limit: limit }, cb); 
 }  

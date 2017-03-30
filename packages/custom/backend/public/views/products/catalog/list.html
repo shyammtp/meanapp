@@ -13,8 +13,8 @@
                     <div role="tabpanel">
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs productstab" role="tablist">
-                            <li role="presentation" class="active"><a href="#allprds" role="tab" data-toggle="tab">All Products</a></li>
-                            <li role="presentation"><a href="/admin/products/catalog/variants/set">Featured Products</a></li>  
+                            <li role="presentation" ng-class="{'active': cview==undefined}"><a href="admin/products/catalog">All Products</a></li>
+                            <li role="presentation" ng-class="{'active': cview===fg}" ng-repeat="(fg,e) in views track by $index"><a href="admin/products/catalog?view={{fg}}">{{e.searchname}}</a></li>  
                         </ul>
                     </div>
                     <div class="tab-content z-depth-2">

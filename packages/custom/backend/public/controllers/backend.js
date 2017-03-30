@@ -67,8 +67,9 @@
         }
 
         $scope.login = function() {
-            Authentication.login(bm.credentials).then(function(res) { 
+            Authentication.login(bm.credentials).then(function(res) {                 
                 Authentication.saveToken(res.data.token);
+                Authentication.saveUser(res.data.user);
                 $location.path('/admin/dashboard'); 
                 Materialize.toast('Logged in Successfully', 4000);  
             },function(err) { 
@@ -154,7 +155,7 @@
         $scope.settings.bankdeposit_dname = 'Bank Deposit';
 
 
-        $scope.settings = $scope.$parent.$parent.settings;
+        $scope.settings = $window.settings;
         $scope.activatepayment = function(index) {
             $scope.paymentmethods.push(index);
             $scope.paymentmethods = ArrayUtil.arrayunique($scope.paymentmethods);

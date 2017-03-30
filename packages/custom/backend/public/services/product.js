@@ -119,6 +119,24 @@
             });
             return deferred.promise;
         },
+        saveInterface = function(params) {
+            var deferred = $q.defer();
+            $http.post('/api/catalog/saveinterface',params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                deferred.resolve(response);
+            }, function(response) {
+                deferred.reject(response);
+            });
+            return deferred.promise;
+        },
+        getProductViewInterface = function(params) {
+            var deferred = $q.defer();
+            $http.get('/api/catalog/getinterfaceviews?userid='+Authentication.getUser(),{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                deferred.resolve(response);
+            }, function(response) {
+                deferred.reject(response);
+            });
+            return deferred.promise;
+        },
         getAllVariants = function() {
             var deferred = $q.defer();
             $http.get('/api/variants/getall',{cache : true,headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
@@ -252,9 +270,11 @@
         return {   
             formatPrice : formatPrice,
             getCurrency : getCurrency,
+            saveInterface : saveInterface,
             getVariantTypes : getVariantTypes,
             getVariantById : getVariantById, 
             getVariantsetById : getVariantsetById, 
+            getProductViewInterface : getProductViewInterface, 
             getProductById : getProductById,
             getCategories : getCategories,
             getCategoryPath : getCategoryPath,

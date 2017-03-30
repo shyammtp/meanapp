@@ -147,11 +147,18 @@
         var saveToken = function(token) {
             $window.localStorage['login-token'] = token;
         },
+        saveUser = function(user) {
+            $window.localStorage['user'] =  user._id;
+        },
         getToken = function() {
             return $window.localStorage['login-token'];
         },
+        getUser = function() {
+            return $window.localStorage['user'];
+        },
         logout = function() {
             $window.localStorage.removeItem('login-token');
+            $window.localStorage.removeItem('user');
         }, isLoggedIn = function() {
               var token = getToken();
               var payload;
@@ -178,6 +185,8 @@
         };
         return {
             saveToken : saveToken,
+            saveUser : saveUser,
+            getUser : getUser,
             getToken : getToken,
             logout : logout,
             isLoggedIn : isLoggedIn,

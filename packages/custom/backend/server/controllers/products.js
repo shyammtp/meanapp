@@ -1,7 +1,10 @@
 'use strict';
 
 var Mongoose = require('mongoose'),
-  AdminUser = Mongoose.model('AdminUser'),category = Mongoose.model('Category'),product = Mongoose.model('Product'),variants = Mongoose.model('Variants'),variantset = Mongoose.model('Variantset'),
+  AdminUser = Mongoose.model('AdminUser'),category = Mongoose.model('Category'),product = Mongoose.model('Product'),
+  variants = Mongoose.model('Variants'),
+  intf = Mongoose.model('InterfaceSettings'),
+  variantset = Mongoose.model('Variantset'),
   arrayutil = require('../helpers/util').array,
   attrdefaults = require('../includes/attributesdefaults.json'),
   multer  = require('multer'),
@@ -346,6 +349,30 @@ var Mongoose = require('mongoose'),
                     res.status(200).json({filedata : req.file});
                 }
             });  
+        },
+        saveinterface : function(req,res,next) {
+            
+            var postdata = req.body;
+            if(arrayutil.get(postdata,'settingtype') == 'productviews') {
+                var title = textutil.url_title(arrayutil.get(postdata,'searchname'));
+                var ints = new intf();
+                ints.saveinterface(req.body,title,arrayutil.get(postdata,'userid'),function(err,sd){
+                    res.send(sd);
+                }); 
+            }
+        },
+        getinterfaceviews : function(req,res,next) { 
+            var postdata = req.query; 
+            var ints = new intf(); 
+
+            ints.getInterface(function(err,sd) {
+                if(!sd) {
+                    res.send({});
+                    return;
+                }
+                var d = arrayutil.get(arrayutil.get(sd,'productviews',{}),arrayutil.get(postdata,'userid'),{});
+                res.send(d);
+            }) 
         }
 
   	 }

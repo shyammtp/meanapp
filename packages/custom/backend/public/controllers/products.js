@@ -106,25 +106,65 @@
         setPage(1);
     }
 
-    function CatalogListController($scope, ListWidget, Backend,ArrayUtil, Product,$timeout,$location) {
+    function CatalogListController($scope, ListWidget, Backend,ArrayUtil, Product,$timeout,$location,Authentication,$stateParams) {
         var vm = this;
-        console.log('in1233');
+        $scope.advsearch = {};
+        $scope.dbresult = {};
+        $scope.views = {};
+        var querys = {};
+        console.log($stateParams);
+        $scope.advsearch.userid = Authentication.getUser();  
+        $scope.advsearch.settingtype = 'productviews';  
         $scope.$watch('filterproduct',function(oldval, newval) {
             if(newval !== oldval && newval !== undefined) {
-                loadProductList(vm,ListWidget,$scope,'/api/catalog/list?productkeywords='+oldval);
+                querys['productkeywords'] = oldval;
+                var qstring = '';
+                angular.forEach(querys, function(g,h) {
+                    qstring += h+'='+g+'&';
+                });
+                loadProductList(vm, ListWidget, $scope,'/api/catalog/list?'+qstring); 
             } 
-        })
-        loadProductList(vm, ListWidget, $scope,'/api/catalog/list');  
+        });
+        $scope.cview = $stateParams.view;
+        Product.getProductViewInterface().then(function(res) {
+            $scope.views = res.data;            
+            if($stateParams.view !== undefined) { 
+                var viewcond = ArrayUtil.get(res.data,$stateParams.view);
+                
+                if(ArrayUtil.get(viewcond,'sortorderfield')) {
+                    querys['sortkey'] = ArrayUtil.get(viewcond,'sortorderfield');
+                    querys['sortdir'] = ArrayUtil.get(viewcond,'sortorderby',-1);
+                }
+                if(ArrayUtil.get(viewcond,'searchkeyword')) {
+                    querys['searchkeyword'] = ArrayUtil.get(viewcond,'searchkeyword'); 
+                }
+                var querystring = '';
+                angular.forEach(querys, function(g,h) {
+                    querystring += h+'='+g+'&';
+                });
+                loadProductList(vm, ListWidget, $scope,'/api/catalog/list?'+querystring); 
+            } else { 
+                loadProductList(vm, ListWidget, $scope,'/api/catalog/list');
+            }
+        });  
         $scope.advancedsearch = function() {
             classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );
             Backend.loadSider($scope,'cbp-spmenu-s2','backend/views/products/catalog/list/customsearchform.html'); 
             angular.element('.cd-overlay').addClass('is-visible');
-        }     
+        }  
         $scope.currencycode = Product.getCurrency('currency_code');
-
-         $scope.closethis = function() { 
-           // $scope.subproduct = {}; 
-            angular.element('.cd-overlay').removeClass('is-visible');
+        $scope.savesearch = function(type) {
+            if(type === 'save' && $scope.advsearch.searchname) {
+                Product.saveInterface($scope.advsearch).then(function(res) {
+                    $scope.advsearch = {};
+                    $scope.views = res.data;
+                    Materialize.toast("Searched saved successfully", 4000); 
+                    classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );            
+                    angular.element('.cd-overlay').removeClass('is-visible');
+                });
+            }
+        }
+        $scope.closethis = function() { 
             classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );            
             angular.element('.cd-overlay').removeClass('is-visible');
         }  
@@ -965,7 +1005,7 @@
 
     CategoryController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product'];
     CatalogController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product','$timeout','$location'];  
-    CatalogListController.$inject = ['$scope', 'ListWidget', 'Backend','ArrayUtil','Product','$timeout','$location'];  
+    CatalogListController.$inject = ['$scope', 'ListWidget', 'Backend','ArrayUtil','Product','$timeout','$location','Authentication','$stateParams'];  
     CatalogAttributesController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product','$timeout','$location']; 
     CatalogAddController.$inject = ['$scope', 'ArrayUtil','Product','$location','$timeout','Backend','Upload','$stateParams'];
     CatalogVariantsListController.$inject = ['$scope', 'ArrayUtil','ListWidget'];

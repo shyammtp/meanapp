@@ -2,12 +2,14 @@
 <span class="paratext">You can search the product by it specifics and save as a tab to load all the time</span>
 </span> <a href="javascript:void(0);" class="pull-right" ng-click="closethis()"><i class="fa fa-angle-right"></i></a><div class="clearfix"></div></h3> 
 <form name="form.advsearch_form">
+	<input type="hidden" ng-model="advsearch.userid" />
+	<input type="hidden" ng-model="advsearch.settingtype" />
 	<div class="advsearch_textfield">
 		<div class="form-group">
 			<label>Search Name</label>
 			<input type="text"	placeholder="Give a name to this search" ng-model="advsearch.searchname" />
 		</div>
-	</div>
+	</div>  
 	<div class="col-sm-12">
 		<fieldset>
 		    <legend>Advanced Search</legend>
@@ -79,8 +81,8 @@
 		 			</div>
 		 			<div class="col-sm-5">
 		 				<select ng-model="advsearch.sortorderby" class="inline-select-sm fullwidth">
-	 						<option value="asc">Ascending Order</option>
-	 						<option value="desc">Descending Order</option> 
+	 						<option value="1">Ascending Order</option>
+	 						<option value="-1">Descending Order</option> 
 		 				</select>  	
 		 			</div> 
 		 		</div>

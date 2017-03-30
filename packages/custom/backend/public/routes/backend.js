@@ -63,7 +63,7 @@
             })
          )
           .state('products_catalog', angular.extend({},defal,{
-            url: '/admin/products/catalog',
+            url: '/admin/products/catalog?view',
             templateUrl: 'backend/views/products/catalog/list.html',
             params: {title : 'Products Catalog',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products/catalog'},{title : 'Add a product'}]}
         }))
