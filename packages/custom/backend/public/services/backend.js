@@ -17,7 +17,7 @@
         return arr; 
     }
 
-    function Backend($http, $q,$compile) {
+    function Backend($http, $q,$compile,Authentication) {
         return {
             name: 'backend',
             localsdata : {},
@@ -54,6 +54,18 @@
                 return this.getLocals().then(function(response) {
                     return {path : '/theme/assets/lib/'+response.data.theme+'/',theme : response.data.theme};
                 });
+            },
+            getGeneralData : function(index) {
+                var deferred = $q.defer();
+                $http.get('/api/generaldatas',{cache : true,headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                    var d = response.data;
+                    if(typeof d[index] !== 'undefined') {
+                        deferred.resolve(d[index]);
+                    }  
+                }, function(response) {
+                    deferred.reject(response);
+                }); 
+                return deferred.promise;
             },
             saveSettings : function(name, value, place_id) { 
                 var deferred = $q.defer();
@@ -206,6 +218,12 @@
                    array.splice(ind, 1);
                 }
                 return array;
+            },
+            replaceStr : function (str, find, replace) {
+                for (var i = 0; i < find.length; i++) {
+                    str = str.replace(new RegExp(find[i], 'gi'), replace[i]);
+                }
+                return str;
             }
         }
     }
@@ -226,7 +244,7 @@
         .factory('ArrayUtil',ArrayUtil)
         .factory('Page',Page);
 
-    Backend.$inject = ['$http', '$q','$compile'];
+    Backend.$inject = ['$http', '$q','$compile','Authentication'];
     Authentication.$inject = ['$http', '$q','$window'];
 
 })();

@@ -1323,7 +1323,8 @@ a.ui-button:active,
 	text-decoration: none;
 }
 
-
+.autowidth {width: auto;}
+.fullwidth {width: 100%;}
 .subaction {/*margin-top: 25px;*/ padding-left: 21px;}
 .subaction b {margin: 5px 6px;    display: inline-block;}
 .allowed-types-container { float:left;border:1px solid #2d2d2d;     padding: 15px;    min-width: 50%;}
@@ -1381,3 +1382,6 @@ a.ui-button:active,
 .cbp-spmenu h3 {height: auto;}
 span.paratext {    font-size: 12px;    display: block;    margin-top: 10px;}
 .advsearch_textfield{background: #131313; padding:24px 10px 5px 10px;}
+fieldset {border:1px solid #292929;padding: 10px;    margin-top: 10px;}
+legend { border:none; width: auto; font-size:16px; margin-left: 10px; margin-bottom:0; color:#828282;}
+.margt10 {margin-top: 10px;}

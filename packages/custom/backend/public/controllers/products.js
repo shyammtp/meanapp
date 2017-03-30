@@ -108,7 +108,7 @@
 
     function CatalogListController($scope, ListWidget, Backend,ArrayUtil, Product,$timeout,$location) {
         var vm = this;
-
+        console.log('in1233');
         $scope.$watch('filterproduct',function(oldval, newval) {
             if(newval !== oldval && newval !== undefined) {
                 loadProductList(vm,ListWidget,$scope,'/api/catalog/list?productkeywords='+oldval);
@@ -118,12 +118,15 @@
         $scope.advancedsearch = function() {
             classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );
             Backend.loadSider($scope,'cbp-spmenu-s2','backend/views/products/catalog/list/customsearchform.html'); 
+            angular.element('.cd-overlay').addClass('is-visible');
         }     
+        $scope.currencycode = Product.getCurrency('currency_code');
 
          $scope.closethis = function() { 
            // $scope.subproduct = {}; 
             angular.element('.cd-overlay').removeClass('is-visible');
-            classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );
+            classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );            
+            angular.element('.cd-overlay').removeClass('is-visible');
         }  
     }
 
@@ -139,7 +142,7 @@
 	        }); 
         }   
         $scope.saveCategory = function(data) {
-    		Product.setCategory(data);
+    	   Product.setCategory(data);
            $location.path('admin/products/catalog/information');
         }
         $scope.checkarrow = function(index) { 

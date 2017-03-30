@@ -6,13 +6,25 @@
          $scope.Page = Page; 
     }
 
-    function BackendController($scope, Global, Backend, $stateParams,$rootScope,$location,$state, Authentication) { 
-        var bm = this;  
+    function BackendCoreController($scope,getsettings,$location,$window,Authentication,$state,Backend,$stateParams,getmenus,getcurrency,getassetsdata) { 
+        $window.settings = {};
+        angular.forEach(getsettings.data,function(v,e){
+            $window.settings[v.name] = v.value;
+        });
+        $window.menus = getmenus.data; 
+        $window.current_currency = getcurrency; 
+        $window.assetsdata = getassetsdata;  
+    }
+
+
+
+    function BackendController($scope, Global, Backend, $stateParams,$rootScope,$location,$state, Authentication,$window,Product) {
+        console.log('in1');  
+        var bm = this;   
         bm.credentials = {
             email : '',
             password: ''
-        }
-
+        }  
         $scope.$on('child', function (event, data) {
             if(typeof data.externaljs!== 'undefined') {
                 $scope.externaljs = data.externaljs;
@@ -48,17 +60,7 @@
         })
         $scope.objectLength = function(obj) {
             return Object.keys(obj).length;
-        } 
-        if(!$scope.settings) {
-            $scope.settings = {}; 
-            Backend.getSettings(1).then(function(res) {
-                if(res.data) {
-                     angular.forEach(res.data,function(v,e){
-                        $scope.settings[v.name] = v.value;
-                     });
-                 }
-            });  
-        }        
+        }  
         $scope.onFileSelect = function($files) { 
             $scope.profile = $files[0];
             uploadFile();
@@ -116,7 +118,7 @@
             }
         };
 
-    }
+    } 
  
 
      function SettingsController($scope,Backend,ArrayUtil,Page) { 
@@ -131,6 +133,11 @@
                  $scope.formatcurrency = false;
             }
         }
+        $scope.currencylist = {};
+        Backend.getGeneralData('currencies').then(function(res) {
+            console.log(res);
+            $scope.currencylist = res;
+        })
         $scope.savesettings = function(settings) {   
             var success = 0,error = 0;
             Backend.saveAllSettings(settings).then(function(res){
@@ -209,13 +216,15 @@
 
     angular
         .module('mean.backend')
+        .controller('BackendCoreController', BackendCoreController)
         .controller('BackendController', BackendController)
         .controller('TitleController', TitleController)
         .controller('SettingController', SettingsController)
         .controller('WidgetController', WidgetController);
 
-    BackendController.$inject = ['$scope', 'Global', 'Backend', '$stateParams','$rootScope','$location','$state','Authentication'];
+    BackendController.$inject = ['$scope','Global', 'Backend', '$stateParams','$rootScope','$location','$state','Authentication','$window','Product'];
     TitleController.$inject = ['$scope','Page'];
+    BackendCoreController.$inject = ['$scope','getsettings','$location','$window','Authentication','$state','Backend','$stateParams','getmenus','getcurrency','getassetsdata'];
     SettingsController.$inject = ['$scope','Backend','ArrayUtil','Page'];
     WidgetController.$inject = ['$scope','ListWidget','$location','Backend','$rootScope','$state'];
 

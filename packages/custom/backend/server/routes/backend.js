@@ -7,6 +7,7 @@ var Mongoose = require('mongoose'),
   category = Mongoose.model('Category'),
   arrayutil = require('../helpers/util').array,
   textutil = require('../helpers/util').text,
+  currencies = require('../includes/currencies.json'),
   path = require('path'),config = require('meanio').getConfig(),jwt = require('jsonwebtoken'),expressJwt = require('express-jwt');
 
     var authentic  = expressJwt({ 
@@ -73,6 +74,10 @@ var Mongoose = require('mongoose'),
         app.get('/api/adminconfig',function(req,res) {             
             res.status(200);             
             res.json(Backend.adminconfig(req.query.index));
+        });
+        app.get('/api/generaldatas',function(req,res) {             
+            res.status(200);             
+            res.json({"currencies" : currencies});
         });
         app.get('/api/cache/flush',function(req,res) {
             var Nodecache = require('node-cache'),

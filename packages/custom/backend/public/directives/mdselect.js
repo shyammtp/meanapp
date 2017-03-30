@@ -623,11 +623,18 @@
             return input;
         }
     }
+
+    function priceformat(Product) {
+        return function(input) { 
+            return Product.formatPrice(input);
+        }
+    }
  
 
     angular
         .module('mean.backend')
         .filter('filterrange',filterrange)
+        .filter('priceformat',priceformat)
         .directive('mdSelect', mdSelect)
         .directive('shModal', shModal)
         .directive('shInput', shInput)
@@ -638,6 +645,7 @@
         .directive('catalogvariantfield',catalogvariantfield);
  
     jsTree.$inject = ['Product','ArrayUtil','$timeout'];
+    priceformat.$inject = ['Product'];
     categoryselectslider = ['Product','$compile','$location'];    
     attributeManager = ['Product','$compile','$location','ArrayUtil'];    
     catalogfield = ['Product','$compile','$location','ArrayUtil','$timeout']; 

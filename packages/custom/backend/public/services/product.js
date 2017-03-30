@@ -3,7 +3,7 @@
     function removeempty(value) {
       return value != '';
     }
-    function Product($http, $q,$window, Authentication,ArrayUtil) { 
+    function Product($http, $q,$window, Authentication,ArrayUtil,Backend) { 
         this.categoryset = {},this.categorytreeset = {},this.catalogattributedata = {},this.parentcategorycopy = {},this.productData = {};  
          
         var getCategories = function() {
@@ -136,8 +136,16 @@
                 deferred.reject(response);
             });
             return deferred.promise;
+        }, 
+        formatPrice = function(value) { 
+            var settings = $window.settings,currency = ArrayUtil.get($window.current_currency,ArrayUtil.get(settings,'currency'));
+            var htmlcurrency = ArrayUtil.get(settings,'html_currency'); 
+            return ArrayUtil.replaceStr(htmlcurrency,["%%currency%%","%%amount%%"],[currency.currency_symbol,value]);               
         },
-        
+        getCurrency = function(index) { 
+            var currency = ArrayUtil.get($window.current_currency,ArrayUtil.get($window.settings,'currency'));
+            return ArrayUtil.get(currency,index,'');
+        },
         deleteCategory = function(params) {
             var deferred = $q.defer(); 
             $http.delete('/api/category/delete/'+ArrayUtil.get(params,'id'),{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
@@ -242,6 +250,8 @@
         }
 
         return {   
+            formatPrice : formatPrice,
+            getCurrency : getCurrency,
             getVariantTypes : getVariantTypes,
             getVariantById : getVariantById, 
             getVariantsetById : getVariantsetById, 
@@ -281,6 +291,6 @@
         .module('mean.backend') 
         .factory('Product',Product);
  
-    Product.$inject = ['$http', '$q','$window','Authentication','ArrayUtil'];
+    Product.$inject = ['$http', '$q','$window','Authentication','ArrayUtil','Backend'];
 
 })();
