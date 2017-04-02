@@ -1,0 +1,89 @@
+<div class="page-inner">
+    <div class="page-title">
+        <h3 class="breadcrumb-header">{{params.title}}</h3>
+        <div breadcrumbs></div>
+    </div> 
+    <div id="main-wrapper">  
+      	<div ng-controller="menusController">
+            <div class="row">
+                <div class="col-md-12">
+                    <div role="tabpanel">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs variantstab" role="tablist">
+                            <li role="presentation" class="active"><a href="#menus" role="tab" data-toggle="tab">Menus</a></li>
+                            <li role="presentation"><a href="/admin/menus/items">Items</a></li>  
+                        </ul>
+                    </div>
+                    <div class="tab-content z-depth-2">
+                        <div role="tabpanel" class="tab-pane active" id="menus">
+
+                        	<div class="row">
+                        		<div class="col-md-3">
+		                        	<div class="panel">
+		                        		<div class="panel-heading">
+		                                    <h3 class="panel-title">Menus</h3><a href="javascript:;" ng-click="newmenuadd()" class="pull-right theme-green-link"><i class="fa fa-plus-circle" aria-hidden="true"></i> New Menu</a>
+		                                </div>
+		                                <div class="panel-body">
+		                                   <ul class="addedemenuslist">
+		                                   		<li class="" ng-repeat="(s,gg) in menus">
+		                                   			<div class="row">
+		                                   				<div class="col-md-9">
+		                                   					<a href="javascript:;" class="link" ng-click="editmenu(gg._id,gg.menu_name.en)">{{gg.menu_name.en}}</a>
+		                                   				</div> 
+		                                   				<div class="col-md-3">
+		                                   					<div class="pull-right">
+			                                   					<a href="javascript:;" ng-click="editmenu(gg._id,gg.menu_name.en)"><i class="fa fa-pencil" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;
+			                                   					<a href="javascript:;" ng-click="deletemenu(gg._id)"><i class="fa fa-trash" aria-hidden="true"></i></a>
+		                                   					</div>
+		                                   				</div>
+		                                   			</div>
+	                                   			</li>
+		                                   </ul>
+		                                </div>
+		                            </div>
+	                        	</div>
+	                        	<div class="col-md-6">
+	                        		<div class="menu-add-form">
+	                        			<h4>Add new menu</h4>
+	                        			<form name="menuaddform">
+		                        			<input type="hidden" ng-model="menu._id" />
+		                        			<div class="form-group">
+		                        				<label class="formlabel">Menu Name</label>
+		                        				<input type="text" placeholder="Type the menu name and press enter" ng-keypress="($event.charCode==13)? saveMenus(menu) : return" ng-model="menu.menu_name" />
+		                        			</div>
+	                        			</form>
+	                        		</div>
+	                        		<div class="active-menus-list">
+	                        			<h4>Active menus</h4>
+	                        			<ul class="activemenu-list browser-default" ng-model="activemenus" ng-if="activemenus.length" ui-sortable="sortableOptions">
+	                                   		<li class="" ng-repeat="(sd,fg) in activemenus track by $index">
+	                                   			<div class="listsitm">
+	                                   				<img width="12" src="/theme/assets/lib/black/images/moveicon.png" class="movepointer" /> <span class="text"> {{fg.menu_name.en}} <a href="javascript:;" class="pull-right" ng-click="menuinactive(fg._id)" title="Make inactive"><i class="fa fa-sign-out"></i></a></span>
+	                                   			</div>
+	                                   			<!-- <div class="subitemslists">
+	                                   					asdas
+	                                   			</div> -->
+	                                   		</li>
+
+	                                   </ul>
+	                                   <div ng-if="!activemenus.length">No menus here</div>
+	                        		</div>
+	                        	</div>
+	                        	<div class="col-md-3">
+	                        		<div class="inactive-menus-list">
+	                        			<h4>Inactive menus</h4>
+                        				<ul class="inactivemenuslist" ng-if="inactivemenus.length">
+	                                   		<li class="" ng-repeat="(sd,fg) in inactivemenus"><a href="javascript:;" ng-click="menuactive(fg._id)" title="Make active"><i class="fa fa-sign-in"></i></a> &nbsp;&nbsp;{{fg.menu_name.en}} </li>
+	                                   </ul> 
+	                                   <div ng-if="!inactivemenus.length">No menus here</div>
+	                        		</div>
+	                        	</div>
+                        	</div> 
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div><!-- Main Wrapper --> 
+</div><!-- Page Inner --> 
