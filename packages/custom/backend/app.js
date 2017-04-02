@@ -8,10 +8,13 @@ var path = require('path');
 var Backend = new Module('backend'),
 session = require('express-session'),
 expressJwt = require('express-jwt'),
-config = meanio.getConfig(),
+config = meanio.getConfig(), 
 passport = require('passport');
 require("./server/config/passport.js");
 var adminconfig = require('./server/config/adminconfig.json');
+
+var http = require('http')
+var socketio = require('socket.io')
 
 /*
  * All MEAN packages require registration
@@ -24,12 +27,14 @@ Backend.register(function(app, auth, database, circles) {
   Backend.settingscontroller = require('./server/controllers/settings')(Backend, app);
   Backend.authenticationcontroller = require('./server/controllers/authentication')(Backend, app);
   app.use(passport.initialize()); 
-  
+
+   
+
   //We enable routing. By default the Package Object is passed to the routes 
   Backend.routes(app, auth, database, circles);
   //app.use(session({ secret: config.secret, resave: false, saveUninitialized: true }));
   //app.use('/api', expressJwt({ secret: config.sessionSecret }).unless({ path: ['/api/users/authenticate', '/api/users/register'] }));
-  Backend.angularDependencies(['ngSanitize','ui.router','ui.tinymce','angular-loading-bar']); 
+  Backend.angularDependencies(['ngSanitize','ui.router','ui.tinymce','angular-loading-bar','btford.socket-io']); 
   app.set('views', path.join(__dirname, '/server/views'));
  
   //We are adding a link to the main menu for all authenticated users

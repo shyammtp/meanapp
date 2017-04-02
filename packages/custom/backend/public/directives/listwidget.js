@@ -66,7 +66,7 @@
                 }
                 scope.getColumnRenderStatus = function(k) {
                     var c = ListWidget.getColumn(k);
-                    if(typeof c.data.render!=='undefined') {
+                    if(c && typeof c.data.render!=='undefined') {
                         return true;
                     }
                     return false;

@@ -183,7 +183,7 @@
                 this.isPaging = true;
             },
             getColumns : function() { 
-                //console.log(this.columns);
+                console.log(this.columns);
                 return this.columns;
             },
             setDBResults : function(data) {

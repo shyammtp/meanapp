@@ -11,8 +11,8 @@ var Mongoose = require('mongoose'),
 		    });
   	 	},
       theme : function(req,res,next) { 
-        app.locals.theme = 'black';
-        return next();
+        //app.locals.theme = 'black';
+        //return next();
       }
 
   	 }

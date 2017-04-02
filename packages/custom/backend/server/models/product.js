@@ -31,6 +31,8 @@ var ProductSchema = new Schema({
     created_on : { type: Date, default: Date.now },
     updated_on: { type: Date, default: Date.now },
     category_id : {type : String},
+    is_foodie : {type : Boolean,default : false},
+    menus : [],
     variantsetid : {type : String},
     category_collection :  [],
     data : { type: Schema.Types.Mixed},
@@ -66,8 +68,10 @@ ProductSchema.methods.addData = function(data) {
 	if(data.category_collection) {
 		this.category_collection = data.category_collection;
 		delete data.category_collection;
+	} 
+	if(data.is_foodie) {
+		this.is_foodie = true;
 	}
-	console.log(data.variants.length);
 	if(data.variants && data.variants.length > 0) { 		
 		this.subproducts = processsubproducts(data.variants); 
 		delete data.variants;
@@ -154,6 +158,8 @@ ProductSchema.statics.getAllPaginate = function(params, cb) {
 		}
 		 
 	}
+	fcollection = _.assign({},fcollection,{is_foodie : false});
+	console.log(fcollection);
 	return this.model('Product').paginate(fcollection, { page: parseInt(params.page), sort : sort,limit: limit }, cb); 
 }  
 

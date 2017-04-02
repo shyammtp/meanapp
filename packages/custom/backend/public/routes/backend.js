@@ -1,6 +1,6 @@
 (function() {
     'use strict'; 
-    function Backend($stateProvider,$locationProvider) {
+    function Backend($stateProvider,$locationProvider,$urlRouterProvider) {
         var defal = {resolve : {
                 getsettings : function(Backend) {
                    return Backend.getSettings(1);
@@ -16,7 +16,8 @@
                 }
             },
             controller: 'BackendCoreController as vm'};
-        
+            console.log($locationProvider);
+        $urlRouterProvider.otherwise('/otherwise');
         $stateProvider.state('login',angular.extend({},defal,{
                 url: '/admin/login',
                 templateUrl: 'backend/views/login.html'
@@ -171,7 +172,20 @@
                 templateUrl: 'backend/views/products/catalog/variants/set/rules/list.html',
                 params: {title : 'Create new variant set',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Variants Set','link' : '/admin/products/catalog/variants/set'},{title : 'Manage Rules'}]},
              })
-           );
+           )
+          .state('admin_food_menus', angular.extend({},defal,   {
+                url : '/admin/menus',
+                templateUrl: 'backend/views/menus/index.html',
+                params: {title : 'Menus',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Menus'}]},
+             })
+          )
+          .state('admin_food_items', angular.extend({},defal,   {
+                url : '/admin/menus/items',
+                templateUrl: 'backend/views/menus/items/index.html',
+                params: {title : 'Items',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Menus',link : 'admin/menus'},{title : 'items'}]},
+             })
+          )
+          ;
         $locationProvider
             .html5Mode({enabled:true, requireBase:false});
           
@@ -182,18 +196,28 @@
             adminconfig = response.data;
         })
         $rootScope.$on('$stateChangeStart', function(event, nextRoute, currentRoute) {
-            if(typeof adminconfig !== 'undefined' && adminconfig.indexOf(nextRoute.name) !== -1) {
-                return;
-            }
-            if(nextRoute.name == 'login') {
-                if(Authentication.isLoggedIn()) {
+          
+          
+             
+            if(Authentication.isLoggedIn()) {
+                if(nextRoute.name === 'login') {
                     $location.path('/admin/dashboard');
+                    $state.go('dashboard');
+                    console.log('in')
+                    return;
                 }
-                return;
             }
-            if(!Authentication.isLoggedIn()) {
-                $location.path('/admin/login');
+            if(!Authentication.isLoggedIn()) {  
+                if(nextRoute.name !== 'login') { 
+                    $location.path('/admin/login');
+                    return $state.go('login');
+                }
             }
+            return;
+            console.log(nextRoute);
+          console.log(Authentication.isLoggedIn())
+            
+            
 
         });
     }
@@ -204,6 +228,6 @@
         .run(Run);
 
     Run.$inject = ['$rootScope','$state','$location','Authentication','Backend'];
-    Backend.$inject = ['$stateProvider','$locationProvider'];
+    Backend.$inject = ['$stateProvider','$locationProvider','$urlRouterProvider'];
 
 })();

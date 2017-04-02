@@ -11,6 +11,7 @@ var Menus = require('../backend/server/models/menus.js');
 var Mongoose = require('mongoose'),
   Menus = Mongoose.model('Menus');
 
+
 /*
  * All MEAN packages require registration
  * Dependency injection is used to define required modules

@@ -626,7 +626,8 @@
 
     function priceformat(Product) {
         return function(input) { 
-            return Product.formatPrice(input);
+            if(input > 0)
+                return Product.formatPrice(input);
         }
     }
  

@@ -1385,3 +1385,20 @@ span.paratext {    font-size: 12px;    display: block;    margin-top: 10px;}
 fieldset {border:1px solid #292929;padding: 10px;    margin-top: 10px;}
 legend { border:none; width: auto; font-size:16px; margin-left: 10px; margin-bottom:0; color:#828282;}
 .margt10 {margin-top: 10px;}
+.linkadddel {margin:0 8px; cursor: pointer;}
+.activemenu-list {background: #151515; padding:1px 10px; border-radius:4px; list-style: none;}
+.activemenu-list li { margin:10px 0; }
+.activemenu-list li .listsitm {background: #212121; padding: 6px 9px; border-radius: 4px;}
+.activemenu-list li .listsitm span.text {font-weight: bold; padding-top: 2px;}
+.activemenu-list li .listsitm.topborrad {border-radius: 0px; border-top-left-radius: 4px; border-top-right-radius: 4px;}
+.activemenu-list li .subitemslists {background: #4a4a4a; padding: 6px 9px; color:black;}
+.inactivemenuslist > li{margin:10px 0; background: #212121; padding: 6px 9px; border-radius: 4px;}
+.itemmenulist > li{margin:10px 0; background: #212121; padding: 6px 9px; border-radius: 4px;}
+.itemmenulist .itemname {color:#76b900;}
+.addedemenuslist > li {margin:10px 0; padding: 6px 9px; border-radius: 4px;}
+.addedemenuslist-items  > li .blocksitems {margin:0px 0; padding: 12px 9px; border-radius: 4px;background: #1c1c1c;}
+.addedemenuslist > li a.link{color:#76b900;}
+.theme-green-link {color:#76b900; font-size: 12px; font-weight: normal;}
+.choice_subitems > li{ float:left; width:30%; padding: 5px 6px; background: #252525; border-radius:4px; margin:3px 4px; }
+.menu-add-form h4 {padding: 10px 0; border-bottom:1px solid #424242; margin: 0 0 20px 0; color:#949494; font-size: 16px;}
+.menu-sub-items-list-container {padding: 10px;}

@@ -237,6 +237,13 @@
         }
     }
 
+    function Socket(socketFactory) { 
+        return socketFactory({
+            prefix: '',
+            ioSocket: io.connect('http://localhost:8000')
+        });
+    }
+
     function Page() {
         var title = '';
         return {
@@ -251,9 +258,11 @@
         .factory('Backend', Backend)
         .factory('Authentication',Authentication)
         .factory('ArrayUtil',ArrayUtil)
+        .factory('Socket',Socket)
         .factory('Page',Page);
 
     Backend.$inject = ['$http', '$q','$compile','Authentication'];
     Authentication.$inject = ['$http', '$q','$window'];
+    Socket.$inject = ['socketFactory'];
 
 })();

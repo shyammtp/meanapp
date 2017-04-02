@@ -19,7 +19,7 @@
 
 
     function BackendController($scope, Global, Backend, $stateParams,$rootScope,$location,$state, Authentication,$window,Product) {
-        console.log('in1');  
+         
         var bm = this;   
         bm.credentials = {
             email : '',
@@ -122,7 +122,7 @@
     } 
  
 
-     function SettingsController($scope,Backend,ArrayUtil,Page) { 
+     function SettingsController($scope,Backend,ArrayUtil,Page,$window) { 
         $scope.settings = {};
         Page.setTitle('My new title');
         $scope.directories = $scope.$parent.$parent.directories;
@@ -226,7 +226,7 @@
     BackendController.$inject = ['$scope','Global', 'Backend', '$stateParams','$rootScope','$location','$state','Authentication','$window','Product'];
     TitleController.$inject = ['$scope','Page'];
     BackendCoreController.$inject = ['$scope','getsettings','$location','$window','Authentication','$state','Backend','$stateParams','getmenus','getcurrency','getassetsdata'];
-    SettingsController.$inject = ['$scope','Backend','ArrayUtil','Page'];
+    SettingsController.$inject = ['$scope','Backend','ArrayUtil','Page','$window'];
     WidgetController.$inject = ['$scope','ListWidget','$location','Backend','$rootScope','$state'];
 
 })();

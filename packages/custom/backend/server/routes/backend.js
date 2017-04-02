@@ -5,6 +5,7 @@ var Mongoose = require('mongoose'),
   NotificationTemplate = Mongoose.model('NotificationTemplate'),
   adminuser = Mongoose.model('AdminUser'),
   category = Mongoose.model('Category'),
+    express = require('express'),
   arrayutil = require('../helpers/util').array,
   textutil = require('../helpers/util').text,
   currencies = require('../includes/currencies.json'),
@@ -16,15 +17,16 @@ var Mongoose = require('mongoose'),
     });
     /* jshint -W098 */
     // The Package is past automatically as first parameter
-    module.exports = function(Backend, app, auth, database, circles) {
+    module.exports = function(Backend, app, auth, database, circles) { 
         var sidebar = Backend.sidebarcontroller; 
         var settings = Backend.settingscontroller;   
         var authentication = Backend.authenticationcontroller;
         var products = Backend.productscontroller;
-        app.use(sidebar.theme);
+         
+        //app.use(sidebar.theme);
         //app.use(expressJwt({ secret: config.sessionSecret}));
-        app.use(logErrors);
-
+        app.use(logErrors); 
+        
         app.get('/',function(req,res) { 
             Backend.render('index', {
                 package: 'backend',
@@ -33,7 +35,8 @@ var Mongoose = require('mongoose'),
             }, function(err, html) {
                 res.send(html);
             });
-        });  
+        });
+            
 
         /* For Products */
         app.get('/api/category/getcategory/:id',authentic,products.getCategory);
@@ -71,6 +74,15 @@ var Mongoose = require('mongoose'),
         app.post('/api/catalog/saveinterface',authentic,products.saveinterface);
         app.get('/api/catalog/getinterfaceviews',authentic,products.getinterfaceviews);
         app.post('/api/fileupload',products.uploads);
+
+
+        /*Menus*/  
+        app.get('/api/menus/getall',authentic,products.getMenus);
+        app.post('/api/menus/save',authentic,products.saveMenus);
+        app.delete('/api/menus/delete/:id',authentic,products.deleteMenus);
+        app.delete('/api/menus/items/delete/:id',authentic,products.deleteItem);
+        app.get('/api/menus/items',authentic,products.getItems);
+        app.put('/api/menus/items/:id',authentic,products.setmenu);
 
         /* General */
         app.get('/api/adminconfig',function(req,res) {             
@@ -113,9 +125,10 @@ var Mongoose = require('mongoose'),
         });
 
         app.post('/api/settings/upload',settings.upload);
-
+        //console.log(app.locals);
         app.get('/api/locals',function(req,res) {
-            res.send(app.locals);
+
+            res.send({theme : 'black'});
         });
 
         /*app.get('/api/backend/example/auth', requiresLogin, function(req, res) {

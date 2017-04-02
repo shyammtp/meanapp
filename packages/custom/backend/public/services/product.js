@@ -305,12 +305,73 @@
             resetProductData : resetProductData
         }
     }
- 
+    
+
+    function ItemMenus($http, $q,$window, Authentication,ArrayUtil,Backend) {
+        return {
+            getAllMenus : function() {
+                var deferred = $q.defer();
+                $http.get('/api/menus/getall',{cache : true,headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                    deferred.resolve(response);
+                }, function(response) {
+                    deferred.reject(response);
+                });
+                return deferred.promise;
+            }, 
+            saveMenus : function(params) {
+                var deferred = $q.defer();
+                $http.post('/api/menus/save',params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                    deferred.resolve(response);
+                }, function(response) {
+                    deferred.reject(response);
+                });
+                return deferred.promise;
+            },
+            deleteMenus : function(params) {
+                var deferred = $q.defer(); 
+                $http.delete('/api/menus/delete/'+ArrayUtil.get(params,'id'),{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                    deferred.resolve(response);
+                }, function(response) {
+                    deferred.reject(response);
+                });
+                return deferred.promise;
+            },
+            deleteItem : function(params) {
+                var deferred = $q.defer(); 
+                $http.delete('/api/menus/items/delete/'+ArrayUtil.get(params,'id'),{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                    deferred.resolve(response);
+                }, function(response) {
+                    deferred.reject(response);
+                });
+                return deferred.promise;
+            },
+            getItems : function(params) {
+                var deferred = $q.defer(); 
+                $http.get('/api/menus/items',{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                    deferred.resolve(response);
+                }, function(response) {
+                    deferred.reject(response);
+                });
+                return deferred.promise;
+            },
+            setMenu : function(id, menus) {
+                var deferred = $q.defer(); 
+                $http.put('/api/menus/items/'+id,menus,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                    deferred.resolve(response);
+                }, function(response) {
+                    deferred.reject(response);
+                });
+                return deferred.promise; 
+            }
+        }
+    }
 
     angular
         .module('mean.backend') 
-        .factory('Product',Product);
+        .factory('Product',Product)
+        .factory('ItemMenus',ItemMenus);
  
     Product.$inject = ['$http', '$q','$window','Authentication','ArrayUtil','Backend'];
+    ItemMenus.$inject = ['$http', '$q','$window','Authentication','ArrayUtil','Backend'];
 
 })();

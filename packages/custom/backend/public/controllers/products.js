@@ -67,6 +67,7 @@
         $scope.addRootCategory = function() {
         	$scope.category = {};
         }
+
     }
 
     function loadProductList(controller, ListWidget, $scope,url)
@@ -126,9 +127,10 @@
             } 
         });
         $scope.cview = $stateParams.view;
+        
         Product.getProductViewInterface().then(function(res) {
             $scope.views = res.data;            
-            if($stateParams.view !== undefined) { 
+            if($stateParams.view !== undefined) {
                 var viewcond = ArrayUtil.get(res.data,$stateParams.view);
                 
                 if(ArrayUtil.get(viewcond,'sortorderfield')) {
@@ -143,10 +145,11 @@
                     querystring += h+'='+g+'&';
                 });
                 loadProductList(vm, ListWidget, $scope,'/api/catalog/list?'+querystring); 
-            } else { 
-                loadProductList(vm, ListWidget, $scope,'/api/catalog/list');
-            }
-        });  
+            }     
+        }); 
+    
+        loadProductList(vm, ListWidget, $scope,'/api/catalog/list');
+         
         $scope.advancedsearch = function() {
             classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );
             Backend.loadSider($scope,'cbp-spmenu-s2','backend/views/products/catalog/list/customsearchform.html'); 
@@ -988,11 +991,339 @@
         }
         
     }
+
+    function menusController($scope,ItemMenus,ArrayUtil,$timeout,Socket) { 
+        $scope.menus = [];
+        $scope.activemenus = [];
+        ItemMenus.getAllMenus().then(function(res){
+            $scope.menus = res.data.menus;
+        });
+        $scope.inactivemenus = [];
+        $scope.$watch('menus',function() {
+            var mens = [],acmes = [];
+            angular.forEach($scope.menus, function(gh,sg){
+                if(gh.status !== true) {
+                    mens.push(gh);
+                }
+                if(gh.status === true) {
+                    acmes.push(gh);
+                }
+            });
+            $scope.inactivemenus = mens;
+            $scope.activemenus = acmes;
+        })
+        $scope.menuupdated  = false;
+        $scope.saveMenus = function(menu) {  
+            var params = {}; 
+            params['menu_name'] = {'en' : ArrayUtil.get(menu,'menu_name')};
+            if(ArrayUtil.get(menu,'_id')) params['_id'] = ArrayUtil.get(menu,'_id');
+            ItemMenus.saveMenus(params).then(function(res) {
+                 Materialize.toast("Menu Updated", 4000);
+                $scope.menuupdated = true;
+                $scope.menu = {};
+                $scope.menus = res.data.menus;
+                },function(err) {
+                    if(err.status == 500) {
+                        Materialize.toast(ArrayUtil.get(ArrayUtil.get(err,'data'),'message','Menu not saved'), 4000,'errortoast');
+                    } 
+            });
+        }
+        $scope.editmenu = function(id,menuname) {
+            $scope.menu = {};
+            $scope.menu._id = id;
+            $scope.menu.menu_name = menuname;
+        }
+
+        function updatesort() {
+            var sorts = [],sortnumber = 1; 
+            $timeout(function() {
+                angular.forEach($scope.activemenus, function(gghh,sdg) {
+                    sorts.push({'_id' : gghh._id,'sorting' : sortnumber});
+                    sortnumber++;
+                }); 
+                var params = {};
+                params.forsort = true;
+                params.items = sorts;
+                ItemMenus.saveMenus(params).then(function(res) {
+                    Materialize.toast("Menu Updated", 4000);
+                    $scope.menuupdated = true;
+                    $scope.menu = {}; 
+                    $scope.menus = res.data.menus;
+                    },function(err) {
+                        if(err.status == 500) {
+                            Materialize.toast(ArrayUtil.get(ArrayUtil.get(err,'data'),'message','Menu not saved'), 4000,'errortoast');
+                        } 
+                });
+            });
+        }
+
+        $scope.sortableOptions = {
+            update : function(e,ui) {
+                updatesort();
+            },
+            axis : 'y',
+            'ui-floating': true
+        } 
+
+        $scope.menuactive = function(id) {
+            var params = {}; 
+            if(!id) {
+                Materialize.toast("Invalid Menu", 4000,"errortoast");
+                return false;
+            }
+            params['status'] = 1;
+            params['_id'] = id;
+            ItemMenus.saveMenus(params).then(function(res) {
+                 Materialize.toast("Menu Updated", 4000);
+                $scope.menuupdated = true;
+                $scope.menu = {};
+                $scope.menus = res.data.menus;
+                },function(err) {
+                    if(err.status == 500) {
+                        Materialize.toast(ArrayUtil.get(ArrayUtil.get(err,'data'),'message','Menu not saved'), 4000,'errortoast');
+                    } 
+            });
+        } 
+
+        $scope.deletemenu = function(id) {
+            var confg = confirm('Are you sure want to delete this menu?');
+            if(confg) {
+                var params = {}; 
+                if(!id) {
+                    Materialize.toast("Invalid Menu", 4000,"errortoast");
+                    return false;
+                } 
+                params['id'] = id;
+                ItemMenus.deleteMenus(params).then(function(res) {
+                    Materialize.toast("Menu Deleted Successfully", 4000);
+                    $scope.menuupdated = true;
+                    $scope.menu = {};
+                    $scope.menus = res.data.menus;
+                    },function(err) {
+                        if(err.status == 500) {
+                            Materialize.toast(ArrayUtil.get(ArrayUtil.get(err,'data'),'message','Menu not deleted'), 4000,'errortoast');
+                        } 
+                });
+            }
+        }
+
+        $scope.menuinactive = function(id) {
+            var params = {}; 
+            if(!id) {
+                Materialize.toast("Invalid Menu", 4000,"errortoast");
+                return false;
+            }
+            params['status'] = -1;
+            params['_id'] = id;
+            params['sorting'] = 50000;
+            ItemMenus.saveMenus(params).then(function(res) {
+                 Materialize.toast("Menu Updated", 4000);
+                $scope.menuupdated = true;
+                $scope.menu = {};
+                $scope.menus = res.data.menus;
+                },function(err) {
+                    if(err.status == 500) {
+                        Materialize.toast(ArrayUtil.get(ArrayUtil.get(err,'data'),'message','Menu not saved'), 4000,'errortoast');
+                    } 
+            });
+        }
+
+        $scope.newmenuadd = function() {
+            $scope.menu = {};
+        }
+    }
+
+
+
+    function MenuItemsController($scope,ItemMenus,ArrayUtil,$timeout,Product,Upload) { 
+        var vm = this;
+        $scope.items = []; 
+        $scope.menus = [];  
+
+        vm.item = {};
+        $scope.item = {};
+        var variationset= {},items = {};
+        $scope.menusub = {};
+        $scope.menuassign = {};
+        $scope.variantsetoptions = []; 
+        Product.getAllVariantset().then(function(response) {
+             var data = response.data;
+            angular.forEach(data, function(v,l){
+                var gg = {};
+                variationset[v._id] = v;
+                gg.name = v.set_name;
+                gg.value = v._id;                
+                $scope.variantsetoptions.push(gg); 
+            });
+        });
+
+
+        function loopitems(its) {
+            angular.forEach(its, function(v,l){
+                angular.forEach(v.menus,function(a,r){ 
+                    if(typeof $scope.menuassign[v._id] === 'undefined') {
+                        $scope.menuassign[v._id] = {};
+                    }
+                    if(typeof $scope.menuitems[a] === 'undefined') {
+                        $scope.menuitems[a] = [];
+                    }
+                    $scope.menuitems[a].push(v);
+                    $scope.menuassign[v._id][a] = true; 
+                })
+                items[v._id] = v;
+            });
+        }
+
+        $scope.getMenuItems = function(menuid) {
+            var itms = ArrayUtil.get($scope.menuitems,menuid);
+            console.log(itms);
+            return itms;
+        }
+
+        $scope.menuitems = {};
+        ItemMenus.getAllMenus().then(function(res){
+            $scope.menus = res.data.menus;
+            ItemMenus.getItems().then(function(ress) {
+                loopitems(ress.data); 
+                $scope.items = ress.data;
+            })
+        });
+        $scope.variationoptiongroups = [];
+        $scope.$watch('item.optionset',function() {
+            if($scope.item.optionset !== undefined) {
+                var set = ArrayUtil.get(variationset,$scope.item.optionset);
+                $scope.variationoptiongroups = ArrayUtil.get(set,'option_set');
+                console.log(set);
+            } 
+        })
+        $scope.uploadimage = function(file,hidden) {
+            Upload.upload({
+                url : '/api/fileupload?temppath=./uploads/items/',
+                data : {image : file,temppath : './uploads/'},
+                method : 'POST'
+            }).then(function(resp) { 
+                if(resp.status === 200) {
+                    if(resp.data.filedata) {
+                        if(hidden == 'mainimage') {
+                            $scope.item.mainimagepath = resp.data.filedata.path;
+                        }    
+                    }
+                }
+                console.log(resp);
+            }, function (resp) {
+                console.log('Error status: ' + resp.status);
+            }, function (evt) {
+                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                console.log('progress: ' + progressPercentage + '% ');
+            })
+        }
+
+        $scope.edititem = function(id) {
+            var item = ArrayUtil.get(items,id);
+            var edititem = {};
+            edititem = ArrayUtil.get(item,'data');
+            edititem._id = ArrayUtil.get(item,'_id');
+            $scope.item = edititem;
+        }
+
+        $scope.deleteitem = function(id) {
+            var confg = confirm('Are you sure want to delete this item?');
+            if(confg) {
+                var params = {}; 
+                if(!id) {
+                    Materialize.toast("Invalid Item", 4000,"errortoast");
+                    return false;
+                } 
+                params['id'] = id;
+                ItemMenus.deleteItem(params).then(function(res) {
+                    Materialize.toast("Item Deleted Successfully", 4000);                    
+                    $scope.items = [];
+                    $scope.menuassign = {};
+                    loopitems(res.data.items); 
+                    $scope.items = res.data.items; 
+                    },function(err) {
+                        if(err.status == 500) {
+                            Materialize.toast(ArrayUtil.get(ArrayUtil.get(err,'data'),'message','Item not deleted'), 4000,'errortoast');
+                        } 
+                });
+            }
+        }
+
+        $scope.saveitem = function() {  
+            vm.item = {}; 
+            vm.item = $scope.item;
+            vm.item.is_foodie = true; 
+            vm.item.mainimage = $scope.item.mainimagepath;
+            vm.item.gallery = $scope.item.filepath; 
+            vm.item.variantsetid = $scope.item.optionset; 
+            vm.item._id = $scope.item._id;  
+            $scope.menuassign = {};
+            Product.resetProductData().addProductData(vm.item).saveProduct().then(function(res) {  
+                $scope.item = {};
+                $scope.variationoptiongroups = [];   
+                if(vm.item._id ) {
+                    Materialize.toast('Item updated successfully', 4000);
+                } else {
+                    Materialize.toast('Item saved successfully', 4000); 
+                }
+                ItemMenus.getItems().then(function(ress) {
+                    loopitems(ress.data); 
+                    $scope.items = ress.data;
+                })
+                //resetVariables();
+            },function(err) {
+                if(err.status === 500) { 
+                    Materialize.toast(err.statusText, 4000,'errortoast');
+                     Materialize.toast(err.data.errmsg, 4000,'errortoast');
+                }
+                console.log(err);
+            });
+        }
+        $scope.cancelmanage = function() {
+            $scope.item = {};
+            $scope.variationoptiongroups = [];  
+        }
+        $scope.showmenus = function(id) {
+            if(typeof $scope.menusub[id] === 'undefined') { 
+                $scope.menusub[id] = true;
+            } else if($scope.menusub[id] === true) {
+                $scope.menusub[id] = false;
+            } else if($scope.menusub[id] === false) {
+                $scope.menusub[id] = true;
+            }
+        }
+
+        $scope.productupdatemenu = function(id) { 
+            var sctr = ArrayUtil.get($scope.menuassign,id,{}),gg= []; 
+            angular.forEach(sctr, function(gh,ds) {
+                if(gh === true) { 
+                    gg.push(ds);
+                }
+            }) 
+            ItemMenus.setMenu(id,gg).then(function(res){
+                $scope.menuitems = {};
+                ItemMenus.getItems().then(function(ress) {
+                    angular.forEach(ress.data, function(v,l){
+                        angular.forEach(v.menus,function(a,r){  
+                            if(typeof $scope.menuitems[a] === 'undefined') {
+                                $scope.menuitems[a] = [];
+                            }
+                            $scope.menuitems[a].push(v);  
+                        })
+                        items[v._id] = v;
+                    });
+                    $scope.items = ress.data;
+                })
+            });
+        }
+    }
   
 
     angular
         .module('mean.backend') 
         .controller('CategoryController', CategoryController)
+        .controller('menusController', menusController)
+        .controller('MenuItemsController', MenuItemsController)
         .controller('CatalogListController', CatalogListController)
         .controller('CatalogController', CatalogController)
         .controller('CatalogAddController', CatalogAddController)
@@ -1004,6 +1335,8 @@
         .controller('CatalogVariantsetFormController', CatalogVariantsetFormController) ;
 
     CategoryController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product'];
+    menusController.$inject = ['$scope','ItemMenus','ArrayUtil','$timeout','Socket'];
+    MenuItemsController.$inject = ['$scope','ItemMenus','ArrayUtil','$timeout','Product','Upload'];
     CatalogController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product','$timeout','$location'];  
     CatalogListController.$inject = ['$scope', 'ListWidget', 'Backend','ArrayUtil','Product','$timeout','$location','Authentication','$stateParams'];  
     CatalogAttributesController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product','$timeout','$location']; 

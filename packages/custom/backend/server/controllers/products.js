@@ -5,6 +5,8 @@ var Mongoose = require('mongoose'),
   variants = Mongoose.model('Variants'),
   intf = Mongoose.model('InterfaceSettings'),
   variantset = Mongoose.model('Variantset'),
+    _ = require('lodash'),
+  MenuItem = Mongoose.model('MenuItem'),
   arrayutil = require('../helpers/util').array,
   attrdefaults = require('../includes/attributesdefaults.json'),
   multer  = require('multer'),
@@ -173,12 +175,8 @@ var Mongoose = require('mongoose'),
         },
         saveProduct : function(req,res,next) {
           var pr = new product();
-          pr.addData(req.body);
-          console.log(req.body);
-          console.log(arrayutil.get(req.body,'_id'));
-
-          if(arrayutil.get(req.body,'_id')) {
-            console.log('update');
+          pr.addData(req.body); 
+          if(arrayutil.get(req.body,'_id')) { 
             pr.updateData(arrayutil.get(req.body,'_id'),function(err,sd) {
                 if(err) return res.status(500).json(err);
                 res.status(200).json(sd);
@@ -373,6 +371,144 @@ var Mongoose = require('mongoose'),
                 var d = arrayutil.get(arrayutil.get(sd,'productviews',{}),arrayutil.get(postdata,'userid'),{});
                 res.send(d);
             }) 
+        },
+        getMenus : function(req,res,next) { 
+            var menus = new MenuItem();  
+            MenuItem.find({}).sort({'sorting':1}).exec(function(err,dat) { 
+                res.send({menus : dat});
+            })
+        },
+
+        deleteMenus : function(req,res,next) {
+          if(!arrayutil.get(req.params,'id')) {
+             return res.status(500).json({message: "Invalid Menu ID"});
+          } 
+
+          MenuItem.findByIdAndRemove(arrayutil.get(req.params,'id'),function(err,obj) {
+            if (err) {
+              return res.status(500).json(err);
+            };
+            MenuItem.find({}).sort({'sorting':1}).exec(function(err,dat) { 
+                res.status(200).json({message : "Menu has deleted",menus : dat});
+            }) 
+          });
+          
+        },
+        deleteItem : function(req,res,next) {
+          if(!arrayutil.get(req.params,'id')) {
+             return res.status(500).json({message: "Invalid Item ID"});
+          }
+          product.findByIdAndRemove(arrayutil.get(req.params,'id'),function(err,obj) {
+            if (err) {
+              return res.status(500).json(err);
+            };
+            MenuItem.find({is_foodie:true}).exec(function(err,dat) { 
+                res.status(200).json({message : "Item has deleted",items : dat});
+            }) 
+          });
+          
+        },
+        saveMenus : function(req,res) {  
+            var menus = new MenuItem(); 
+            if(arrayutil.get(req.body,'forsort')) {  
+                var eless = 0;
+                     arrayutil.get(req.body,'items').forEach(function(dg, g){
+                        MenuItem.findById(dg._id, function(error, catey) {
+                            var data = {};
+                            data.sorting = dg.sorting;
+                            catey.update(data, function(error, atey) { 
+                                eless++;
+                                if(eless >=  arrayutil.get(req.body,'items').length) {
+                                     MenuItem.find({}).sort({'sorting':1}).exec(function(er,r) {
+                                        return res.status(200).json({message: 'Inserted Successfully',menus : r}); 
+                                    }) 
+                                }
+                            });
+
+                        });
+                         
+                             
+                         
+                     });
+                           
+                    console.log(req.body);
+                
+            } else {
+                if(arrayutil.get(req.body,'_id')) {
+                    MenuItem.findById(arrayutil.get(req.body,'_id'), function(error, catey) {
+                        // Handle the error using the Express error middleware
+                        if(error) return res.status(200).json(error);
+                        
+                        // Render not found error
+                        if(!catey) {
+                          return res.status(404).json({
+                            message: 'Menu with id ' + id + ' can not be found.'
+                          });
+                        } 
+                        var data = {};
+                        if(arrayutil.get(req.body,'status')) {
+                            data.status = arrayutil.get(req.body,'status') === 1 ? true : false;
+                            if(arrayutil.get(req.body,'sorting')) {
+                                data.sorting = arrayutil.get(req.body,'sorting')
+                            }
+
+                        } else {
+                            data.menuurl = textutil.url_title(arrayutil.get(arrayutil.get(req.body,'menu_name'),'en'));
+                            data.menu_name = { 'en' : arrayutil.get(arrayutil.get(req.body,'menu_name'),'en')};
+                        } 
+
+                        // Update the course model
+                        catey.update(data, function(error, catey) {
+                          if(error) return res.status(200).json(error);
+                            
+                            MenuItem.find({}).sort({'sorting':1}).exec(function(er,r) {
+                                return res.status(200).json({message: 'Inserted Successfully',menus : r}); 
+                            })
+                           
+                        });
+                      });
+                } else {
+                    menus.menuurl = textutil.url_title(arrayutil.get(arrayutil.get(req.body,'menu_name'),'en'));
+                    menus.menu_name['en'] = arrayutil.get(arrayutil.get(req.body,'menu_name'),'en'); 
+                    menus.save(function(err,category,numAffected) {
+                        if(err) {
+                           res.status(500).json(err);
+                        } else {
+                            MenuItem.find({}).sort({'sorting':1}).exec(function(er,r) {
+                                res.status(200).json({message: 'Inserted Successfully',menus : r}); 
+                            })
+                        }
+                    }) 
+                } 
+            }
+        },
+        getItemsById : function() {
+           if(!arrayutil.get(req.params,'id')) {
+                 return res.status(500).json({message: "Invalid Product ID"});
+              }
+            product.findOne({_id : arrayutil.get(req.params,'id'),is_foodie : true},function (err, vars) { 
+                  res.status(200).json(vars); 
+            }); 
+        },
+        getItems : function(req,res,next) {  
+            product.find({is_foodie : true},function (err, vars) { 
+                return   res.status(200).json(vars); 
+            }); 
+        },
+        setmenu : function(req,res,next){
+            if(!arrayutil.get(req.params,'id')) {
+                 return res.status(500).json({message: "Invalid Item ID"});
+            }
+            product.findOne({_id : arrayutil.get(req.params,'id'),is_foodie : true},function (err, vars) { 
+                var menus = arrayutil.get(vars,'menus');
+                var sf = menus.concat(req.body);
+                var data = {};
+                data.menus = req.body; 
+                vars.update(data, function(error, catey) {
+                    if(error) return res.status(200).json(error);
+                    return res.status(200).json({message: 'Updated Successfully'});  
+                });
+            }); 
         }
 
   	 }
