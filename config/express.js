@@ -16,6 +16,7 @@ var config = mean.getConfig()
 var bodyParser = require('body-parser')
 var helmet = require('helmet')
 var http = require('http')
+ 
 module.exports = function (app, db) {
   var server = http.createServer(app);
   var io = require('socket.io').listen(server);
