@@ -3,7 +3,8 @@
     "css": {
       "bower_components/build/css/dist.min.css": [
         "bower_components/angular/angular-csp.css",
-        "bower_components/angular-ui-select/dist/select.min.css"
+        "bower_components/angular-ui-select/dist/select.min.css",
+        "bower_components/angular-filemanager/dist/angular-filemanager.min.css"
       ]
     },
     "js": {
@@ -18,6 +19,7 @@
         "bower_components/angular-jwt/dist/angular-jwt.min.js",
         "bower_components/angular-bootstrap/ui-bootstrap-tpls.js",
         "bower_components/angular-ui-select/dist/select.min.js",
+        "bower_components/angular-filemanager/dist/angular-filemanager.min.js",
         "bower_components/web-bootstrap/index.js"
       ]
     }

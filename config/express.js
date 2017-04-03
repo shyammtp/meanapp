@@ -15,8 +15,14 @@ var modRewrite = require('connect-modrewrite')
 var config = mean.getConfig()
 var bodyParser = require('body-parser')
 var helmet = require('helmet')
-
+var http = require('http')
 module.exports = function (app, db) {
+  var server = http.createServer(app);
+  var io = require('socket.io').listen(server);
+
+  app.set('socketio', io);
+  app.set('server', server);   
+
   app.use(bodyParser.json(config.bodyParser.json))
   app.use(bodyParser.urlencoded(config.bodyParser.urlencoded))
 
@@ -43,6 +49,9 @@ module.exports = function (app, db) {
 
   app.use('/bundle', express.static(config.root + '/bundle'))
 
+
+  app.use('/uploads', express.static(config.root +'/uploads'))
+
   // Adds logging based on logging config in config/env/ entry
   require('./middlewares/logging')(app, config.logging)
 
@@ -57,12 +66,14 @@ module.exports = function (app, db) {
 
   // Connect flash for flash messages
   app.use(flash())
-
+var admin = express();
+app.set('admin',admin);
+ 
   app.use(modRewrite([
 
     '!^/api/.*|\\_getModules|\\.html|\\.js|\\.css|\\.swf|\\.jp(e?)g|\\.JP(E?)G|\\.PNG|\\.png|\\.ico|\\.gif|\\.svg|\\.eot|\\.ttf|\\.woff|\\.txt|\\.pdf$ / [L]'
 
   ]))
-
+  app.get('server').listen(8000);
 // app.use(seo())
 }

@@ -59,5 +59,6 @@ module.exports = {
       pass: 'PASSWORD'
     }
   },
-  secret: 'SOME_TOKEN_SECRET'
+  secret: 'SHYAMSECRET',
+  disabledModules : ['theme']
 }
