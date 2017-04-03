@@ -1,0 +1,44 @@
+<!doctype html>
+<html  ng-controller="BackendController">
+{% include '../includes/head.html' %}
+
+<body  data-curl="{{currenturl}}"  ng-cloak class="ng-cloak compact-menu" ng-class="state"> 
+<main  class="page-content content-wrap">   
+<nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right" id="cbp-spmenu-s2">
+ 
+    <div ng-include="{{navtemplate}}"></div>
+</nav> 
+<div ng-if="loadheader(params)">
+        {% block header %}{% endblock %} 
+    <shmenu-sidebar></shmenu-sidebar> 
+</div>
+    {% block content %}{% endblock %} 
+    {% include '../includes/foot.html' %} 
+</main>
+<nav class="cd-nav-container" id="cd-nav">
+            <header>
+                <h3>DEMOS</h3>
+            </header>
+            <div class="col-md-6 demo-block">
+                <a href="../admin1/index.html"><p>Dark<br>Design</p></a>
+            </div>
+            <div class="col-md-6 demo-block demo-active">
+                <p>Light<br>Design</p>
+            </div>
+            <div class="col-md-6 demo-block">
+                <a href="../admin3/index.html"><p>Material<br>Design</p></a>
+            </div>
+            <div class="col-md-6 demo-block demo-coming-soon">
+                <p>Horizontal<br>(Coming)</p>
+            </div>
+            <div class="col-md-6 demo-block demo-coming-soon">
+                <p>Coming<br>Soon</p>
+            </div>
+            <div class="col-md-6 demo-block demo-coming-soon">
+                <p>Coming<br>Soon</p>
+            </div>
+        </nav>
+        <div class="cd-overlay"></div>
+</body>
+
+</html>
