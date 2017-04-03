@@ -17,7 +17,7 @@
             },
             controller: 'BackendCoreController as vm'};
             console.log($locationProvider);
-        $urlRouterProvider.otherwise('/otherwise');
+        //$urlRouterProvider.otherwise('/otherwise');
         $stateProvider.state('login',angular.extend({},defal,{
                 url: '/admin/login',
                 templateUrl: 'backend/views/login.html'
@@ -191,14 +191,17 @@
           
     }
     var adminconfig;
-    function Run($rootScope, $state, $location,Authentication,Backend) { 
+    function Run($rootScope, $state, $location,Authentication,Backend,$window) { 
         Backend.getAdminConfig('openaccess').then(function(response) {
             adminconfig = response.data;
         })
+
+        $rootScope.backend = Backend;
+         
         $rootScope.$on('$stateChangeStart', function(event, nextRoute, currentRoute) {
           
           
-             
+            
             if(Authentication.isLoggedIn()) {
                 if(nextRoute.name === 'login') {
                     $location.path('/admin/dashboard');
@@ -227,7 +230,7 @@
         .config(Backend)
         .run(Run);
 
-    Run.$inject = ['$rootScope','$state','$location','Authentication','Backend'];
+    Run.$inject = ['$rootScope','$state','$location','Authentication','Backend','$window'];
     Backend.$inject = ['$stateProvider','$locationProvider','$urlRouterProvider'];
 
 })();

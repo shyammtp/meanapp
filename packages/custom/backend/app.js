@@ -5,16 +5,10 @@
  */
 var meanio = require('meanio'), Module = meanio.Module;
 var path = require('path');
-var Backend = new Module('backend'),
-session = require('express-session'),
-expressJwt = require('express-jwt'),
-config = meanio.getConfig(), 
-passport = require('passport');
-require("./server/config/passport.js");
+var Backend = new Module('backend'),  
+passport = require('passport'); 
 var adminconfig = require('./server/config/adminconfig.json');
-
-var http = require('http')
-var socketio = require('socket.io')
+ 
 
 /*
  * All MEAN packages require registration

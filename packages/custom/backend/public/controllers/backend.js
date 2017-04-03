@@ -3,7 +3,9 @@
 
     /* jshint -W098 */
     function TitleController($scope,Page) {
-         $scope.Page = Page; 
+         $scope.Page = Page;  
+         $scope.shyam = 'shyam';
+        console.log('2');
     }
 
     function BackendCoreController($scope,getsettings,$location,$window,Authentication,$state,Backend,$stateParams,getmenus,getcurrency,getassetsdata) { 
@@ -13,7 +15,9 @@
         });
         $window.menus = getmenus.data; 
         $window.current_currency = getcurrency; 
-        $window.assetsdata = getassetsdata;  
+        $window.assetsdata = getassetsdata; 
+         
+        console.log($window.assetsdata);  
     }
 
 
@@ -25,6 +29,7 @@
             email : '',
             password: ''
         }  
+         $scope.shyam = 'shyam';
         $scope.$on('child', function (event, data) {
             if(typeof data.externaljs!== 'undefined') {
                 $scope.externaljs = data.externaljs;
@@ -43,6 +48,7 @@
         $scope.loadsubmenu = function() {
 
         }
+        $scope.assetspath = '/theme/assets/lib/black/';
         Backend.getMenus().then(function(response) { 
                 $scope.datas = response.data;
                 jQuery('.sidebar .accordion-menu li .sub-menu').slideUp(0);

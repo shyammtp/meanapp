@@ -17,7 +17,7 @@
         return arr; 
     }
 
-    function Backend($http, $q,$compile,Authentication) {
+    function Backend($http, $q,$window,$compile,Authentication) {
         return {
             name: 'backend',
             localsdata : {},
@@ -52,8 +52,14 @@
             },
             getAssetsData : function() {
                 return this.getLocals().then(function(response) {
-                    return {path : '/theme/assets/lib/'+response.data.theme+'/',theme : response.data.theme};
+                    return {path : response.data.assetspath,theme : response.data.theme};
                 });
+            },
+            getassetpath : function() { 
+                if($window.assetsdata !== undefined) {
+                    return (typeof $window.assetsdata.path !== 'undefined') ? $window.assetsdata.path : '';
+                } 
+                return '';
             },
             getGeneralData : function(index) {
                 var deferred = $q.defer();
@@ -261,7 +267,7 @@
         .factory('Socket',Socket)
         .factory('Page',Page);
 
-    Backend.$inject = ['$http', '$q','$compile','Authentication'];
+    Backend.$inject = ['$http', '$q','$window','$compile','Authentication'];
     Authentication.$inject = ['$http', '$q','$window'];
     Socket.$inject = ['socketFactory'];
 

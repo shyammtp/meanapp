@@ -15,23 +15,28 @@ var Mongoose = require('mongoose'),
         secret: config.secret,
         userProperty: 'payload'
     });
+
     /* jshint -W098 */
     // The Package is past automatically as first parameter
     module.exports = function(Backend, app, auth, database, circles) { 
         var sidebar = Backend.sidebarcontroller; 
         var settings = Backend.settingscontroller;   
         var authentication = Backend.authenticationcontroller;
-        var products = Backend.productscontroller;
-         
+        var products = Backend.productscontroller; 
         //app.use(sidebar.theme);
         //app.use(expressJwt({ secret: config.sessionSecret}));
         app.use(logErrors); 
+
+        var theme = 'black',
+        assetspath = '/theme/assets/lib/'+theme+'/';
         
         app.get('/',function(req,res) { 
+            console.log('**********************');
             Backend.render('index', {
                 package: 'backend',
                // currenturl : req.originalUrl,
-                settings : app.locals
+                theme : theme,
+                apath : assetspath
             }, function(err, html) {
                 res.send(html);
             });
@@ -128,7 +133,7 @@ var Mongoose = require('mongoose'),
         //console.log(app.locals);
         app.get('/api/locals',function(req,res) {
 
-            res.send({theme : 'black'});
+            res.send({theme :theme,assetspath : assetspath});
         });
 
         /*app.get('/api/backend/example/auth', requiresLogin, function(req, res) {

@@ -6,7 +6,26 @@
 	<div data-ng-include="'/backend/views/page/sidebar.html'"></div>
 {% endblock %}
 {% block content %}
-  <div data-ui-view></div>
+  <div data-ui-view>
+	<div class="loader-container">
+	  <div class="block"></div>
+	  <div class="block"></div>
+	  <div class="block"></div>
+	  <div class="block"></div>
+	  <div class="block"></div>
+	  <div class="block"></div>
+	  <div class="block"></div>
+	  <div class="block"></div>
+	  <div class="block"></div>
+	  <div class="block"></div>
+	  <div class="block"></div>
+	  <div class="block"></div>
+	  <div class="block"></div>
+	  <div class="block"></div>
+	  <div class="block"></div>
+	  <div class="block"></div>
+	</div>
+</div>
   <script type="text/javascript">
     window.user = {{user|json|safe}};
     window.modules = null;

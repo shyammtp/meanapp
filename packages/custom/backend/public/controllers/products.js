@@ -1175,8 +1175,7 @@
         }
 
         $scope.getMenuItems = function(menuid) {
-            var itms = ArrayUtil.get($scope.menuitems,menuid);
-            console.log(itms);
+            var itms = ArrayUtil.get($scope.menuitems,menuid); 
             return itms;
         }
 

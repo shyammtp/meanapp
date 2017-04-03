@@ -6,10 +6,7 @@
 var Module = require('meanio').Module;
 
 
-var Theme = new Module('theme'); 
-var Menus = require('../backend/server/models/menus.js');
-var Mongoose = require('mongoose'),
-  Menus = Mongoose.model('Menus');
+var Theme = new Module('theme');  
 
 
 /*
