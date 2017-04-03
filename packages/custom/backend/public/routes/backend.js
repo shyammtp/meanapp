@@ -1,6 +1,7 @@
 (function() {
     'use strict'; 
     function Backend($stateProvider,$locationProvider,$urlRouterProvider) {
+      
         var defal = {resolve : {
                 getsettings : function(Backend) {
                    return Backend.getSettings(1);

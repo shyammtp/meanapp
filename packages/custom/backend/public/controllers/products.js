@@ -993,6 +993,7 @@
     }
 
     function menusController($scope,ItemMenus,ArrayUtil,$timeout,Socket) { 
+        
         $scope.menus = [];
         $scope.activemenus = [];
         ItemMenus.getAllMenus().then(function(res){
@@ -1011,7 +1012,12 @@
             });
             $scope.inactivemenus = mens;
             $scope.activemenus = acmes;
-        })
+        });
+
+        Socket.on('article.created', function(article) {
+            console.log(article);
+        });
+
         $scope.menuupdated  = false;
         $scope.saveMenus = function(menu) {  
             var params = {}; 

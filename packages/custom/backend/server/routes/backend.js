@@ -1,6 +1,7 @@
 (function() {
     'use strict';
- 
+ var meanio = require('meanio'),
+ config = meanio.getConfig();
 var Mongoose = require('mongoose'),
   NotificationTemplate = Mongoose.model('NotificationTemplate'),
   adminuser = Mongoose.model('AdminUser'),
@@ -27,12 +28,11 @@ var Mongoose = require('mongoose'),
         //app.use(expressJwt({ secret: config.sessionSecret}));
         app.use(logErrors); 
 
-        var theme = 'black',
+        var theme = config.theme,
         assetspath = '/theme/assets/lib/'+theme+'/';
         
-        app.get('/',function(req,res) { 
-            console.log('**********************');
-            Backend.render('index', {
+        app.get('/',function(req,res) {  
+            Backend.render(theme+'/index', {
                 package: 'backend',
                // currenturl : req.originalUrl,
                 theme : theme,
@@ -40,8 +40,7 @@ var Mongoose = require('mongoose'),
             }, function(err, html) {
                 res.send(html);
             });
-        });
-            
+        }); 
 
         /* For Products */
         app.get('/api/category/getcategory/:id',authentic,products.getCategory);
