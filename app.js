@@ -2,9 +2,15 @@
 
 import 'angular/angular-csp.css';
 import 'angular-ui-select/select.min.css';
-import 'angular-material/angular-material.min.css';
+import 'angular-material/angular-material.min.css'; 
 
 import jQuery from 'jquery';
+import 'tinymce';
+import 'tinymce/themes/modern/theme';
+import 'tinymce/plugins/colorpicker/plugin.js';
+import 'tinymce/plugins/code/plugin.js';
+import 'tinymce/plugins/image/plugin.js';
+import 'tinymce/plugins/textcolor/plugin.js';
 import 'angular';
 import 'angular-ui-select/select';
 import 'angular-mocks';
@@ -16,6 +22,13 @@ import 'angular-jwt';
 import 'angular-aria';
 import 'angular-animate';
 import 'angular-material';
+import 'angular-loading-bar';
+import 'ng-file-upload';
+import 'angular-ui-sortable';
+import 'angular-ui-tinymce';
+import 'angular-dragdrop/src/angular-dragdrop';
+import 'angular-socket-io/dist/socket.io';
+import 'angular-socket-io';
 
 window.$ = jQuery;
 
@@ -30,7 +43,7 @@ angular.element(document).ready(function () {
 });
 
 function processModules (modules) {
-  var packageModules = ['ngCookies', 'ngResource', 'ui.router', 'ui.select', 'ngSanitize', 'ngMaterial'];
+  var packageModules = ['ngCookies', 'ngResource', 'ui.router', 'ui.select', 'ngSanitize', 'ngMaterial','ngFileUpload','ui.sortable'];
   var m;
   var mn;
   for (var index in modules) {
