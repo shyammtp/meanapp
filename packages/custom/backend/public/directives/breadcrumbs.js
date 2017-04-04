@@ -3,7 +3,7 @@
 
     function breadcrumbs() { 
         return { 
-            templateUrl : 'backend/views/page/breadcrumbs.html',
+            templateUrl : 'backend/views/'+theme+'/page/breadcrumbs.html',
             link : function(scope,element,attrs) { 
                 //angular.element('.sidebar .sub-menu').hide();
             }

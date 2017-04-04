@@ -97,7 +97,7 @@
                 methodToCall: '&method',
                 controllerSaveCategory : '&save'
             }, 
-            templateUrl : 'backend/views/products/catalog/classify/category.html',
+            templateUrl : 'backend/views/'+theme+'/products/catalog/classify/category.html',
             link : function(scope,element,attrs) {
                 var _obj = this,containerwidth = angular.element('.ca-container').width();
                 var c = Math.round(containerwidth / 330);
@@ -206,7 +206,7 @@
                 var categoryset = Product.getCategoryForAdd(),_obj = this;  
                 _obj.resetAttr(scope,attrs);
                 scope.getContentUrl = function() { 
-                    return 'backend/views/products/catalog/attributes/form/' + attrs.type + '.html';
+                    return 'backend/views/'+theme+'/products/catalog/attributes/form/' + attrs.type + '.html';
                 }
                 /*Product.getCategoryAttribute(ArrayUtil.get(categoryset,'_id')).then(function(res) {
                     $scope.attributedata = ArrayUtil.get(res.data,'attributes',{});
@@ -369,7 +369,7 @@
                     if(!attrs.type) {
                         return '';
                     }
-                    return 'backend/views/products/catalog/fields/form/' + attrs.type + '.html';
+                    return 'backend/views/'+theme+'/products/catalog/fields/form/' + attrs.type + '.html';
                 }
                 scope.countObject = function(obd) {
                     if(obd === undefined) {
@@ -555,7 +555,7 @@
                     if(!attrs.datatype) {
                         return false;
                     }
-                    return 'backend/views/products/catalog/variants/type/' + attrs.datatype + '.html';
+                    return 'backend/views/'+theme+'/products/catalog/variants/type/' + attrs.datatype + '.html';
                 }
                 scope.countObject = function(obd) {
                     if(obd === undefined) {
@@ -580,7 +580,7 @@
 
     function shInput() { 
         return {  
-            templateUrl: 'backend/views/widget/elements/input.html',
+            templateUrl: 'backend/views/'+theme+'/widget/elements/input.html',
             scope: true,
             link : function(scope,element,attrs) {  
                
@@ -591,7 +591,7 @@
      function shModal() { 
         return { 
             transclude: true, 
-            templateUrl: 'backend/views/widget/modal.html',
+            templateUrl: 'backend/views/'+theme+'/widget/modal.html',
             link : function(scope,element,attrs) { 
                 scope.open = function(){
                     angular.element('.modal',element).modal('open');
@@ -606,6 +606,46 @@
                     ending_top: '0%', // Ending top style attribute
                     opacity : 0.9
                 });   
+            }
+
+        }
+    }
+
+
+     function orderTable(Socket) { 
+        return {   
+            link : function(scope,element,attrs) {  
+                var reference = [];
+
+                scope.$on('orderupdate',function(event, dfg) {
+                    var d = dfg.data; 
+                    reference = dfg.ref; 
+                    if(dfg.ref.indexOf(d.cart_reference) <= -1) {
+                        reference.push(d.cart_reference);
+                    }
+                    console.log(d);
+                    var hml = ''; 
+                    hml += '<td><div class="row">';
+                    hml += '<div class="col-sm-2"> '; 
+                    if(d.type[0] === 'pickup') {
+                        hml += '<span class="badge badge-primary">'+d.type[0]+'</span>';
+                    } else {
+                        hml += '<span class="badge badge-default">'+d.type[0]+'</span>';                    
+                    }
+                    hml += '</div>';
+                    hml += '<div class="col-sm-6">';
+                    hml += '<h2>'+d.user.name+' <span class="badge badge-info">'+d.totalitems+' Items</span></h2>';
+                    hml += '<p><i class="fa fa-shopping-basket" aria-hidden="true"></i>  Order is placing - Reference #'+d.cart_reference+'</p>';
+                    hml += '<p><i class="fa fa-clock-o" aria-hidden="true"></i> '+d.updateformatted+'</p>';
+                    hml += '</div></td>'; 
+                    if(reference.indexOf(d.cart_reference) > -1) {
+                        window.$("#"+d.cart_reference).html(hml);
+                    } else {                        
+                        window.$(element).prepend(hml);
+                    }
+                })
+                
+                console.log(scope);
             }
 
         }
@@ -638,6 +678,7 @@
         .filter('priceformat',priceformat)
         .directive('mdSelect', mdSelect)
         .directive('shModal', shModal)
+        .directive('orderTable', orderTable)
         .directive('shInput', shInput)
         .directive('jsdirtree', jsTree)
         .directive('categoryselectslider', categoryselectslider)
@@ -647,6 +688,7 @@
  
     jsTree.$inject = ['Product','ArrayUtil','$timeout'];
     priceformat.$inject = ['Product'];
+    orderTable.$inject = ['Socket'];
     categoryselectslider = ['Product','$compile','$location'];    
     attributeManager = ['Product','$compile','$location','ArrayUtil'];    
     catalogfield = ['Product','$compile','$location','ArrayUtil','$timeout']; 

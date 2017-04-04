@@ -37,7 +37,7 @@ var Mongoose = require('mongoose'),
                         u.addData(req.body);
                         u.updateData(arrayutil.get(req.body,'_id'),function(err,sd) {
                             if(err) return res.status(500).json(err);
-                            //socketio.sockets.emit('article.created', sd);
+                            socketio.sockets.emit('cart.orders', sd);
                             res.status(200).json(sd);
 
                         });
@@ -48,8 +48,10 @@ var Mongoose = require('mongoose'),
                             if(err) {
                                 res.status(500).json(err);
                             } else { 
-                                //socketio.sockets.emit('article.created', docs);
-                                res.status(200).json({message: 'Inserted Successfully',data : docs});
+                                cart.findOne({_id: docs._id}).populate('user').exec(function(err,doc) { 
+                                    socketio.sockets.emit('cart.orders', doc);
+                                    res.status(200).json({message: 'Inserted Successfully',data : doc});
+                                });
                             }
                         });
                     }
@@ -58,12 +60,15 @@ var Mongoose = require('mongoose'),
             } else { 
                 u.setId(false);
                  u.addData(req.body);
-                u.save(function(err,docs) { 
+                u.save(function(err,docs) {
+
                     if(err) {
                         res.status(500).json(err);
-                    } else { 
-                        //socketio.sockets.emit('article.created', docs);
-                        res.status(200).json({message: 'Inserted Successfully',data : docs});
+                    } else {  
+                        cart.findOne({_id: docs._id}).populate('user').exec(function(err,doc) { 
+                            socketio.sockets.emit('cart.orders', doc);
+                            res.status(200).json({message: 'Inserted Successfully',data : doc});
+                        })
                     }
                 });
             }

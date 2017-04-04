@@ -31,7 +31,7 @@ Backend.register(function(app, auth, database, circles) {
   //app.use(session({ secret: config.secret, resave: false, saveUninitialized: true }));
   //app.use('/api', expressJwt({ secret: config.sessionSecret }).unless({ path: ['/api/users/authenticate', '/api/users/register'] }));
   Backend.angularDependencies(['ngSanitize','ui.router','ui.tinymce','angular-loading-bar','btford.socket-io']); 
-  app.set('views', path.join(__dirname, '/server/views')); 
+  app.set('views', path.join(__dirname, '/server/views/black')); 
  
   //We are adding a link to the main menu for all authenticated users
   Backend.menus.add({

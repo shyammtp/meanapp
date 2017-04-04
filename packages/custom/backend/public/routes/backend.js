@@ -186,6 +186,12 @@
                 params: {title : 'Items',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Menus',link : 'admin/menus'},{title : 'items'}]},
              })
           )
+           .state('admin_food_orders', angular.extend({},defal,   {
+                url : '/admin/orders/live',
+                templateUrl: 'backend/views/'+theme+'/orders/live.html',
+                params: {title : 'Items',hasheader : 'false',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Menus',link : 'admin/menus'},{title : 'items'}]},
+             })
+          )
           ;
         $locationProvider
             .html5Mode({enabled:true, requireBase:false});
@@ -198,7 +204,8 @@
         })
 
         $rootScope.backend = Backend;
-         
+        $rootScope.assetspath = Backend.getassetpath();
+        $rootScope.theme = theme;
         $rootScope.$on('$stateChangeStart', function(event, nextRoute, currentRoute) {
           
           

@@ -5,7 +5,7 @@
     var secretKey = 'SHYAMPRADEEP';
     function listwidget(ListWidget,$sce) { 
         return { 
-            templateUrl : 'backend/views/widget/list.html',
+            templateUrl : 'backend/views/'+theme+'/widget/list.html',
             replace: true,
             link : function(scope,element,attrs) { 
                 scope.dbresult = ListWidget.getDbResults(); 
@@ -128,7 +128,7 @@
 
     function widgetFilterText($parse) {
         return { 
-            templateUrl : 'backend/views/widget/filter/text.html', 
+            templateUrl : 'backend/views/'+theme+'/widget/filter/text.html', 
             link : function(scope,element,attrs) {  
                 scope.filtername = attrs.index;
             }
@@ -138,7 +138,7 @@
 
     function widgetFilterNumber($parse) {
         return { 
-            templateUrl : 'backend/views/widget/filter/number.html', 
+            templateUrl : 'backend/views/'+theme+'/widget/filter/number.html', 
             link : function(scope,element,attrs) {  
                 scope.filtername = attrs.index;
             }
@@ -147,7 +147,7 @@
     }
     function widgetFilterSelect(ListWidget) {
         return { 
-            templateUrl : 'backend/views/widget/filter/select.html', 
+            templateUrl : 'backend/views/'+theme+'/widget/filter/select.html', 
             link : function(scope,element,attrs) { 
                 scope.filtername = attrs.index;
                 var data = ListWidget.getColumn(attrs.index).data;
@@ -162,7 +162,7 @@
     function widgetPagination(ListWidget) {
         return { 
             restrict: 'A', 
-            templateUrl : 'backend/views/widget/pager.html', 
+            templateUrl : 'backend/views/'+theme+'/widget/pager.html', 
             link : function(scope,element,attrs) { 
                 //$scope = scope;
                  

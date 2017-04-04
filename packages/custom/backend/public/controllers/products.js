@@ -7,7 +7,7 @@
          var vm = this,categorymap;   
          //console.log($ocLazyLoad);
         var parentdata  = {};
-        parentdata.externaljs = 'backend/views/products/category/js.html'; 
+        parentdata.externaljs = 'backend/views/'+theme+'/products/category/js.html'; 
         $scope.$emit('child', parentdata);  
         $scope.setCategory = function(map) {
         	categorymap = map;
@@ -76,10 +76,10 @@
         ListWidget.init();         
         ListWidget.defaultSortColumn = 'type';
         ListWidget.isFilter = false;
-        ListWidget.addColumn('mainimage',{'type' : 'text','title' : 'Image',defaultValue : '--',width : '20%','render' : 'backend/views/products/catalog/list/renderer/image.html',sortable : false,filterable : false});
+        ListWidget.addColumn('mainimage',{'type' : 'text','title' : 'Image',defaultValue : '--',width : '20%','render' : 'backend/views/'+theme+'/products/catalog/list/renderer/image.html',sortable : false,filterable : false});
         ListWidget.addColumn('sku',{'type' : 'text','title' : 'SKU',width : '30%','index' : 'data.sku'});  
-        ListWidget.addColumn('product_title',{'type' : 'number','title' : 'Product Name','index' : 'data.item_name',width : '30%','render' : 'backend/views/products/catalog/list/renderer/name.html'});  
-        ListWidget.addColumn('nocolumn',{'type' : 'notype','title' : 'Actions',defaultValue : '--',width : '20%',sortable : false,filterable : false,'render' : 'backend/views/products/catalog/list/renderer/action.html'});
+        ListWidget.addColumn('product_title',{'type' : 'number','title' : 'Product Name','index' : 'data.item_name',width : '30%','render' : 'backend/views/'+theme+'/products/catalog/list/renderer/name.html'});  
+        ListWidget.addColumn('nocolumn',{'type' : 'notype','title' : 'Actions',defaultValue : '--',width : '20%',sortable : false,filterable : false,'render' : 'backend/views/'+theme+'/products/catalog/list/renderer/action.html'});
         ListWidget.setDataRequestUrl(url); 
          
         function setPage(page) { 
@@ -152,7 +152,7 @@
          
         $scope.advancedsearch = function() {
             classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );
-            Backend.loadSider($scope,'cbp-spmenu-s2','backend/views/products/catalog/list/customsearchform.html'); 
+            Backend.loadSider($scope,'cbp-spmenu-s2','backend/views/'+theme+'/products/catalog/list/customsearchform.html'); 
             angular.element('.cd-overlay').addClass('is-visible');
         }  
         $scope.currencycode = Product.getCurrency('currency_code');
@@ -408,7 +408,7 @@
             $scope.subproduct = {}; 
             $scope.subproducteditindex  = -1;
             classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );
-            Backend.loadSider($scope,'cbp-spmenu-s2','backend/views/products/catalog/fields/createsku.html'); 
+            Backend.loadSider($scope,'cbp-spmenu-s2','backend/views/'+theme+'/products/catalog/fields/createsku.html'); 
             angular.element('.cd-overlay').addClass('is-visible');
         }
         $scope.closethis = function() { 
@@ -438,7 +438,7 @@
             $scope.subproducteditindex = index;
             $scope.subproduct = ArrayUtil.get($scope.subproducts,index,{}); 
             angular.element('.cd-overlay').addClass('is-visible');
-            Backend.loadSider($scope,'cbp-spmenu-s2','backend/views/products/catalog/fields/createsku.html'); 
+            Backend.loadSider($scope,'cbp-spmenu-s2','backend/views/'+theme+'/products/catalog/fields/createsku.html'); 
             classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );
         }
 
@@ -663,7 +663,7 @@
          ListWidget.addColumn('display_name',{'type' : 'number','title' : 'Display Name',width : '30%'}); 
          ListWidget.addColumn('type',{'type' : 'select','title' : 'Type',width : '20%','options' : [{label : "System",id:'system'},
             {label : "custom",id:'custom'}]});
-         ListWidget.addColumn('nocolumn',{'type' : 'notype','title' : 'Actions',defaultValue : '--',width : '20%',sortable : false,filterable : false,'render' : 'backend/views/products/catalog/variants/list/renderer/action.html'});
+         ListWidget.addColumn('nocolumn',{'type' : 'notype','title' : 'Actions',defaultValue : '--',width : '20%',sortable : false,filterable : false,'render' : 'backend/views/'+theme+'/products/catalog/variants/list/renderer/action.html'});
          ListWidget.setDataRequestUrl('/api/catalog/listvariants'); 
          
         function setPage(page) { 
@@ -699,7 +699,7 @@
          ListWidget.add_link = '/admin/products/catalog/variants/set/form';
          ListWidget.defaultSortColumn = 'type';
          ListWidget.addColumn('set_name',{'type' : 'text','title' : 'Set Name',defaultValue : '--',width : '60%'}); 
-         ListWidget.addColumn('nocolumn',{'type' : 'notype','title' : 'Actions',defaultValue : '--',width : '40%',sortable : false,filterable : false,'render' : 'backend/views/products/catalog/variants/set/list/renderer/action.html'});
+         ListWidget.addColumn('nocolumn',{'type' : 'notype','title' : 'Actions',defaultValue : '--',width : '40%',sortable : false,filterable : false,'render' : 'backend/views/'+theme+'/products/catalog/variants/set/list/renderer/action.html'});
          ListWidget.setDataRequestUrl('/api/catalog/listvariantset'); 
          
         function setPage(page) { 
@@ -857,7 +857,7 @@
         }
         $scope.openmodal = function() { 
             angular.element('.modal').modal('open');
-            $scope.$broadcast('modaltemplate','backend/views/widget/elements/input.html');
+            $scope.$broadcast('modaltemplate','backend/views/'+theme+'/widget/elements/input.html');
         }
         $scope.appendtoset = function(opt) {
             
@@ -953,7 +953,7 @@
                 $scope.rules = {};
             }
             classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );
-            Backend.loadSider($scope,'cbp-spmenu-s2','backend/views/products/catalog/variants/set/rules/form.html'); 
+            Backend.loadSider($scope,'cbp-spmenu-s2','backend/views/'+theme+'/products/catalog/variants/set/rules/form.html'); 
         }
 
         var loadlist = function() { 
@@ -961,9 +961,9 @@
             ListWidget.defaultSortColumn = 'type';
             ListWidget.isFilter = false;
             ListWidget.isPaging = false;
-            ListWidget.addColumn('name',{'type' : 'text','title' : 'When This Is Selected',defaultValue : '--',width : '40%','render' : 'backend/views/products/catalog/variants/set/rules/renderer/name.html'}); 
-            ListWidget.addColumn('change',{'type' : 'text','title' : 'Make this change',defaultValue : '--',width : '40%','render' : 'backend/views/products/catalog/variants/set/rules/renderer/change.html'});
-            ListWidget.addColumn('nocolumn',{'type' : 'notype','title' : 'Actions',defaultValue : '--',width : '20%',sortable : false,filterable : false,'render' : 'backend/views/products/catalog/variants/set/rules/renderer/action.html'});
+            ListWidget.addColumn('name',{'type' : 'text','title' : 'When This Is Selected',defaultValue : '--',width : '40%','render' : 'backend/views/'+theme+'/products/catalog/variants/set/rules/renderer/name.html'}); 
+            ListWidget.addColumn('change',{'type' : 'text','title' : 'Make this change',defaultValue : '--',width : '40%','render' : 'backend/views/'+theme+'/products/catalog/variants/set/rules/renderer/change.html'});
+            ListWidget.addColumn('nocolumn',{'type' : 'notype','title' : 'Actions',defaultValue : '--',width : '20%',sortable : false,filterable : false,'render' : 'backend/views/'+theme+'/products/catalog/variants/set/rules/renderer/action.html'});
             ListWidget.setDataRequestUrl('/api/catalog/listvariantrulesset?id='+$stateParams.variantid);  
             setPage(1);
         }
@@ -1322,11 +1322,29 @@
             });
         }
     }
+
+    function CartOrderController($scope,ItemMenus,ArrayUtil,$timeout,Socket) {
+
+        $scope.orders = [];
+        var reference = [];
+        ItemMenus.cartOrders().then(function(res) {
+            console.log(res);
+            $scope.orders = res.data;
+            angular.forEach(res.data,function(g,r){
+                reference.push(g.cart_reference);
+            });
+
+            Socket.on('cart.orders',function(d) { 
+                 $scope.$emit('orderupdate',{ref : reference,data : d}); 
+            })
+        })
+    }
   
 
     angular
         .module('mean.backend') 
         .controller('CategoryController', CategoryController)
+        .controller('CartOrderController', CartOrderController)
         .controller('menusController', menusController)
         .controller('MenuItemsController', MenuItemsController)
         .controller('CatalogListController', CatalogListController)
@@ -1341,6 +1359,7 @@
 
     CategoryController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product'];
     menusController.$inject = ['$scope','ItemMenus','ArrayUtil','$timeout','Socket'];
+    CartOrderController.$inject = ['$scope','ItemMenus','ArrayUtil','$timeout','Socket'];
     MenuItemsController.$inject = ['$scope','ItemMenus','ArrayUtil','$timeout','Product','Upload'];
     CatalogController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product','$timeout','$location'];  
     CatalogListController.$inject = ['$scope', 'ListWidget', 'Backend','ArrayUtil','Product','$timeout','$location','Authentication','$stateParams'];  

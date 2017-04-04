@@ -88,6 +88,9 @@ var Mongoose = require('mongoose'),
         app.get('/api/menus/items',authentic,products.getItems);
         app.put('/api/menus/items/:id',authentic,products.setmenu);
 
+        /* Cart orders */
+        app.get('/api/cart/orders',authentic,products.getCartOrders);
+
         /* General */
         app.get('/api/adminconfig',function(req,res) {             
             res.status(200);             

@@ -362,6 +362,14 @@
                     deferred.reject(response);
                 });
                 return deferred.promise; 
+            },cartOrders : function() {
+                var deferred = $q.defer(); 
+                $http.get('/api/cart/orders',{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                    deferred.resolve(response);
+                }, function(response) {
+                    deferred.reject(response);
+                });
+                return deferred.promise;
             }
         }
     }

@@ -56,9 +56,9 @@
                 });
             },
             getassetpath : function() { 
-                if($window.assetsdata !== undefined) {
+                /*if($window.assetsdata !== undefined) {
                     return (typeof $window.assetsdata.path !== 'undefined') ? $window.assetsdata.path : '';
-                } 
+                } */
                 return '/theme/assets/lib/'+theme+'/';
             },
             getGeneralData : function(index) {

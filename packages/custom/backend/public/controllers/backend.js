@@ -34,7 +34,8 @@
             if(typeof data.externaljs!== 'undefined') {
                 $scope.externaljs = data.externaljs;
             } 
-        });
+        }); 
+        $scope.assetspath = Backend.getassetpath(); 
         $scope.headtitle = 'test';
         $scope.global = Global;
         $scope.package = {
@@ -60,6 +61,10 @@
                  console.log('in1');
                  
             }); 
+
+        $scope.switchtoorder = function() {
+            $location.path('/admin/orders/live');
+        }
         $scope.directories = [];
         Backend.getAllDirectories().then(function(response){
             $scope.directories = response.data;
@@ -191,7 +196,7 @@
          ListWidget.addColumn('from_name',{'type' : 'number','title' : 'Username',width : '30%'}); 
          ListWidget.addColumn('template_type',{'type' : 'select','title' : 'System / Custom',width : '20%','options' : [{label : "System",id:'system'},
             {label : "custom",id:'custom'}]});
-         ListWidget.addColumn('nocolumn',{'type' : 'notype','title' : 'Actions',defaultValue : '--',width : '20%',sortable : false,filterable : false,'render' : 'backend/views/settings/template/renderer/actions.html'});
+         ListWidget.addColumn('nocolumn',{'type' : 'notype','title' : 'Actions',defaultValue : '--',width : '20%',sortable : false,filterable : false,'render' : 'backend/views/'+theme+'/settings/template/renderer/actions.html'});
          ListWidget.setDataRequestUrl('/api/notificationtemplate/getall'); 
          
         function setPage(page) { 

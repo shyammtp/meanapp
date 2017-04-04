@@ -26,7 +26,7 @@ function makeid()
 }
 
 var FoodCartSchema = new Schema({ 
-	user : {type : mongoose.Schema.Types.ObjectId,ref : 'user'},
+	user : {type : mongoose.Schema.Types.ObjectId,ref : 'Customer'},
 	cart_reference : {type : String,unique : true},
 	type : ['pickup','delivery'],
 	orderplaced: {type : Boolean,default: false},
@@ -36,6 +36,26 @@ var FoodCartSchema = new Schema({
 
 },{collection: "foodcart"});
  
+FoodCartSchema.pre('init', function(next, data) {
+	var d = new Date(data.updated_on);
+	var time = d.toLocaleString('en-US', { hour: 'numeric',minute : 'numeric', hour12: true });
+	var cd = new Date();
+	var yes = new Date(); yes.setDate(cd.getDate()-1);
+	var monthShortNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+	  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+	];
+	var string = '';
+	if(d.toLocaleDateString() == cd.toLocaleDateString()) {
+		string = 'Today at '+time
+	} else if(d.toLocaleDateString() == yes.toLocaleDateString()) {
+		string = 'Yesterday at '+time
+	} else {
+		string = monthShortNames[d.getMonth()]+", "+d.getDate()+" "+d.getYear();
+	}
+  	data.updateformatted = string;
+  	data.totalitems = data.items.length;
+  next();
+});
 FoodCartSchema.pre('save',function(next) {		
 	console.log(this);
 	if(!this._id) {
@@ -53,10 +73,9 @@ FoodCartSchema.post('save',function() {
 	console.log('post'); 
 })
 
+var edit = true;
 FoodCartSchema.methods.setId = function(id) {
-	if(id) {		
-		this._id = id;
-	}
+	edit = id;
 }
 
 
@@ -69,6 +88,12 @@ FoodCartSchema.methods.addData = function(data) {
 	}if(data.price) {
 		items.price = data.price;
 	} 
+
+	if(edit &&  data._id) {
+		this._id = data._id
+	} else {
+		this.items = items;
+	}
 	
 	this.user = data.user;
 	this.type = data.type;
@@ -76,9 +101,7 @@ FoodCartSchema.methods.addData = function(data) {
 		this.item_id = data.item_id;
 		items._id = data.item_id;
 	} 
-	if(!this._id) {
-		this.items = items;
-	}
+	
 	this.itemscollection = items;
 }
  
@@ -95,13 +118,13 @@ FoodCartSchema.methods.updateData = function(id,cb) {
 		    },
 		    {upsert: true},
 		    function(err,doc) {
-	    		_obj.model('FoodCart').findOne({_id : id},cb);
+	    		_obj.model('FoodCart').find({_id : id}).populate('user').exec(cb);
 		    }
 		);
 	} else { 
  
 		this.model('FoodCart').update({_id : id},{"$push"  : {"items" : _obj.itemscollection}},{upsert: true},function(err,doc) {
-			_obj.model('FoodCart').findOne({_id : id},cb);
+			_obj.model('FoodCart').findOne({_id : id}).populate('user').exec(cb);
 		});
 	}
 

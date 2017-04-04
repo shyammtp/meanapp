@@ -4,8 +4,8 @@
     function shMenuSidebar($timeout) { 
         return {
             restrict : 'E',
-            templateUrl : 'backend/views/page/sidebar/menus.html',
-            link : function(scope,element,attrs) { 
+            templateUrl : 'backend/views/'+theme+'/page/sidebar/menus.html',
+            link : function(scope,element,attrs) {  
                 $timeout(function(){
                      window.$('.push-sidebar').click(function(){
                         var hidden = window.$('.sidebar');

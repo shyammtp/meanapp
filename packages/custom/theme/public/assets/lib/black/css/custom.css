@@ -1508,3 +1508,75 @@ legend { border:none; width: auto; font-size:16px; margin-left: 10px; margin-bot
   0%   { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+
+
+.orderpulse-button {
+
+  position: relative;
+  width: 16px;
+  height: 16px;
+  margin-top: 3px; 
+  display: block;
+  border: none;
+  box-shadow: 0 0 0 0 rgba(232, 76, 61, 0.7);
+  border-radius: 50%;
+  background-color: #e84c3d; 
+  background-size:cover;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+.orderpulse-animation { 
+  -webkit-animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);
+  -moz-animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);
+  -ms-animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);
+  animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);
+}
+.orderpulse-button:hover 
+{
+  -webkit-animation: none;-moz-animation: none;-ms-animation: none;animation: none;
+}
+
+@-webkit-keyframes pulse {to {box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);}}
+@-moz-keyframes pulse {to {box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);}}
+@-ms-keyframes pulse {to {box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);}}
+@keyframes pulse {to {box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);}}
+
+.order-nbutton {display: inline-block;
+    *display: inline;
+    margin-top: 15px;
+     padding: 9px 12px;
+     margin-left: 10px;
+	 padding-top:7px ;
+    margin-bottom: 0;
+    *margin-left: .3em;
+    font-size: 14px;
+    line-height: 20px;
+    color: #8e3737;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-color:#181818;
+    *border: 0;
+    -webkit-border-radius: 3px;
+     -webkit-border-radius: 3px;
+     -webkit-border-radius: 3px; 
+	background-image:none !important;
+	border: none;
+	text-shadow: none;
+	box-shadow:none;	
+	box-shadow:0 4px 5px 0 rgba(0,0,0,0.14),0 1px 10px 0 rgba(0,0,0,0.12),0 2px 4px -1px rgba(0,0,0,0.3);
+    transition: all 0.12s linear 0s !important;
+	font: 14px/20px "Helvetica Neue",Helvetica,Arial,sans-serif;	
+}
+.order-nbutton .left-text {margin-right: 6px;}
+.order-nbutton:hover { color: #cc6666; background-color:#101010;}
+.order-nbutton:focus {box-shadow: none;}
+.live-container {}
+.live-header {background: #0e0e0e; width:100%; height: 75px; position: relative;box-shadow:0 4px 5px 0 rgba(0,0,0,0.14),0 1px 10px 0 rgba(0,0,0,0.12),0 2px 4px -1px rgba(0,0,0,0.3);}
+.live-header .pattern {background:url('../img/pattern1.png') repeat-x; position: absolute; background-size: 15px 15px;height: 15px; width: 100%;bottom: -9px;}
+.back-t { color:#ccc;   float:left;padding-top: 25px;    display: block;   margin-left: 37px;}
+.back-t {color:#ccc;}
+.back-t .fa{font-size:25px;}
+.live-header h4 { text-align: center; font-size: 26px; padding-top:12px; }
+.live-header h4 .livenow {border: 1px solid #e84c3d;    color: #e84c3d;    padding: 5px 18px;    margin-left: 10px;    font-size: 12px;}

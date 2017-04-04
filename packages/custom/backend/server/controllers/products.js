@@ -6,6 +6,7 @@ var Mongoose = require('mongoose'),
   intf = Mongoose.model('InterfaceSettings'),
   variantset = Mongoose.model('Variantset'),
     _ = require('lodash'),
+  foodcart = Mongoose.model('FoodCart'),
   MenuItem = Mongoose.model('MenuItem'),
   arrayutil = require('../helpers/util').array,
   attrdefaults = require('../includes/attributesdefaults.json'),
@@ -509,6 +510,11 @@ var Mongoose = require('mongoose'),
                     return res.status(200).json({message: 'Updated Successfully'});  
                 });
             }); 
+        },
+        getCartOrders : function(req,res,next) {
+            foodcart.find({orderplaced : false}).populate('user').exec(function (err, docs) { 
+                return res.status(200).json(docs); 
+            });
         }
 
   	 }
