@@ -17,18 +17,18 @@
                 }
             },
             controller: 'BackendCoreController as vm'};
-            console.log($locationProvider);
+            //console.log($locationProvider);
         //$urlRouterProvider.otherwise('/otherwise');
         $stateProvider.state('login',angular.extend({},defal,{
                 url: '/admin/login',
-                templateUrl: 'backend/views/login.html'
+                templateUrl: 'backend/views/'+theme+'/login.html'
             })
         )
 
 
         .state('dashboard', angular.extend({},defal, {
                 url: '/admin/dashboard',
-                templateUrl: 'backend/views/page/dashboard.html',
+                templateUrl: 'backend/views/'+theme+'/page/dashboard.html',
                 params: {title : 'shyam'}
             })
         )
@@ -37,14 +37,14 @@
         .state('general_settings', 
             angular.extend({},defal, {
                 url: '/admin/settings/general',
-                templateUrl: 'backend/views/settings/general.html',
+                templateUrl: 'backend/views/'+theme+'/settings/general.html',
                 params: {title : 'General Settings',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Settings', link: 'admin/settings'},{title : 'General'}]},
                  
             })
         )
         .state('payment_settings', angular.extend({},defal, {
             url: '/admin/settings/payments',
-            templateUrl: 'backend/views/settings/payments.html',
+            templateUrl: 'backend/views/'+theme+'/settings/payments.html',
             params: {title : 'Payment Settings',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Settings', link: 'admin/settings'},{title : 'Payments'}]},
              
         })
@@ -52,27 +52,27 @@
 
         .state('settings_notification_template', angular.extend({},defal,  {
             url: '/admin/settings/template',
-            templateUrl: 'backend/views/settings/template/list.html',
+            templateUrl: 'backend/views/'+theme+'/settings/template/list.html',
             params: {title : 'Notification Template',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Settings', link: 'admin/settings'},{title : 'Notification Template'}]},
              
         })
         )
          .state('products_category', angular.extend({},defal,  {
                 url: '/admin/products/category',
-                templateUrl: 'backend/views/products/category/list.html',
+                templateUrl: 'backend/views/'+theme+'/products/category/list.html',
                 params: {title : 'Products Category',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products/catalog'},{title : 'Category'}]},
                  
             })
          )
           .state('products_catalog', angular.extend({},defal,{
             url: '/admin/products/catalog?view',
-            templateUrl: 'backend/views/products/catalog/list.html',
+            templateUrl: 'backend/views/'+theme+'/products/catalog/list.html',
             params: {title : 'Products Catalog',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products/catalog'},{title : 'Add a product'}]}
         }))
          .state('products_catalog_step1', 
             angular.extend({},defal,{
             url: '/admin/products/catalog/classify',
-            templateUrl: 'backend/views/products/catalog/classify.html',
+            templateUrl: 'backend/views/'+theme+'/products/catalog/classify.html',
             params: {title : 'Products Catalog',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products/catalog'},{title : 'Add a product'}]},
              
         })
@@ -80,14 +80,14 @@
         .state('product_catalog_info', 
             angular.extend({},defal, {
                 url : '/admin/products/catalog/information',
-                templateUrl: 'backend/views/products/catalog/information.html',
+                templateUrl: 'backend/views/'+theme+'/products/catalog/information.html',
                 params: {title : 'Products Catalog',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products'}]},
              })
         )
          .state('product_catalog_editmode',
             angular.extend({},defal, {
                 url : '/admin/products/catalog/information/{product_id}',
-                templateUrl: 'backend/views/products/catalog/information.html',
+                templateUrl: 'backend/views/'+theme+'/products/catalog/information.html',
                 params: {title : 'Products Catalog',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products/catalog'},{title : 'Add a product'}]},
              })
 
@@ -95,14 +95,14 @@
          .state('product_catalog_attributes_list',
              angular.extend({},defal,  {
                 url : '/admin/products/catalog/attributes',
-                templateUrl: 'backend/views/products/catalog/attributes/list.html',
+                templateUrl: 'backend/views/'+theme+'/products/catalog/attributes/list.html',
                 params: {title : 'Products Catalog Attributes',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products'}]},
              })
          )
           .state('product_catalog_attributes_classify',     
              angular.extend({},defal,  {
                 url : '/admin/products/catalog/attributes/classify',
-                templateUrl: 'backend/views/products/catalog/attributes/classify.html',
+                templateUrl: 'backend/views/'+theme+'/products/catalog/attributes/classify.html',
                 params: {title : 'Products Catalog Attributes',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products/catalog'},{title : 'Add a product'}]},
              })
 
@@ -110,7 +110,7 @@
           .state('product_catalog_attributes_form',
             angular.extend({},defal,  {
                 url : '/admin/products/catalog/attributes/form',
-                templateUrl: 'backend/views/products/catalog/attributes/form.html',
+                templateUrl: 'backend/views/'+theme+'/products/catalog/attributes/form.html',
                 params: {title : 'Products Catalog Attribute Form',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Add a product'}]},
              })
 
@@ -118,7 +118,7 @@
           .state('product_catalog_attributes_copy_classify', 
             angular.extend({},defal,  {
                 url : '/admin/products/catalog/attributes/copy',
-                templateUrl: 'backend/views/products/catalog/attributes/copy/classify.html',
+                templateUrl: 'backend/views/'+theme+'/products/catalog/attributes/copy/classify.html',
                 params: {title : 'Products Catalog Attribute Form', hasheader : 'false',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Add a product'}]},
              })
 
@@ -126,14 +126,14 @@
           .state('product_catalog_attributes_copy_form', 
             angular.extend({},defal,  {
                 url : '/admin/products/catalog/attributes/copy/form',
-                templateUrl: 'backend/views/products/catalog/attributes/copy/form.html',
+                templateUrl: 'backend/views/'+theme+'/products/catalog/attributes/copy/form.html',
                 params: {title : 'Products Catalog Attribute Form',hasheader : 'false',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Add a product'}]},
              })
           )
           .state('product_catalog_variants', 
             angular.extend({},defal,  {
                 url : '/admin/products/catalog/variants',
-                templateUrl: 'backend/views/products/catalog/variants/list.html',
+                templateUrl: 'backend/views/'+theme+'/products/catalog/variants/list.html',
                 params: {title : 'Products Catalog Variants',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Variants'}]},
              })
 
@@ -141,48 +141,48 @@
           .state('product_catalog_variants_form', 
             angular.extend({},defal,  {
                 url : '/admin/products/catalog/variants/form',
-                templateUrl: 'backend/views/products/catalog/variants/form.html',
+                templateUrl: 'backend/views/'+theme+'/products/catalog/variants/form.html',
                 params: {title : 'Create new variant',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Variants','link' : '/admin/products/catalog/variants'},{title : 'Add/Edit Variants'}]},
              })
            )
           .state('product_catalog_variants_form_edit',angular.extend({},defal,   {
                 url : '/admin/products/catalog/variants/form/{variantid}',
-                templateUrl: 'backend/views/products/catalog/variants/form.html',
+                templateUrl: 'backend/views/'+theme+'/products/catalog/variants/form.html',
                 params: {title : 'Create new variant',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Variants','link' : '/admin/products/catalog/variants'},{title : 'Add/Edit Variants'}]},
              })
              )
           .state('product_catalog_variants_set_list', angular.extend({},defal,   {
                 url : '/admin/products/catalog/variants/set',
-                templateUrl: 'backend/views/products/catalog/variants/set/list.html',
+                templateUrl: 'backend/views/'+theme+'/products/catalog/variants/set/list.html',
                 params: {title : 'Product catalog variants set',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Variants Set'}]},
              })
           ).state('product_catalog_variants_set_form', angular.extend({},defal,   {
                 url : '/admin/products/catalog/variants/set/form',
-                templateUrl: 'backend/views/products/catalog/variants/set/form.html',
+                templateUrl: 'backend/views/'+theme+'/products/catalog/variants/set/form.html',
                 params: {title : 'Create new variant set',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Variants set','link' : '/admin/products/catalog/variants/set'},{title : 'Add/Edit Variants'}]},
              })
           )
           .state('product_catalog_variants_set_form_edit', angular.extend({},defal,   {
                 url : '/admin/products/catalog/variants/set/form/{variantid}',
-                templateUrl: 'backend/views/products/catalog/variants/set/form.html',
+                templateUrl: 'backend/views/'+theme+'/products/catalog/variants/set/form.html',
                 params: {title : 'Create new variant set',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Variants Set','link' : '/admin/products/catalog/variants/set'},{title : 'Add/Edit Variants'}]},
              })
           ).state('product_catalog_variants_set_rules_edit', 
            angular.extend({},defal,  {
                 url : '/admin/products/catalog/variants/set/rules/{variantid}',
-                templateUrl: 'backend/views/products/catalog/variants/set/rules/list.html',
+                templateUrl: 'backend/views/'+theme+'/products/catalog/variants/set/rules/list.html',
                 params: {title : 'Create new variant set',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Products', link: 'admin/products'},{title : 'Variants Set','link' : '/admin/products/catalog/variants/set'},{title : 'Manage Rules'}]},
              })
            )
           .state('admin_food_menus', angular.extend({},defal,   {
                 url : '/admin/menus',
-                templateUrl: 'backend/views/menus/index.html',
+                templateUrl: 'backend/views/'+theme+'/menus/index.html',
                 params: {title : 'Menus',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Menus'}]},
              })
           )
           .state('admin_food_items', angular.extend({},defal,   {
                 url : '/admin/menus/items',
-                templateUrl: 'backend/views/menus/items/index.html',
+                templateUrl: 'backend/views/'+theme+'/menus/items/index.html',
                 params: {title : 'Items',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Menus',link : 'admin/menus'},{title : 'items'}]},
              })
           )

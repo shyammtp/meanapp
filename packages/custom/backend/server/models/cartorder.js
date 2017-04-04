@@ -54,9 +54,7 @@ FoodCartSchema.post('save',function() {
 })
 
 FoodCartSchema.methods.setId = function(id) {
-	if(!id) {
-		this._id = null;
-	} else {			
+	if(id) {		
 		this._id = id;
 	}
 }

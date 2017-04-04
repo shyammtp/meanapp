@@ -22,8 +22,9 @@ var passport = require('passport'),Mongoose = require('mongoose'),
         });
   	 	},
       login : function(req,res,next) {  
-
+      //res.status(200).json({});
         passport.authenticate('local', function(err, user, info){
+
           var token; 
           // If Passport throws/catches an error  
           if (err) {

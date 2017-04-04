@@ -59,7 +59,7 @@
                 if($window.assetsdata !== undefined) {
                     return (typeof $window.assetsdata.path !== 'undefined') ? $window.assetsdata.path : '';
                 } 
-                return '';
+                return '/theme/assets/lib/'+theme+'/';
             },
             getGeneralData : function(index) {
                 var deferred = $q.defer();

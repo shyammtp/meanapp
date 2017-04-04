@@ -6,7 +6,8 @@
 var meanio = require('meanio'), Module = meanio.Module;
 var path = require('path');
 var Backend = new Module('backend'),  
-passport = require('passport'); 
+passport = require('passport');
+require('./server/config/passport'); 
 var adminconfig = require('./server/config/adminconfig.json');
  
 
