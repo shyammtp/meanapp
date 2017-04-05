@@ -512,17 +512,28 @@ var Mongoose = require('mongoose'),
 						}); 
 				},
 				getCartOrders : function(req,res,next) {
-						foodcart.find({orderplaced : false}).populate([{path: 'user',select : 'email name'},{path : 'reserved_for',select : 'email name'}]).exec(function (err, docs) { 
-								return res.status(200).json(docs); 
-						});
+					foodcart.find({orderplaced : false}).populate([{path: 'user',select : 'email name'},{path : 'reserved_for',select : 'email name'}]).exec(function (err, docs) { 
+							return res.status(200).json(docs); 
+					});
 				},
 				addHistory : function(req,res,next){ 
 					var cart = new foodcart(); 
 					cart.addHistory(arrayutil.get(req.body,'id'),arrayutil.get(req.body,'user'),arrayutil.get(req.body,'message'),function(err,doc) {
-						console.log(err);
+						 
 						return res.status(200).json(doc); 
 					})
 				},
+                getCartOrder : function(req,res,next) {
+                    if(!arrayutil.get(req.params,'id')) {
+                        return res.status(500).json({message: "Invalid Cart ID"});
+                    }
+                    foodcart.findOne({_id : arrayutil.get(req.params,'id'),orderplaced : false}).populate([{path: 'user',select : 'email name'},{path : 'reserved_for',select : 'email name'}]).exec(function (err, docs) { 
+                            if(!docs._id) {
+                                return res.status(500).json({message: "Invalid Cart ID"});
+                            }
+                            return res.status(200).json({message : "Loaded", cart: docs}); 
+                    });
+                },
 				updatecart : function(req,res,next) {
 					var socketio = req.app.get('socketio'); var cart = new foodcart();  
 					if(!arrayutil.get(req.params,'id')) {

@@ -623,38 +623,39 @@
                     if(dfg.ref.indexOf(d.cart_reference) <= -1) {
                         reference.push(d.cart_reference);
                     }
+                    console.log(reference);
                     console.log(d);
                     var hml = ''; 
                     hml += '<td><div class="row">';
                     hml += '<div class="col-sm-2"> '; 
                     if(d.type[0] === 'pickup') {
-                        hml += '<span class="badge badge-primary">'+d.type[0]+'</span>';
+                        hml += '<span class="badge boxbadge badge-primary">'+d.type[0]+'</span>';
                     } else {
-                        hml += '<span class="badge badge-default">'+d.type[0]+'</span>';                    
+                        hml += '<span class="badge boxbadge badge-default">'+d.type[0]+'</span>';                    
                     }
                     hml += '</div>';
                     hml += '<div class="col-sm-6">';
-                    hml += '<h2>'+d.user.name+' <span class="badge badge-info">'+d.totalitems+' Items</span></h2>';
-                    hml += '<p><i class="fa fa-shopping-basket" aria-hidden="true"></i>  Order is placing - Reference #'+d.cart_reference+'</p>';
+                    hml += '<h2><a href="/admin/orders/items/live/'+d._id+'">'+d.user.name+'</a> <span class="badge badge-info">'+d.totalitems+' Items</span></h2>';
+                    hml += '<p><i class="fa fa-shopping-basket" aria-hidden="true"></i>  Order is placing - #'+d.cart_reference+'</p>';
                     hml += '<p><i class="fa fa-clock-o" aria-hidden="true"></i> '+d.updateformatted+'</p>';
                     hml += '</div>';
                     hml += '<div class="col-sm-4">';
                     
                     if(d.reserved_for!= undefined && d.reserved_for._id) {
                         hml += '<div class="takeorderbutton">';
-                        hml += '<button class="btn btn-primary disabled">Order is taken by '+d.reserved_for.name+'</button>';
+                        hml += '<button class="btn btn-primary disabled">Order is taken by <span style="color:#756BB0;font-weight: bold;">'+d.reserved_for.name+'</span></button>';
                         hml += '</div>';
                     } else {
                         hml += '<div class="takeorderbutton">';
-                        hml += '<button ng-click="takeorder('+d._id+')" class="btn btn-primary glowbutton">Take the order</button>';
+                        hml += '<button ng-click="takeorder('+d._id+')" class="btn btn-primary glowbutton">I am taking this order</button>';
                         hml += '</div>';
                     }
                     hml += '</div>';
-                    hml += '</td>'; 
-                    if(reference.indexOf(d.cart_reference) > -1) {
+                    hml += '</td></tr>'; 
+                    if(window.$("#"+d.cart_reference).length) {
                         window.$("#"+d.cart_reference).html(hml);
                     } else {                        
-                        window.$(element).prepend(hml);
+                        window.$('tbody',element).prepend('<tr id="'+d.cart_reference+'">'+hml+'</tr>');
                     }
                 })
                 

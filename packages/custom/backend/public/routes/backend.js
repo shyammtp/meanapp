@@ -192,6 +192,12 @@
                 params: {title : 'Items',hasheader : 'false',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Menus',link : 'admin/menus'},{title : 'items'}]},
              })
           )
+           .state('admin_food_orders_items', angular.extend({},defal,   {
+                url : '/admin/orders/items/live/{cartid}',
+                templateUrl: 'backend/views/'+theme+'/orders/items/live.html',
+                params: {title : 'Items',hasheader : 'false',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Menus',link : 'admin/menus'},{title : 'items'}]},
+             })
+          )
           ;
         $locationProvider
             .html5Mode({enabled:true, requireBase:false});

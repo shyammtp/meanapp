@@ -1,43 +1,48 @@
-<div class="live-continer" ng-controller="CartOrderController">
-	<div class="live-header">
-		<div class="row">
-			<div class="col-sm-1"> 
-				<a href="/admin/menus" class="back-t"><i class="fa fa-arrow-left back" aria-hidden="true"></i></a>
+<div class="live-continer slideInLeft" ng-controller="CartOrderController">
+	<div class="live-se">
+		<div class="live-header">
+			<div class="row">
+				<div class="col-sm-1"> 
+					<a href="/admin/menus" class="back-t"><i class="fa fa-arrow-left back" aria-hidden="true"></i></a>
+				</div>
+				<div class="col-sm-10">
+					<h4>New Orders<span class="livenow">Live</span></h4>
+				</div>
+				<div class="col-sm-1">
+				</div>
 			</div>
-			<div class="col-sm-10">
-				<h4>New Orders<span class="livenow">Live</span></h4>
-			</div>
-			<div class="col-sm-1">
-			</div>
+			<div class="pattern"></div>
 		</div>
-		<div class="pattern"></div>
 	</div>
 	<div class="live-itemsset">
-		<table  order-table class="table table-striped">
-			<tbody>
-				<tr id="{{rw.cart_reference}}" ng-repeat="(fw,rw) in orders track by $index">
-					<td>
-						<div class="row">
-							<div class="col-sm-2"> 
-								<span class="badge" ng-class="{'badge-primary': rw.type[0] == 'pickup','badge-default' : rw.type[0] == 'delivery'}">{{rw.type[0]}}</span>
-							</div>
-							<div class="col-sm-6">
-								<h2>{{rw.user.name}} <span class="badge badge-info">{{rw.totalitems}} Items</span></h2>
-								<p><i class="fa fa-shopping-basket" aria-hidden="true"></i>  Order is placing - Reference #{{rw.cart_reference}}</p>
-								<p><i class="fa fa-clock-o" aria-hidden="true"></i> {{rw.updateformatted}}</p>
-							</div>
-							<div class="col-sm-4">
-								<div class="takeorderbutton" ng-if="rw.reserved_for._id">
-									<button class="btn btn-primary disabled">Order is taken by {{rw.reserved_for.name}}</button>
+		<div class="sdhhj "> 
+				<table order-table class="table table-striped">
+					<tbody>
+						<tr id="{{rw.cart_reference}}" ng-repeat="(fw,rw) in orders track by $index">
+							<td>
+								<div class="row flash">
+									<div class="col-sm-2"> 
+										<span class="badge boxbadge" ng-class="{'badge-primary': rw.type[0] == 'pickup','badge-default' : rw.type[0] == 'delivery'}">{{rw.type[0]}}</span>
+									</div>
+									<div class="col-sm-6 contents-liv">
+										<h2><a href="/admin/orders/items/live/{{rw._id}}">{{rw.user.name}}</a> <span class="badge badge-info">{{rw.totalitems}} Items</span></h2>
+										<p><i class="fa fa-shopping-basket" aria-hidden="true"></i>  Order is placing - #{{rw.cart_reference}}</p>
+										<p><i class="fa fa-clock-o" aria-hidden="true"></i> {{rw.updateformatted}}</p>
+									</div>
+									<div class="col-sm-4">
+										<div class="takeorderbutton" ng-if="rw.reserved_for._id">
+											<button class="btn btn-primary disabled">Order is taken by <span style="color:#756BB0;font-weight: bold;">{{rw.reserved_for.name}}</span></button>
+										</div>
+										<div class="takeorderbutton" ng-if="!rw.reserved_for._id">
+											<button ng-click="takeorder(rw._id)" class="btn btn-primary glowbutton">I am taking this order</button>
+										</div>
+									</div>
 								</div>
-								<div class="takeorderbutton" ng-if="!rw.reserved_for._id">
-									<button ng-click="takeorder(rw._id)" class="btn btn-primary glowbutton">Take the order</button>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+							</td>
+						</tr>
+					</tbody>
+				</table> 
+		</div>	
+
 	</div>
 </div>

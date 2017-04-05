@@ -1323,7 +1323,7 @@
         }
     }
 
-    function CartOrderController($scope,ItemMenus,ArrayUtil,$timeout,Socket,Authentication) {
+    function CartOrderController($scope,ItemMenus,ArrayUtil,$timeout,Socket,Authentication,$location) {
 
         $scope.orders = [];
         var reference = [];
@@ -1339,6 +1339,11 @@
             });
         });
 
+        $scope.goto = function(id) {
+            $location.path('/admin/orders/items/live/'+id);
+            return;
+        }
+
         $scope.takeorder = function(id) { 
             ItemMenus.updateCart(id,{'reserved_for' : Authentication.getUser(),'change' : true}).then(function(res){
                 var dt = res.data;
@@ -1346,8 +1351,30 @@
                     Materialize.toast(dt.message, 4000,'errortoast');
                     return;
                 }
+                if(dt.success) {
+                    $scope.goto(id);
+                    return;
+                }
             })
         }
+    }
+
+    function CartOrderItemController($scope,ItemMenus,ArrayUtil,$timeout,Socket,Authentication,$location,$stateParams) {
+
+         $scope.cart = {};
+         console.log($stateParams);
+         if($stateParams.cartid != undefined) {
+
+            ItemMenus.getOrder($stateParams.cartid).then(function(res){                
+                    $scope.cart = res.data.cart;
+                },function(err) { 
+                if(err.status == 500) {
+                    Materialize.toast(ArrayUtil.get(ArrayUtil.get(err,'data'),'message','Category not saved'), 4000,'errortoast');
+                    $location.path('/admin/cart/orders');
+                    return;
+                } 
+            })
+         }
     }
   
 
@@ -1355,6 +1382,7 @@
         .module('mean.backend') 
         .controller('CategoryController', CategoryController)
         .controller('CartOrderController', CartOrderController)
+        .controller('CartOrderItemController', CartOrderItemController)
         .controller('menusController', menusController)
         .controller('MenuItemsController', MenuItemsController)
         .controller('CatalogListController', CatalogListController)
@@ -1369,7 +1397,8 @@
 
     CategoryController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product'];
     menusController.$inject = ['$scope','ItemMenus','ArrayUtil','$timeout','Socket'];
-    CartOrderController.$inject = ['$scope','ItemMenus','ArrayUtil','$timeout','Socket','Authentication'];
+    CartOrderController.$inject = ['$scope','ItemMenus','ArrayUtil','$timeout','Socket','Authentication','$location'];
+    CartOrderItemController.$inject = ['$scope','ItemMenus','ArrayUtil','$timeout','Socket','Authentication','$location','$stateParams'];
     MenuItemsController.$inject = ['$scope','ItemMenus','ArrayUtil','$timeout','Product','Upload'];
     CatalogController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product','$timeout','$location'];  
     CatalogListController.$inject = ['$scope', 'ListWidget', 'Backend','ArrayUtil','Product','$timeout','$location','Authentication','$stateParams'];  

@@ -370,6 +370,14 @@
                     deferred.reject(response);
                 });
                 return deferred.promise;
+            },getOrder : function(id) {
+                var deferred = $q.defer(); 
+                $http.get('/api/cart/getorder/'+id,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                    deferred.resolve(response);
+                }, function(response) {
+                    deferred.reject(response);
+                });
+                return deferred.promise;
             },addHistory : function(post) {
                 var deferred = $q.defer(); 
                 $http.post('api/cart/employeehistory',post,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {

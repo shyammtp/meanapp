@@ -90,6 +90,7 @@ var Mongoose = require('mongoose'),
 
         /* Cart orders */
         app.get('/api/cart/orders',authentic,products.getCartOrders);
+        app.get('/api/cart/getorder/:id',authentic,products.getCartOrder);
         app.put('/api/cart/update/:id',authentic,products.updatecart);
         app.post('/api/cart/employeehistory',authentic,products.addHistory);
 
