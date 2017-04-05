@@ -1580,3 +1580,41 @@ legend { border:none; width: auto; font-size:16px; margin-left: 10px; margin-bot
 .back-t .fa{font-size:25px;}
 .live-header h4 { text-align: center; font-size: 26px; padding-top:12px; }
 .live-header h4 .livenow {border: 1px solid #e84c3d;    color: #e84c3d;    padding: 5px 18px;    margin-left: 10px;    font-size: 12px;}
+
+
+@-webkit-keyframes glowing {
+  0% { background-color: #76b900; -webkit-box-shadow: 0 0 3px #76b900; }
+  50% { background-color: #7ABF00; -webkit-box-shadow: 0 0 40px #7ABF00; }
+  100% { background-color: #76b900; -webkit-box-shadow: 0 0 3px #76b900; }
+}
+
+@-moz-keyframes glowing {
+  0% { background-color: #76b900; -moz-box-shadow: 0 0 3px #76b900; }
+  50% { background-color: #7ABF00; -moz-box-shadow: 0 0 40px #7ABF00; }
+  100% { background-color: #76b900; -moz-box-shadow: 0 0 3px #76b900; }
+}
+
+@-o-keyframes glowing {
+  0% { background-color: #76b900; box-shadow: 0 0 3px #76b900; }
+  50% { background-color: #7ABF00; box-shadow: 0 0 40px #7ABF00; }
+  100% { background-color: #76b900; box-shadow: 0 0 3px #76b900; }
+}
+
+@keyframes glowing {
+  0% { background-color: #76b900; box-shadow: 0 0 3px #76b900; }
+  50% { background-color: #7ABF00; box-shadow: 0 0 40px #7ABF00; }
+  100% { background-color: #76b900; box-shadow: 0 0 3px #76b900; }
+}
+
+
+.glowbutton {
+  -webkit-animation: glowing 1500ms infinite;
+  -moz-animation: glowing 1500ms infinite;
+  -o-animation: glowing 1500ms infinite;
+  animation: glowing 1500ms infinite;
+}
+.glowbutton:hover 
+{
+	color:#ccc;
+  -webkit-animation: none;-moz-animation: none;-ms-animation: none;animation: none;
+}

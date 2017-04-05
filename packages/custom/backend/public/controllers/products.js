@@ -1323,7 +1323,7 @@
         }
     }
 
-    function CartOrderController($scope,ItemMenus,ArrayUtil,$timeout,Socket) {
+    function CartOrderController($scope,ItemMenus,ArrayUtil,$timeout,Socket,Authentication) {
 
         $scope.orders = [];
         var reference = [];
@@ -1336,8 +1336,18 @@
 
             Socket.on('cart.orders',function(d) { 
                  $scope.$emit('orderupdate',{ref : reference,data : d}); 
+            });
+        });
+
+        $scope.takeorder = function(id) { 
+            ItemMenus.updateCart(id,{'reserved_for' : Authentication.getUser(),'change' : true}).then(function(res){
+                var dt = res.data;
+                if(!dt.success) {
+                    Materialize.toast(dt.message, 4000,'errortoast');
+                    return;
+                }
             })
-        })
+        }
     }
   
 
@@ -1359,7 +1369,7 @@
 
     CategoryController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product'];
     menusController.$inject = ['$scope','ItemMenus','ArrayUtil','$timeout','Socket'];
-    CartOrderController.$inject = ['$scope','ItemMenus','ArrayUtil','$timeout','Socket'];
+    CartOrderController.$inject = ['$scope','ItemMenus','ArrayUtil','$timeout','Socket','Authentication'];
     MenuItemsController.$inject = ['$scope','ItemMenus','ArrayUtil','$timeout','Product','Upload'];
     CatalogController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product','$timeout','$location'];  
     CatalogListController.$inject = ['$scope', 'ListWidget', 'Backend','ArrayUtil','Product','$timeout','$location','Authentication','$stateParams'];  

@@ -637,7 +637,20 @@
                     hml += '<h2>'+d.user.name+' <span class="badge badge-info">'+d.totalitems+' Items</span></h2>';
                     hml += '<p><i class="fa fa-shopping-basket" aria-hidden="true"></i>  Order is placing - Reference #'+d.cart_reference+'</p>';
                     hml += '<p><i class="fa fa-clock-o" aria-hidden="true"></i> '+d.updateformatted+'</p>';
-                    hml += '</div></td>'; 
+                    hml += '</div>';
+                    hml += '<div class="col-sm-4">';
+                    
+                    if(d.reserved_for!= undefined && d.reserved_for._id) {
+                        hml += '<div class="takeorderbutton">';
+                        hml += '<button class="btn btn-primary disabled">Order is taken by '+d.reserved_for.name+'</button>';
+                        hml += '</div>';
+                    } else {
+                        hml += '<div class="takeorderbutton">';
+                        hml += '<button ng-click="takeorder('+d._id+')" class="btn btn-primary glowbutton">Take the order</button>';
+                        hml += '</div>';
+                    }
+                    hml += '</div>';
+                    hml += '</td>'; 
                     if(reference.indexOf(d.cart_reference) > -1) {
                         window.$("#"+d.cart_reference).html(hml);
                     } else {                        

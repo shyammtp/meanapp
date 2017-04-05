@@ -26,6 +26,14 @@
 								<p><i class="fa fa-shopping-basket" aria-hidden="true"></i>  Order is placing - Reference #{{rw.cart_reference}}</p>
 								<p><i class="fa fa-clock-o" aria-hidden="true"></i> {{rw.updateformatted}}</p>
 							</div>
+							<div class="col-sm-4">
+								<div class="takeorderbutton" ng-if="rw.reserved_for._id">
+									<button class="btn btn-primary disabled">Order is taken by {{rw.reserved_for.name}}</button>
+								</div>
+								<div class="takeorderbutton" ng-if="!rw.reserved_for._id">
+									<button ng-click="takeorder(rw._id)" class="btn btn-primary glowbutton">Take the order</button>
+								</div>
+							</div>
 						</div>
 					</td>
 				</tr>

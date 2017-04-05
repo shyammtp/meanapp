@@ -13,6 +13,12 @@ var ItemsSchema = new Schema ({
 	quantity : {type : Number,default : 1},
 	price : {type : Number}
 })
+
+var historySchema = new Schema ({ 
+	user : {type : mongoose.Schema.Types.ObjectId,ref : 'AdminUser'},
+	message : {type : String},
+ 	updated_on: { type: Date, default: Date.now }
+})
  
 function makeid()
 {
@@ -31,7 +37,9 @@ var FoodCartSchema = new Schema({
 	type : ['pickup','delivery'],
 	orderplaced: {type : Boolean,default: false},
     created_on : { type: Date, default: Date.now },
-    updated_on: { type: Date, default: Date.now },   
+    updated_on: { type: Date, default: Date.now },  
+    reserved_for : {type : mongoose.Schema.Types.ObjectId,ref : 'AdminUser'}, 
+    histories : [historySchema],
     items : [ItemsSchema]
 
 },{collection: "foodcart"});
@@ -54,7 +62,7 @@ FoodCartSchema.pre('init', function(next, data) {
 	}
   	data.updateformatted = string;
   	data.totalitems = data.items.length;
-  next();
+  	next();
 });
 FoodCartSchema.pre('save',function(next) {		
 	console.log(this);
@@ -78,6 +86,22 @@ FoodCartSchema.methods.setId = function(id) {
 	edit = id;
 }
 
+FoodCartSchema.methods.addHistory = function(id, user, message,cb) {
+	var _obj = this;
+	var data = {user  : user, message : message};
+	this.model('FoodCart').findOneAndUpdate(
+		    { "_id": id},
+		    { 
+		        "$push": {
+		            "histories": data		            
+		        }
+		    },
+		    {upsert: true},
+		    function(err,doc) {
+	    		_obj.model('FoodCart').find({_id : id}).populate([{path: 'user',select : 'email name'},{path : 'reserved_for',select : 'email name'}]).exec(cb);
+		    }
+		);
+}
 
 FoodCartSchema.methods.addData = function(data) {
 	var _obj = this,items = {};  	
@@ -91,11 +115,12 @@ FoodCartSchema.methods.addData = function(data) {
 
 	if(edit &&  data._id) {
 		this._id = data._id
-	} else {
+	} else if(!edit) {
 		this.items = items;
 	}
 	
 	this.user = data.user;
+
 	this.type = data.type;
 	if(data.item_id) {
 		this.item_id = data.item_id;
@@ -118,13 +143,13 @@ FoodCartSchema.methods.updateData = function(id,cb) {
 		    },
 		    {upsert: true},
 		    function(err,doc) {
-	    		_obj.model('FoodCart').find({_id : id}).populate('user').exec(cb);
+	    		_obj.model('FoodCart').find({_id : id}).populate([{path: 'user',select : 'email name'},{path : 'reserved_for',select : 'email name'}]).exec(cb);
 		    }
 		);
 	} else { 
  
 		this.model('FoodCart').update({_id : id},{"$push"  : {"items" : _obj.itemscollection}},{upsert: true},function(err,doc) {
-			_obj.model('FoodCart').findOne({_id : id}).populate('user').exec(cb);
+			_obj.model('FoodCart').findOne({_id : id}).populate([{path: 'user',select : 'email name'},{path : 'reserved_for',select : 'email name'}]).exec(cb);
 		});
 	}
 
