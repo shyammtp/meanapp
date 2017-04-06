@@ -1365,15 +1365,45 @@
          console.log($stateParams);
          if($stateParams.cartid != undefined) {
 
-            ItemMenus.getOrder($stateParams.cartid).then(function(res){                
+            ItemMenus.getOrder($stateParams.cartid).then(function(res){         
                     $scope.cart = res.data.cart;
+                    $scope.cart.sumprices = ItemMenus.calculatePrices(res.data.cart);
+                    console.log($scope.cart);
                 },function(err) { 
                 if(err.status == 500) {
                     Materialize.toast(ArrayUtil.get(ArrayUtil.get(err,'data'),'message','Category not saved'), 4000,'errortoast');
                     $location.path('/admin/cart/orders');
                     return;
                 } 
-            })
+            });
+            Socket.on('cart.orders',function(d) { 
+                angular.forEach(d,function(w,c) {
+                    if($stateParams.cartid === w._id) {
+                        $scope.cart = w;
+                        $scope.cart.sumprices = ItemMenus.calculatePrices(w);
+                    }
+                })
+            });
+
+            $scope.subitem_names = function(o) {
+                var names = [];
+                angular.forEach(o.options,function(gh,dds) {
+                    var t = gh.name;
+                    if(gh.price > 0) {
+                        t += '('+ gh.price + ')';
+                    }
+                    names.push(t);
+                });
+                return names.join(", ");
+            }
+
+            $scope.subitem_price = function(o) {
+                var total = 0;
+                angular.forEach(o.options,function(gh,dds) {
+                    total+= parseFloat(gh.price);
+                });
+                return total > 0 ? total : false;
+            }
          }
     }
   

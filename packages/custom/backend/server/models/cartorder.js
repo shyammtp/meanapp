@@ -11,12 +11,16 @@ Schema = mongoose.Schema,
 var ItemsSchema = new Schema ({ 
 	item_name : {type : String,required : true},
 	quantity : {type : Number,default : 1},
-	price : {type : Number}
+	price : {type : Number},
+	additions : {type: Schema.Types.Mixed}
 })
 
 var historySchema = new Schema ({ 
 	user : {type : mongoose.Schema.Types.ObjectId,ref : 'AdminUser'},
 	message : {type : String},
+	image : {type : String, default : null},
+	item_ref : {type : mongoose.Schema.Types.ObjectId,ref : 'Product'},
+	price : {type : Number,default : 0},
  	updated_on: { type: Date, default: Date.now }
 })
  
@@ -35,6 +39,12 @@ var FoodCartSchema = new Schema({
 	user : {type : mongoose.Schema.Types.ObjectId,ref : 'Customer'},
 	cart_reference : {type : String,unique : true},
 	type : ['pickup','delivery'],
+	price : {type : Number,default : 0},
+	discounts : {type : Array, default : []},
+	sums : {type : Array, default : []},
+	totalpaid : {type : Number,default : 0},
+	paid : {type: Boolean, default: false},
+	payment_mode: {type: String},
 	orderplaced: {type : Boolean,default: false},
     created_on : { type: Date, default: Date.now },
     updated_on: { type: Date, default: Date.now },  
@@ -111,7 +121,11 @@ FoodCartSchema.methods.addData = function(data) {
 		items.quantity = data.quantity;
 	}if(data.price) {
 		items.price = data.price;
-	} 
+	} if(data.additions) {
+		items.additions = data.additions;
+	} if(data.item_reference) {
+		items.item_ref = data.item_reference;
+	}  
 
 	if(edit &&  data._id) {
 		this._id = data._id

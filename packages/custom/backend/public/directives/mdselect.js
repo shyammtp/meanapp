@@ -664,7 +664,6 @@
 
         }
     }
- 
 
     function filterrange() {
         return function(input,total) {

@@ -3,6 +3,36 @@
     function removeempty(value) {
       return value != '';
     }
+
+
+    Number.prototype.formatNumber = function(decPlaces, thouSeparator, decSeparator) {
+        decPlaces = isNaN(decPlaces = Math.abs(decPlaces)) ? 2 : decPlaces;
+        decSeparator = decSeparator == undefined ? "." : decSeparator;
+        thouSeparator = thouSeparator == undefined ? "," : thouSeparator;
+
+        var n = this.toFixed(decPlaces);
+        if (decPlaces) {
+            var i = n.substr(0, n.length - (decPlaces + 1));
+            var j = decSeparator + n.substr(-decPlaces);
+        } else {
+            i = n;
+            j = '';
+        }
+
+        function reverse(str) {
+            var sr = '';
+            for (var l = str.length - 1; l >= 0; l--) {
+                sr += str.charAt(l);
+            }
+            return sr;
+        }
+
+        if (parseInt(i)) {
+            i = reverse(reverse(i).replace(/(\d{3})(?=\d)/g, "$1" + thouSeparator));
+        }
+        return i+j;
+    };
+
     function Product($http, $q,$window, Authentication,ArrayUtil,Backend) { 
         this.categoryset = {},this.categorytreeset = {},this.catalogattributedata = {},this.parentcategorycopy = {},this.productData = {};  
          
@@ -158,7 +188,7 @@
         formatPrice = function(value) { 
             var settings = $window.settings,currency = ArrayUtil.get($window.current_currency,ArrayUtil.get(settings,'currency'));
             var htmlcurrency = ArrayUtil.get(settings,'html_currency'); 
-            return ArrayUtil.replaceStr(htmlcurrency,["%%currency%%","%%amount%%"],[currency.currency_symbol,value]);               
+            return ArrayUtil.replaceStr(htmlcurrency,["%%currency%%","%%amount%%"],[currency.currency_symbol,value.formatNumber(2,',','.')]);               
         },
         getCurrency = function(index) { 
             var currency = ArrayUtil.get($window.current_currency,ArrayUtil.get($window.settings,'currency'));
@@ -394,6 +424,24 @@
                     deferred.reject(response);
                 });
                 return deferred.promise;
+            }, calculatePrices : function(cart) {
+                var prices = {};
+                var grandtotal = 0;
+                prices.individualitemsubtotal = {};
+                prices.subtotal = 0; 
+                var subtotal = 0;
+                console.log(cart.items);
+                angular.forEach(cart.items, function(s,g) {
+                    var additions = 0;
+                    angular.forEach(s.additions,function(m,v){
+                        angular.forEach(m.options, function(i,t){
+                            additions += parseFloat(i.price);
+                        })
+                    })
+                    subtotal += prices.individualitemsubtotal[s._id] = ArrayUtil.get(s,'quantity',1) * (parseFloat(s.price)+additions);
+                })
+                prices.subtotal = subtotal;                  
+                return prices;
             }
         }
     }
