@@ -1,5 +1,5 @@
-<div class="page-sidebar sidebar">
-	<div class="cover-small-frame">  
+<div class="horizontal-bar sidebar">
+	<!-- <div class="cover-small-frame">  
 		<div style="background:url('/theme/assets/lib/black/media/backend/coverpics/small/cover2.jpg') no-repeat top left; width:250px; height: 145px;" class="cover-bg">
 			<div class="forcover"></div>
 			<img class="img-circle avatar" src="/theme/assets/lib/black/images/avatar1.png" width="60" height="60" alt="">
@@ -11,13 +11,13 @@
 				<a href="javascript:;" sh-modal-link>Change</a>
 			</div>
 		</div>
-	</div>
+	</div> -->
 	<div class="page-sidebar-inner slimscroll">
 	<ul class="menu accordion-menu">
-	    <li ng-repeat="(key,value) in datas" class="{{objectLength(value.children) > 0 ?'droplink':''}}"><a href="{{(isset(value.url) ||value.url != '') ? value.url : '#'}}" class="waves-effect waves-button" ng-click="loadsubmenu()">{{ value.title_en }} <span class="arrow" ng-if="objectLength(value.children) > 0"></span></a>
+	    <li ng-repeat="(key,value) in datas" ng-if="value.status == true" class="{{objectLength(value.children) > 0 ?'droplink':''}}"><a href="{{(isset(value.url) ||value.url != '') ? value.url : '#'}}" class="waves-effect waves-button" ng-click="loadsubmenu()"><i class="{{value.before}}"></i>&nbsp;&nbsp;<p>{{ value.title_en }}</p><span class="arrow" ng-if="objectLength(value.children) > 0"></span></a> {{value.status}}
 	    	<ul class="sub-menu" ng-if="objectLength(value.children) > 0">
 	    		<li ng-repeat="(s,v) in value.children">
-                	<a href="{{(isset(v.url) || v.url != '') ? v.url : '#'}}" class="waves-effect waves-button ">{{v.title_en}}</a>
+                	<a href="{{(isset(v.url) || v.url != '') ? v.url : '#'}}" class="waves-effect waves-button "><p>{{v.title_en}}</p></a>
             	</li>
 	    	</ul>
 	    </li>

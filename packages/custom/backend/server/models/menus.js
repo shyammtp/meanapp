@@ -11,7 +11,8 @@ var MenusSchema = new Schema({
 	url : {type: String,default: null},
 	before: {type: String,default: null},
 	after : {type: String, default: null},
-	parent_key : {type: String, default: null}
+	parent_key : {type: String, default: null},
+	status : {type: Boolean, default: true}
 });
 
 function getPromise(parent_key,domain,obj){
@@ -42,6 +43,7 @@ function buildSet(data,parent_key,domain,obj) {
 			datas.title_en = o.title_en;
 			datas.before = o.before;
 			datas.url = o.url;
+			datas.status = o.status;
 			datas.children = [];
 			var children = getChildren(data,o.menu_key); 
 			if(children.length > 0) {

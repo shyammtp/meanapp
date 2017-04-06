@@ -92,6 +92,26 @@
                 });
                 return deferred.promise;
             },
+            saveTemplate : function(id, datas) { 
+                var deferred = $q.defer();
+                 
+                $http.put('/api/notificationtemplate/save/'+id,datas,{headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                    deferred.resolve(response);
+                }, function(response) {
+                    deferred.reject(response);
+                });
+                return deferred.promise;
+            },
+            saveUser : function(datas) { 
+                var deferred = $q.defer();
+                 
+                $http.post('/api/users/save',datas,{headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                    deferred.resolve(response);
+                }, function(response) {
+                    deferred.reject(response);
+                });
+                return deferred.promise;
+            },
             getSettings: function(place_id) {
                 var deferred = $q.defer();
                 $http.get('/api/settings/get',{place_id : place_id}).then(function(response) {
@@ -141,10 +161,13 @@
                 });
                 return deferred.promise;
             },
-            loadSider : function(scope,elementid,template) {
+            loadSider : function(scope,elementid,template,cb) {
                 var t = '<div class="sider-container" ng-include="\''+template+'\'"></div>'
                 angular.element('#'+elementid).html(t);
                 $compile(angular.element('#'+elementid))(scope);
+                if(cb) {
+                    cb(scope);
+                }
             }
         };
     }

@@ -41,7 +41,7 @@ var Mongoose = require('mongoose'),
                 res.send(html);
             });
         }); 
-
+ 
         /* For Products */
         app.get('/api/category/getcategory/:id',authentic,products.getCategory);
         app.delete('/api/category/delete/:id',authentic,products.deleteCategory);
@@ -127,7 +127,12 @@ var Mongoose = require('mongoose'),
         app.get('/api/settings/getcountries',settings.getAllCountries);
 
 
+        app.get('/api/users/get',authentic, settings.getusers);
+        app.post('/api/users/save',authentic, settings.saveuser);
+
+
         app.get('/api/backend/menus',sidebar.menuslist);
+        app.put('/api/notificationtemplate/save/:id',authentic, settings.saveNotificationTemplate);
         app.get('/api/notificationtemplate/getall',function(req,res) { 
              NotificationTemplate.getAllPaginate(req.query,function(err,cb) {
                res.send(cb);

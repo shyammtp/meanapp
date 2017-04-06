@@ -156,7 +156,7 @@ body {
 
 .compact-menu .menu.accordion-menu > li > ul > li a,
 .compact-menu.small-sidebar.page-sidebar-fixed .menu.accordion-menu > li > ul > li a {
-    margin-left: 15px;
+   /* margin-left: 15px;*/
 }
 
 .compact-menu.small-sidebar:not(.page-sidebar-fixed) .menu.accordion-menu > li > ul > li a {

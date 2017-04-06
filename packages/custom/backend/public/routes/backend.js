@@ -197,6 +197,11 @@
                 templateUrl: 'backend/views/'+theme+'/orders/items/live.html',
                 params: {title : 'Items',hasheader : 'false',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Menus',link : 'admin/menus'},{title : 'items'}]},
              })
+          ).state('admin_customers', angular.extend({},defal,   {
+                url : '/admin/customers',
+                templateUrl: 'backend/views/'+theme+'/users/list.html',
+                params: {title : 'Customers',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Customers'}]},
+             })
           )
           ;
         $locationProvider

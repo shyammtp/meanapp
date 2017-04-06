@@ -2,9 +2,11 @@
 
 var Mongoose = require('mongoose'),
   Settings = Mongoose.model('Settings'),
+  notification = Mongoose.model('NotificationTemplate'),
+  users = Mongoose.model('Customer'),
   Directory = Mongoose.model('directory'),
   path = require('path'),
-  Nodecache = require( "node-cache" ),
+  Nodecache = require( "node-cache" ),arrayutil = require('../helpers/util').array,
   myCache = new Nodecache(),
   formidable = require('formidable');
 
@@ -56,6 +58,55 @@ var Mongoose = require('mongoose'),
             }
         }); 
       },
+
+      saveuser : function(req,res,next){
+            if(arrayutil.get(req.body,'_id')) {
+                users.findOne({_id : arrayutil.get(req.body,'_id')},function (err, vars) { 
+                        var data = req.body;  
+                        vars.update(data, function(error, catey) {
+                                if(error) return res.status(200).json(error);
+                                return res.status(200).json({message: 'Updated Successfully',success : true});  
+                        });
+                });
+
+            } else {
+                var us = new users();
+                us.name =  req.body.name;
+                if(arrayutil.get(req.body,'email')) {
+                    us.email =  req.body.email;
+                }
+                if(arrayutil.get(req.body,'phone')) {
+                    us.phone =  req.body.phone;
+                }
+                //us.setPassword(req.body.password);
+                us.save(function(err,products) { 
+                    if(err) {
+                            res.status(500).json({message : err,success : false});
+                    } else {
+                            res.status(200).json({message: 'Inserted Successfully',data : products,success : true});
+                    }
+                });
+            }
+             
+        },
+      saveNotificationTemplate : function(req,res,next){
+            if(!arrayutil.get(req.params,'id')) {
+                     return res.status(500).json({message: "Invalid Template ID",success : false});
+            }
+            notification.findOne({_id : arrayutil.get(req.params,'id')},function (err, vars) { 
+                    var data = req.body;  
+                    vars.update(data, function(error, catey) {
+                            if(error) return res.status(200).json(error);
+                            return res.status(200).json({message: 'Updated Successfully',success : true});  
+                    });
+            }); 
+        },
+        getusers : function(req,res,next) {
+            
+            users.getAllPaginate(req.query,function(err,cb) { 
+                 res.send(cb);
+            });
+        },
       upload : function(req,res) {
         var form = new formidable.IncomingForm();
         // specify that we want to allow the user to upload multiple files in a single request

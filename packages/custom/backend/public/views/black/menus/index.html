@@ -18,7 +18,7 @@
                         <div role="tabpanel" class="tab-pane active" id="menus">
 
                         	<div class="row">
-                        		<div class="col-md-3">
+                        		<div class="col-md-4">
 		                        	<div class="panel">
 		                        		<div class="panel-heading">
 		                                    <h3 class="panel-title">Menus</h3><a href="javascript:;" ng-click="newmenuadd()" class="pull-right theme-green-link"><i class="fa fa-plus-circle" aria-hidden="true"></i> New Menu</a>
@@ -27,10 +27,10 @@
 		                                   <ul class="addedemenuslist">
 		                                   		<li class="" ng-repeat="(s,gg) in menus">
 		                                   			<div class="row">
-		                                   				<div class="col-md-9">
+		                                   				<div class="col-md-7">
 		                                   					<a href="javascript:;" class="link" ng-click="editmenu(gg._id,gg.menu_name.en)">{{gg.menu_name.en}}</a>
 		                                   				</div> 
-		                                   				<div class="col-md-3">
+		                                   				<div class="col-md-5">
 		                                   					<div class="pull-right">
 			                                   					<a href="javascript:;" ng-click="editmenu(gg._id,gg.menu_name.en)"><i class="fa fa-pencil" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;
 			                                   					<a href="javascript:;" ng-click="deletemenu(gg._id)"><i class="fa fa-trash" aria-hidden="true"></i></a>
@@ -42,7 +42,7 @@
 		                                </div>
 		                            </div>
 	                        	</div>
-	                        	<div class="col-md-6">
+	                        	<div class="col-md-5">
 	                        		<div class="menu-add-form">
 	                        			<h4>Add new menu</h4>
 	                        			<form name="menuaddform">
