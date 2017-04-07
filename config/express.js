@@ -55,6 +55,7 @@ module.exports = function (app, db) {
 
   // Adds logging based on logging config in config/env/ entry
   require('./middlewares/logging')(app, config.logging)
+  app.use('/uploads',express.static('uploads'));
 
   // assign the template engine to .html files
   app.engine('html', consolidate[config.templateEngine])
