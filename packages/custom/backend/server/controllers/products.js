@@ -492,8 +492,8 @@ var Mongoose = require('mongoose'),
 						}); 
 				},
 				getItems : function(req,res,next) {  
-						product.find({is_foodie : true},function (err, vars) { 
-								return   res.status(200).json(vars); 
+						product.find({is_foodie : true}).populate('variantsetid').exec(function (err, vars) { 
+								return res.status(200).json(vars); 
 						}); 
 				},
 				setmenu : function(req,res,next){

@@ -77,17 +77,9 @@ var Mongoose = require('mongoose'),
                 });
 
             } else {
-                var us = new users();
-
-                transporter.verify(function(error,success){
-                    if(error) {
-                        console.log(error);
-                    } else {
-                        console.log('Server is ready to take our messages');
-                    }
-                });
-                notification.sendNotification('WELCOME_USERS',{'to' : 'pradeepshyam@ndot.in'});
+                notification.sendNotification('WELCOME_USERS',{'to' : req.body.email});
                 return;
+                var us = new users(); 
                 us.name =  req.body.name;
                 if(arrayutil.get(req.body,'email')) {
                     us.email =  req.body.email;
@@ -95,14 +87,21 @@ var Mongoose = require('mongoose'),
                 if(arrayutil.get(req.body,'phone')) {
                     us.phone =  req.body.phone;
                 }
-                //us.setPassword(req.body.password);
-                us.save(function(err,products) { 
-                    if(err) {
-                            res.status(500).json({message : err,success : false});
-                    } else {
-                            res.status(200).json({message: 'Inserted Successfully',data : products,success : true});
+                users.findOne({email : arrayutil.get(req.body,'email')},function (err, vars) {
+                    if(vars._id) {
+                        return res.status(500).json({message: 'Email already exists',success : false})
                     }
+                    us.save(function(err,products) { 
+                        if(err) {
+                                res.status(500).json({message : err,success : false});
+                        } else {
+                                notification.sendNotification('WELCOME_USERS',{'to' : req.body.email});
+                                res.status(200).json({message: 'Inserted Successfully',data : products,success : true});
+                        }
+                    });
                 });
+                //us.setPassword(req.body.password);
+                
             }
              
         },

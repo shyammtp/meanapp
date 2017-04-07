@@ -33,7 +33,7 @@ var ProductSchema = new Schema({
     category_id : {type : String},
     is_foodie : {type : Boolean,default : false},
     menus : [],
-    variantsetid : {type : String},
+    variantsetid :  {type : mongoose.Schema.Types.ObjectId,ref : 'Variantset'},
     category_collection :  [],
     data : { type: Schema.Types.Mixed},
     mainimage : {type : String},

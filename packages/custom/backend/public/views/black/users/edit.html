@@ -1,14 +1,9 @@
-<h3 style="margin-bottom: 0px;"><span class="pull-left">Edit User
-<span class="paratext">Choose the required notification</span>
+<h3 style="margin-bottom: 0px;"><span class="pull-left"><span ng-if="isedit">Edit User</span><span ng-if="!isedit">Add User</span>
+<span class="paratext"><span ng-if="!isedit">Add new user</span><span ng-if="isedit">Edit user ({{user.email}})</span></span>
 </span> <a href="javascript:void(0);" class="pull-right" ng-click="closethis()"><i class="fa fa-angle-right"></i></a><div class="clearfix"></div></h3> 
 <form name="form.userform">
 	<input type="hidden" ng-model="user._id" /> 
-	<input type="hidden" ng-model="user.email" ng-if="user._id" /> 
-	<div class="advsearch_textfield">
-		<div class="form-group">
-			<label>{{user.email}}</label> 
-		</div>
-	</div>  
+	<input type="hidden" ng-model="user.email" ng-if="user._id" /> 	 
 	<div class="col-sm-12">
 		<fieldset>
 		    <legend>General Information</legend>

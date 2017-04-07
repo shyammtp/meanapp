@@ -234,7 +234,12 @@
                         height:'450px',plugins: ["colorpicker code image textcolor"],
                         toolbar1: "code | insertfile undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image preview | forecolor backcolor",
                         content_css : '/theme/assets/lib/'+theme+'/css/tinymcecontent.css',
-                        editor_css : '/theme/assets/lib/'+theme+'/css/tinymceeditor.css' 
+                        editor_css : '/theme/assets/lib/'+theme+'/css/tinymceeditor.css',
+                        setup: function (ed) {
+                            ed.on('init', function(args) {
+                                console.log('shyam');
+                            });
+                        } 
                     });
                 })
                 
@@ -293,14 +298,16 @@
         }
         setPage(1); 
         $scope.user = {};
-        
+        $scope.isedit = false;
         $scope.edituser = function(object) { 
+            $scope.isedit = true;
             $scope.user = object; 
             classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );
             Backend.loadSider($scope,'cbp-spmenu-s2','backend/views/'+theme+'/users/edit.html'); 
             angular.element('.cd-overlay').addClass('is-visible');
         }
         $scope.addUser = function() { 
+            $scope.isedit = false;
             $scope.user = {};
             classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );
             Backend.loadSider($scope,'cbp-spmenu-s2','backend/views/'+theme+'/users/edit.html'); 
@@ -313,6 +320,12 @@
                     Materialize.toast(data.message, 4000); 
                     $scope.user = {};
                     $scope.closethis();
+                } else {
+                     Materialize.toast('Problem while saving', 4000,'errortoast');
+                }
+            },function(err) {
+                if(err.status == 500) {
+                    Materialize.toast(err.data.message, 2000,'errortoast');
                 }
             });
         }
