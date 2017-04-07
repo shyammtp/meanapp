@@ -26,6 +26,8 @@ var NotificationTemplateSchema = new Schema({
     updated_on: { type: Date, default: Date.now }
 },{collection: 'notification_template'});
 
+
+
 NotificationTemplateSchema.plugin(mongoosePaginate);
  
 

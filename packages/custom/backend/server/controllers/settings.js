@@ -5,10 +5,17 @@ var Mongoose = require('mongoose'),
   notification = Mongoose.model('NotificationTemplate'),
   users = Mongoose.model('Customer'),
   Directory = Mongoose.model('directory'),
+  notification = require('../helpers/notification'),
+  config = require('meanio').getConfig(),
+  nodemailer = require('nodemailer'),
+  smtpTransport = require('nodemailer-smtp-transport'),
   path = require('path'),
   Nodecache = require( "node-cache" ),arrayutil = require('../helpers/util').array,
   myCache = new Nodecache(),
+
   formidable = require('formidable');
+
+  var transporter = nodemailer.createTransport(smtpTransport(config.mailer));
 
   module.exports = function (Backend, app) {
   	 return {
@@ -71,6 +78,16 @@ var Mongoose = require('mongoose'),
 
             } else {
                 var us = new users();
+
+                transporter.verify(function(error,success){
+                    if(error) {
+                        console.log(error);
+                    } else {
+                        console.log('Server is ready to take our messages');
+                    }
+                });
+                notification.sendNotification('WELCOME_USERS',{'to' : 'pradeepshyam@ndot.in'});
+                return;
                 us.name =  req.body.name;
                 if(arrayutil.get(req.body,'email')) {
                     us.email =  req.body.email;

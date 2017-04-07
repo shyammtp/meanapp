@@ -4261,10 +4261,10 @@ body.hover-menu .menu.accordion-menu li.active a:after {
     top: 46px!important;
 }
 
-.page-horizontal-bar .menu.accordion-menu ul,
+/*.page-horizontal-bar .menu.accordion-menu ul,
 .small-sidebar .menu.accordion-menu ul {
     background: #38434E;
-}
+}*/
 
 .hover-menu:not(.page-horizontal-bar) .menu.accordion-menu > li > a > span.arrow {
     display: none;

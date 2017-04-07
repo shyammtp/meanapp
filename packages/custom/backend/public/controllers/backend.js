@@ -258,9 +258,10 @@
         } 
     }
 
-    function UsersController($scope,ListWidget,$location,Backend,$rootScope,$state,$timeout) { 
+    function CustomerController($scope,ListWidget,$location,Backend,$rootScope,$state,$timeout) { 
          var vm = this;  
          vm.setPage = setPage; 
+
          ListWidget.init();
          ListWidget.defaultSortColumn = 'name';
          ListWidget.addColumn('name',{'type' : 'text','title' : 'Name',defaultValue : '--',width : '20%'});
@@ -290,7 +291,7 @@
                 $scope.dbresult = ListWidget.getDbResults();
             }); 
         }
-        setPage(1);
+        setPage(1); 
         $scope.user = {};
         
         $scope.edituser = function(object) { 
@@ -299,7 +300,7 @@
             Backend.loadSider($scope,'cbp-spmenu-s2','backend/views/'+theme+'/users/edit.html'); 
             angular.element('.cd-overlay').addClass('is-visible');
         }
-        $scope.addUser = function() {
+        $scope.addUser = function() { 
             $scope.user = {};
             classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );
             Backend.loadSider($scope,'cbp-spmenu-s2','backend/views/'+theme+'/users/edit.html'); 
@@ -318,14 +319,14 @@
         $scope.closethis = function() { 
             classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );            
             angular.element('.cd-overlay').removeClass('is-visible');
-        } 
+        }
     }
 
 
     angular
         .module('mean.backend')
         .controller('BackendCoreController', BackendCoreController)
-        .controller('UsersController', UsersController)
+        .controller('CustomerController', CustomerController)
         .controller('BackendController', BackendController)
         .controller('TitleController', TitleController)
         .controller('SettingController', SettingsController)
@@ -336,6 +337,6 @@
     BackendCoreController.$inject = ['$scope','getsettings','$location','$window','Authentication','$state','Backend','$stateParams','getmenus','getcurrency','getassetsdata'];
     SettingsController.$inject = ['$scope','Backend','ArrayUtil','Page','$window'];
     WidgetController.$inject = ['$scope','ListWidget','$location','Backend','$rootScope','$state','$timeout'];
-    UsersController.$inject = ['$scope','ListWidget','$location','Backend','$rootScope','$state','$timeout'];
+    CustomerController.$inject = ['$scope','ListWidget','$location','Backend','$rootScope','$state','$timeout'];
 
 })();

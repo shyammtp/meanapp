@@ -299,26 +299,26 @@ span.active-page {
 .small-sidebar.page-sidebar-fixed.page-header-fixed.page-horizontal-bar .page-inner {
     padding: 116px 0 50px 0;
 }
-
+/*
 .page-horizontal-bar .menu.accordion-menu ul,
 .small-sidebar.page-sidebar-fixed:not(.compact-menu) .menu.accordion-menu ul {
     background: #F5F5F5;
     text-align: center;
-}
+}*/
 
 .hover-menu:not(.page-horizontal-bar) .accordion-menu > li > ul {
     background: #F5F5F5;
     margin-left: 4px;
 }
 
-.page-horizontal-bar .menu.accordion-menu ul, .small-sidebar .menu.accordion-menu ul {
+/*.page-horizontal-bar .menu.accordion-menu ul, .small-sidebar .menu.accordion-menu ul {
     background: #F5F5F5;
 }
 
 .small-sidebar:not(.page-sidebar-fixed) .accordion-menu li:hover > a {
     background: #F5F5F5;
 }
-
+*/
 .small-sidebar.page-sidebar-fixed.page-header-fixed .page-inner {
     padding: 64px 0 50px 65px;
 }
@@ -341,9 +341,9 @@ span.active-page {
     border-left: 1px solid #1d1d1d;
 }
 
-body.page-horizontal-bar .page-inner {
+/*body.page-horizontal-bar .page-inner {
     border-top: 1px solid #E2E2E2;
-}
+}*/
 
 #main-wrapper {
     margin: 30px;
