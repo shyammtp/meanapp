@@ -16,34 +16,38 @@ var Mongoose = require('mongoose'),
                     new Error('Invalid Item');
                 }
                 var optionsvar = [];
-                variantset.findOne({_id : pdoc.variantsetid},function(err,vdoc) {
-                    var optionset = vdoc.option_set;
-                    var postoptions = arrayutil.get(post,'options');
-                    var optvarss = []; 
-                    optionset.forEach(function(v,h){ 
-                        if(v.required === true) {
-                            if(!(v.id in postoptions)) {
-                                new Error('Some Item additions are required');
-                            }
-                        }
-                        if(typeof postoptions[v.id] !== 'undefined') {
-                            var sf = {};
-                            sf.name =  v.display_name;
-                            var values = postoptions[v.id];
-                            var variantitems = []; 
-                            for(var k in v.typedata.listvalues) {
-                                var ll = v.typedata.listvalues[k];
-                                if(values.indexOf(k) > -1) {
-                                    var getl = ll;
-                                    variantitems.push({name : ll.name,price : arrayutil.get(ll,'price',0)});
+                if(pdoc.variantsetid) {
+                    variantset.findOne({_id : pdoc.variantsetid},function(err,vdoc) {
+                        var optionset = vdoc.option_set;
+                        var postoptions = arrayutil.get(post,'options');
+                        var optvarss = []; 
+                        optionset.forEach(function(v,h){ 
+                            if(v.required === true) {
+                                if(!(v.id in postoptions)) {
+                                    new Error('Some Item additions are required');
                                 }
-                            } 
-                            sf.options = variantitems;
-                            optvarss.push(sf);
-                        }
-                    });
-                    return cb(optvarss);
-                })
+                            }
+                            if(typeof postoptions[v.id] !== 'undefined') {
+                                var sf = {};
+                                sf.name =  v.display_name;
+                                var values = postoptions[v.id];
+                                var variantitems = []; 
+                                for(var k in v.typedata.listvalues) {
+                                    var ll = v.typedata.listvalues[k];
+                                    if(values.indexOf(k) > -1) {
+                                        var getl = ll;
+                                        variantitems.push({name : ll.name,price : arrayutil.get(ll,'price',0)});
+                                    }
+                                } 
+                                sf.options = variantitems;
+                                optvarss.push(sf);
+                            }
+                        });
+                        return cb(optvarss);
+                    })
+                } else {
+                    return cb(optionsvar)
+                }
             });
         };
     return { 

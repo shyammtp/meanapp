@@ -5,7 +5,7 @@ Red: #e74c3c;
 */
 body,html {   
 
-  background-color: #f5f5f5;
+  background: #f5f5f5 url('../img/pattern2.png') repeat;
 }
 main {
 /*	background:#0f0f0f  url("../img/screen_bg.png") no-repeat top center;*/
@@ -5111,8 +5111,10 @@ legend { border:none; width: auto; font-size:16px; margin-left: 10px; margin-bot
 .order_itemslist > li {border-bottom: #ececec 1px solid; padding: 10px;}
 .order_itemslist > li:last-child {border-bottom: none;}
 .carttable {min-height: 200px;}
-.carttable h3 {margin:0; padding: 0;}
+.carttable h3 {margin:0; padding: 10px; }
 .customizearea {   padding:10px; margin:10px 0; }
 .order-items-sl .itemname{font-size:16px;color:#e74c3c;}
 .order-items-sl .price {font-size:16px;}
 .state-preloader {position: fixed;top:0; font-size:11px; background-color: #756BB0; padding: 2px 6px; color:white;}
+.urorder .footer-d{background-color: #fafafa; padding: 10px;box-shadow: rgba(0,0,0,.15) 0 -2px 15px -5px;border-top: 1px solid #e7e7e7; height: 100%;}
+.qunatitybox .box {border:1px solid #eee; height: 33px; width: 37px;display: block;padding-top: 6px; text-align: center;}

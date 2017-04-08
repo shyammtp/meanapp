@@ -11,9 +11,7 @@ body {
     -webkit-font-smoothing: antialiased;
     font-size: 13px; 
     color: #5f5f5f; 
-    background-color: #ccc;
-    background-image: url('../img/pattern2.png');
-    background-repeat: repeat;
+    background-color: #f5f5f5; 
 }
 
 html {

@@ -23,10 +23,7 @@
                 })
                 items[v._id] = v;
             });
-        }
-        $scope.$watch('cart.options',function() {
-            console.log($scope.cart.options);
-        })
+        } 
         var variationamoutsubtotal = {};
         $scope.menuitems = {};
         ItemMenus.getAllMenus().then(function(res){
@@ -41,21 +38,95 @@
             var itms = ArrayUtil.get($scope.menuitems,menuid); 
             return itms;
         }
+        $scope.cartid = '';
+        $scope.cartorder = {};
+        $scope.hasitem = {};
+        var urs= '58e2a03b504dc92a187621ab'; 
 
-        $scope.addToCart = function(item, menu) {
+        var getCartItem = function(item) {
+            if(! $scope.cartorder ) {
+                return {};                
+            }
+            var items = {};
+            console.log($scope.cartorder);
+            angular.forEach( $scope.cartorder.items, function(v,l) {
+                console.log(item);
+                if(item._id === v._id) {
+                    items = v;
+                    return;
+                }
+            });
+            return items;
+        }
+
+        var hasItemInCart = function(item) {
+            console.log('shyam')
+            var myitem = getCartItem(item);
+            if(ArrayUtil.get(myitem,'_id')) {
+                return true;
+            }
+            return false;
+        }
+        $scope.addToCart = function(item, menu) { 
              $scope.showvariant[item._id] = false;
             if(item.variantsetid) {
                 $scope.showvariant[item._id] = true;
             } 
-
-            if(ArrayUtil.get($scope.showvariant,item._id) === true) {
+ 
+                var insert = true;
+                if(item.variantsetid) {
+                    insert = false;
+                }
                 if(validateoptions(item)) {
                     //Add here to cart sending api
-                }
-            }
+                    var data = {};
+                    data.user = urs;
+                    data.item_name = item.data.item_name;
+                    data.quantity = 1;
+                    data.type = 'pickup'; 
+                    data.item_reference = item._id;
+                    data.price = item.data.standard_price;
+                    if($scope.cartid) {
+                        data._id = $scope.cartid;
+                    }  
+                    if(item.variantsetid && typeof $scope.cart.options !== 'undefined') { 
+                        data.options = {};  
+                        angular.forEach($scope.cart.options[item._id],function(g,hj) {
+                            if(typeof g ==='string') { 
+                                if(typeof data.options[hj] === 'undefined') {
+                                    data.options[hj] = [];
+                                }
+                                data.options[hj].push(g); 
+                            } else {
+                                data.options[hj] = g; 
+                            }
 
-            console.log(item);
-            console.log(menu);
+                        });
+                        data.price = ArrayUtil.get(variationamoutsubtotal,item._id,0);
+                       
+                        insert = true; 
+                    }  
+
+                    if(insert) {
+ 
+                        ItemMenus.addCart(data).then(function(res) {
+                            var dt = {};
+                            if(ArrayUtil.get(res.data,'data')) {
+                                dt = res.data.data;
+                                $scope.hasitem[item._id] = true;
+                            } else {
+                                dt = res.data;
+                                $scope.hasitem[item._id] = true;
+                            } 
+                            console.log($scope.hasitem);
+                            $scope.cartid = dt._id;
+                            $scope.cartorder = dt;
+                        },function(err) { 
+                        }); 
+
+                    } 
+
+                }
         }
 
         var validateoptions = function(item) {
@@ -67,9 +138,7 @@
         }
 
         $scope.updatePrice = function(setid, value, item) {
-            var changedoptions = $scope.cart.options[item._id];
-            //console.log(item);
-            console.log(item);
+            var changedoptions = $scope.cart.options[item._id]; 
             var optionset = item.variantsetid.option_set;
             var sets = {};
             angular.forEach(optionset,function(val,key) {
@@ -82,9 +151,7 @@
                     variationamount += ArrayUtil.get(finald,'price',0); 
                 }
             });
-            variationamoutsubtotal[item._id] = variationamount;
-            console.log(variationamount);
-            console.log($scope.cart.options[item._id]);
+            variationamoutsubtotal[item._id] = variationamount; 
         }
 
     }

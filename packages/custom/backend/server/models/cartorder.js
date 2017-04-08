@@ -11,6 +11,7 @@ Schema = mongoose.Schema,
 var ItemsSchema = new Schema ({ 
 	item_name : {type : String,required : true},
 	quantity : {type : Number,default : 1},
+	item_ref : {type : mongoose.Schema.Types.ObjectId,ref : 'Product'},
 	price : {type : Number},
 	additions : {type: Schema.Types.Mixed}
 })
@@ -19,7 +20,6 @@ var historySchema = new Schema ({
 	user : {type : mongoose.Schema.Types.ObjectId,ref : 'AdminUser'},
 	message : {type : String},
 	image : {type : String, default : null},
-	item_ref : {type : mongoose.Schema.Types.ObjectId,ref : 'Product'},
 	price : {type : Number,default : 0},
  	updated_on: { type: Date, default: Date.now }
 })

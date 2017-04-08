@@ -424,6 +424,14 @@
                     deferred.reject(response);
                 });
                 return deferred.promise;
+            },addCart : function(post) {
+                var deferred = $q.defer(); 
+                $http.post('api/v1/cart/add',post,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                    deferred.resolve(response);
+                }, function(response) {
+                    deferred.reject(response);
+                });
+                return deferred.promise;
             }, calculatePrices : function(cart) {
                 var prices = {};
                 var grandtotal = 0;

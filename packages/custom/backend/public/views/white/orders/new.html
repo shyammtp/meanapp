@@ -26,10 +26,10 @@
 														<img ng-src="/{{wq.mainimage}}" width="200" ng-if="wq.mainimage" />
 													</div>
 	                               				</div>
-	                               				<div class="col-xs-8">
+	                               				<div class="col-xs-7">
 	                               					<div class="itemname">
-	                               						<span><img src="/theme/assets/lib/white/img/veg-icon.png" ng-if="!wq.data.nonveg"/> &nbsp;</span>
-	                               						<span><img src="/theme/assets/lib/white/img/non-veg.png" ng-if="wq.data.nonveg"/> &nbsp;</span>{{wq.data.item_name}}
+	                               						<span  ng-if="!wq.data.nonveg"><img src="/theme/assets/lib/white/img/veg-icon.png"/>&nbsp;</span>
+	                               						<span ng-if="wq.data.nonveg"><img src="/theme/assets/lib/white/img/non-veg.png"/>&nbsp;</span>{{wq.data.item_name}}
 	                               					</div>
 	                               					<div class="itemdescription">
 	                               						{{wq.data.description}}
@@ -42,9 +42,17 @@
 	                               					</div>
 	                               				</div> 
 
-	                               				<div class="col-xs-2">
-	                               					<button class="btn btn-primary" ng-click="addToCart(wq,gg)">ADD</button>
-	                               					
+	                               				<div class="col-xs-2"> 
+	                               					<button class="btn btn-primary" ng-click="addToCart(wq,gg)" ng-if="!hasitem[wq._id]">ADD</button>
+                               						<div class="input-group m-b-sm qunatitybox" ng-if="hasitem[wq._id]">
+                               							<span class="input-group-btn">
+	                                                        <button class="btn btn-default" type="button">-</button>
+	                                                    </span>
+	                                                    <span class="box">1</span>
+	                                                    <span class="input-group-btn">
+	                                                        <button class="btn btn-default" type="button">+</button>
+	                                                    </span>
+	                                                </div>
 	                               				</div> 
 	                               			</div>
 	                               			<div class="row" ng-if="wq.variantsetid && showvariant[wq._id] === true">
@@ -78,10 +86,16 @@
                         </div> 
     				</div>
                 </div>
-                <div class="col-xs-4"> 
+                <div class="col-xs-4 urorder"> 
 	                <div class="panel panel-default carttable">
-	                	<div class="panel-body">
+	                	<div class="panel-body" style="padding: 0px;">
 	                		<h3>Added Orders</h3>
+	                		<div class="footer-d">
+	                			<div class="row">
+	                				<div class="col-xs-4">Subtotal</div>
+	                				<div class="col-xs-8">46.00</div>
+	                			</div>
+	                		</div>
 	                	</div>
 	                </div> 
                 </div>
