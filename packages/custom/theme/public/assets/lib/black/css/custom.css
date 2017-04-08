@@ -5112,3 +5112,4 @@ legend { border:none; width: auto; font-size:16px; margin-left: 10px; margin-bot
 .customizearea {  border:1px dotted #6d6d6d; padding:10px; margin:10px 0; }
 .order-items-sl .itemname{font-size:20px;}
 .order-items-sl .price {font-size:16px;}
+.state-preloader {position: fixed;top:0; font-size:11px; background-color: #756BB0; padding: 2px 6px; color:white;}

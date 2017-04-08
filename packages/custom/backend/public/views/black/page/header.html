@@ -4,6 +4,7 @@
             <a href="javascript:void(0);" class="waves-effect waves-button push-sidebar">
                 <i class="icon-arrow-right"></i>
             </a>
+
         </div>
         <div class="logo-box">
             <a href="index.html" class="logo-text"><img src="{{assetspath}}img/logo-horizontal_106.png" /></a>
@@ -84,6 +85,8 @@
                     </li>
                     <li>
                         <button class="order-nbutton" ng-click="switchtoorder()"><span class="left-text pull-left">Orders</span> <span class="orderpulse-button pull-left orderpulse-animation"></span></button>
+
+                        <div ng-show="preloader" class="state-preloader">Loading...</div>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">

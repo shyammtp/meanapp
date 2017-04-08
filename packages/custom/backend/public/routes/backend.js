@@ -205,7 +205,7 @@
           ).state('admin_order_place_list', angular.extend({},defal,   {
                 url : '/admin/orders/place',
                 templateUrl: 'backend/views/'+theme+'/orders/new.html',
-                params: {title : 'Customers',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Customers'}]},
+                params: {title : 'New Order',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'New Order'}]},
              })
           )
           ;
@@ -221,11 +221,10 @@
 
         $rootScope.backend = Backend;
         $rootScope.assetspath = Backend.getassetpath();
-        $rootScope.theme = theme;
-        $rootScope.$on('$stateChangeStart', function(event, nextRoute, currentRoute) {
-          
-          
-            
+        $rootScope.theme = theme; 
+        $rootScope.preloader = false;
+        $rootScope.$on('$stateChangeStart', function(event, nextRoute, currentRoute) { 
+            $rootScope.preloader = true;
             if(Authentication.isLoggedIn()) {
                 if(nextRoute.name === 'login') {
                     $location.path('/admin/dashboard');
@@ -240,13 +239,12 @@
                     return $state.go('login');
                 }
             }
-            return;
-            console.log(nextRoute);
-          console.log(Authentication.isLoggedIn())
-            
-            
+            return; 
 
         });
+        $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+            $rootScope.preloader = false;
+        })
     }
 
     angular

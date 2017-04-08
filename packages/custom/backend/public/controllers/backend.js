@@ -4,8 +4,7 @@
     /* jshint -W098 */
     function TitleController($scope,Page) {
          $scope.Page = Page;  
-         $scope.shyam = 'shyam';
-        console.log('2');
+         $scope.shyam = 'shyam'; 
     }
 
     function BackendCoreController($scope,getsettings,$location,$window,Authentication,$state,Backend,$stateParams,getmenus,getcurrency,getassetsdata) { 
@@ -16,8 +15,7 @@
         $window.menus = getmenus.data; 
         $window.current_currency = getcurrency; 
         $window.assetsdata = getassetsdata; 
-         
-        console.log($window.assetsdata);  
+           
     }
 
 

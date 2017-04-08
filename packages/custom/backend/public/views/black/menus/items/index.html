@@ -83,6 +83,9 @@
 		                        				<input type="checkbox" id="aspriceselection" ng-model="item.aspriceselection" /><label for="aspriceselection">Add up the price on selecting item choices</label>		                        				 
 		                        			</div> 
 		                        			<div class="form-group">
+		                        				<input type="checkbox" id="nonvegtag" ng-model="item.nonveg" /><label for="nonvegtag">Non Vegetarian</label>	 
+		                        			</div>
+		                        			<div class="form-group">
 		                        				<label class="formlabel">Item Choice Group</label>
 		                        				<select ng-model="item.optionset">
 							                        <option ng-repeat="opt in variantsetoptions" value="{{opt.value}}">{{opt.name}}</option>
