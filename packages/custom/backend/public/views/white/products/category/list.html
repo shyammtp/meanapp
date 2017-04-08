@@ -1,0 +1,65 @@
+<div class="page-inner">
+    <div class="page-title">
+        <h3 class="breadcrumb-header">{{params.title}}</h3>
+        <div breadcrumbs></div>
+    </div> 
+    <div id="main-wrapper">  
+        <div ng-controller="CategoryController">
+            <div class="row"> 
+                <div class="col-md-6">
+
+                  <button type="submit" ng-click="addRootCategory()" class="btn btn-primary waves-effect pull-left m-t-xs m-b-xs">Add Root Category</button>
+                  <div class="clearfix  m-b-10"></div>
+                   <div jsdirtree data-method="getCategoryMap(value)" categoryupdated="categoryupdated"></div> 
+                </div>         
+                <div class="col-md-6">
+                    <div class="z-depth-3" style="background-color: #171717; padding: 10px;">
+                        <div class="m-b-10" ng-if="category.edit">You are modifying this category <b class="green-theme-text">{{category.edit}}</b>. Want to add subcategory under this. <a href="javascript:;" ng-click="addnewcategory(category)"> Click here</a></div>
+
+                        <div class="m-b-10" ng-if="category.parent_id">You are adding new category under this category <b class="green-theme-text">{{category.parent_category_name}}</b></div>
+
+                        <form class="col-md-12 form-set" name="categoryform" enctype="multipart/form-data"> 
+
+                              <input id="category_id" ng-model="category.category_id" name="category_id" type="hidden"  value="{{category.category_id}}" class=""><input id="parent_id" ng-model="category.parent_id" name="parent_id" type="hidden"  value="{{category.parent_id}}" />        
+                              <input id="parent_category_url" ng-model="category.parent_category_url" name="parent_category_url" type="hidden"  value="{{category.parent_category_url}}" />        
+                              <div class="row m-t-10">
+                                <div class="input-field ">
+                                    <div class="col-md-12"> 
+                                       <input id="category_name" autocomplete="off" required ng-model="category.category_name" name="category_name" type="text"  value="{{category.category_name}}" class="">
+                                        <label for="category_name" class="{{category.category_name? 'active':''}}">Category Name</label> 
+                                        <p ng-show="categoryform.category_name.$error.required" class="error-msg">Category Name is required.</p> 
+                                    </div>
+                                    
+                                </div>
+                              </div> 
+                              <button type="submit"  ng-if="category.edit" ng-click="deleteCategory(category)" class="btn btn-danger waves-effect pull-left m-t-xs m-b-xs">Delete</button>
+                              <div class="btn-group pull-right">
+                                <button type="button" ng-if="category.category_name" ng-click="addRootCategory()" class="btn btn-default waves-effect m-t-xs m-b-xs">Cancel</button
+                                >
+                                <button type="submit" ng-click="saveCategory(category)" class="btn btn-primary waves-effect  m-t-xs m-b-xs">Save</button
+                                >
+                                
+                                </div>
+                              <!-- <div class="row m-t-20">
+                                    <div class="input-field col-md-12">
+                                        <div class="select-wrapper">
+                                            <select md-select ng-model="settings.THEME" class="initialized" data-options="[{'title':'Black','value': 'black'}]" data-value="{{settings.THEME}}"> 
+                                                <option value="" disabled="">Select Theme</option>
+                                                <option value="black">Black</option>
+                                                <option value="white">White</option>  
+                                            </select>
+                                        </div>
+                                        <label>Select Panel Theme</label>
+                                    </div>
+                                </div> -->
+                        </form>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div><!-- Main Wrapper -->
+    <div class="page-footer"> 
+    </div>
+</div><!-- Page Inner --> 

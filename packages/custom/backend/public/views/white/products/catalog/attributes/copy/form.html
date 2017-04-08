@@ -1,0 +1,139 @@
+<div class="page-inner"> 
+    <div id="main-wrapper">  
+        <div ng-controller="CatalogAttributesController">
+            <div class="row">  
+                        <h2 ng-if="categoryname">You are picking from the category <span><b class="theme-green">{{categoryname}}</b></span></h2>
+                    
+                </div>
+                <div class="col-md-12">
+                    <div class="panel">
+                        <div class="panel-heading"><h3 class="panel-title">Info Block</h3> 
+                        </div>
+                        <div class="panel-body"> 
+                            <ul class="attributes-list" ng-if="countObject(attributes.info)">
+                                <li ng-repeat="($in, datas) in attributes.info track by $in" class="drag-fields z-depth-1">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                                <i ng-if="datas.required" class="fa fa-lock"></i>&nbsp; <span ng-class="{'required-highlight' : datas.required == true}">{{datas.title.en}}</span> 
+                                          
+                                        </div> 
+                                    </div> 
+                                    <div class="childrenset" ng-if="checkchildren(datas.children)">
+                                            <ul class="sub-children">
+                                                <li ng-repeat="($cc, ds) in datas.children track by $cc"> 
+                                                    <div class="col-md-12">{{ds.title.en}}</div>
+                                                   
+                                                    <div class="clearfix"></div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    
+                                </li>
+                            </ul>
+                            <div class="no-list"  ng-if="!countObject(attributes.info)">-</div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-heading"><h3 class="panel-title">Pricing Block</h3> 
+                        </div>
+                        <div class="panel-body"> 
+                            <ul class="attributes-list"  ng-if="countObject(attributes.pricing)">
+                                <li ng-repeat="($inf, dats) in attributes.pricing track by $inf" class="drag-fields z-depth-1">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                                <i ng-if="dats.required" class="fa fa-lock"></i>&nbsp; <span ng-class="{'required-highlight' : dats.required == true}">{{dats.title.en}}</span> 
+                                          
+                                        </div>
+                                         
+                                    </div> 
+                                    <div class="childrenset" ng-if="checkchildren(dats.children)">
+                                            <ul class="sub-children">
+                                                <li ng-repeat="($cc, ds) in dats.children track by $cc"> 
+                                                    <div class="col-md-12">{{ds.title.en}}</div>
+                                                    
+                                                    <div class="clearfix"></div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    
+                                </li>
+                            </ul>
+
+                            <div class="no-list"  ng-if="!countObject(attributes.pricing)">-</div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-heading"><h3 class="panel-title">Description Block</h3> 
+                        </div>
+                        <div class="panel-body"> 
+                            <ul class="attributes-list"  ng-if="countObject(attributes.description)">
+                                <li ng-repeat="($inl, dats) in attributes.description track by $inl" class="drag-fields z-depth-1">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                                <i ng-if="dats.required" class="fa fa-lock"></i>&nbsp; <span ng-class="{'required-highlight' : dats.required == true}">{{dats.title.en}}</span> 
+                                          
+                                        </div>
+                                         
+                                    </div> 
+                                    <div class="childrenset" ng-if="checkchildren(dats.children)">
+                                            <ul class="sub-children">
+                                                <li ng-repeat="($cc, ds) in dats.children track by $cc"> 
+                                                    <div class="col-md-12">{{ds.title.en}}</div>
+                                                    
+                                                    <div class="clearfix"></div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    
+                                </li>
+                            </ul>
+
+                            <div class="no-list"  ng-if="!countObject(attributes.description)">-</div>
+                        </div>
+                    </div>
+                    
+
+                    <div class="panel">
+                        <div class="panel-heading"><h3 class="panel-title">More Block</h3> 
+                        </div>
+                        <div class="panel-body"> 
+                            <ul class="attributes-list"  ng-if="countObject(attributes.more_details)">
+                                <li ng-repeat="($inu, dats) in attributes.more_details track by $inu" class="drag-fields z-depth-1">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                                <i ng-if="dats.required" class="fa fa-lock"></i>&nbsp; <span ng-class="{'required-highlight' : dats.required == true}">{{dats.title.en}}</span> 
+                                          
+                                        </div> 
+                                    </div> 
+                                    <div class="childrenset" ng-if="checkchildren(dats.children)">
+                                            <ul class="sub-children">
+                                                <li ng-repeat="($cc, ds) in dats.children track by $cc"> 
+                                                    <div class="col-md-12">{{ds.title.en}}</div>
+                                                    
+                                                    <div class="clearfix"></div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    
+                                </li>
+                            </ul>
+
+                            <div class="no-list"  ng-if="!countObject(attributes.more_details)">-</div>
+                        </div>
+                    </div>
+
+
+
+                </div> 
+                    <div class="btn-group">
+                        <button class="btn btn-primary" ng-click="copyattributes()">OK</button>
+                        <button class="btn btn-default" ng-click="cancelcopy()">Cancel</button>
+                    </div>
+            </div>
+        </div>
+    </div><!-- Main Wrapper -->
+    <div class="page-footer"> 
+    </div>
+</div><!-- Page Inner --> 

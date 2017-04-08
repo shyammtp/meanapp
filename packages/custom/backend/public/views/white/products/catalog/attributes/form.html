@@ -1,0 +1,240 @@
+<div class="page-inner">
+    <div class="page-title">
+        <h3 class="breadcrumb-header">{{params.title}}</h3>
+        <div breadcrumbs></div>
+    </div> 
+    <div id="main-wrapper">  
+        <div ng-controller="CatalogAttributesController">
+            <div class="row">  
+                        <h2 ng-if="categoryname">You are adding for the category <span><b class="theme-green">{{categoryname}}</b>&nbsp;<a class="small-font12" href="admin/products/catalog/attributes/classify">Change category</a></span></h2>
+                    
+                </div>
+                <div class="col-md-7">
+                    <div class="panel">
+                        <div class="panel-heading"><h3 class="panel-title">Info Block</h3> 
+                        </div>
+                        <div class="panel-body"> 
+                            <ul class="attributes-list" ng-if="countObject(attributes.info)">
+                                <li ng-repeat="($in, datas) in attributes.info track by $in" class="drag-fields z-depth-1">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                                <i ng-if="datas.required" class="fa fa-lock"></i>&nbsp; <span ng-class="{'required-highlight' : datas.required == true}">{{datas.title.en}}</span> 
+                                          
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="pull-right actions-link">
+                                                <a href="javascript:void(0);" ng-if="datas.is_system != true" data-toggle="tooltip" data-placement="top" ng-click="editAttribute($in,'info')" title=""  data-original-title="Expand/Collapse"><i class="fa fa-edit"></i></a>
+                                                &nbsp; 
+                                                <a href="javascript:void(0);"  ng-if="datas.is_system != true" data-toggle="tooltip"  ng-click="deleteAttribute($in,'info')" data-placement="top" title=""  data-original-title="Expand/Collapse"><i class="icon-close"></i></a>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                    <div class="childrenset" ng-if="checkchildren(datas.children)">
+                                            <ul class="sub-children">
+                                                <li ng-repeat="($cc, ds) in datas.children track by $cc"> 
+                                                    <div class="col-md-8">{{ds.title.en}}</div>
+                                                    <div class="col-md-4">
+                                                        <div class="pull-right actions-link">
+                                                            <a href="javascript:void(0);" data-toggle="tooltip"  ng-click="editAttribute($cc,'info',$in)" data-placement="top" title=""  data-original-title="Expand/Collapse"><i class="fa fa-edit"></i></a>
+                                                            &nbsp;  
+                                                            <a href="javascript:void(0);" ng-if="ds.required != true" data-toggle="tooltip" data-placement="top" title=""   ng-click="deleteAttribute($cc,'info',$in)" data-original-title="Expand/Collapse"><i class="icon-close"></i></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    
+                                </li>
+                            </ul>
+                            <div class="no-list"  ng-if="!countObject(attributes.info)">-</div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-heading"><h3 class="panel-title">Pricing Block</h3> 
+                        </div>
+                        <div class="panel-body"> 
+                            <ul class="attributes-list"  ng-if="countObject(attributes.pricing)">
+                                <li ng-repeat="($inf, dats) in attributes.pricing track by $inf" class="drag-fields z-depth-1">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                                <i ng-if="dats.required" class="fa fa-lock"></i>&nbsp; <span ng-class="{'required-highlight' : dats.required == true}">{{dats.title.en}}</span> 
+                                          
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="pull-right actions-link">
+                                                <a href="javascript:void(0);" ng-if="dats.is_system != true" data-toggle="tooltip" data-placement="top" title="" ng-click="editAttribute($inf,'pricing')"  data-original-title="Expand/Collapse"><i class="fa fa-edit"></i></a>
+                                                &nbsp;  
+                                                <a href="javascript:void(0);" ng-if="dats.is_system != true" ng-click="deleteAttribute($inf,'pricing')" data-toggle="tooltip" data-placement="top" title=""  data-original-title="Expand/Collapse"><i class="icon-close"></i></a>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                    <div class="childrenset" ng-if="checkchildren(dats.children)">
+                                            <ul class="sub-children">
+                                                <li ng-repeat="($cc, ds) in dats.children track by $cc"> 
+                                                    <div class="col-md-8">{{ds.title.en}}</div>
+                                                    <div class="col-md-4">
+                                                        <div class="pull-right actions-link">
+                                                            <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top"  ng-click="editAttribute($cc,'pricing',$inf)"  title=""  data-original-title="Expand/Collapse"><i class="fa fa-edit"></i></a>
+                                                            &nbsp;  
+                                                            <a href="javascript:void(0);" ng-if="ds.required != true" data-toggle="tooltip" data-placement="top" title=""  ng-click="deleteAttribute($cc,'pricing',$inf)" data-original-title="Expand/Collapse"><i class="icon-close"></i></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    
+                                </li>
+                            </ul>
+
+                            <div class="no-list"  ng-if="!countObject(attributes.pricing)">-</div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-heading"><h3 class="panel-title">Description Block</h3> 
+                        </div>
+                        <div class="panel-body"> 
+                            <ul class="attributes-list"  ng-if="countObject(attributes.description)">
+                                <li ng-repeat="($inl, dats) in attributes.description track by $inl" class="drag-fields z-depth-1">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                                <i ng-if="dats.required" class="fa fa-lock"></i>&nbsp; <span ng-class="{'required-highlight' : dats.required == true}">{{dats.title.en}}</span> 
+                                          
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="pull-right actions-link">
+                                                <a href="javascript:void(0);" ng-if="dats.is_system != true" ng-click="editAttribute($inl,'description')" data-toggle="tooltip"    data-placement="top" title=""  data-original-title="Expand/Collapse"><i class="fa fa-edit"></i></a>
+                                                &nbsp;  
+                                                <a href="javascript:void(0);" ng-click="deleteAttribute($inl,'description')" ng-if="dats.is_system != true" data-toggle="tooltip" data-placement="top" title=""  data-original-title="Expand/Collapse"><i class="icon-close"></i></a>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                    <div class="childrenset" ng-if="checkchildren(dats.children)">
+                                            <ul class="sub-children">
+                                                <li ng-repeat="($cc, ds) in dats.children track by $cc"> 
+                                                    <div class="col-md-8">{{ds.title.en}}</div>
+                                                    <div class="col-md-4">
+                                                        <div class="pull-right actions-link">
+                                                            <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title=""  data-original-title="Expand/Collapse"  ng-click="editAttribute($cc,'description',$inl)" ><i class="fa fa-edit"></i></a>
+                                                            &nbsp;  
+                                                            <a href="javascript:void(0);"  ng-click="deleteAttribute($cc,'description',$inl)" ng-if="ds.required != true" data-toggle="tooltip" data-placement="top" title=""  data-original-title="Expand/Collapse"><i class="icon-close"></i></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    
+                                </li>
+                            </ul>
+
+                            <div class="no-list"  ng-if="!countObject(attributes.description)">-</div>
+                        </div>
+                    </div>
+                    
+
+                    <div class="panel">
+                        <div class="panel-heading"><h3 class="panel-title">More Block</h3> 
+                        </div>
+                        <div class="panel-body"> 
+                            <ul class="attributes-list"  ng-if="countObject(attributes.more_details)">
+                                <li ng-repeat="($inu, dats) in attributes.more_details track by $inu" class="drag-fields z-depth-1">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                                <i ng-if="dats.required" class="fa fa-lock"></i>&nbsp; <span ng-class="{'required-highlight' : dats.required == true}">{{dats.title.en}}</span> 
+                                          
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="pull-right actions-link">
+                                                <a href="javascript:void(0);" ng-if="dats.is_system != true" data-toggle="tooltip" ng-click="editAttribute($inu,'more_details')" data-placement="top" title=""  data-original-title="Expand/Collapse"><i class="fa fa-edit"></i></a>
+                                                &nbsp;  
+                                                <a href="javascript:void(0);" ng-click="deleteAttribute($inu,'more_details')" ng-if="dats.is_system != true" data-toggle="tooltip" data-placement="top" title=""  data-original-title="Expand/Collapse"><i class="icon-close"></i></a>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                    <div class="childrenset" ng-if="checkchildren(dats.children)">
+                                            <ul class="sub-children">
+                                                <li ng-repeat="($cc, ds) in dats.children track by $cc"> 
+                                                    <div class="col-md-8">{{ds.title.en}}</div>
+                                                    <div class="col-md-4">
+                                                        <div class="pull-right actions-link">
+                                                            <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title=""  data-original-title="Expand/Collapse"  ng-click="editAttribute($cc,'more_details',$inu)" ><i class="fa fa-edit"></i></a>
+                                                            &nbsp;  
+                                                            <a href="javascript:void(0);" ng-click="deleteAttribute($cc,'more_details',$inu)" ng-if="ds.required != true" data-toggle="tooltip" data-placement="top" title=""  data-original-title="Expand/Collapse"><i class="icon-close"></i></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    
+                                </li>
+                            </ul>
+
+                            <div class="no-list"  ng-if="!countObject(attributes.more_details)">-</div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <div class="col-md-5">
+                    <div class="panel">
+                        <div class="panel-heading"><h3 class="panel-title">Attribute Manage</h3></div>
+                        <div class="panel-body">
+                            <div ng-if="attribute_type">
+                                <form class="form-horizontal" name="attributemanager">
+                                    <div attributemanager type="{{attribute_type}}" data-cancelmethod="cancel()" data-method="getDirData(data)"></div> 
+
+                                </form>
+                            </div> 
+                            <div ng-if="!attribute_type">
+                                 <p>Select the field type you want to add as a attribute.</p>
+                                 <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="2">New Fields</th> 
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><a href="javascript:;" ng-click="addNewAttribute('text')">Text Field</a></td>
+                                            <td><a href="javascript:;" ng-click="addNewAttribute('select')">Select Field</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="javascript:;" ng-click="addNewAttribute('date')">Date Field</a></td>
+                                            <td><a href="javascript:;" ng-click="addNewAttribute('number')">Number Field</a></td>
+                                        </tr> 
+                                        <tr>
+                                            <td><a href="javascript:;" ng-click="addNewAttribute('yesno')">Yes/No Field</a></td>
+                                            <td><a href="javascript:;" ng-click="addNewAttribute('textarea')">Textarea Field</a></td>
+                                        </tr> 
+                                    </tbody>
+                                </table>
+
+                                <p>or</p>
+                                <p>Copy from other category</p>
+                                <div class="col-md-12">
+                                    <div class="input-group">
+                                         <a href="/admin/products/catalog/attributes/copy">Copy</a>
+                                        <div class="input-group-btn">
+
+                                           
+                                             
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- Main Wrapper -->
+    <div class="page-footer"> 
+    </div>
+</div><!-- Page Inner --> 

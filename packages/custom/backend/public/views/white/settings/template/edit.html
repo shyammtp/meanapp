@@ -1,0 +1,70 @@
+<h3 style="margin-bottom: 0px;"><span class="pull-left">Edit Template
+<span class="paratext">Choose the required notification</span>
+</span> <a href="javascript:void(0);" class="pull-right" ng-click="closethis()"><i class="fa fa-angle-right"></i></a><div class="clearfix"></div></h3> 
+<form name="form.templateform">
+	<input type="hidden" ng-model="edittemplate._id" /> 
+	<div class="advsearch_textfield">
+		<div class="form-group">
+			<label>{{edittemplate.index}}</label> 
+		</div>
+	</div>  
+	<div class="col-sm-12">
+		<fieldset>
+		    <legend>SMS</legend>
+	    	<div class="form-group">
+	    		<input type="checkbox" id="sms_enabled" ng-model="edittemplate.sms" />
+	     		<label for="sms_enabled">Enable</label>
+		     </div>
+		     <div class="form-group">
+	     		<label>Message</label>
+				<textarea ng-model="edittemplate.sms_message"  ng-trim="false" maxlength="160" class="materialize-textarea"></textarea>
+				<p class="help-block">Maximum characters 160 ({{160 - edittemplate.sms_message.length}} left)</p>
+		     </div>
+	  	</fieldset>
+
+	  	<fieldset>
+		    <legend>Email</legend>
+		    <div class="form-group">
+	    		<input type="checkbox" id="email_enabled" ng-model="edittemplate.email" />
+	     		<label for="email_enabled">Enable</label>
+		     </div>
+		     <div class="form-group">
+	     		<label>From Name</label>
+	    		<input type="text"  ng-model="edittemplate.from_name" />  
+		     </div>
+		     <div class="form-group">
+	     		<label>From Email</label>
+	    		<input type="text"  ng-model="edittemplate.from_email" />  
+		     </div>
+		     <div class="form-group">
+	     		<label>Reply to</label>
+	    		<input type="text"  ng-model="edittemplate.reply_to" />  
+		     </div>
+	      	<div class="form-group">
+	     		<label>Subject</label>
+	    		<input type="text"  ng-model="edittemplate.subject" /> 
+	    		<p class="help-block">Maximum characters 250 ({{250 - edittemplate.subject.length}} left)</p>
+		     </div>
+		     <div class="form-group">
+	     		<label>Message</label>
+				<textarea ng-model="edittemplate.email_message" class="editortextarea" class="materialize-textarea"></textarea> 
+		     </div>
+	  	</fieldset>
+
+	  	<fieldset>
+		    <legend>Push Notification</legend>
+		    <div class="form-group">
+	    		<input type="checkbox" id="push_enabled" ng-model="edittemplate.push" />
+	     		<label for="push_enabled">Enable</label>
+		     </div>
+		     <div class="form-group">
+	     		<label>Message</label>
+				<textarea ng-model="edittemplate.push_message"  ng-trim="false" maxlength="300"   class="materialize-textarea"></textarea>
+				<p class="help-block">Maximum characters 300 ({{300 - edittemplate.push_message.length}} left)</p> 
+		     </div>
+	  	</fieldset> 
+	  	<div class="margin15">
+	  		<button type="button" ng-disabled="form.templateform.$invalid" ng-click="savetemplate()" class="btn btn-primary">Save</button>
+	  	</div>
+	</div>
+</form>

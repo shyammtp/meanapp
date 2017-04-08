@@ -1,0 +1,196 @@
+<div class="page-inner">
+    <div class="page-title">
+        <h3 class="breadcrumb-header">{{params.title}}</h3>
+        <div breadcrumbs></div>
+    </div> 
+    <div id="main-wrapper">  
+      	<div ng-controller="MenuItemsController">
+            <div class="row">
+                <div class="col-md-12">
+                	<div class="alert alert-info ng-scope" role="alert">
+			            Are you added item choices? if not, <a href="admin/products/catalog/variants">Click here</a> to add you item choices and its price values.
+			        </div>
+                    <div role="tabpanel">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs variantstab" role="tablist">
+                            <li role="presentation"><a href="/admin/menus">Menus</a></li>
+                            <li role="presentation" class="active"><a href="#items">Items</a></li>  
+                        </ul>
+                    </div>
+                    <div class="tab-content z-depth-2">
+                        <div role="tabpanel" class="tab-pane active" id="items">
+
+                        	<div class="row">
+                        		<div class="col-md-3">
+		                        	<div class="panel">
+		                        		<div class="panel-heading">
+		                                    <h3 class="panel-title">Items</h3> 
+		                                </div>
+		                                <div class="panel-body" style="padding: 0;">
+		                                   <ul class="addedemenuslist-items">
+		                                   		<li class="" ng-repeat="(s,gg) in menus">
+		                                   			<div class="blocksitems">
+		                                   				<div class="">
+		                                   					{{gg.menu_name.en}}
+		                                   				</div>  
+		                                   			</div>
+		                                   			<div class="menu-sub-items-list-container">
+                                   						<ul class="menu-sub-items-list">
+                                   							<li ng-repeat="(uy,wq) in getMenuItems(gg._id) track by uy">
+                                   								<div class="row">
+					                                   				<div class="col-xs-3">
+					                                   					<div class="img-frame">
+																			<div class="forcover"></div>
+																			<img ng-src="/{{wq.mainimage}}" width="100" ng-if="wq.mainimage" />
+																		</div>
+					                                   				</div>
+					                                   				<div class="col-xs-7">
+					                                   					<div class="itemname">
+					                                   						{{wq.data.item_name}}
+					                                   					</div>
+					                                   					<div class="itemdescription">
+					                                   						{{wq.data.description}}
+					                                   					</div> 
+					                                   				</div> 
+					                                   			</div>
+
+                                   							</li>
+                                   						</ul>
+                                   					</div>
+	                                   			</li>
+		                                   </ul>
+		                                </div>
+		                            </div>
+	                        	</div>
+	                        	<div class="col-md-6">
+	                        		<div class="menu-add-form">
+	                        			<h4>Add a Item</h4>
+	                        			<form name="form.itemaddform">
+		                        			<input type="hidden" ng-model="item._id" />
+		                        			<div class="form-group">
+		                        				<label class="formlabel">Item Name</label>
+		                        				<input type="text" placeholder="Eg: Chicken Royal Meal" ng-required="true" ng-model="item.item_name" />
+		                        			</div>
+		                        			<div class="form-group">
+		                        				<label class="formlabel">Item Description</label>
+		                        				<textarea placeholder="Eg: Served With Fries And Drink Coca Cola." class="materialize-textarea"  ng-model="item.description"></textarea>  
+		                        			</div>
+		                        			<div class="form-group">
+		                        				<label class="formlabel">Price</label>
+		                        				<input type="number" placeholder="Eg: {{200 | priceformat}}" ng-model="item.standard_price" />  
+		                        			</div> 
+		                        			<div class="form-group">
+		                        				<input type="checkbox" id="aspriceselection" ng-model="item.aspriceselection" /><label for="aspriceselection">Add up the price on selecting item choices</label>		                        				 
+		                        			</div> 
+		                        			<div class="form-group">
+		                        				<input type="checkbox" id="nonvegtag" ng-model="item.nonveg" /><label for="nonvegtag">Non Vegetarian</label>	 
+		                        			</div>
+		                        			<div class="form-group">
+		                        				<label class="formlabel">Item Choice Group</label>
+		                        				<select ng-model="item.optionset">
+							                        <option ng-repeat="opt in variantsetoptions" value="{{opt.value}}">{{opt.name}}</option>
+							                    </select>  
+		                        			</div> 
+		                        			<div class="items-choicelist"> 
+		                                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+		                                            <div class="panel panel-default" ng-repeat="(fgd,hfh) in variationoptiongroups track by $index" ng-if="hfh.type =='multichoice'"> 
+		                                                <div class="panel-heading" role="tab" id="headingOne"> 
+	                                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index}}" aria-expanded="true" aria-controls="collapse{{$index}}">
+	                                                            {{hfh.display_name}} - {{hfh.typedata.display_type}}
+	                                                        </a> 
+		                                                </div>
+		                                                <div id="collapse{{$index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+		                                                    <div class="panel-body">
+		                                                         <ul class="choice_subitems">
+		                                                         	<li ng-repeat="(ggh,gs) in hfh.typedata.listvalues track by ggh">
+		                                                         		{{gs.name}} <span ng-if="gs.price">({{gs.price | priceformat}})</span>
+		                                                         	</li>
+		                                                         </ul>
+		                                                    </div>
+		                                                </div>
+		                                            </div> 
+		                        				</div>
+		                        			</div>
+		                        			<div class="form-group">
+		                        				<input type="checkbox" id="limitedtime" ng-model="item.limitedtime" /><label for="limitedtime">Available in only limited time for a day</label> 
+		                        			</div> 
+		                        			<div class="form-group" ng-show="item.limitedtime">
+		                        				 <div class="row">
+		                        				 	<div class="col-md-3">
+		                        				 		<label>From</label>
+		                        						<input type="time" placeholder="Eg: HH:MM" ng-model="item.limitedtimefrom" /> 
+		                        				 	</div>
+		                        				 	<div class="col-md-3">
+		                        				 		<label>to</label>
+		                        						<input type="time" placeholder="Eg: HH:MM" ng-model="item.limitedtimeto" /> 
+		                        				 	</div>
+		                        				 </div>
+		                        			</div>  
+	                        				<div class="form-group">
+		                        				<input type="checkbox" id="asnew" ng-model="item.asnew" /><label for="asnew">Mark as New</label> 
+		                        			</div>
+
+		                        			<div class="form-group">
+		                        				<div class="imagecover1">   
+                                                    <div class="filebox" ngf-select="uploadimage(item.mainimage,'mainimage')" ng-model="item.mainimage"></div>   
+                                                    <img ngf-src="'/'+item.mainimagepath || item.mainimage"  class="thumb"   ng-if="item.mainimagepath" />
+                                                    <input type="hidden" ng-model="item.mainimagepath" /> 
+                                                </div> 
+		                        			</div> 
+		                        			<div class="form-group">
+		                        				<div class="btn-group  pull-right">
+		                        					<button type="button" ng-click="cancelmanage()"   class="btn btn-default">Cancel</button>
+	                        						<button type="button" ng-click="saveitem()" ng-disabled="form.itemaddform.$invalid"   class="btn btn-primary ">Save</button> 
+		                        				
+		                        				</div>
+		                        			</div>
+	                        			</form>
+	                        		</div> 
+	                        	</div>
+	                        	<div class="col-md-3">
+	                        		<div class="inactive-menus-list">
+	                        			<h4>Added Items</h4>
+                        				<ul class="itemmenulist" ng-if="items.length">
+	                                   		<li class="" ng-repeat="(sd,fg) in items">
+	                                   			<div class="row">
+	                                   				<div class="col-xs-3">
+	                                   					<div class="img-frame">
+															<div class="forcover"></div>
+															<img ng-src="/{{fg.mainimage}}" width="100" ng-if="fg.mainimage" />
+														</div>
+	                                   				</div>
+	                                   				<div class="col-xs-7">
+	                                   					<div class="itemname">
+	                                   						{{fg.data.item_name}}
+	                                   					</div>
+	                                   					<div class="itemdescription" ng-hide="menusub[fg._id]===true">
+	                                   						{{fg.data.description}}
+	                                   					</div>
+	                                   					<div class="">
+	                                   						<a href="javascript:;" ng-click="showmenus(fg._id)">Add to menu</a>
+	                                   						<ul role="menu" ng-show="menusub[fg._id]===true">
+									                            <li role="presentation"  ng-repeat="(j,y) in menus track by $index"><input type="checkbox" id="lablcheck{{fg._id}}{{y._id}}" ng-model="menuassign[fg._id][y._id]" ng-change="productupdatemenu(fg._id)"  /><label for="lablcheck{{fg._id}}{{y._id}}">{{y.menu_name.en}}</label></li> 
+									                        </ul>
+	                                   					</div>
+	                                   				</div>
+	                                   				<div class="col-xs-2">
+	                                   					<a href="javascript:;" ng-click="edititem(fg._id)"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+	                                   					&nbsp; 
+	                                   					<a href="javascript:;" ng-click="deleteitem(fg._id)"><i class="fa fa-trash" aria-hidden="true"></i></a>
+	                                   				</div>
+	                                   			</div>
+	                                   			 
+                                   			</li>
+	                                   </ul> 
+	                                   <div ng-if="!items.length">No menus here</div>
+	                        		</div>
+	                        	</div>
+                        	</div> 
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div><!-- Main Wrapper --> 
+</div><!-- Page Inner --> 

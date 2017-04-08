@@ -1,0 +1,168 @@
+<div class="page-inner">
+    <div class="page-title">
+        <h3 class="breadcrumb-header">{{params.title}}</h3>
+        <div breadcrumbs></div>
+    </div> 
+    <div id="main-wrapper">  
+    <angular-filemanager></angular-filemanager>
+        <div ng-controller="CatalogAddController"> 
+            <div class="row">
+            <div class="col-md-12">
+                <div class="fixed-action-btn">
+                    <a ng-click="(form.productForm.maininfo.$invalid || form.productForm.pricing.$invalid  || form.productForm.more_details.$invalid || form.productForm.description.$invalid) || saveproduct()" ng-disabled="form.productForm.maininfo.$invalid || form.productForm.pricing.$invalid || form.productForm.description.$invalid || form.productForm.more_details.$invalid"   class="btn btn-floating btn-large waves-effect waves-light red"><i class="fa fa-floppy-o"></i></a>
+                </div>  
+                <div class="fixed-action-btn-cancel">
+                    <a ng-click="cancelmanage()" class="btn btn-floatingcancel btn-large waves-effect waves-light "><i class="fa fa-times"></i></a>
+                </div> 
+                <!-- <div class="btn-group pull-right">
+                    <button type="button" class="btn btn-default" ng-click="cancelproduct()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" ng-click="saveproduct()" ng-disabled="form.productForm.maininfo.$invalid || form.productForm.pricing.$invalid || form.productForm.more_details.$invalid">Save</button>
+                </div> -->
+            </div>
+            <div class="col-md-12">
+                <div role="tabpanel">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs productformtab" role="tablist">
+                        <li role="presentation" class="active" ng-class="{'focuserror': form.productForm.maininfo.$invalid}"><a href="#maininfo" role="tab" data-toggle="tab">Main Info</a></li>
+                        <li role="presentation"><a href="#variations" role="tab" data-toggle="tab">Variations</a></li> 
+                        <li role="presentation" ng-class="{'focuserror': form.productForm.pricing.$invalid}"><a href="#pricing" role="tab" data-toggle="tab">Pricing</a></li>  
+                        <li role="presentation"><a href="#description" role="tab" data-toggle="tab">Description</a></li>  
+                        <li role="presentation"  ng-class="{'focuserror': form.productForm.more_details.$invalid}"><a href="#more_details" role="tab" data-toggle="tab">More Information</a></li> 
+                        <li role="presentation"><a href="#images" role="tab" data-toggle="tab">Images</a></li>   
+                    </ul>
+                </div>
+                <input type="hidden" ng-model="product._id" />
+                 <div class="tab-content z-depth-2">
+                        <div role="tabpanel" class="tab-pane active" id="maininfo">
+                             <div class="row"> 
+                                <div class="col-md-12">
+                                    <p><span><b>Categories: </b></span><span ng-repeat="(c,b) in pickedcategory track by c"><i ng-if="checkarrow(c)"> > </i>{{b.category_name.en}}</span></p>
+                                </div>
+                                <div class="col-md-12">  
+                                    <form name="form.productForm.maininfo" novalidate>
+                                        <div class="row" ng-repeat="(scc,gh) in infoattributes track by scc">  
+                                            <catalogfield type="{{gh.type}}" catalogattributes="gh" parentattribute="gh" editproduct="product" data-productscope="getScope(productscope)"></catalogfield> 
+                                        </div> 
+                                    </form>
+                                </div>
+
+                             </div>
+                        </div> 
+                        <div role="tabpanel" class="tab-pane" id="variations">
+                             <div class="row"> 
+                                 <div class="col-md-12">
+                                    <p><span><b>Categories: </b></span><span ng-repeat="(c,b) in pickedcategory track by c"><i ng-if="checkarrow(c)"> > </i>{{b.category_name.en}}</span></p>
+                                </div>
+                                <div class="col-md-12"> 
+                                    <form name="form.productForm.variations" novalidate>
+                                        <div ng-include="'backend/views/{{theme}}/products/catalog/variants.html'"></div>
+                                    </form>
+                                </div>
+                             </div>
+                        </div>
+
+
+                        <div role="tabpanel" class="tab-pane" id="pricing">
+                             <div class="row"> 
+                                 <div class="col-md-12">
+                                    <p><span><b>Categories: </b></span><span ng-repeat="(c,b) in pickedcategory track by c"><i ng-if="checkarrow(c)"> > </i>{{b.category_name.en}}</span></p>
+                                </div>
+                                <div class="col-md-12">  
+                                        <form name="form.productForm.pricing" novalidate>
+                                        <div class="row" ng-repeat="(scc,gh) in pricing track by scc"> 
+                                            <catalogfield type="{{gh.type}}" catalogattributes="gh" parentattribute="gh"  editproduct="product"  data-productscope="getScope(productscope)"></catalogfield>
+                                        </div> 
+                                        </form>
+                                </div>
+                             </div>
+                        </div>
+                         <div role="tabpanel" class="tab-pane" id="description">
+                             <div class="row"> 
+                                 <div class="col-md-12">
+                                    <p><span><b>Categories: </b></span><span ng-repeat="(c,b) in pickedcategory track by c"><i ng-if="checkarrow(c)"> > </i>{{b.category_name.en}}</span></p>
+                                </div>
+                                <div class="col-md-12"> 
+                                        <form name="form.productForm.description" novalidate>
+                                        <div class="row" ng-repeat="(scc,gh) in description track by scc"> 
+                                            <catalogfield type="{{gh.type}}" catalogattributes="gh" parentattribute="gh"  editproduct="product" data-productscope="getScope(productscope)"></catalogfield>
+                                        </div>
+                                        </form>
+                                </div>
+                             </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="more_details">
+                             <div class="row"> 
+                                 <div class="col-md-12">
+                                    <p><span><b>Categories: </b></span><span ng-repeat="(c,b) in pickedcategory track by c"><i ng-if="checkarrow(c)"> > </i>{{b.category_name.en}}</span></p>
+                                </div>
+                                <div class="col-md-12">  
+                                    <form name="form.productForm.more_details" novalidate>
+                                    <div class="row" ng-repeat="(scc,gh) in more_details track by scc"> 
+                                        <catalogfield type="{{gh.type}}" catalogattributes="gh" parentattribute="gh"  editproduct="product"  data-productscope="getScope(productscope)"></catalogfield>
+                                    </div> 
+                                    </form>
+                                </div>
+                             </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="images">
+                             <div class="row"> 
+                                 <div class="col-md-12">
+                                    <p><span><b>Categories: </b></span><span ng-repeat="(c,b) in pickedcategory track by c"><i ng-if="checkarrow(c)"> > </i>{{b.category_name.en}}</span></p>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <table class="table">
+                                                <tr>
+                                                    <td>  
+                                                    <div class="imagecover1">  
+                                                            
+                                                        <div class="filebox" ngf-select="uploadimage(product.mainimage,'mainimage')" ng-model="product.mainimage"></div>   
+                                                        <img ngf-src="'/'+product.mainimagepath || product.mainimage"  class="thumb"   ng-if="product.mainimagepath" />
+                                                        <input type="hidden" ng-model="product.mainimagepath" /> 
+                                                    </div>
+                                                    </td>
+                                                </tr>
+                                                <tr><td></td></tr>
+                                            </table>
+                                        </div>
+                                        <div class="col-md-8 bright-text">
+                                            <p> Listings that are missing a main image will not appear in search or browse until you fix the listing. 
+                                                Choose images that are clear, information-rich, and attractive. </p>
+                                                <p>Images must meet the following requirements:</p>
+                                                <ul class="bullet-list">
+                                                    <li>Products must fill at least 85% of the image. Images must show only the product that is for sale, with few or no props and with no logos, watermarks, or inset images. Images may only contain text that is a part of the product.</li>
+                                                    <li>Main images must have a pure white background, must be a photo (not a drawing), and must not contain excluded accessories.</li>
+                                                    <li>Images must be at least 1000 pixels on the longest side and at least 500 pixels on the shortest side to be zoom-able.</li>
+                                                    <li>Images must not exceed 10000 pixels on the longest side.</li>
+                                                    <li>JPEG is the preferred image format, but you also may use TIFF and GIF files.</li>
+                                                </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                 <div class="col-md-12">
+                                    <ul class="gall-list">
+                                        <li ng-repeat="n in [] | filterrange:8">
+                                            <div class="imagecover">                                               
+                                                 <img ngf-src="'/'+product.filepath[n] || product.file[n]" width="140" class="thumb" ng-if="product.filepath[n] || product.file[n]"/> 
+                                                 <div class="filebox" ngf-select="uploadimage(product.file[n],n)" ng-model="product.file[n]"></div>
+                                                        <input type="hidden" ng-model="product.filepath[n]" /> 
+                                            </div>
+                                            <div class="filecover"> </div>
+                                        </li>
+                                    </ul>
+                                </div> 
+
+                             </div>
+                        </div>
+
+
+                    </div>
+            </div>
+        </div> 
+        </div>
+    </div><!-- Main Wrapper -->
+    <div class="page-footer"> 
+    </div>
+</div><!-- Page Inner --> 

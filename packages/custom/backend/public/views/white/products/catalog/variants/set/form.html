@@ -1,0 +1,99 @@
+<div class="page-inner">
+    <div class="page-title">
+        <h3 class="breadcrumb-header">{{params.title}}</h3>
+        <p>Product options (such as color, size and style) can be created and assigned to products as part of an option set, which you can also create below.</p>
+        <div breadcrumbs></div>
+    </div> 
+    <div id="main-wrapper">  
+        <div ng-controller="CatalogVariantsetFormController">
+        <div class="alert alert-info" ng-if="variantid && ruleslength <= 0" role="alert">
+            This variant set has no rules yet. <a href="admin/products/catalog/variants/set/rules/{{variantid}}">Click here</a> to create rules for this option set which will apply to all products assigned to it.
+        </div>
+         <div class="alert alert-info" ng-if="variantid && ruleslength > 0" role="alert">
+            This option set has {{ruleslength}} rule which apply to all products assigned to it. <a href="admin/products/catalog/variants/set/rules/{{variantid}}">Click here</a> here to manage rules for this option set.
+        </div>
+            <form name="variantsetform">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="input-Default" class="">Name<i class="required-star">*</i></label>
+                            <input id="set_name" placeholder="" name="set_name" ng-model="set_name" autocomplete="off" tabindex="1" ng-required="true" type="text"  class="" ng-class="{'invalid' : variantsetform.set_name.$invalid}">
+                            <p class="help-block">Used Internally</p>
+                        </div>
+                        <div class="row"> 
+                            <div class="col-md-6">
+                                Available Options
+                                <div class="availableoptions">
+                                    <input type="search" placeholder="Search in available options" />
+                                    <ul class="var-options-lis">
+                                        <li ng-repeat="options in variantoptions">
+                                            <div class="row">
+                                                <div class="col-sm-8">
+                                                    {{options.variant_name}}({{options.typename}})
+                                                </div>
+                                                <div class="col-sm-4 addln">
+                                                    <a href="javascript:;" ng-click="appendtoset(options)">Add</a>
+                                                </div>
+                                            </div>
+                                        
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="choosedoptions" ng-class="{'errorborder':choosedoptions.length <= 0}">
+                                    <div class="opt-header">
+                                        Options in this set
+                                    </div>
+                                    <ul ui-sortable="sortableOptions" ng-model="choosedoptions" class="var-optionsst-lis">
+                                        <li ng-repeat="(k, opts) in choosedoptions track by k">
+                                            <div class="row">
+                                                <div class="col-sm-1">
+                                                  <img src="/theme/assets/lib/black/images/moveicon.png" class="movepointer" />
+                                                </div>
+                                                <div class="col-sm-7 blockc">
+                                                    {{opts.display_name}} <br/> 
+                                                    {{opts.variant_name}}({{opts.typename}})
+                                                    <div class="editmodecontainer" ng-if="editindex === k">
+                                                        <div class="form-group">
+                                                            <label>Display Name</label>
+                                                            <input type="text" ng-model="choosedoptions[k].display_name" />
+                                                        </div>
+                                                        <div class="form-group"> 
+                                                            <input type="checkbox" id="isRequired{{k}}" ng-model="choosedoptions[k].required" /><label style="font-size: 12px;" for="isRequired{{k}}">Required</label>
+                                                        </div>
+                                                        <div class="form-group" ng-if="hasIndex(choosedoptions[k].typedata,'listvalues')">
+                                                            <label>Enabled Option Values</label>
+                                                            <ul>
+                                                                <li ng-repeat="(d,fg) in choosedoptions[k].typedata.listvalues track by d">
+                                                                    <input type="checkbox" id="options{{k}}{{d}}" ng-model="choosedoptions[k].typedata.listvalues[d].required" /><label style="font-size: 12px;" for="options{{k}}{{d}}" ng-if="fg.swatchname">{{fg.swatchname}}</label><label style="font-size: 12px;" for="options{{k}}{{d}}" ng-if="fg.name">{{fg.name}}</label>
+                                                                    
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <button type="button" ng-click="saveupdated()" class="btn btn-primary">Save</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4 editln">
+                                                     <a href="javascript:;" ng-click="edititem(k)">Edit</a>&nbsp;<a ng-click="removeoption(k)" href="javascript:;"><img src="/theme/assets/lib/black/images/deleterow.png" /></a>
+                                                </div>
+                                            </div>
+                                        
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="fixed-action-btn">
+                            <a ng-click="variantsetform.$invalid || savevariant()" ng-disabled="variantsetform.$invalid"   class="btn btn-floating btn-large waves-effect waves-light red"><i class="fa fa-floppy-o"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div> 
+    </div><!-- Main Wrapper -->
+    <div class="page-footer"> 
+    </div>
+</div><!-- Page Inner --> 

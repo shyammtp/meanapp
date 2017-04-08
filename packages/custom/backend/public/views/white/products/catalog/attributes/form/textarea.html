@@ -1,0 +1,117 @@
+<div class="row"> 
+	<div class="col-md-12">
+		Textarea Field Manage
+		<input type="hidden" ng-model="attributefield.type" />
+		<input type="hidden" ng-model="attributefield.is_system" />
+        <input type="hidden" ng-model="attributefield.previous_block" />
+	</div>
+	<div class="col-md-12"> 
+    	<div class="input-field m-t-20">        
+          <input id="attribute_name"  name="attribute_name" ng-model="attributefield.attribute_name" value="{{attributefield.attribute_name}}" ng-value="{{attributefield.attribute_name}}" ng-maxlength="50" autocomplete="off" tabindex="1" required type="text" class=""> 
+            <label for="input-Default" class="">Attribute Name</label>
+            <p class="help-block">Maximum length 50 characters</p> 
+            <span ng-show="attributemanager.attributefield.attribute_name.$invalid">Attribute name is required.</span>
+        </div>         
+    </div>
+	<div class="col-md-12"> 
+    	<div class="input-field m-t-20">        
+          <input id="title"  name="title" ng-model="attributefield.title.en" autocomplete="off" ng-maxlength="100" tabindex="2" required type="text"  class=""> 
+            <label for="input-Default" class="">Title</label>
+            <p class="help-block">Maximum length 100 characters</p>
+        </div>         
+    </div> 
+	<div class="col-md-12"> 
+	     <div class="input-field m-t-20">
+	      	<textarea id="example"  ng-model="attributefield.example" tabindex="3" class="materialize-textarea"></textarea>
+	      	<label for="example">Example placeholder</label>
+            <p class="help-block">Maximum length 300 characters long</p>
+	    </div>
+    </div>
+    <div class="col-md-12"> 
+    	<div class="input-field m-t-20">        
+          <input id="sort"  name="sort" ng-model="attributefield.sort" autocomplete="off" tabindex="4" required type="number"  class=""> 
+            <label for="sort" class="">Sort</label>
+        </div>         
+    </div> 
+    <div class="col-md-12"> 
+	     <div class="input-field m-t-20">
+	      	<textarea id="help_text" ng-model="attributefield.help_text" tabindex="5" class="materialize-textarea"></textarea>
+	      	<label for="help_text">Help text</label>
+            <p class="help-block">Maximum length 200 characters long</p>
+	    </div>
+    </div> 
+    <!--<div class="col-md-12"> 
+	     <div class="m-t-20">
+		    <p>
+		      	<input type="checkbox" class="filled-in" id="filled-in-box" checked="checked" />
+      			<label for="filled-in-box">Filled in</label>
+      		</p>
+            <p class="help-block">Ex: Black, Small cup holder.</p>
+	    </div>
+    </div>-->
+    <div class="col-md-12"> 
+	     <div class="m-t-20">
+		    <div class="switch">
+			    <label>
+			      Is Required
+			      <input type="checkbox" ng-model="attributefield.required" tabindex="6">
+			      <span class="lever"></span>			       
+			    </label>
+			  </div>            
+	    </div>
+    </div>
+
+    <div class="col-md-12"> 
+       <div class="m-t-20">
+        <div class="switch">
+          <label>
+            Is Editor
+            <input type="checkbox" ng-model="attributefield.editor" tabindex="7">
+            <span class="lever"></span>            
+          </label>
+        </div>            
+      </div>
+    </div>
+
+    <div class="col-md-12 m-t-20">
+        <div class="input-field">
+            <div class="">
+                <select ng-model="attributefield.parent" class="initialized col-md-12"  tabindex="8" data-options="[{'title':'Black','value': 'black'}]" data-value="{{attributefield.parent}}"> 
+                    <option value="">Select Parent Block</option> 
+                    <option ng-repeat="($lb,fv) in parentselects track by $lb" value="{{fv.value}}">{{fv.title}}</option>
+                </select>
+            </div> 
+        </div>
+    </div>
+
+    <div class="col-md-12"> 
+         <div class="m-t-20">
+             <div class="row">
+                 <div class="col-md-3">
+                    <input name="block" ng-disabled="hasparent"  tabindex="9" ng-change="updatefields('info')"  ng-model="attributefield.block" tabindex="7" value="info" class="with-gap" type="radio" id="info" />
+                    <label for="info">Info Block</label>
+                 </div>
+                 <div class="col-md-3">
+                    <input name="block" ng-model="attributefield.block" ng-disabled="hasparent"  ng-change="updatefields('pricing')"  value="pricing" tabindex="10"  class="with-gap"  type="radio" id="pricing" />
+                    <label for="pricing">Pricing Block</label>
+                 </div>
+                 <div class="col-md-3">
+                    <input name="block" ng-model="attributefield.block" ng-disabled="hasparent"  ng-change="updatefields('description')"  value="description" tabindex="11"  class="with-gap"  type="radio" id="description" />
+                    <label for="description">Description Block</label>
+                 </div>
+                 <div class="col-md-3">
+                    <input name="block" ng-model="attributefield.block" ng-disabled="hasparent"  ng-change="updatefields('more_details')"  value="more_details" tabindex="12"  class="with-gap"  type="radio" id="more_details" />
+                    <label for="more_details">More Details Block</label>
+                 </div>
+             </div>        
+        </div>
+    </div>
+    <div class="col-md-12 m-t-20">
+        <div class="btn-group pull-right">
+            <button type="button" ng-click="cancel()" tabindex="13"  class="waves-effect waves-light btn btn-default">Cancel</button>        
+            <button type="submit" ng-click="saveAttribute(attributefield)"  tabindex="14"  class="waves-effect waves-light btn btn-primary">Save</button>
+        </div>
+    </div>
+
+
+</div> 

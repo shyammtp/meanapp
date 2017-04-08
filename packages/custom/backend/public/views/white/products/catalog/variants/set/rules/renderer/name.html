@@ -1,0 +1,13 @@
+ 
+<div class="update">
+	<span ng-repeat="(k,sc) in rowobject.params track by k" ng-init="parentindex = $index">
+		<span ng-repeat="(sd,gf) in sc track by sd" ng-init="i=i+1;"> 
+		 	 
+			<span ng-if="parentindex > 0"  style="font-weight: bold;">AND<br/></span>
+			<span ng-repeat="(s,f) in gf track by $index" ng-if="f !== false && f !== null"> 
+				<span ng-if="$index > 0" style="font-weight: bold;">OR <br/></span> {{sd}} = {{f}} 
+				
+			</span> 
+		</span>
+	</span>
+</div>

@@ -1,0 +1,98 @@
+<h3 style="margin-bottom: 0px;"><span class="pull-left">Advanced Search
+<span class="paratext">You can search the product by it specifics and save as a tab to load all the time</span>
+</span> <a href="javascript:void(0);" class="pull-right" ng-click="closethis()"><i class="fa fa-angle-right"></i></a><div class="clearfix"></div></h3> 
+<form name="form.advsearch_form">
+	<input type="hidden" ng-model="advsearch.userid" />
+	<input type="hidden" ng-model="advsearch.settingtype" />
+	<div class="advsearch_textfield">
+		<div class="form-group">
+			<label>Search Name</label>
+			<input type="text"	placeholder="Give a name to this search" ng-model="advsearch.searchname" />
+		</div>
+	</div>  
+	<div class="col-sm-12">
+		<fieldset>
+		    <legend>Advanced Search</legend>
+		     <div class="form-group">
+	     		<label>Search Keywords</label>
+				<input type="text" ng-model="advsearch.searchkeyword" />
+				<p class="help-block">The search keywords you type into this box will be used to search the following fields for all products: product ID, SKU, title, description and search keywords.</p>
+		     </div>
+	  	</fieldset>
+
+	  	<fieldset>
+		    <legend>Search by Range</legend>
+		     <div class="form-group">
+		 		<label>Price Range</label>
+		 		<div class="row">
+		 			<div class="col-sm-2">
+		 			From {{currencycode}}
+		 			</div>
+		 			<div class="col-sm-4">
+		 				<input type="text" ng-model="advsearch.pricerangefrom" />
+		 			</div>
+		 			<div class="col-sm-2">
+		 				to {{currencycode}}
+		 			</div>
+		 			<div class="col-sm-4">
+		 				<input type="text" ng-model="advsearch.pricerangeto" />
+		 			</div>
+		 		</div>
+				 
+		     </div>
+	  	</fieldset>
+
+	  	<!-- <fieldset>
+		    <legend>Search by Settings</legend>
+		     <div class="form-group">
+		 		<label>Price Range</label>
+		 		<div class="row">
+		 			<div class="col-sm-2">
+
+		 			</div>
+		 			<div class="col-sm-4">
+		 				<input type="text" ng-model="pricerangefrom" />
+		 			</div>
+		 			<div class="col-sm-2">
+		 				to
+		 			</div>
+		 			<div class="col-sm-4">
+		 				<input type="text" ng-model="pricerangeto" />
+		 			</div>
+		 		</div>
+				 
+		     </div>
+	  	</fieldset> -->
+
+	  	<fieldset>
+		    <legend>Sort Order</legend>
+		     <div class="form-group">
+		 		<label>Sort Order</label>
+		 		<div class="row">
+		 			<div class="col-sm-6">
+		 				<select ng-model="advsearch.sortorderfield" class="inline-select-sm fullwidth">
+	 						<option value="id">ID</option>
+	 						<option value="sku">Product SKU</option>
+	 						<option value="name">Product Name</option>
+		 				</select>
+		 			</div>
+		 			<div class="col-sm-1">
+		 				in
+		 			</div>
+		 			<div class="col-sm-5">
+		 				<select ng-model="advsearch.sortorderby" class="inline-select-sm fullwidth">
+	 						<option value="1">Ascending Order</option>
+	 						<option value="-1">Descending Order</option> 
+		 				</select>  	
+		 			</div> 
+		 		</div>
+				 
+		     </div>
+	  	</fieldset>
+
+	  	<div class="margin15">
+	  		<button type="button" ng-disabled="form.advsearch_form.$invalid" ng-click="savesearch('save')" class="btn btn-primary">Save this search</button>
+	  		<button type="button" ng-disabled="form.advsearch_form.$invalid" ng-click="savesearch('search')" class="btn btn-primary">Search only</button>
+	  	</div>
+	</div>
+</form>

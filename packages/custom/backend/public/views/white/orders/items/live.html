@@ -1,0 +1,141 @@
+<div class="live-continer slideInLeft" ng-controller="CartOrderItemController">
+	<div class="live-se">
+		<div class="live-header">
+			<div class="row">
+				<div class="col-sm-1"> 
+					<a href="/admin/orders/live" class="back-t"><i class="fa fa-arrow-left back" aria-hidden="true"></i></a>
+				</div>
+				<div class="col-sm-10">
+					<h4>Live order from {{cart.user.name}} <span class="livenow">Live</span></h4>
+				</div>
+				<div class="col-sm-1">
+				</div>
+			</div>
+			<div class="pattern"></div>
+		</div>
+	</div>
+	<div class="live-itemset">
+
+		<div class="relative">
+			<div class="itms">  
+				<div class="row">
+					<div class="col-xs-7">
+						<h3>{{cart.user.name}}</h3>
+						<p>1584425 Nagar, Court <br/> PN Pudur, Coimbatore</p>
+					</div>
+					<div class="col-xs-5">
+
+					</div>
+				</div>
+			</div>	
+			<div class="picitm">
+				<span class="texs">Pickup order </span>for Now
+			</div> 
+			<div class="itstabl">
+				<table class="table">
+					<tbody>
+						<tr ng-repeat="(gf,gs) in cart.items track by $index">
+
+							<td><div class="quantitybox">{{gs.quantity}}</div></td>
+							<td>
+								<div class="row">
+									<div class="col-xs-8"> 
+										<div class="tes">{{gs.item_name}}</div>
+									</div>
+									<div class="col-xs-4">
+										<div class="prices pull-right">{{gs.price | priceformat}}</div>
+									</div>								
+								</div>
+
+								<div class="row tdg" ng-repeat="(kl,ks) in gs.additions track by kl">
+									<div class="col-xs-8 "> 
+										<div class="tessd">{{ks.name}}</div>
+										<div class="subtext">{{subitem_names(ks)}}</div>
+									</div>
+									<div class="col-xs-4" ng-if="subitem_price(ks)">
+										<div class="pricessmall pull-right">+ {{subitem_price(ks) | priceformat}}</div>
+									</div>								
+								</div>
+
+							</td> 
+						</tr>
+
+						<!-- <tr>
+							<td><div class="quantitybox">2</div></td>
+							<td>
+								<div class="row">
+									<div class="col-xs-8"> 
+										<div class="tes">Butter notscos</div>
+									</div>
+									<div class="col-xs-4">
+										<div class="prices pull-right">$10.48</div>
+									</div>								
+								</div>
+
+								<div class="row tdg">
+									<div class="col-xs-8 "> 
+										<div class="tessd">Additions</div>
+										<div class="subtext">Chicken salna</div>
+									</div>
+									<div class="col-xs-4">
+										<div class="pricessmall pull-right">+ $2.48</div>
+									</div>								
+								</div>
+
+								<div class="row tdg">
+									<div class="col-xs-8 "> 
+										<div class="tessd">Additions</div>
+										<div class="subtext">Chicken salna</div>
+									</div>
+									<div class="col-xs-4">
+										<div class="pricessmall pull-right">+ $2.48</div>
+									</div>								
+								</div>
+
+
+							</td> 
+						</tr> -->
+
+					</tbody>
+				</table>
+			</div>
+			<div class="fixed-ims">
+				<div class="footer-sl">
+					<table class="table">
+						<tbody>
+							<tr>
+								<td>Sub : <b>{{cart.sumprices.subtotal | priceformat}}</b></td>
+								<td rowspan="4">
+									<div class="pull-right">
+										<div class="lbltxt">Total</div>
+										<div class="striketotal red">{{cart.sumprices.subtotal | priceformat}}</div>
+									</div>
+									<div class="clearfix"></div>
+								</td>
+							</tr>
+							<tr>
+								<td>Taxes $9.4</td>
+							</tr>
+							<tr>
+								<td>Fees $56.42</td>
+							</tr>
+							<tr>
+								<td>Tip $56</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="footer-sg">
+					<div class="pull-right">
+						<div class="lbltxt">Total</div>
+						<div class="finaltotal">{{cart.sumprices.subtotal | priceformat}}</div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+			</div>
+
+
+		</div>
+		
+	</div>
+</div>

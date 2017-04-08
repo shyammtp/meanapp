@@ -1,0 +1,42 @@
+<div class="page-inner">
+    <div class="page-title">
+        <h3 class="breadcrumb-header">{{params.title}}</h3>
+        <p>Product options (such as color, size and style) can be created and assigned to products as part of an option set, which you can also create below.</p>
+        <div breadcrumbs></div>
+    </div> 
+    <div id="main-wrapper">  
+        <div ng-controller="CatalogVariantsFormController">
+            <form name="variantform">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                             <label for="input-Default" class="">Variant Name<i class="required-star">*</i></label>
+                            <input id="variant_name" placeholder="" name="variant_name" ng-model="variant_name" autocomplete="off" tabindex="1" ng-required="true" type="text"  class="" ng-class="{'invalid' : variantform.variant_name.$invalid}">
+                            <p class="help-block">Used Internally</p>
+                        </div>
+                        <div class="form-group">
+                             <label for="input-Default" class="">Display Name<i class="required-star">*</i></label>
+                            <input id="display_name" placeholder="" name="display_name" ng-model="display_name" autocomplete="off" tabindex="2" ng-required="true" type="text"  class="" ng-class="{'invalid' : variantform.display_name.$invalid}">
+                            <p class="help-block">Shown to customer</p>
+                        </div>
+                        <div class="form-group" >
+                             <label for="input-Default" class="">Display Type<i class="required-star">*</i></label>
+                             <ul class="selecto" ng-class="{'errorborder' : variantform.type.$invalid}">
+                                <li ng-repeat="(s,gs) in varianttypes">
+                                    <a ng-click="settype(s)" ng-class="{'active' : (s == type)}" data-link="{{s}}">{{gs.title}}</a>
+                                </li>
+                             </ul>
+                            <input type="hidden" name="type" ng-model="type" ng-required="true" /> 
+                        </div>
+                        <catalogvariantfield datatype="{{type}}" data-variantscope="getScope(variantscope)"></catalogvariantfield>
+                        <div class="fixed-action-btn">
+                            <a ng-click="variantform.$invalid || savevariant()" ng-disabled="variantform.$invalid"   class="btn btn-floating btn-large waves-effect waves-light red"><i class="fa fa-floppy-o"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div> 
+    </div><!-- Main Wrapper -->
+    <div class="page-footer"> 
+    </div>
+</div><!-- Page Inner --> 

@@ -1,0 +1,20 @@
+<div class="form-group">
+     <label for="input-Default" class="">Default Value</label>
+     <input ng-model="typedata.default_value" class="date-picker" type="text" />
+     <p class="help-block">The value that prefilled on the product page.</p>
+</div>
+<div class="form-group">
+     <label for="input-Default" class="">Limit Date range</label>
+     <input type="checkbox" id="selecsst" ng-model="typedata.limit_range"/><label style="font-size: 12px;" for="selecsst">I want to limit the
+		<select ng-model="typedata.limit_type" class="inline-select-sm">
+			<option value="earliest" selected="selected">Earliest date</option>
+			<option value="latest">Latest date</option>
+			<option value="daterange">Date range</option>
+		</select> available for selection</label>
+	<div class="subaction" ng-if="typedata.limit_range == true">
+		<img src="/theme/assets/lib/black/images/nodejoin.gif" />
+		<span id="" ng-if="checkdate(typedata.limit_type,'earliest')"><b>Earliest Date</b> <input style="width: auto;min-height: 24px;" ng-model="typedata.datefrom" class="date-picker" type="text" /></span>
+		<span id="" ng-if="checkdate(typedata.limit_type,'latest')"><b>Latest Date</b> <input style="width: auto;min-height: 24px;" ng-model="typedata.dateto" class="date-picker" type="text" /></span>
+		<span id="" ng-if="checkdate(typedata.limit_type,'daterange')"><b>Date Range From:</b> <input  style="width: auto;min-height: 24px;" ng-model="typedata.datefrom" class="date-picker" type="text" />  <b>To:</b><input style="width: auto;min-height: 24px;" ng-model="typedata.dateto" class="date-picker" type="text" /></span>
+	</div>
+</div>

@@ -1,0 +1,20 @@
+<div class="col-sm-12 form-group" style="margin-top: 26px;">
+	<label class="formlabel">Inventory</label>
+	<p>You can track inventory for your products by first choosing an option from those shown below. You will then be able to update inventory levels.</p>
+	<div class="form-group">
+		<div>
+			<input type="radio" id="dtrack" ng-model="product.inventorystatus" ng-value="1" /><label for="dtrack">Do not track inventory for this product.</label>
+		</div>
+		<div>
+			<input type="radio" id="dtrack1" ng-model="product.inventorystatus" ng-value="2" /><label for="dtrack1">Track inventory for this product</label>
+
+			<div class="stockient" ng-if="product.inventorystatus === 2">
+				<input type="number" min="0" ng-model="product.inventorycstock" class="" placeholder="Current Stock level" /> 
+				<input type="number" min="0" ng-model="product.inventorylstock" class="" placeholder="Low stock level" />
+			</div>
+		</div>
+		<div>
+			<input type="radio" id="dtrack2" ng-model="product.inventorystatus" ng-value="3" /><label for="dtrack2">Track inventory by variants (from the 'Variantions' tab above)</label>
+		</div>
+	</div>
+</div>

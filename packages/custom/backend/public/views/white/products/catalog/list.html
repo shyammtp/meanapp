@@ -1,0 +1,42 @@
+<div class="page-inner">
+    <div class="page-title">
+        <h3 class="breadcrumb-header">{{params.title}}</h3>
+        <div breadcrumbs></div>
+    </div> 
+    <div id="main-wrapper"> 
+        <div class="fixed-action-btn">
+            <a href="/admin/products/catalog/classify" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
+        </div> 
+         <div ng-controller="CatalogListController">
+            <div class="row">
+                <div class="col-md-12">
+                    <div role="tabpanel">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs productstab" role="tablist">
+                            <li role="presentation" ng-class="{'active': cview==undefined}"><a href="admin/products/catalog">All Products</a></li>
+                            <li role="presentation" ng-class="{'active': cview===fg}" ng-repeat="(fg,e) in views track by $index"><a href="admin/products/catalog?view={{fg}}">{{e.searchname}}</a></li>  
+                        </ul>
+                    </div>
+                    <div class="tab-content z-depth-2">
+                        <div class="product-searchbar">
+
+                            <div class="input-group">
+                                <input type="text" style="box-sizing:border-box;    min-height: 33px;" ng-model="filterproduct" class="form-control" aria-label="..." placeholder="Start typing to search for the products">
+                                <div class="input-group-btn">
+                                    <a class="btn btn-default" ng-click="advancedsearch()" aria-expanded="false">Advanced Search</a>
+                                    
+                                </div>
+                            </div>
+
+                        </div>
+                        <div role="tabpanel" class="tab-pane active" id="allprds">
+                            <listwidget></listwidget>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div><!-- Main Wrapper -->
+    <div class="page-footer"> 
+    </div>
+</div><!-- Page Inner --> 

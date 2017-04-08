@@ -1,0 +1,14 @@
+<div id="ca-container" class="ca-container">
+	<div class="ca-wrapper">
+		<div class="ca-item">
+			<div class="ca-item-main">  
+				<ul>
+					<li ng-repeat="(k,v) in categoriestree"><a href="javascript:;" ng-class="{'children' : getChildrencount(v.children),'active' : isactive(v._id) }" ng-click="loadsub(v,1)">{{v.category_name.en}}</a></li>
+
+				</ul>
+
+			</div> 
+		</div> 
+  
+	</div>
+</div>

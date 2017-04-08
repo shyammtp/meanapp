@@ -1,0 +1,91 @@
+<div class="page-inner">
+    <div class="page-title">
+        <h3 class="breadcrumb-header">{{params.title}}</h3>
+        <div breadcrumbs></div>
+    </div> 
+    <div id="main-wrapper">  
+      	<div ng-controller="OrderNewController">
+            <div class="row">
+                <div class="col-xs-8">  
+
+                	<div class="panel-group order-items-sl" id="accordion" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-default" ng-repeat="(s,gg) in menus track by $index" ng-if="getMenuItems(gg._id).length > 0 "> 
+                            <div class="panel-heading" role="tab" id="headingOne" style="padding: 11px;"> 
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index}}" aria-expanded="true" aria-controls="collapse{{$index}}">
+                                    {{gg.menu_name.en}}
+                                </a> 
+                            </div>
+                            <div id="collapse{{$index}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                <div class="panel-body" style="padding: 0;">
+                                     <ul class="order_itemslist" >
+                                     	<li ng-repeat="(uy,wq) in getMenuItems(gg._id) track by uy">
+                                     		<div class="row">
+	                               				<div class="col-xs-2">
+	                               					<div class="img-frame" style="width: 110px;">
+														<div class="forcover"></div>
+														<img ng-src="/{{wq.mainimage}}" width="200" ng-if="wq.mainimage" />
+													</div>
+	                               				</div>
+	                               				<div class="col-xs-8">
+	                               					<div class="itemname">
+	                               						<span><img src="/theme/assets/lib/white/img/veg-icon.png" ng-if="!wq.data.nonveg"/> &nbsp;</span>
+	                               						<span><img src="/theme/assets/lib/white/img/non-veg.png" ng-if="wq.data.nonveg"/> &nbsp;</span>{{wq.data.item_name}}
+	                               					</div>
+	                               					<div class="itemdescription">
+	                               						{{wq.data.description}}
+	                               					</div> 
+	                               					<div class="sd_cus" ng-if="wq.variantsetid">
+	                               						<i style="color:#d4d4d4;">Customization available</i>
+	                               					</div>
+	                               					<div class="price">
+	                               						{{getFinalPrice(wq) | priceformat}}
+	                               					</div>
+	                               				</div> 
+
+	                               				<div class="col-xs-2">
+	                               					<button class="btn btn-primary" ng-click="addToCart(wq,gg)">ADD</button>
+	                               					
+	                               				</div> 
+	                               			</div>
+	                               			<div class="row" ng-if="wq.variantsetid && showvariant[wq._id] === true">
+	                               				<div class="col-sm-12 ">
+	                               					<form name="form.multioption{{gg._id}}_{{wq._id}}">
+		                               					<ul class="addedemenuslist-items customizearea">
+					                                   		<li class="" ng-repeat="(av,sf) in wq.variantsetid.option_set">
+					                                   			<div class="blocksitems">
+					                                   				<div class="">
+					                                   					{{sf.display_name}}
+					                                   				</div>  
+					                                   			</div>
+					                                   			<div class="menu-sub-items-list-container">
+			                                   						<ul class="menu-sub-items-list">
+			                                   							<li ng-repeat="(jg,vb) in sf.typedata.listvalues track by jg">
+			                                   								<div class="form-label" ng-if="sf.typedata.display_type ==='radio'">
+								                                   				 <input type="radio" id="cart_options_{{gg._id}}{{sf.id}}{{jg}}" ng-model="cart.options[wq._id][sf.id]" ng-value="jg" ng-required="sf.required" ng-change="updatePrice(sf.id, jg,wq)" /><label for="cart_options_{{gg._id}}{{sf.id}}{{jg}}">{{vb.name}} <span ng-if="vb.price > 0">({{vb.price | priceformat}})</span></label>
+								                                   			</div> 
+			                                   							</li>
+			                                   						</ul>
+			                                   					</div>
+				                                   			</li>
+					                                   </ul>
+				                                   </form>
+	                               				</div>
+	                               			</div>
+                                     	</li>
+                                     </ul>
+                                </div>
+                            </div>
+                        </div> 
+    				</div>
+                </div>
+                <div class="col-xs-4"> 
+	                <div class="panel panel-default carttable">
+	                	<div class="panel-body">
+	                		<h3>Added Orders</h3>
+	                	</div>
+	                </div> 
+                </div>
+            </div>
+        </div>  
+    </div><!-- Main Wrapper --> 
+</div><!-- Page Inner --> 

@@ -1,0 +1,71 @@
+<div>	
+	<table class="table table-striped">
+		<colgroup>
+			<col ng-repeat="(sh,vh) in columns" width="{{vh.width}}">
+		</colgroup>
+		<thead> 
+			<tr class="filter" ng-if="hasFilter">
+				<th colspan="{{columns.length}}">
+					<div class="row">
+						<div class="col-sm-12" ng-hide="filterdependant">
+							<button type="button" class="btn btn-default pull-right z-depth-2 waves-effect m-t-xs m-b-xs" ng-click="enablefilter(true)"><span class="icon-magnifier" style="font-size:14px;"></span></button> 
+
+
+							<div class="fixed-action-btn" ng-if="add_link">
+					      		<a href="{{add_link}}" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
+						  	</div>
+						</div>
+						<div class="col-sm-12 filterdependant" ng-show="filterdependant">								
+							<div class="pull-right btn-group"> 
+								<button type="button" class="btn btn-default waves-effect m-t-xs m-b-xs" ng-click="resetwidgetsearchfilter()">Reset Filter</button>
+								<button type="button" class="btn btn-primary waves-effect m-t-xs m-b-xs" ng-click="widgetsearchfilter()">Search</button>
+							</div>
+							<button type="button" ng-click="enablefilter(false)" class="btn btn-default pull-right m-r-5 waves-effect m-t-xs m-b-xs">Cancel</button>
+						</div>
+					</div>
+
+				</th>
+			</tr>
+			<tr class="headings">
+				<th ng-repeat="(s,v) in columns" class="sorting_asc"><a ng-class="{'sorting' : sortcolumn == v.index,'asc' : sortcolumn == v.index && sortdir == 1,'desc' : sortcolumn == v.index && sortdir == -1}" href="javascript:;" ng-click="widgetSort(v.index)" ng-show="v.sortable">{{v.title}}</a><span ng-hide="v.sortable">{{v.title}}</span></th>
+			</tr>
+			<tr class="filter filterdependant" ng-show="filterdependant">
+				<th ng-repeat="(sd,vd) in columns">
+				<div ng-switch="vd.type" ng-if="vd.filterable">
+				  <div ng-switch-when="range">			     
+				  </div>
+				  <div ng-switch-when="select"> 
+				  	<widget-filter-select data-index="{{vd.dindex}}"></widget-filter-select>   
+				  </div>
+				  <div ng-switch-when="date">			     
+				  </div>
+				  <div ng-switch-when="number">  
+				  	<widget-filter-number  data-index="{{vd.dindex}}"></widget-filter-number>
+				  </div>
+				  <div ng-switch-when="integer"> 
+				  </div>
+				  <div ng-switch-default>		
+				  	<widget-filter-text  data-index="{{vd.dindex}}"></widget-filter-text>	     
+				  </div>
+				</div> 
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-if="dbresult.length" ng-repeat="(key, value) in dbresult"> 
+				<td ng-repeat="(k,v) in columns"> 
+					<span ng-if="getColumnRenderStatus(v.dindex) == true">
+					<widget-custom-render row-object="{{value}}" data-resultindex="{{key}}" data-index="{{v.dindex}}" template="{{getColumnRender(v.dindex)}}"></widget-custom-render>
+					</span>
+					<span ng-if="getColumnRenderStatus(v.dindex) == false">{{v.dindex | columnrender:value}}</span>
+				</td>
+			</tr>
+			<tr ng-if="dbresult.length <= 0">
+				<td colspan="{{columns.length}}">
+					No Results found
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<div ng-if="hasPaging" widget-pagination></div>
+</div>   
