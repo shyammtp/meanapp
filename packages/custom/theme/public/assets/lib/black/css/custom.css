@@ -5101,7 +5101,7 @@ legend { border:none; width: auto; font-size:16px; margin-left: 10px; margin-bot
 .live-itemset .footer-sl .red{ color:#e84c3d; }
 .live-itemset .footer-sl .lbltxt{text-align: right; font-weight: bold;font-size:16px; }
 .live-itemset .footer-sg .lbltxt{text-align: right; font-weight: bold;font-size:16px; }
-.place-order-button {position: fixed; bottom: 0; left: 0; }
+.place-order-button {position: fixed; bottom: 0; left: 0;     z-index: 900;}
 .place-order-button a {display: block; padding: 6px 10px; background-color: #76b900; border-top-right-radius: 4px; border-top-left-radius: 4px; color:white; text-decoration: none; }
 .place-order-button a:hover {background-color: #181818;}
 
@@ -5110,3 +5110,5 @@ legend { border:none; width: auto; font-size:16px; margin-left: 10px; margin-bot
 .carttable {min-height: 200px;}
 .carttable h3 {margin:0; padding: 0;}
 .customizearea {  border:1px dotted #6d6d6d; padding:10px; margin:10px 0; }
+.order-items-sl .itemname{font-size:20px;}
+.order-items-sl .price {font-size:16px;}

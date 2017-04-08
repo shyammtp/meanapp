@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-xs-8">  
 
-                	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                	<div class="panel-group order-items-sl" id="accordion" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default" ng-repeat="(s,gg) in menus track by $index" ng-if="getMenuItems(gg._id).length > 0 "> 
                             <div class="panel-heading" role="tab" id="headingOne" style="padding: 11px;"> 
                                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index}}" aria-expanded="true" aria-controls="collapse{{$index}}">
@@ -17,13 +17,13 @@
                             </div>
                             <div id="collapse{{$index}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                                 <div class="panel-body" style="padding: 0;">
-                                     <ul class="order_itemslist">
+                                     <ul class="order_itemslist" >
                                      	<li ng-repeat="(uy,wq) in getMenuItems(gg._id) track by uy">
                                      		<div class="row">
 	                               				<div class="col-xs-2">
-	                               					<div class="img-frame">
+	                               					<div class="img-frame" style="width: 110px;">
 														<div class="forcover"></div>
-														<img ng-src="/{{wq.mainimage}}" width="100" ng-if="wq.mainimage" />
+														<img ng-src="/{{wq.mainimage}}" width="200" ng-if="wq.mainimage" />
 													</div>
 	                               				</div>
 	                               				<div class="col-xs-8">
@@ -36,12 +36,17 @@
 	                               					<div class="sd_cus" ng-if="wq.variantsetid">
 	                               						<i style="color:#333;">Customization available</i>
 	                               					</div>
+	                               					<div class="price">
+	                               						{{getFinalPrice(wq) | priceformat}}
+	                               					</div>
 	                               				</div> 
+
 	                               				<div class="col-xs-2">
 	                               					<button class="btn btn-primary" ng-click="addToCart(wq,gg)">ADD</button>
+	                               					
 	                               				</div> 
 	                               			</div>
-	                               			<div class="row" ng-if="wq.variantsetid">
+	                               			<div class="row" ng-if="wq.variantsetid && showvariant[wq._id] === true">
 	                               				<div class="col-sm-12 ">
 	                               					<form name="form.multioption{{gg._id}}_{{wq._id}}">
 		                               					<ul class="addedemenuslist-items customizearea">
@@ -54,8 +59,8 @@
 					                                   			<div class="menu-sub-items-list-container">
 			                                   						<ul class="menu-sub-items-list">
 			                                   							<li ng-repeat="(jg,vb) in sf.typedata.listvalues track by jg">
-			                                   								<div class="form-label">
-								                                   				 <input type="radio" id="cart_options_{{gg._id}}{{sf.id}}{{jg}}" ng-model="cart.options[wq._id][sf.id]" ng-value="true"  /><label for="cart_options_{{gg._id}}{{sf.id}}{{jg}}">{{vb.name}} <span ng-if="vb.price > 0">({{vb.price | priceformat}})</span></label>
+			                                   								<div class="form-label" ng-if="sf.typedata.display_type ==='radio'">
+								                                   				 <input type="radio" id="cart_options_{{gg._id}}{{sf.id}}{{jg}}" ng-model="cart.options[wq._id][sf.id]" ng-value="jg" ng-required="sf.required" ng-change="updatePrice(sf.id, jg,wq)" /><label for="cart_options_{{gg._id}}{{sf.id}}{{jg}}">{{vb.name}} <span ng-if="vb.price > 0">({{vb.price | priceformat}})</span></label>
 								                                   			</div> 
 			                                   							</li>
 			                                   						</ul>
