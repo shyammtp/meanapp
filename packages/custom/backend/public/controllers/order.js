@@ -41,11 +41,13 @@
         $scope.cartid = '';
         $scope.cartorder = {};
         $scope.hasitem = {};
-        var urs= '58e38a461479f732f6ca585d'; 
+        var urs= '58e38a461479f732f6ca585d';  
         ItemMenus.getCartByUser(urs).then(function(res){    
             angular.forEach(res.data.data.items, function(v,k) {
                 $scope.hasitem[v.item_ref] = true;
             }) 
+
+            console.log($scope);
             $scope.cartid = res.data.data._id;
             $scope.cartorder = res.data.data;
             $scope.cartorder.priceset = ItemMenus.calculatePrices(res.data.data);
@@ -60,9 +62,7 @@
                 return {};                
             }
             var items = {};
-            console.log($scope.cartorder);
-            angular.forEach( $scope.cartorder.items, function(v,l) {
-                console.log(item);
+            angular.forEach( $scope.cartorder.items, function(v,l) { 
                 if(item._id === v._id) {
                     items = v;
                     return;
@@ -80,49 +80,46 @@
             return false;
         }
 
-        $scope.updateQuantity = function(item,ty) {
+        $scope.updateQuantity = function(item,ty) { 
             var cartorder = $scope.cartorder; 
             var newor = cartorder;
             if(ty === 'add') {
-                var newtms = [];
+                var newtms = [],promise;
                 angular.forEach(cartorder.items,function(l,gh){
                     var itms = l;
                     if(l._id === item._id) { 
-                        itms.quantity = parseInt(l.quantity) + 1;
-                        var promise = $timeout(function() {
-                            return ItemMenus.updateCartQuantity(cartorder._id,{quantity : itms.quantity,item_id : item._id,_id : cartorder._id}); 
-                        }, 1000);
-                    }
+                        itms.quantity = parseInt(l.quantity) + 1;  
+                        //console.log(angular.extend(itms,{item_id : item._id,_id : cartorder._id,user : cartorder.user}));
+                        ItemMenus.updateCartQuantity(cartorder._id,itms); 
+                         
+                    } 
                     newtms.push(itms);
                 })
                 newor.items = newtms;
-            } if(ty === 'sub') {
+            }
+
+            if(ty === 'sub') {
                 var newtms = [];
+                var promise;
                 angular.forEach(cartorder.items,function(l,gh){
                     var itms = l;
                     if(l._id === item._id) { 
                         itms.quantity = parseInt(l.quantity) - 1;
-                        if(itms.quantity < 0) {
+                        if(itms.quantity <= 0) {
                             itms.quantity = 1;
-                        }
-                        var promise = $timeout(function() {
-                            return ItemMenus.updateCartQuantity(cartorder._id,{quantity : itms.quantity,item_id : item._id,_id : cartorder._id}); 
-                        }, 1000);
+                        } 
+                       ItemMenus.updateCartQuantity(cartorder._id,itms);  
                     }
                     newtms.push(itms);
                 })
 
-
-                // Stop the pending timeout
-                $timeout.cancel(promise);
+ 
                 newor.items = newtms;
-            } 
+            }  
             $scope.cartorder = newor;
-            $scope.cartorder.priceset = ItemMenus.calculatePrices(newor);
-            console.log($scope.cartorder);
+            $scope.cartorder.priceset = ItemMenus.calculatePrices(newor); 
         }
-        $scope.getItemPriceSubtotal = function(itemid) {
-            console.log(itemid);
+        $scope.getItemPriceSubtotal = function(itemid) { 
             return ArrayUtil.get(ArrayUtil.get($scope.cartorder.priceset,'individualitemsubtotal',{}),itemid,0);
         }
         $scope.addToCart = function(item, menu) { 
@@ -176,7 +173,7 @@
                                 dt = res.data;
                                 $scope.hasitem[item._id] = true;
                             } 
-                            console.log($scope.hasitem);
+                            console.log($scope);
                             $scope.cartid = dt._id;
                             $scope.cartorder = dt;
                             $scope.cartorder.priceset = ItemMenus.calculatePrices(dt);

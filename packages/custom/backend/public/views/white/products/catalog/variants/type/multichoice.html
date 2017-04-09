@@ -8,8 +8,12 @@
 </div>
 <div class="form-group">
 	<input type="checkbox" id="multiples" ng-model="typedata.ismultiple"/><label for="multiples" class="">Multiple</label> 	
-	<p class="help-block">This will make the user to pick more than one items.</p>	
-	 
+	<p class="help-block">This will make the user to pick more than one items.</p>	 
+</div>
+
+<div class="form-group" ng-if="typedata.ismultiple">
+	<label for="multiples" class="">Minimum options to choose</label> 	
+	<input type="text"  ng-model="typedata.mincount"/>  
 </div>
 <div class="form-group">
 	<label for="input-Default" class="">List of values</label> 

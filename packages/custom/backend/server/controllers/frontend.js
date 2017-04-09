@@ -86,15 +86,22 @@ var Mongoose = require('mongoose'),
             cart.count({_id: arrayutil.get(req.params,'id'),orderplaced : false},function(err,count) {
                 if(count <= 0) {
                     return res.status(500).json({message : 'Invalid Cart',success : false});
-                }
-                u.setId(arrayutil.get(req.params,'id'));
-                u.addData(req.body);
-                u.updateData(arrayutil.get(req.body,'_id'),function(err,sd) {
-                    if(err) return res.status(500).json(err);
-                    //socketio.sockets.emit('cart.orders', sd);
-                    res.status(200).json(sd);
-
-                });
+                } 
+                cart.findOneAndUpdate(
+                    { "_id": arrayutil.get(req.params,'id'), "items._id": arrayutil.get(req.body,'_id') },
+                    { 
+                        "$set": {
+                            "items.$": req.body
+                        }
+                    },
+                    {upsert: true},
+                    function(err,doc) {
+                        cart.findOne({_id :  arrayutil.get(req.params,'id')}).populate([{path: 'user',select : 'email name'},{path : 'reserved_for',select : 'email name'}]).exec(function(err,doc) {
+                            if(err) return res.status(500).json(err);
+                            res.status(200).json(doc);
+                        });
+                    }
+                ); 
             });
         },
         saveCart : function(req,res,next) {

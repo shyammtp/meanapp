@@ -4525,7 +4525,7 @@ table.outsideborder {border:1px solid #2d2d2d;}
 .selecto { max-height: 250px; overflow: auto; border: 1px solid #292929;}
 .selecto li {}
 .selecto li a { padding: 6px;display: block;  cursor: pointer; text-decoration: none;}
-.selecto li a:hover ,.selecto li a.active{ padding: 6px;  background: #292929; }
+.selecto li a:hover ,.selecto li a.active{ padding: 6px;  background: #1abc9c; color:white; }
 
 
 .ui-datepicker {
