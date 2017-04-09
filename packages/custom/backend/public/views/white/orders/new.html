@@ -108,11 +108,11 @@
 
 		                						<div class="input-group m-b-sm qunatitybox pull-left" style="width:30%;">
                            							<span class="input-group-btn">
-                                                        <button class="btn btn-default minusbutn" style="border-top-left-radius: 8px;border-bottom-left-radius: 8px;" type="button"><i class="fa fa-minus"></i></button>
+                                                        <button class="btn btn-default minusbutn" ng-click="updateQuantity(hs,'sub')"  type="button"><i class="fa fa-minus"></i></button>
                                                     </span>
-                                                    <span class="box">1</span>
+                                                    <span class="box">{{hs.quantity}}</span>
                                                     <span class="input-group-btn">
-                                                        <button class="btn btn-default plusbutn" style="border-top-right-radius: 8px;border-bottom-right-radius: 8px;" type="button"><i class="fa fa-plus"></i></button>
+                                                        <button class="btn btn-default plusbutn"  ng-click="updateQuantity(hs,'add')" type="button"><i class="fa fa-plus"></i></button>
                                                     </span>
                                                 </div>
                                                 <div class="pull-right quantityprice">

@@ -41,7 +41,7 @@
         $scope.cartid = '';
         $scope.cartorder = {};
         $scope.hasitem = {};
-        var urs= '58e2a03b504dc92a187621ab'; 
+        var urs= '58e38a461479f732f6ca585d'; 
         ItemMenus.getCartByUser(urs).then(function(res){    
             angular.forEach(res.data.data.items, function(v,k) {
                 $scope.hasitem[v.item_ref] = true;
@@ -78,6 +78,48 @@
                 return true;
             }
             return false;
+        }
+
+        $scope.updateQuantity = function(item,ty) {
+            var cartorder = $scope.cartorder; 
+            var newor = cartorder;
+            if(ty === 'add') {
+                var newtms = [];
+                angular.forEach(cartorder.items,function(l,gh){
+                    var itms = l;
+                    if(l._id === item._id) { 
+                        itms.quantity = parseInt(l.quantity) + 1;
+                        var promise = $timeout(function() {
+                            return ItemMenus.updateCartQuantity(cartorder._id,{quantity : itms.quantity,item_id : item._id,_id : cartorder._id}); 
+                        }, 1000);
+                    }
+                    newtms.push(itms);
+                })
+                newor.items = newtms;
+            } if(ty === 'sub') {
+                var newtms = [];
+                angular.forEach(cartorder.items,function(l,gh){
+                    var itms = l;
+                    if(l._id === item._id) { 
+                        itms.quantity = parseInt(l.quantity) - 1;
+                        if(itms.quantity < 0) {
+                            itms.quantity = 1;
+                        }
+                        var promise = $timeout(function() {
+                            return ItemMenus.updateCartQuantity(cartorder._id,{quantity : itms.quantity,item_id : item._id,_id : cartorder._id}); 
+                        }, 1000);
+                    }
+                    newtms.push(itms);
+                })
+
+
+                // Stop the pending timeout
+                $timeout.cancel(promise);
+                newor.items = newtms;
+            } 
+            $scope.cartorder = newor;
+            $scope.cartorder.priceset = ItemMenus.calculatePrices(newor);
+            console.log($scope.cartorder);
         }
         $scope.getItemPriceSubtotal = function(itemid) {
             console.log(itemid);

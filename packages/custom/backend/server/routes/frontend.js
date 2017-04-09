@@ -18,6 +18,7 @@ var Mongoose = require('mongoose'),
         app.delete('/api/category/delete/:id',products.deleteCategory);*/
         app.post('/api/v1/user/save',frontend.saveUser);
         app.post('/api/v1/cart/add',frontend.saveCart);
+        app.put('/api/v1/cart/update/:id',frontend.updateCart);
         app.get('/api/v1/cart/get/:userid',frontend.getCart);
          
     };

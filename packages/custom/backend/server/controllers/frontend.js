@@ -81,6 +81,22 @@ var Mongoose = require('mongoose'),
                 res.status(200).json({message : 'Got the result', data  : doc});
             });
         },
+        updateCart : function(req,res,next) {
+            var u = new cart();
+            cart.count({_id: arrayutil.get(req.params,'id'),orderplaced : false},function(err,count) {
+                if(count <= 0) {
+                    return res.status(500).json({message : 'Invalid Cart',success : false});
+                }
+                u.setId(arrayutil.get(req.params,'id'));
+                u.addData(req.body);
+                u.updateData(arrayutil.get(req.body,'_id'),function(err,sd) {
+                    if(err) return res.status(500).json(err);
+                    //socketio.sockets.emit('cart.orders', sd);
+                    res.status(200).json(sd);
+
+                });
+            });
+        },
         saveCart : function(req,res,next) {
             var u = new cart();
             var socketio = req.app.get('socketio');  

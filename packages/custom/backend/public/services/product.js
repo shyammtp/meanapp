@@ -432,6 +432,14 @@
                     deferred.reject(response);
                 });
                 return deferred.promise;
+            },updateCartQuantity : function(id, post) {
+                var deferred = $q.defer(); 
+                $http.put('/api/v1/cart/update/'+id,post,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                    deferred.resolve(response);
+                }, function(response) {
+                    deferred.reject(response);
+                });
+                return deferred.promise;
             },addCart : function(post) {
                 var deferred = $q.defer(); 
                 $http.post('api/v1/cart/add',post,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
