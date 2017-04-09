@@ -18,7 +18,7 @@
             },
             controller: 'BackendCoreController as vm'};
             //console.log($locationProvider);
-        //$urlRouterProvider.otherwise('/otherwise');
+        $urlRouterProvider.otherwise('/admin/dashboard');
         $stateProvider.state('login',angular.extend({},defal,{
                 url: '/admin/login',
                 templateUrl: 'backend/views/'+theme+'/login.html'

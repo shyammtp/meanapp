@@ -69,6 +69,18 @@ var Mongoose = require('mongoose'),
                 });
             }
         },
+        getCart : function(req,res,next) {
+            var u = new cart();
+            var filter =  {};  
+
+            cart.findOne({user: arrayutil.get(req.params,'userid'),orderplaced : false}).populate('user').exec(function(err,doc) {
+                console.log(doc);
+                if(!doc) {
+                    return res.status(500).json({message : 'Invalid Cart',success : false});
+                }
+                res.status(200).json({message : 'Got the result', data  : doc});
+            });
+        },
         saveCart : function(req,res,next) {
             var u = new cart();
             var socketio = req.app.get('socketio');  

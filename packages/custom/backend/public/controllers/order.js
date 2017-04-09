@@ -42,6 +42,18 @@
         $scope.cartorder = {};
         $scope.hasitem = {};
         var urs= '58e2a03b504dc92a187621ab'; 
+        ItemMenus.getCartByUser(urs).then(function(res){    
+            angular.forEach(res.data.data.items, function(v,k) {
+                $scope.hasitem[v.item_ref] = true;
+            }) 
+            $scope.cartid = res.data.data._id;
+            $scope.cartorder = res.data.data;
+            $scope.cartorder.priceset = ItemMenus.calculatePrices(res.data.data);
+        },function(err) {
+            if(err.status == 500) {
+
+            }
+        })
 
         var getCartItem = function(item) {
             if(! $scope.cartorder ) {
@@ -66,6 +78,10 @@
                 return true;
             }
             return false;
+        }
+        $scope.getItemPriceSubtotal = function(itemid) {
+            console.log(itemid);
+            return ArrayUtil.get(ArrayUtil.get($scope.cartorder.priceset,'individualitemsubtotal',{}),itemid,0);
         }
         $scope.addToCart = function(item, menu) { 
              $scope.showvariant[item._id] = false;
@@ -102,7 +118,7 @@
                             }
 
                         });
-                        data.price = ArrayUtil.get(variationamoutsubtotal,item._id,0);
+                        //data.price = ArrayUtil.get(variationamoutsubtotal,item._id,0);
                        
                         insert = true; 
                     }  
@@ -121,6 +137,7 @@
                             console.log($scope.hasitem);
                             $scope.cartid = dt._id;
                             $scope.cartorder = dt;
+                            $scope.cartorder.priceset = ItemMenus.calculatePrices(dt);
                         },function(err) { 
                         }); 
 

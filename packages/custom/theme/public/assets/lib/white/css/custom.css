@@ -4801,7 +4801,7 @@ a.ui-button:active,
 .var-options-lis li .addln ,.var-optionsst-lis li .editln{text-align: right;}
 .var-options-lis li .addln a{color:#e74c3c;}
 .var-options-lis li {margin:5px 0;}
-.choosedoptions .blockc {background-color:#1F1F1F; padding: 6px;}
+.choosedoptions .blockc {background-color:#f5f5f5; padding: 6px;}
 .choosedoptions li {margin:5px 0;}
 .choosedoptions .opt-header {border-bottom: 1px solid #2d2d2d; padding: 5px 0;}
 .choosedoptions .editmodecontainer {border-top:1px solid #2d2d2d;margin-top: 10px;padding-top: 10px;}
@@ -4821,7 +4821,7 @@ a.ui-button:active,
 .boxedform {border-bottom:1px solid #ccc;     padding: 27px 0;}
 .boxedform .rightbox{ padding: 15px;  }
 .boxedform .no-padding {padding: 0!important;}
-.boxedform .form-block { padding: 15px; background: #131313; }
+.boxedform .form-block { padding: 15px; background: #f5f5f5; }
 
 .padding15 { padding: 15px; }
 .margin15 { margin: 15px; }
@@ -4840,7 +4840,7 @@ a.ui-button:active,
 .red-background {background-color: red;}
 .cbp-spmenu h3 {height: auto;}
 span.paratext {    font-size: 12px;    display: block;    margin-top: 10px;}
-.advsearch_textfield{background: #131313; padding:24px 10px 5px 10px;}
+.advsearch_textfield{background: #f5f5f5; padding:24px 10px 5px 10px;}
 fieldset {border:1px solid #cacaca;padding: 10px;    margin-top: 10px;}
 legend { border:none; width: auto; font-size:16px; margin-left: 10px; margin-bottom:0; color:#828282;}
 .margt10 {margin-top: 10px;}
@@ -5117,4 +5117,14 @@ legend { border:none; width: auto; font-size:16px; margin-left: 10px; margin-bot
 .order-items-sl .price {font-size:16px;}
 .state-preloader {position: fixed;top:0; font-size:11px; background-color: #756BB0; padding: 2px 6px; color:white;}
 .urorder .footer-d{background-color: #fafafa; padding: 10px;box-shadow: rgba(0,0,0,.15) 0 -2px 15px -5px;border-top: 1px solid #e7e7e7; height: 100%;}
-.qunatitybox .box {border:1px solid #eee; height: 33px; width: 37px;display: block;padding-top: 6px; text-align: center;}
+.qunatitybox .box {border:1px solid #eee; height: 33px; min-width: 37px;display: block;padding-top: 6px; text-align: center;}
+.carttable .imtemlist {padding: 10px;}
+.carttable .imtemlist > li {margin-top: 10px;}
+.carttable .imtemlist .item-nam {font-size:14px; font-weight: bold; color:#1abc9c;}
+.carttable .imtemlist .pricesdg {text-align: right;}
+.carttable .imtemlist .subitmes {font-size:12px; color:#ccc;}
+
+.carttable .imtemlist .quantityprice-container .quantityprice {padding-top: 8px; color:#ccc;}
+.carttable .imtemlist .quantityprice-container {margin-top: 15px;}
+.plusbutn {font-size: 12px;color: #737373;    border-top-right-radius: 8px;    border-bottom-right-radius: 8px;}
+.minusbutn {font-size: 12px;color: #737373;    border-top-left-radius: 8px;    border-bottom-left-radius: 8px;}
