@@ -41,13 +41,17 @@
         $scope.cartid = '';
         $scope.cartorder = {};
         $scope.hasitem = {};
+        $scope.itemsquantity = {};
         var urs= '58e38a461479f732f6ca585d';  
         ItemMenus.getCartByUser(urs).then(function(res){    
             angular.forEach(res.data.data.items, function(v,k) {
                 $scope.hasitem[v.item_ref] = true;
+                if(!ArrayUtil.get($scope.itemsquantity,v.item_ref)) {
+                     $scope.itemsquantity[v.item_ref] = 1;
+                }
+               
             }) 
-
-            console.log($scope);
+ 
             $scope.cartid = res.data.data._id;
             $scope.cartorder = res.data.data;
             $scope.cartorder.priceset = ItemMenus.calculatePrices(res.data.data);
@@ -89,6 +93,7 @@
                     var itms = l;
                     if(l._id === item._id) { 
                         itms.quantity = parseInt(l.quantity) + 1;  
+                        $scope.itemsquantity[l.item_ref] = itms.quantity;
                         //console.log(angular.extend(itms,{item_id : item._id,_id : cartorder._id,user : cartorder.user}));
                         ItemMenus.updateCartQuantity(cartorder._id,itms); 
                          
@@ -106,11 +111,19 @@
                     if(l._id === item._id) { 
                         itms.quantity = parseInt(l.quantity) - 1;
                         if(itms.quantity <= 0) {
-                            itms.quantity = 1;
+                           // itms.quantity = 1;
                         } 
-                       ItemMenus.updateCartQuantity(cartorder._id,itms);  
+                        if(itms.quantity <= 0) { 
+                            $scope.hasitem[l.item_ref] = false;
+                            ItemMenus.removeItem(cartorder._id,l._id);
+                        } else {
+                            ItemMenus.updateCartQuantity(cartorder._id,itms);
+                        } 
+                        $scope.itemsquantity[l.item_ref] = itms.quantity;
                     }
-                    newtms.push(itms);
+                    if(itms.quantity > 0) {
+                        newtms.push(itms);
+                    }
                 })
 
  

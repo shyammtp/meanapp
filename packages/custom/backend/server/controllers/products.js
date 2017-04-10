@@ -583,6 +583,28 @@ var Mongoose = require('mongoose'),
 						} 
 					});  
 					//return res.status(200).json({message: 'Not Updated'});
+				},
+				removecartitem : function(req,res,next) { 
+					
+					//res.status(200).json({message: "Invalid Cart ID"});
+					if(!arrayutil.get(req.params,'cartid')) {
+						return res.status(500).json({message: "Invalid Cart ID"});
+					}
+					if(!arrayutil.get(req.query,'itemid')) {
+						return res.status(500).json({message: "Invalid Item ID"});
+					}
+					foodcart.findOne({_id : arrayutil.get(req.params,'cartid')},function (err, vars) {
+						vars.items.pull(arrayutil.get(req.query,'itemid'));
+						vars.save(function(err,doc) {
+							if(err) {
+								 res.status(500).json(err);
+							} else {
+								foodcart.findOne({_id : arrayutil.get(req.params,'cartid')}).sort({'sorting':1}).exec(function(err,r) {
+										res.status(200).json({message: 'Deleted Successfully',cart : r}); 
+								})
+							}
+						})
+					});
 				}
 
 		 }

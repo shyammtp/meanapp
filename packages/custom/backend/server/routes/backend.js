@@ -93,6 +93,7 @@ var Mongoose = require('mongoose'),
         app.get('/api/cart/getorder/:id',authentic,products.getCartOrder);
         app.put('/api/cart/update/:id',authentic,products.updatecart);
         app.post('/api/cart/employeehistory',authentic,products.addHistory);
+        app.delete('/api/cart/item/remove/:cartid',authentic,products.removecartitem);
 
         /* General */
         app.get('/api/adminconfig',function(req,res) {             
