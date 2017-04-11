@@ -62,15 +62,20 @@
 					                                   		<li class="" ng-repeat="(av,sf) in wq.variantsetid.option_set">
 					                                   			<div class="blocksitems">
 					                                   				<div class="">
-					                                   					{{sf.display_name}}
+					                                   					{{sf.display_name}} {{getChooseText(sf.typedata)}}
 					                                   				</div>  
 					                                   			</div>
 					                                   			<div class="menu-sub-items-list-container">
 			                                   						<ul class="menu-sub-items-list">
-			                                   							<li ng-repeat="(jg,vb) in sf.typedata.listvalues track by jg">
-			                                   								<div class="form-label" ng-if="sf.typedata.display_type ==='radio'">
-								                                   				 <input type="radio" id="cart_options_{{gg._id}}{{sf.id}}{{jg}}" ng-model="cart.options[wq._id][sf.id]" ng-value="jg" ng-required="sf.required" ng-change="updatePrice(sf.id, jg,wq)" /><label for="cart_options_{{gg._id}}{{sf.id}}{{jg}}">{{vb.name}} <span ng-if="vb.price > 0">({{vb.price | priceformat}})</span></label>
+			                                   							
+			                                   							<li ng-repeat="(jg,vb) in sf.typedata.listvalues track by jg" >
+
+			                                   								<div class="form-label" ng-if="sf.typedata.ismultiple !== true">
+								                                   				 <input type="radio" id="cart_options_{{gg._id}}{{sf.id}}{{jg}}" ng-model="cart.options[wq._id][sf.id]" ng-value="jg" ng-required="sf.required" ng-change="updatePrice(sf.id, jg,wq)" /><label for="cart_options_{{gg._id}}{{sf.id}}{{jg}}">{{vb.name}}  <span ng-if="vb.price > 0">({{vb.price | priceformat}})</span></label>
 								                                   			</div> 
+								                                   			<div class="form-label" ng-if="sf.typedata.ismultiple === true">
+								                                   				 <input type="checkbox" id="cart_options_{{gg._id}}{{sf.id}}{{jg}}" ng-model="cart.options[wq._id][sf.id][jg]" ng-value="jg" ng-required="sf.required" ng-change="updatePrice(sf.id, jg,wq)" /><label for="cart_options_{{gg._id}}{{sf.id}}{{jg}}">{{vb.name}}  <span ng-if="vb.price > 0">({{vb.price | priceformat}})</span></label>
+								                                   			</div>
 			                                   							</li>
 			                                   						</ul>
 			                                   					</div>

@@ -47,7 +47,7 @@
             angular.forEach(res.data.data.items, function(v,k) {
                 $scope.hasitem[v.item_ref] = true;
                 if(!ArrayUtil.get($scope.itemsquantity,v.item_ref)) {
-                     $scope.itemsquantity[v.item_ref] = 1;
+                     $scope.itemsquantity[v.item_ref] = v.quantity;
                 }
                
             }) 
@@ -185,8 +185,10 @@
                             } else {
                                 dt = res.data;
                                 $scope.hasitem[item._id] = true;
-                            } 
-                            console.log($scope);
+                            }  
+                            if(!ArrayUtil.get($scope.itemsquantity,item.item_ref)) {
+                                 $scope.itemsquantity[item.item_ref] = 1;
+                            }
                             $scope.cartid = dt._id;
                             $scope.cartorder = dt;
                             $scope.cartorder.priceset = ItemMenus.calculatePrices(dt);
@@ -196,6 +198,7 @@
                     } 
 
                 }
+
         }
 
         var validateoptions = function(item) {
@@ -210,17 +213,46 @@
             var changedoptions = $scope.cart.options[item._id]; 
             var optionset = item.variantsetid.option_set;
             var sets = {};
+            console.log(changedoptions); 
             angular.forEach(optionset,function(val,key) {
                 sets[val.id] = val.typedata.listvalues;
             });
+            console.log(sets);
             var variationamount = ArrayUtil.get(item.data,'standard_price',0);
             angular.forEach(changedoptions,function(v,k) {
                 if(k in sets) { 
-                    var finald = sets[k][v];
-                    variationamount += ArrayUtil.get(finald,'price',0); 
+                    if(typeof v === 'object') {
+                        angular.forEach(v,function(sd,vf) {
+                            if(sd) {
+                                var finald = sets[k][vf]; 
+                                if(finald) {
+                                    variationamount += ArrayUtil.get(finald,'price',0); 
+                                }
+                            }
+                        });
+                    } else {
+                        var finald = sets[k][v];
+                        if(finald) {
+                            variationamount += ArrayUtil.get(finald,'price',0); 
+                        }
+                    }
+                    
                 }
             });
             variationamoutsubtotal[item._id] = variationamount; 
+        }
+
+        $scope.getChooseText = function(typedata) { 
+            if(typeof typedata.ismultiple !== 'undefined') { 
+                if(parseInt(typedata.mincount) > 0) {
+                    return '(Choose upto '+typedata.mincount+' items)';
+                } else if(parseInt(typedata.mincount) === 0) {
+                    return '';
+                } else {
+                    return '(Choose 1)';
+                }
+            }
+            return '';
         }
 
     }

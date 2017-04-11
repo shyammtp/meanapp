@@ -20,6 +20,7 @@ var Mongoose = require('mongoose'),
                     variantset.findOne({_id : pdoc.variantsetid},function(err,vdoc) {
                         var optionset = vdoc.option_set;
                         var postoptions = arrayutil.get(post,'options');
+                        console.log(postoptions);
                         var optvarss = []; 
                         optionset.forEach(function(v,h){ 
                             if(v.required === true) {
@@ -31,9 +32,20 @@ var Mongoose = require('mongoose'),
                                 var sf = {};
                                 sf.name =  v.display_name;
                                 var values = postoptions[v.id];
+                                 if(typeof values === 'object') {
+                                    var ssd = [];
+                                    for(var gh in values) {
+                                        if(values[gh]) {
+                                            ssd.push(gh);
+                                        }
+                                    }
+                                    values = ssd;
+                                }
+                                console.log(values);
                                 var variantitems = []; 
                                 for(var k in v.typedata.listvalues) {
                                     var ll = v.typedata.listvalues[k];
+
                                     if(values.indexOf(k) > -1) {
                                         var getl = ll;
                                         variantitems.push({name : ll.name,price : arrayutil.get(ll,'price',0)});

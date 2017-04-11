@@ -186,6 +186,10 @@
             return deferred.promise;
         }, 
         formatPrice = function(value) { 
+            if(!value) {
+                value = 0;
+            }
+            var value = parseFloat(value);            
             var settings = $window.settings,currency = ArrayUtil.get($window.current_currency,ArrayUtil.get(settings,'currency'));
             var htmlcurrency = ArrayUtil.get(settings,'html_currency'); 
             return ArrayUtil.replaceStr(htmlcurrency,["%%currency%%","%%amount%%"],[currency.currency_symbol,value.formatNumber(2,',','.')]);               
@@ -461,18 +465,21 @@
                 var grandtotal = 0;
                 prices.individualitemsubtotal = {};
                 prices.subtotal = 0; 
-                var subtotal = 0;
-                console.log(cart.items);
+                var subtotal = 0; 
                 angular.forEach(cart.items, function(s,g) {
                     var additions = 0;
                     angular.forEach(s.additions,function(m,v){
                         angular.forEach(m.options, function(i,t){
+                            if(!i.price) {
+                                i.price = 0;
+                            }
                             additions += parseFloat(i.price);
                         })
                     })
                     subtotal += prices.individualitemsubtotal[s._id] = ArrayUtil.get(s,'quantity',1) * (parseFloat(s.price)+additions);
                 })
-                prices.subtotal = subtotal;                  
+                prices.subtotal = subtotal;    
+                console.log(prices);              
                 return prices;
             }
         }

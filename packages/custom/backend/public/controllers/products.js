@@ -670,7 +670,7 @@
             if(page < 1) {
                 page = 1;
             }
-            ListWidget.request({page: page,limit : 20,passtoken : true}).then(function(res){  
+            ListWidget.request({page: page,limit : 20,passtoken : true,nocache : true}).then(function(res){  
                 console.log(res.data.docs);
                 ListWidget.setTotalItems(res.data.total)
                         .setPageSize(20).setPage(page)
@@ -680,7 +680,7 @@
             });    
         }  
         $scope.widgetlimitchange = function(selected) {
-            ListWidget.request({page: 1,limit : selected,passtoken : true}).then(function(res){  
+            ListWidget.request({page: 1,limit : selected,passtoken : true,nocache : true}).then(function(res){  
                 ListWidget.setTotalItems(res.data.total)
                         .setPageSize(selected).setPage(1)
                         .setDBResults(res.data.docs);   
@@ -706,7 +706,7 @@
             if(page < 1) {
                 page = 1;
             }
-            ListWidget.request({page: page,limit : 20,passtoken : true}).then(function(res){  
+            ListWidget.request({page: page,limit : 20,passtoken : true,nocache : true}).then(function(res){  
                 ListWidget.setTotalItems(res.data.total)
                         .setPageSize(20).setPage(page)
                         .setDBResults(res.data.docs);   
@@ -715,7 +715,7 @@
             });    
         }  
         $scope.widgetlimitchange = function(selected) {
-            ListWidget.request({page: 1,limit : selected,passtoken : true}).then(function(res){  
+            ListWidget.request({page: 1,limit : selected,passtoken : true,nocache : true}).then(function(res){  
                 ListWidget.setTotalItems(res.data.total)
                         .setPageSize(selected).setPage(1)
                         .setDBResults(res.data.docs);   
