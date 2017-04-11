@@ -42,15 +42,19 @@
         $scope.cartorder = {};
         $scope.hasitem = {};
         $scope.itemsquantity = {};
+        $scope.mainitem = {};
         var urs= '58e38a461479f732f6ca585d';  
+        var itemsset = {};
         ItemMenus.getCartByUser(urs).then(function(res){    
             angular.forEach(res.data.data.items, function(v,k) {
                 $scope.hasitem[v.item_ref] = true;
                 if(!ArrayUtil.get($scope.itemsquantity,v.item_ref)) {
                      $scope.itemsquantity[v.item_ref] = v.quantity;
                 }
-               
-            }) 
+                itemsset[v.item_ref] = v; 
+            });
+
+            $scope.mainitem = angular.extend({},$scope.mainitem,itemsset);
  
             $scope.cartid = res.data.data._id;
             $scope.cartorder = res.data.data;
@@ -84,6 +88,16 @@
             return false;
         }
 
+        $scope.updateItemQuantity = function(pditem, ty) {
+            var cartorder = $scope.cartorder;  
+            angular.forEach(cartorder.items,function(l,gh){
+                //update 
+                if(pditem._id === l.item_ref) {  
+                    $scope.updateQuantity(ArrayUtil.get($scope.mainitem,pditem._id),ty);
+                }
+            });
+        }
+
         $scope.updateQuantity = function(item,ty) { 
             var cartorder = $scope.cartorder; 
             var newor = cartorder;
@@ -96,7 +110,6 @@
                         $scope.itemsquantity[l.item_ref] = itms.quantity;
                         //console.log(angular.extend(itms,{item_id : item._id,_id : cartorder._id,user : cartorder.user}));
                         ItemMenus.updateCartQuantity(cartorder._id,itms); 
-                         
                     } 
                     newtms.push(itms);
                 })
@@ -170,6 +183,7 @@
                             }
 
                         });
+                         
                         //data.price = ArrayUtil.get(variationamoutsubtotal,item._id,0);
                        
                         insert = true; 
@@ -186,9 +200,14 @@
                                 dt = res.data;
                                 $scope.hasitem[item._id] = true;
                             }  
-                            if(!ArrayUtil.get($scope.itemsquantity,item.item_ref)) {
-                                 $scope.itemsquantity[item.item_ref] = 1;
+                            if(!ArrayUtil.get($scope.itemsquantity,item._id)) {
+                                 $scope.itemsquantity[item._id] = 1;
                             }
+                            var itemsset = {};
+                            angular.forEach(dt.items,function(v,k){
+                                itemsset[v.item_ref] = v; 
+                            });
+                            $scope.mainitem = angular.extend({},$scope.mainitem,itemsset);
                             $scope.cartid = dt._id;
                             $scope.cartorder = dt;
                             $scope.cartorder.priceset = ItemMenus.calculatePrices(dt);
@@ -212,27 +231,28 @@
         $scope.updatePrice = function(setid, value, item) {
             var changedoptions = $scope.cart.options[item._id]; 
             var optionset = item.variantsetid.option_set;
-            var sets = {};
-            console.log(changedoptions); 
+            var sets = {}; 
             angular.forEach(optionset,function(val,key) {
                 sets[val.id] = val.typedata.listvalues;
-            });
-            console.log(sets);
+            }); 
             var variationamount = ArrayUtil.get(item.data,'standard_price',0);
+            if(!variationamount) {
+                variationamount = 0;
+            } 
             angular.forEach(changedoptions,function(v,k) {
                 if(k in sets) { 
                     if(typeof v === 'object') {
                         angular.forEach(v,function(sd,vf) {
                             if(sd) {
                                 var finald = sets[k][vf]; 
-                                if(finald) {
+                                if(finald) { 
                                     variationamount += ArrayUtil.get(finald,'price',0); 
                                 }
                             }
                         });
                     } else {
                         var finald = sets[k][v];
-                        if(finald) {
+                        if(finald) { 
                             variationamount += ArrayUtil.get(finald,'price',0); 
                         }
                     }

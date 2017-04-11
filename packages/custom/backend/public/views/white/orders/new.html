@@ -46,11 +46,11 @@
 	                               					<button class="btn btn-primary" ng-click="addToCart(wq,gg)" ng-if="!hasitem[wq._id]">ADD</button>
                                						<div class="input-group m-b-sm qunatitybox" ng-if="hasitem[wq._id]">
                                							<span class="input-group-btn">
-	                                                        <button class="btn btn-default minusbutn"  type="button"><i class="fa fa-minus"></i></button>
+	                                                        <button class="btn btn-default minusbutn" ng-click="updateItemQuantity(wq,'sub')" type="button"><i class="fa fa-minus"></i></button>
 	                                                    </span>
 	                                                    <span class="box">{{itemsquantity[wq._id]}}</span>
 	                                                    <span class="input-group-btn">
-	                                                        <button class="btn btn-default plusbutn" type="button"><i class="fa fa-plus"></i></button>
+	                                                        <button class="btn btn-default plusbutn"  ng-click="updateItemQuantity(wq,'add')"  type="button"><i class="fa fa-plus"></i></button>
 	                                                    </span>
 	                                                </div>
 	                               				</div> 
@@ -70,11 +70,11 @@
 			                                   							
 			                                   							<li ng-repeat="(jg,vb) in sf.typedata.listvalues track by jg" >
 
-			                                   								<div class="form-label" ng-if="sf.typedata.ismultiple !== true">
-								                                   				 <input type="radio" id="cart_options_{{gg._id}}{{sf.id}}{{jg}}" ng-model="cart.options[wq._id][sf.id]" ng-value="jg" ng-required="sf.required" ng-change="updatePrice(sf.id, jg,wq)" /><label for="cart_options_{{gg._id}}{{sf.id}}{{jg}}">{{vb.name}}  <span ng-if="vb.price > 0">({{vb.price | priceformat}})</span></label>
+			                                   								<div class="form-label" ng-if="sf.typedata.ismultiple !== true && vb.required === true">
+								                                   				 <input type="radio" id="cart_options_{{gg._id}}{{wq._id}}{{sf.id}}{{jg}}" ng-model="cart.options[wq._id][sf.id]" ng-value="jg" ng-required="sf.required" ng-change="updatePrice(sf.id, jg,wq)" /><label for="cart_options_{{gg._id}}{{wq._id}}{{sf.id}}{{jg}}">{{vb.name}}  <span ng-if="vb.price > 0">({{vb.price | priceformat}})</span></label>
 								                                   			</div> 
-								                                   			<div class="form-label" ng-if="sf.typedata.ismultiple === true">
-								                                   				 <input type="checkbox" id="cart_options_{{gg._id}}{{sf.id}}{{jg}}" ng-model="cart.options[wq._id][sf.id][jg]" ng-value="jg" ng-required="sf.required" ng-change="updatePrice(sf.id, jg,wq)" /><label for="cart_options_{{gg._id}}{{sf.id}}{{jg}}">{{vb.name}}  <span ng-if="vb.price > 0">({{vb.price | priceformat}})</span></label>
+								                                   			<div class="form-label" ng-if="sf.typedata.ismultiple === true && vb.required === true">
+								                                   				 <input type="checkbox" id="cart_options_{{gg._id}}{{wq._id}}{{sf.id}}{{jg}}" ng-model="cart.options[wq._id][sf.id][jg]" ng-value="jg" ng-required="sf.required" ng-change="updatePrice(sf.id, jg,wq)" /><label for="cart_options_{{gg._id}}{{wq._id}}{{sf.id}}{{jg}}">{{vb.name}}  <span ng-if="vb.price > 0">({{vb.price | priceformat}})</span></label>
 								                                   			</div>
 			                                   							</li>
 			                                   						</ul>

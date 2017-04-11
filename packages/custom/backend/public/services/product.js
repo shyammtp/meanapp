@@ -468,6 +468,9 @@
                 var subtotal = 0; 
                 angular.forEach(cart.items, function(s,g) {
                     var additions = 0;
+                    if(!s.price) {
+                        s.price = 0;
+                    }
                     angular.forEach(s.additions,function(m,v){
                         angular.forEach(m.options, function(i,t){
                             if(!i.price) {
@@ -478,8 +481,7 @@
                     })
                     subtotal += prices.individualitemsubtotal[s._id] = ArrayUtil.get(s,'quantity',1) * (parseFloat(s.price)+additions);
                 })
-                prices.subtotal = subtotal;    
-                console.log(prices);              
+                prices.subtotal = subtotal;       
                 return prices;
             }
         }
