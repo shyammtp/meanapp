@@ -15,6 +15,9 @@ config = meanio.getConfig(),
  
  var deliverySchema = new Schema ({ 
 	address : {type : String,required : true},
+	delivery_area : {type : String},
+	delivery_instructions : {type : String},
+	nickname : {type : String},
     updated_on: { type: Date, default: Date.now }   
 })
 

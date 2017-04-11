@@ -1,0 +1,115 @@
+<div class="page-inner">
+    <div class="page-title">
+        <h3 class="breadcrumb-header">{{params.title}}</h3>
+        <div breadcrumbs></div>
+    </div> 
+    <div id="main-wrapper">  
+      	<div ng-controller="BackendOrderPaymentController">
+            <div class="row">
+                <div class="col-xs-8">
+                	<h3>Select a payment method</h3>
+                </div>
+                <div class="col-xs-4 urorder"> 
+                	<div class="panel panel-default carttable"> 
+	                	<div class="panel-body" style="padding: 0px;">
+	                		<div class="row">
+	                			<div class="col-xs-12"> 
+			                		<h3>Personal Details</h3>
+			                		<div class="personal-detail"  ng-if="editpersonalinfo"  style="padding: 10px; border-bottom:1px solid #ccc;">
+			                			<div class="personald-form">
+			                				<div class="form-group">
+			                					<label>Name</label>
+			                					<input type="text" ng-model="cartorder.personalinfo.name" />
+			                				</div> 
+			                				<div class="form-group">
+			                					<label>Phone</label>
+			                					<input type="text" ng-model="cartorder.personalinfo.phone" />
+			                				</div>
+
+			                				<div class="form-group">
+			                					 <button class="btn btn-primary" ng-click="updatepersonalinfo()">Update</button>
+			                				</div>
+			                			</div> 
+			                		</div>
+			                		<div class="personalinfo-text"  ng-if="!editpersonalinfo"  style="padding: 10px; border-bottom:1px solid #ccc;">
+			                			{{cartorder.personalinfo.name}} <br/>
+			                			{{cartorder.personalinfo.phone}}
+			                		</div>
+	                			</div>
+	                		</div>
+	                		<div class="row">
+	                			<div class="col-xs-12"> 
+			                		<h3>Delivery Address</h3>
+			                		<div class="deliveryadd"  style="padding: 10px;">
+			                			<div class="deliveryaddrs">
+			                				<p>{{chooseddeliery.address}}</p>
+			                			</div>
+
+			                			<div class="deliveryaddrs_bt">
+			                				<button class="btn btn-primary" ng-click="addDeliveryaddress()" style="width: 100%; margin-top: 10px;">Add Your delivery address</button>
+			                			</div>
+			                		</div>
+	                			</div>
+	                		</div>
+	                	</div>
+                	</div>
+	                <div class="panel panel-default carttable">
+	                	<div class="panel-body" style="padding: 0px;">
+	                		<h3>Added Orders</h3>
+	                		<ul class="imtemlist" ng-if="cartorder.items.length > 0">
+	                			<li ng-repeat="(g,hs) in cartorder.items">
+	                				<div class="row"> 
+		                				<div class="col-xs-7"> 
+		                					<span class="item-nam">{{hs.item_name}}</span>
+		                					<div class="subitmes">
+
+		                						<ul>
+		                							<li ng-repeat="(t,y) in hs.additions">
+		                								{{y.name}} - <span ng-repeat="(o,s) in y.options track by o">{{s.name}}<span ng-if="s.price > 0">({{s.price | priceformat}})</span></span> 
+		                								
+		                							</li>
+		                						</ul>
+		                					</div>
+		                					<div class="quantityprice-container"> 
+                                                <div class="quantityprice"> 
+                                                    <span class="box">{{hs.quantity}}</span> x {{getItemPriceSubtotal(hs._id) | priceformat}}
+                                                </div>
+                                                <div class="clearfix"></div>
+		                					</div>
+		                				</div>
+		                				<div class="col-xs-5 pricesdg">
+		                					{{getItemPriceSubtotal(hs._id) | priceformat}}
+		                				</div>
+	                				</div>
+	                			</li>
+	                		</ul>
+	                		<div class="no-or"  ng-if="cartorder.items.length <= 0" style="text-align: center;margin:55px 0;">
+	                			 
+	                			<div style="text-align: center;"><img style="opacity: 0.2;" src="/theme/assets/lib/white/img/restaurant.png" /></div>
+	                			<div style="text-align:center; color:#ccc;">No items added</div>
+	                		</div>
+	                		<div class="footer-d">
+	                			<div class="row">
+	                				<div class="col-xs-4">Subtotal</div>
+	                				<div class="col-xs-8" style="text-align: right;">{{cartorder.priceset.subtotal | priceformat}}</div>
+	                			</div><!-- 
+	                			<div class="row">
+	                				<div class="col-xs-12">
+	                					<textarea class="form-control" ng-model="cart.additional" placeholder="Enter any additional information about your order. Eg: 'No Mayo!'" style="max-width: 100%;resize: none; margin-top: 10px;"></textarea>
+	                				</div>
+	                			</div> -->
+
+	                			<div class="row">
+	                				<div class="col-xs-12">
+	                					<button class="btn btn-primary" style="width: 100%;margin-top: 15px;">Pay it</button>
+	                				</div>
+	                			</div>
+	                		</div>
+	                	</div>
+	                </div> 
+                
+                </div>
+            </div>
+        </div>  
+    </div><!-- Main Wrapper --> 
+</div><!-- Page Inner --> 

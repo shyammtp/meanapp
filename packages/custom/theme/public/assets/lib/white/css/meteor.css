@@ -2517,18 +2517,18 @@ label {
     display: block;
 }
 
-.form-control {
-    background: #292929;
-    color: #fff;
+.form-control { 
     border-radius: 3px; 
     box-shadow: none!important;
     font-size: 13px;
-    border:none;
-    padding: 17px 13px!important;
+    border: 1px solid #dce1e4;  
     -webkit-transition: all 0.2s ease-in-out;
     -moz-transition: all 0.2s ease-in-out;
     -o-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out;
+}
+.form-control:focus {
+    border-color: #1abc9c;
 }
 
 .password {
@@ -6021,7 +6021,7 @@ select:disabled{color:rgba(0,0,0,0.3)}
 .dropdown-content li:hover,.dropdown-content li.active,.dropdown-content li.selected{background-color:#292929;}
 .dropdown-content li.active.selected{background-color:#292929}
 .dropdown-content li.divider{min-height:0;height:1px}
-.dropdown-content li>a,.dropdown-content li>span{font-size:12px;color:#76b900;display:block;line-height:22px;padding:6px 10px}
+.dropdown-content li>a,.dropdown-content li>span{font-size:12px;color:#1abc9c;display:block;line-height:22px;padding:6px 10px}
 .dropdown-content li>span>label{top:1px;left:0;height:18px}
 .dropdown-content li>a>i{height:inherit;line-height:inherit}
 .select-dropdown li.disabled,.select-dropdown li.disabled>span,.select-dropdown li.optgroup{color: rgba(132, 132, 132, 0.6);background-color:transparent;}
@@ -6043,5 +6043,5 @@ select:disabled{color:rgba(0,0,0,0.3)}
 }
 } 
 #toast-container .errortoast {background-color:#5f0000; color:#b7b4b4;}
-.green-theme-text {color:#76b900;}
+.green-theme-text {color:#1abc9c;}
 .error-msg {color:red;}

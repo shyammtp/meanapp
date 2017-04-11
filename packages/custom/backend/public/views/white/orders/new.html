@@ -95,7 +95,7 @@
 	                <div class="panel panel-default carttable">
 	                	<div class="panel-body" style="padding: 0px;">
 	                		<h3>Added Orders</h3>
-	                		<ul class="imtemlist">
+	                		<ul class="imtemlist" ng-if="cartorder.items.length > 0">
 	                			<li ng-repeat="(g,hs) in cartorder.items">
 	                				<div class="row"> 
 		                				<div class="col-xs-7"> 
@@ -132,10 +132,26 @@
 	                				</div>
 	                			</li>
 	                		</ul>
+	                		<div class="no-or"  ng-if="cartorder.items.length <= 0" style="text-align: center;margin:55px 0;">
+	                			 
+	                			<div style="text-align: center;"><img style="opacity: 0.2;" src="/theme/assets/lib/white/img/restaurant.png" /></div>
+	                			<div style="text-align:center; color:#ccc;">No items added</div>
+	                		</div>
 	                		<div class="footer-d">
 	                			<div class="row">
 	                				<div class="col-xs-4">Subtotal</div>
-	                				<div class="col-xs-8">{{cartorder.priceset.subtotal | priceformat}}</div>
+	                				<div class="col-xs-8" style="text-align: right;">{{cartorder.priceset.subtotal | priceformat}}</div>
+	                			</div>
+	                			<div class="row">
+	                				<div class="col-xs-12">
+	                					<textarea class="form-control" ng-model="cartorder.additionalinfo" placeholder="Enter any additional information about your order. Eg: 'No Mayo!'" style="max-width: 100%;resize: none; margin-top: 10px;"></textarea>
+	                				</div>
+	                			</div>
+
+	                			<div class="row">
+	                				<div class="col-xs-12">
+	                					<button class="btn btn-primary" ng-click="movetonext(cartorder.additionalinfo)" ng-class="{'disabled' : cartorder.items <= 0}" style="width: 100%;margin-top: 15px;">Order it!</button>
+	                				</div>
 	                			</div>
 	                		</div>
 	                	</div>

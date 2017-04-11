@@ -342,6 +342,7 @@
     
 
     function ItemMenus($http, $q,$window, Authentication,ArrayUtil,Backend) {
+        this.cartuser = '';
         return {
             getAllMenus : function() {
                 var deferred = $q.defer();
@@ -430,7 +431,7 @@
                 return deferred.promise;
             },updateCart : function(id, post) {
                 var deferred = $q.defer(); 
-                $http.put('api/cart/update/'+id,post,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                $http.put('/api/cart/update/'+id,post,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
                     deferred.resolve(response);
                 }, function(response) {
                     deferred.reject(response);
@@ -447,6 +448,14 @@
             },updateCartQuantity : function(id, post) {
                 var deferred = $q.defer(); 
                 $http.put('/api/v1/cart/update/'+id,post,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                    deferred.resolve(response);
+                }, function(response) {
+                    deferred.reject(response);
+                });
+                return deferred.promise;
+            },addDeliveries : function(id, post) {
+                var deferred = $q.defer(); 
+                $http.put('/api/cart/user/addaddress/'+id,post,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
                     deferred.resolve(response);
                 }, function(response) {
                     deferred.reject(response);
@@ -483,6 +492,12 @@
                 })
                 prices.subtotal = subtotal;       
                 return prices;
+            },
+            setCartUser : function(userid) {
+                this.cartuser = userid;
+            },
+            getCartUser : function() {
+                return this.cartuser;
             }
         }
     }

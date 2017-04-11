@@ -43,7 +43,8 @@
         $scope.hasitem = {};
         $scope.itemsquantity = {};
         $scope.mainitem = {};
-        var urs= '58e38a461479f732f6ca585d';  
+        var urs= '58e6ae3c818fe017782a204c';  
+        ItemMenus.setCartUser(urs);
         var itemsset = {};
         ItemMenus.getCartByUser(urs).then(function(res){    
             angular.forEach(res.data.data.items, function(v,k) {
@@ -211,6 +212,7 @@
                             $scope.cartid = dt._id;
                             $scope.cartorder = dt;
                             $scope.cartorder.priceset = ItemMenus.calculatePrices(dt);
+                            $scope.showvariant[item._id] = false;
                         },function(err) { 
                         }); 
 
@@ -228,6 +230,21 @@
             return ArrayUtil.get(variationamoutsubtotal,item._id,item.data.standard_price);
         }
 
+        $scope.movetonext = function(additional) {
+            ItemMenus.updateCart($scope.cartorder._id,{cartadditionalsave : true,additionalinfo : additional}).then(function(response) {
+                var d = response.data;
+                if(d.success === true) {
+                    return $location.path('admin/orders/place/payment');
+                } else {
+                    Materialize.toast(ArrayUtil.get(d,'message','Problem in the cart'), 4000,'errortoast');
+                }
+            },function(err) {
+                if(err.status == 500) {
+                    Materialize.toast(ArrayUtil.get(ArrayUtil.get(err,'data'),'message','Category not saved'), 4000,'errortoast');
+                } 
+            })
+        }
+ 
         $scope.updatePrice = function(setid, value, item) {
             var changedoptions = $scope.cart.options[item._id]; 
             var optionset = item.variantsetid.option_set;
@@ -246,14 +263,22 @@
                             if(sd) {
                                 var finald = sets[k][vf]; 
                                 if(finald) { 
-                                    variationamount += ArrayUtil.get(finald,'price',0); 
+                                    var amt = ArrayUtil.get(finald,'price',0);
+                                    if(!amt) {
+                                        amt = 0;
+                                    }
+                                    variationamount += amt; 
                                 }
                             }
                         });
                     } else {
                         var finald = sets[k][v];
                         if(finald) { 
-                            variationamount += ArrayUtil.get(finald,'price',0); 
+                            var amt = ArrayUtil.get(finald,'price',0);
+                            if(!amt) {
+                                amt = 0;
+                            }
+                            variationamount += amt; 
                         }
                     }
                     
@@ -277,11 +302,115 @@
 
     }
 
+    function BackendOrderPaymentController($scope,$location,ItemMenus,ArrayUtil,$state,$timeout,Backend) {
+
+        $scope.cartorder = {}; 
+        $scope.editpersonalinfo = false;  
+        $scope.addressselect = false; 
+        var itemsset = {};
+        $scope.delivery = {};
+        $scope.chooseddeliery = {};
+        $scope.userdeliveries = [];
+        if(!ItemMenus.getCartUser()) {
+            return $location.path('admin/orders/place');
+        }
+        ItemMenus.getCartByUser(ItemMenus.getCartUser()).then(function(res){    
+            angular.forEach(res.data.data.items, function(v,k) { 
+                itemsset[v.item_ref] = v; 
+            });   
+            $scope.cartorder = res.data.data;
+            $scope.cartorder.priceset = ItemMenus.calculatePrices(res.data.data);
+            if($scope.cartorder.user) {
+                $scope.userdeliveries = $scope.cartorder.user.deliveries;
+            }
+            if($scope.cartorder.user && typeof $scope.cartorder.personalinfo === 'undefined') {
+                $scope.cartorder.personalinfo = {};
+                $scope.cartorder.personalinfo.name = $scope.cartorder.user.name;
+                $scope.cartorder.personalinfo.phone = $scope.cartorder.user.phone;
+                $scope.editpersonalinfo = true;
+            }
+            console.log($scope.cartorder);
+        },function(err) {
+            if(err.status == 500) {
+
+            }
+        })
+        
+        $scope.getItemPriceSubtotal = function(itemid) { 
+            return ArrayUtil.get(ArrayUtil.get($scope.cartorder.priceset,'individualitemsubtotal',{}),itemid,0);
+        }
+
+        $scope.updatepersonalinfo = function() {
+            ItemMenus.updateCart($scope.cartorder._id,{cartpersonalsave : true,personalinfo : $scope.cartorder.personalinfo}).then(function(response) {
+                var d = response.data;
+                if(d.success === true) { 
+                    Materialize.toast('Information Updated', 4000);
+                    $scope.editpersonalinfo = false;
+                } else {
+                    Materialize.toast(ArrayUtil.get(d,'message','Problem in the cart'), 4000,'errortoast');
+                }
+            },function(err) {
+                if(err.status == 500) {
+                    Materialize.toast(ArrayUtil.get(ArrayUtil.get(err,'data'),'message','Category not saved'), 4000,'errortoast');
+                } 
+            })
+        }
+
+        $scope.addDeliveryaddress = function() { 
+            classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );
+            Backend.loadSider($scope,'cbp-spmenu-s2','backend/views/'+theme+'/orders/adddelivery.html'); 
+            angular.element('.cd-overlay').addClass('is-visible');
+            $scope.addressselect = true;
+        }
+
+        $scope.closethis = function() { 
+            classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );            
+            angular.element('.cd-overlay').removeClass('is-visible');
+        }  
+
+        $scope.adddelivery = function() {
+            $scope.addressselect = false;
+        }
+
+        $scope.canceladddelivery = function() {
+            $scope.addressselect = true;
+        }
+        $scope.othernickname = false;
+        $scope.setnickname = function(ty) {
+            if(ty === 'other') {
+                $scope.othernickname = true;
+                $scope.delivery.nickname = '';
+            } 
+            if(ty !== 'other') {
+                $scope.othernickname = false;
+                $scope.delivery.nickname = ty;
+            }
+        }
+        $scope.selectdelivery = function(delivery) {
+            $scope.chooseddeliery = delivery;   
+        }
+        $scope.savedelivery = function() { 
+            ItemMenus.addDeliveries(ItemMenus.getCartUser(),$scope.delivery).then(function(res){
+                var d = res.data;
+                console.log(d);
+                if(d.success) {
+                    var user = d.user;   
+                    $scope.userdeliveries = user.deliveries;
+                    $scope.addressselect = true;
+                    $scope.delivery = {};
+                    Materialize.toast('Address added', 4000);
+                }
+            })
+        }
+    }
+
 
     angular
         .module('mean.backend') 
-        .controller('OrderNewController', OrderNewController);
+        .controller('OrderNewController', OrderNewController)
+        .controller('BackendOrderPaymentController', BackendOrderPaymentController);
 
     OrderNewController.$inject = ['$scope','$location', 'ItemMenus','ArrayUtil','$state','$timeout']; 
+    BackendOrderPaymentController.$inject = ['$scope','$location', 'ItemMenus','ArrayUtil','$state','$timeout','Backend']; 
 
 })();

@@ -208,6 +208,12 @@
                 params: {title : 'New Order',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'New Order'}]},
              })
           )
+          .state('admin_order_place_payment', angular.extend({},defal,   {
+                url : '/admin/orders/place/payment',
+                templateUrl: 'backend/views/'+theme+'/orders/payment.html',
+                params: {title : 'New Order',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'New Order'}]},
+             })
+          )
           ;
         $locationProvider
             .html5Mode({enabled:true, requireBase:false});

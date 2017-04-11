@@ -23,6 +23,8 @@ var historySchema = new Schema ({
 	price : {type : Number,default : 0},
  	updated_on: { type: Date, default: Date.now }
 })
+
+
  
 function makeid()
 {
@@ -41,6 +43,10 @@ var FoodCartSchema = new Schema({
 	type : ['pickup','delivery'],
 	price : {type : Number,default : 0},
 	discounts : {type : Array, default : []},
+	additionalinfo : {type : String},
+	delivery: {type: Schema.Types.Mixed},
+	deliverycharge : {type : Number},
+	personalinfo : {type: Schema.Types.Mixed},
 	sums : {type : Array, default : []},
 	totalpaid : {type : Number,default : 0},
 	paid : {type: Boolean, default: false},

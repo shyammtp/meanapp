@@ -5128,3 +5128,7 @@ legend { border:none; width: auto; font-size:16px; margin-left: 10px; margin-bot
 .carttable .imtemlist .quantityprice-container {margin-top: 15px;}
 .plusbutn {font-size: 12px;color: #737373;    border-top-right-radius: 8px;    border-bottom-right-radius: 8px;}
 .minusbutn {font-size: 12px;color: #737373;    border-top-left-radius: 8px;    border-bottom-left-radius: 8px;}
+.nicknameboxes ul li {float: left;margin-bottom: 10px;}
+.nicknameboxes ul {margin-bottom: 10px;}
+.nicknameboxes ul li > a {padding: 8px 8px; margin: 0 5px; border:1px solid #eee; border-radius:5px; font-size:12px; cursor: pointer; text-decoration: none; }
+.nicknameboxes ul li > a:hover,.nicknameboxes ul li > a.active { background-color: #fdefed;border-color:#ff9898; color:#333; }

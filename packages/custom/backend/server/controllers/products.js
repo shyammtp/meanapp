@@ -2,6 +2,7 @@
 
 var Mongoose = require('mongoose'),
 	AdminUser = Mongoose.model('AdminUser'),category = Mongoose.model('Category'),product = Mongoose.model('Product'),
+	user = Mongoose.model('Customer'),
 	variants = Mongoose.model('Variants'),
 	intf = Mongoose.model('InterfaceSettings'),
 	variantset = Mongoose.model('Variantset'),
@@ -534,6 +535,27 @@ var Mongoose = require('mongoose'),
                             return res.status(200).json({message : "Loaded", cart: docs}); 
                     });
                 },
+                adduserdeliveryaddress : function(req,res,next) {
+                	var u = new user();
+                	if(!arrayutil.get(req.params,'id')) {
+                        return res.status(500).json({message: "Invalid User ID"});
+                    }
+                    var data = {address  : arrayutil.get(req.body,'address'), delivery_area : arrayutil.get(req.body,'delivery_area'),delivery_instructions:arrayutil.get(req.body,'delivery_instructions'),nickname : arrayutil.get(req.body,'nickname')};
+					user.findOneAndUpdate(
+						    { "_id": arrayutil.get(req.params,'id')},
+						    { 
+						        "$push": {
+						            "deliveries": data		            
+						        }
+						    },
+						    {upsert: true},
+						    function(err,doc) {
+					    		user.findOne({_id : arrayutil.get(req.params,'id')}).exec(function(err,docs) {
+					    			return res.status(200).json({message : "Loaded", user: docs,success : true});
+					    		});
+						    }
+						);  
+                },
 				updatecart : function(req,res,next) {
 					var socketio = req.app.get('socketio'); var cart = new foodcart();  
 					if(!arrayutil.get(req.params,'id')) {
@@ -578,8 +600,28 @@ var Mongoose = require('mongoose'),
 							} else {
 								return res.status(200).json({message: 'Already Reserved',success : false});
 							}
+						} else if(arrayutil.get(req.body,'cartadditionalsave') == true ) {
+							data.additionalinfo = arrayutil.get(req.body,'additionalinfo');
+							vars.update(data, function(error, catey) {
+								if(error) return res.status(200).json(error);
+								foodcart.findOne({_id : arrayutil.get(req.params,'id')}).populate([{path: 'user',select : 'email name'},{path : 'reserved_for',select : 'email name'}]).exec(function (err, docs) {
+									socketio.sockets.emit('cart.orders', docs);
+									return res.status(200).json({message: 'Modified Successfully',success : true, cart : docs});
+								});
+							});
+
+						} else if(arrayutil.get(req.body,'cartpersonalsave') == true ) {
+							data.personalinfo = arrayutil.get(req.body,'personalinfo');
+							vars.update(data, function(error, catey) {
+								if(error) return res.status(200).json(error);
+								foodcart.findOne({_id : arrayutil.get(req.params,'id')}).populate([{path: 'user',select : 'email name'},{path : 'reserved_for',select : 'email name'}]).exec(function (err, docs) {
+									socketio.sockets.emit('cart.orders', docs);
+									return res.status(200).json({message: 'Modified Successfully',success : true, cart : docs});
+								});
+							});
+
 						} else {
-							return res.status(200).json({message: 'Nothing Updated'});
+							return res.status(200).json({message: 'Nothing Updated',success : false});
 						} 
 					});  
 					//return res.status(200).json({message: 'Not Updated'});
