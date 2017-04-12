@@ -63,6 +63,11 @@ var Mongoose = require('mongoose'),
            res.send(cb);
         });
       },
+      getcountry : function(req,res) {
+        Directory.getAllPaginate(req.query,function(err,cb) {
+               res.send(cb);
+        });
+      },  
       getAllCountries : function(req,res) {
         myCache.get("directories",function(err,value) {
             if(!err) {

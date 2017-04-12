@@ -2163,9 +2163,7 @@ fieldset[disabled] .btn-danger.active {
     color: #b3b3b3;
 }
 .pagination>li>a, .pagination>li>span
-{    
-    background-color: #313131;
-    border: 1px solid #171717;
+{     
     cursor: pointer;
 }
 .pagination > .active > a,
@@ -2180,9 +2178,7 @@ fieldset[disabled] .btn-danger.active {
 
 .pagination>li>a:focus, .pagination>li>a:hover, .pagination>li>span:focus, .pagination>li>span:hover
 {
-    color: #adadad;
-    background-color: #4c4c4c;
-    border-color: #171717;
+    color: #adadad; 
 }
 /* Progress Bars */
 
@@ -3358,8 +3354,7 @@ tr.group:hover {
     list-style: none;
     text-shadow: none;
     padding: 0px;
-    margin: 10px 0px 0px 0px;
-    background-color: #232323;
+    margin: 10px 0px 0px 0px; 
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none; 
@@ -3378,8 +3373,8 @@ tr.group:hover {
 }
 
 .dropdown-menu li a:hover {
-    background: #3e3e3e;
-    color:#929292;
+    background: #e74c3c;
+    color:#ffffff;
 }
 
 .navbar-nav > li > .dropdown-menu {
@@ -3453,8 +3448,8 @@ tr.group:hover {
 .dropdown-menu > li.active > a,
 .dropdown-menu > li.active > a:hover,
 .dropdown-menu > li.active > a:focus {
-    background: #F7F7F7;
-    color: #333;
+    background: #e74c3c;
+    color: #fff;
 } 
 
 .drop-title {

@@ -157,11 +157,12 @@
             if(item.variantsetid) {
                 $scope.showvariant[item._id] = true;
             } 
- 
+        console.log(item.variantsetid); 
                 var insert = true;
                 if(item.variantsetid) {
                     insert = false;
                 }
+
                 if(validateoptions(item)) {
                     //Add here to cart sending api
                     var data = {};
@@ -174,7 +175,7 @@
                     if($scope.cartid) {
                         data._id = $scope.cartid;
                     }  
-                    if(item.variantsetid && typeof $scope.cart.options !== 'undefined') { 
+                    if(item.variantsetid && typeof $scope.cart.options[item._id] !== 'undefined') { 
                         data.options = {};  
                         angular.forEach($scope.cart.options[item._id],function(g,hj) {
                             if(typeof g ==='string') { 

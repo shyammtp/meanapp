@@ -42,6 +42,14 @@
                  
             })
         )
+        .state('directory_management', 
+            angular.extend({},defal, {
+                url: '/admin/settings/directory',
+                templateUrl: 'backend/views/'+theme+'/settings/directory/list.html',
+                params: {title : 'General Settings',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Settings', link: 'admin/settings'},{title : 'General'}]},
+                 
+            })
+        )
         .state('payment_settings', angular.extend({},defal, {
             url: '/admin/settings/payments',
             templateUrl: 'backend/views/'+theme+'/settings/payments.html',

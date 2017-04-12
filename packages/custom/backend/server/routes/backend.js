@@ -127,6 +127,7 @@ var Mongoose = require('mongoose'),
         app.post('/api/settings/saveall',settings.saveAllsettings);
         app.get('/api/settings/get',settings.getallsettings);
         app.get('/api/settings/getpaginate',settings.getpaginate);
+        app.get('/api/directory/get/country',settings.getcountry);
         app.get('/api/settings/getcountries',settings.getAllCountries);
 
 

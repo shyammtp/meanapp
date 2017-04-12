@@ -44,8 +44,9 @@
             $scope.assetspath = res.path; 
             $scope.theme = res.theme; 
         }); 
-        $scope.loadsubmenu = function() {
-
+        $scope.placeneworder = function() {
+            Materialize.toast('Click on Add order for the respected customer', 5000);
+            $location.path('/admin/customers');
         }
         $scope.assetspath = '/theme/assets/lib/black/';
         Backend.getMenus().then(function(response) { 
@@ -188,6 +189,44 @@
             }
             return false;
         }
+
+    }
+
+
+
+     function DirectoryController($scope,ListWidget,Backend,ArrayUtil,Page,$window) { 
+        var vm = this;  
+         vm.setPage = setPage; 
+
+         ListWidget.init();
+         ListWidget.defaultSortColumn = 'country_name';
+         ListWidget.addColumn('country_name',{'type' : 'text','title' : 'Country Name',defaultValue : '--',width : '50%'}); 
+         ListWidget.addColumn('country_code',{'type' : 'text','title' : 'Code',defaultValue : '--',width : '20%'}); 
+         ListWidget.addColumn('nocolumn',{'type' : 'notype','title' : 'Actions',defaultValue : '--',width : '20%',sortable : false,filterable : false,'render' : 'backend/views/'+theme+'/users/renderer/actions.html'});
+         ListWidget.setDataRequestUrl('/api/directory/get/country'); 
+         
+        function setPage(page) { 
+            if(page < 1) {
+                page = 1;
+            }
+            ListWidget.request({page: page,limit : 20,passtoken : true}).then(function(res){  
+                ListWidget.setTotalItems(res.data.total)
+                        .setPageSize(20).setPage(page)
+                        .setDBResults(res.data.docs);   
+                $scope.pager = ListWidget.getPager();  
+                $scope.dbresult = ListWidget.getDbResults();
+            });    
+        }  
+        $scope.widgetlimitchange = function(selected) {
+            ListWidget.request({page: 1,limit : selected,passtoken : true}).then(function(res){  
+                ListWidget.setTotalItems(res.data.total)
+                        .setPageSize(selected).setPage(1)
+                        .setDBResults(res.data.docs);   
+                $scope.pager = ListWidget.getPager();  
+                $scope.dbresult = ListWidget.getDbResults();
+            }); 
+        }
+        setPage(1);
 
     }
 
@@ -344,6 +383,7 @@
         .module('mean.backend')
         .controller('BackendCoreController', BackendCoreController)
         .controller('CustomerController', CustomerController)
+        .controller('DirectoryController', DirectoryController)
         .controller('BackendController', BackendController)
         .controller('TitleController', TitleController)
         .controller('SettingController', SettingsController)
@@ -353,6 +393,7 @@
     TitleController.$inject = ['$scope','Page'];
     BackendCoreController.$inject = ['$scope','getsettings','$location','$window','Authentication','$state','Backend','$stateParams','getmenus','getcurrency','getassetsdata'];
     SettingsController.$inject = ['$scope','Backend','ArrayUtil','Page','$window'];
+    DirectoryController.$inject = ['$scope','ListWidget','Backend','ArrayUtil','Page','$window'];
     WidgetController.$inject = ['$scope','ListWidget','$location','Backend','$rootScope','$state','$timeout'];
     CustomerController.$inject = ['$scope','ListWidget','$location','Backend','$rootScope','$state','$timeout'];
 

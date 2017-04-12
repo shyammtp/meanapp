@@ -13,129 +13,90 @@
 			</div>
 			<div class="pattern"></div>
 		</div>
-	</div>
-	<div class="live-itemset">
-
-		<div class="relative">
-			<div class="itms">  
-				<div class="row">
-					<div class="col-xs-7">
-						<h3>{{cart.user.name}}</h3>
-						<p>1584425 Nagar, Court <br/> PN Pudur, Coimbatore</p>
-					</div>
-					<div class="col-xs-5">
-
-					</div>
-				</div>
-			</div>	
-			<div class="picitm">
-				<span class="texs">Pickup order </span>for Now
-			</div> 
-			<div class="itstabl">
-				<table class="table">
-					<tbody>
-						<tr ng-repeat="(gf,gs) in cart.items track by $index">
-
-							<td><div class="quantitybox">{{gs.quantity}}</div></td>
-							<td>
-								<div class="row">
-									<div class="col-xs-8"> 
-										<div class="tes">{{gs.item_name}}</div>
-									</div>
-									<div class="col-xs-4">
-										<div class="prices pull-right">{{gs.price | priceformat}}</div>
-									</div>								
-								</div>
-
-								<div class="row tdg" ng-repeat="(kl,ks) in gs.additions track by kl">
-									<div class="col-xs-8 "> 
-										<div class="tessd">{{ks.name}}</div>
-										<div class="subtext">{{subitem_names(ks)}}</div>
-									</div>
-									<div class="col-xs-4" ng-if="subitem_price(ks)">
-										<div class="pricessmall pull-right">+ {{subitem_price(ks) | priceformat}}</div>
-									</div>								
-								</div>
-
-							</td> 
-						</tr>
-
-						<!-- <tr>
-							<td><div class="quantitybox">2</div></td>
-							<td>
-								<div class="row">
-									<div class="col-xs-8"> 
-										<div class="tes">Butter notscos</div>
-									</div>
-									<div class="col-xs-4">
-										<div class="prices pull-right">$10.48</div>
-									</div>								
-								</div>
-
-								<div class="row tdg">
-									<div class="col-xs-8 "> 
-										<div class="tessd">Additions</div>
-										<div class="subtext">Chicken salna</div>
-									</div>
-									<div class="col-xs-4">
-										<div class="pricessmall pull-right">+ $2.48</div>
-									</div>								
-								</div>
-
-								<div class="row tdg">
-									<div class="col-xs-8 "> 
-										<div class="tessd">Additions</div>
-										<div class="subtext">Chicken salna</div>
-									</div>
-									<div class="col-xs-4">
-										<div class="pricessmall pull-right">+ $2.48</div>
-									</div>								
-								</div>
-
-
-							</td> 
-						</tr> -->
-
-					</tbody>
-				</table>
-			</div>
-			<div class="fixed-ims">
-				<div class="footer-sl">
-					<table class="table">
-						<tbody>
-							<tr>
-								<td>Sub : <b>{{cart.sumprices.subtotal | priceformat}}</b></td>
-								<td rowspan="4">
-									<div class="pull-right">
-										<div class="lbltxt">Total</div>
-										<div class="striketotal red">{{cart.sumprices.subtotal | priceformat}}</div>
-									</div>
-									<div class="clearfix"></div>
-								</td>
-							</tr>
-							<tr>
-								<td>Taxes $9.4</td>
-							</tr>
-							<tr>
-								<td>Fees $56.42</td>
-							</tr>
-							<tr>
-								<td>Tip $56</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<div class="footer-sg">
-					<div class="pull-right">
-						<div class="lbltxt">Total</div>
-						<div class="finaltotal">{{cart.sumprices.subtotal | priceformat}}</div>
-					</div>
-					<div class="clearfix"></div>
-				</div>
-			</div>
-
-
-		</div>
+	</div> 
+	<div id="main-wrapper" style="margin-top: 100px;">
 		
+        <div class="row">
+            <div class="invoice col-md-12">
+                <div class="panel panel-black">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h2 class="m-b-md m-t-xxs"><b>{{cart.user.name}}</b></h2>
+                                <address>
+                                    Melbourne, Australia<br>
+                                    P: (123) 456-7890
+                                </address>
+                            </div>
+                            <div class="col-md-8 text-right">
+                                <h2 class="m-t-xxs">Invoice #{{cart.order_reference}}</h2>
+                                <button type="button" class="btn btn-default"><i class="fa fa-print"></i> Print</button>
+                            </div>
+                            <div class="col-md-12">
+                                <hr>
+                                <p>
+                                    <strong>Invoice to</strong><br>
+                                    John Doe<br>
+                                    795 Folsom Ave, Suite 600<br>
+                                    San Francisco, CA 94107
+                                </p>
+                            </div>
+                            <div class="col-md-12">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Item</th>
+                                            <th>Description</th>
+                                            <th>total</th>
+                                            <th>Quantity</th>
+                                            <th>Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr  ng-repeat="(gf,gs) in cart.items track by $index">
+                                            <td>{{gs.item_name}}</td>
+                                            <td>
+	                                            <div class="row tdg" ng-repeat="(kl,ks) in gs.additions track by kl">
+													<div class="col-xs-8 "> 
+														<div class="tessd"><b>{{ks.name}}</b></div>
+														<div class="subtext">{{subitem_names(ks)}}</div>
+													</div>
+													<div class="col-xs-4" ng-if="subitem_price(ks)">
+														<div class="pricessmall pull-right">+ {{subitem_price(ks) | priceformat}}</div>
+													</div>								
+												</div>
+											</td>
+											<td>{{itemtotal(gs._id) | priceformat}}</td>
+                                            <td>{{gs.quantity}}</td>
+                                            <td>{{itemsubtotal(gs._id) | priceformat}}</td>
+                                        </tr> 
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-8">
+                                <h4>Thank you !</h4>
+                                <p>Nullam quis risus eget urna mollis ornare vel eu leo.<br>Cum sociis natoque penatibus et magnis dis<br>nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula.</p>
+                                <img src="{{assetspath}}images/signature.png" height="150" class="m-t-lg" alt="">
+                            </div>
+                            <div class="col-md-4">
+                                <div class="text-right">
+                                    <h4 class="no-m m-t-sm">Subtotal</h4>
+                                    <h2 class="no-m">{{cart.sumprices.subtotal | priceformat}}</h2>
+                                    <hr>
+                                    <h4 class="no-m m-t-sm">Shipping</h4>
+                                    <h2 class="no-m">$240</h2>
+                                    <hr>
+                                    <h4 class="no-m m-t-md text-success">Total</h4>
+                                    <h1 class="no-m text-success">{{cart.sumprices.subtotal | priceformat}}</h1>
+                                    <hr>
+                                    <button class="btn btn-info">Submit your invoice</button>
+                                </div>
+                            </div>
+                        </div><!--row-->
+                    </div>
+                </div>
+            </div>
+        </div><!-- Row -->
+    
 	</div>
 </div>

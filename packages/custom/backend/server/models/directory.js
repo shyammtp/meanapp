@@ -8,8 +8,13 @@ Schema = mongoose.Schema,
 	_ = require('lodash'),
 	textutil = require('../helpers/util').text;
 
+var localityschema = new Schema ({
+	locality_name : {type: String, unique: true, required: true}, 
+})
+
 var citiesSchema = new Schema ({
 	city_name : {type: String, unique: true, required: true}, 
+	localities : [localityschema]
 })
  
 var statesSchema = new Schema ({

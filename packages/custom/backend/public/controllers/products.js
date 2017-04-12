@@ -1379,8 +1379,8 @@
             Socket.on('cart.orders',function(d) { 
                 angular.forEach(d,function(w,c) {
                     if($stateParams.cartid === w._id) {
-                        $scope.cart = w;
-                        $scope.cart.sumprices = ItemMenus.calculatePrices(w);
+                        /*$scope.cart = w;
+                        $scope.cart.sumprices = ItemMenus.calculatePrices(w);*/
                     }
                 })
             });
@@ -1403,6 +1403,14 @@
                     total+= parseFloat(gh.price);
                 });
                 return total > 0 ? total : false;
+            }
+
+            $scope.itemsubtotal = function(id) {
+                return ArrayUtil.get($scope.cart.sumprices.individualitemsubtotal,id); 
+            }
+
+            $scope.itemtotal = function(id) {
+                return ArrayUtil.get($scope.cart.sumprices.individualitemtotal,id); 
             }
          }
     }

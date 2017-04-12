@@ -40,12 +40,12 @@
 	                		<div class="row"  ng-if="editdeliverydet">
 	                			<div class="col-xs-12"> 
 			                		<h3>Choose your delivery method</h3>  
-			                		<div class="delivermethod">
+			                		<div class="delivermethod"  style="padding: 10px; ">
 			                			<div class="row">
-			                				<div class="col-xs-6">
+			                				<div class="col-xs-4">
 			                					<button class="btn btn-primary" ng-click="updatedeliverymethod('delivery')">Delivery</button>
 			                				</div>
-			                				<div class="col-xs-1">
+			                				<div class="col-xs-2">
 			                					OR
 			                				</div> 
 			                				<div class="col-xs-5">
@@ -56,14 +56,14 @@
 	                			</div>
 	                		</div>
 
-	                		<div class="row"  ng-if="cartorder.type[0] === 'pickup'" >
+	                		<div class="row"  ng-if="cartorder.type[0] === 'pickup' && !editdeliverydet" >
 	                			<div class="col-xs-12"> 
 			                		<h3>Store Pickup<span class="edlink" ng-show="!editdeliverydet"><a href="javascript:;" ng-click="editdeliverydetas()">(Edit)</a></span></h3>  
 			                		<p style="padding: 10px;">{{settings.storeaddress}}</p>
 	                			</div>
 	                		</div>
 
-	                		<div class="row"  ng-if="cartorder.type[0] === 'delivery'" >
+	                		<div class="row"  ng-if="cartorder.type[0] === 'delivery' && !editdeliverydet" >
 	                			<div class="col-xs-12"> 
 			                		<h3>Delivery Address <span class="edlink" ng-show="!editdeliverydet"><a href="javascript:;" ng-click="editdeliverydetas()">(Edit)</a></span></h3> 
 			                		<div class="deliveryadd" style="padding: 10px;">

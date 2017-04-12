@@ -1,3 +1,10 @@
 <div class="btn-group dropup"> 
-    <a class="btn btn-black" ng-click="edituser(rowobject)">Edit</a> 
+    <a class="btn btn-black" ng-click="edituser(rowobject)">Edit</a>
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+        <span class="caret"></span>
+        <span class="sr-only">Toggle Dropdown</span>
+    </button> 
+    <ul class="dropdown-menu" role="menu">
+        <li><a href="/admin/orders/place?user={{rowobject._id}}"><i class="fa fa-cutlery" aria-hidden="true"></i> Place a new order</a></li> 
+    </ul>
 </div>
