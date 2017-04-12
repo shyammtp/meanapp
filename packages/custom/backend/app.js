@@ -16,15 +16,13 @@ var adminconfig = require('./server/config/adminconfig.json');
  * Dependency injection is used to define required modules
  */
 Backend.register(function(app, auth, database, circles) {
-
+  
   Backend.sidebarcontroller = require('./server/controllers/sidebar')(Backend, app);
   Backend.productscontroller = require('./server/controllers/products')(Backend, app);
   Backend.settingscontroller = require('./server/controllers/settings')(Backend, app);
   Backend.authenticationcontroller = require('./server/controllers/authentication')(Backend, app);
   Backend.frontendcontroller = require('./server/controllers/frontend')(Backend, app);
-  app.use(passport.initialize()); 
-
-   
+  app.use(passport.initialize());
 
   //We enable routing. By default the Package Object is passed to the routes 
   Backend.routes(app, auth, database, circles);

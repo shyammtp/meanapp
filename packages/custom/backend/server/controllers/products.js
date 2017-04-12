@@ -11,7 +11,7 @@ var Mongoose = require('mongoose'),
 	MenuItem = Mongoose.model('MenuItem'),
 	arrayutil = require('../helpers/util').array,
 	attrdefaults = require('../includes/attributesdefaults.json'),
-	multer  = require('multer'),
+	multer  = require('multer'),appsettings = require('../helpers/util').appsettings,
 	textutil = require('../helpers/util').text,config = require('meanio').getConfig(); 
 		
 	module.exports = function (Backend, app) {
@@ -616,6 +616,40 @@ var Mongoose = require('mongoose'),
 								if(error) return res.status(200).json(error);
 								foodcart.findOne({_id : arrayutil.get(req.params,'id')}).populate([{path: 'user',select : 'email name'},{path : 'reserved_for',select : 'email name'}]).exec(function (err, docs) {
 									socketio.sockets.emit('cart.orders', docs);
+									return res.status(200).json({message: 'Modified Successfully',success : true, cart : docs});
+								});
+							});
+
+						} else if(arrayutil.get(req.body,'cartdeliverymethodsave') == true ) {
+							data.type = arrayutil.get(req.body,'type');
+							vars.update(data, function(error, catey) {
+								if(error) return res.status(200).json(error);
+								foodcart.findOne({_id : arrayutil.get(req.params,'id')}).populate([{path: 'user',select : 'email name'},{path : 'reserved_for',select : 'email name'}]).exec(function (err, docs) {
+									socketio.sockets.emit('cart.orders', docs);
+									return res.status(200).json({message: 'Modified Successfully',success : true, cart : docs});
+								});
+							});
+
+						}  else if(arrayutil.get(req.body,'placeorder') == true ) {
+							data.delivery = arrayutil.get(req.body,'delivery');
+							data.orderplaced = arrayutil.get(req.body,'orderplaced');
+							data.totalpaid = arrayutil.get(req.body,'totalpaid');
+							var settings = appsettings.settings(req.app.locals.appsettings,'orderprefix');
+							console.log(settings);
+							var refno = '';
+							if(appsettings.settings(req.app.locals.appsettings,'orderprefix')) {
+								refno += appsettings.settings(req.app.locals.appsettings,'orderprefix');
+							}
+							refno += vars.getReferenceNumber();
+							if(appsettings.settings(req.app.locals.appsettings,'ordersuffix')) {
+								refno += appsettings.settings(req.app.locals.appsettings,'ordersuffix');
+							}
+							data.order_reference = refno;
+							vars.update(data, function(error, catey) {
+								if(error) return res.status(200).json(error);
+								foodcart.findOne({_id : arrayutil.get(req.params,'id')}).populate([{path: 'user',select : 'email name'},{path : 'reserved_for',select : 'email name'}]).exec(function (err, docs) {
+									socketio.sockets.emit('cart.orders', docs);
+
 									return res.status(200).json({message: 'Modified Successfully',success : true, cart : docs});
 								});
 							});

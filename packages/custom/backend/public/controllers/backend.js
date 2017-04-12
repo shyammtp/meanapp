@@ -135,6 +135,7 @@
         $scope.settings = {};
         Page.setTitle('My new title');
         $scope.directories = $scope.$parent.$parent.directories;
+        $scope.settings = $window.settings;
         console.log($scope);
         $scope.toggleformatcurrency = function() {
             if($scope.formatcurrency === undefined || !$scope.formatcurrency) {
@@ -164,18 +165,23 @@
         $scope.settings.bankdeposit_dname = 'Bank Deposit';
 
 
-        $scope.settings = $window.settings;
         $scope.activatepayment = function(index) {
             $scope.paymentmethods.push(index);
+            $scope.settings[index] = true;
             $scope.paymentmethods = ArrayUtil.arrayunique($scope.paymentmethods);
             console.log($scope.paymentmethods);
         } 
         $scope.deactivatepayment = function(index) {            
             $scope.paymentmethods = ArrayUtil.remove($scope.paymentmethods,index);
+            $scope.settings[index] = false;
             console.log($scope.paymentmethods);
         }
 
         $scope.checkpaymentenabled = function(index) {
+            if(ArrayUtil.get($scope.settings,index) === "true") {
+                $scope.paymentmethods.push(index);
+                $scope.paymentmethods = ArrayUtil.arrayunique($scope.paymentmethods);
+            }
             var ud = $scope.paymentmethods;
             if(ud.indexOf(index) > -1) {
                 return true;

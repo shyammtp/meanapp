@@ -132,7 +132,7 @@
 	                				</div>
 	                			</li>
 	                		</ul>
-	                		<div class="no-or"  ng-if="cartorder.items.length <= 0" style="text-align: center;margin:55px 0;">
+	                		<div class="no-or"  ng-if="!cartorder.items || cartorder.items.length <= 0" style="text-align: center;margin:55px 0;">
 	                			 
 	                			<div style="text-align: center;"><img style="opacity: 0.2;" src="/theme/assets/lib/white/img/restaurant.png" /></div>
 	                			<div style="text-align:center; color:#ccc;">No items added</div>
@@ -149,8 +149,8 @@
 	                			</div>
 
 	                			<div class="row">
-	                				<div class="col-xs-12">
-	                					<button class="btn btn-primary" ng-click="movetonext(cartorder.additionalinfo)" ng-class="{'disabled' : cartorder.items <= 0}" style="width: 100%;margin-top: 15px;">Order it!</button>
+	                				<div class="col-xs-12"> 
+	                					<button class="btn btn-primary" ng-click="movetonext(cartorder.additionalinfo)" ng-disabled="!cartorder.items" ng-class="{'disabled' : cartorder.items.length <= 0}" style="width: 100%;margin-top: 15px;">Order it!</button> 
 	                				</div>
 	                			</div>
 	                		</div>

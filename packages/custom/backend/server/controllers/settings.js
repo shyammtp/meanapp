@@ -9,7 +9,7 @@ var Mongoose = require('mongoose'),
   config = require('meanio').getConfig(),
   nodemailer = require('nodemailer'),
   smtpTransport = require('nodemailer-smtp-transport'),
-  path = require('path'),
+  path = require('path'),appsettings = require('../helpers/util').appsettings,
   Nodecache = require( "node-cache" ),arrayutil = require('../helpers/util').array,
   myCache = new Nodecache(),
 
@@ -40,14 +40,26 @@ var Mongoose = require('mongoose'),
           res.send(cb);
         });
       },
+      getappsettings : function(req,res,next) {
+        if(typeof req.app.locals.appsettings === 'undefined') { 
+          Settings.find({}).exec(function(err,doc) {
+            req.app.locals.appsettings = doc;
+            console.log('coming');
+            next();
+          })
+        } else {
+          next();
+        }
+      },
 
-      getallsettings : function(req,res) {  
-        Settings.getAllConfig(req.param('place_id'),function(err,cb) {
+      getallsettings : function(req,res) { 
+   
+        Settings.getAllConfig(arrayutil.get(req.query,'place_id'),function(err,cb) {
            res.send(cb);
         });
       },
        getpaginate : function(req,res) {  
-        Settings.getAllConfigPaginate(req.param('place_id'),req.param('page'),function(err,cb) {
+        Settings.getAllConfigPaginate(arrayutil.get(req.query,'place_id'),arrayutil.get(req.query,'page'),function(err,cb) {
            res.send(cb);
         });
       },

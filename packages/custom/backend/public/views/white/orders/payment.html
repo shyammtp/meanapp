@@ -14,7 +14,7 @@
 	                	<div class="panel-body" style="padding: 0px;">
 	                		<div class="row">
 	                			<div class="col-xs-12"> 
-			                		<h3>Personal Details</h3>
+			                		<h3>Personal Details <span class="edlink" ng-show="!editpersonalinfo"><a href="javascript:;" ng-click="editpersonal()">(Edit)</a></span></h3>
 			                		<div class="personal-detail"  ng-if="editpersonalinfo"  style="padding: 10px; border-bottom:1px solid #ccc;">
 			                			<div class="personald-form">
 			                				<div class="form-group">
@@ -36,11 +36,37 @@
 			                			{{cartorder.personalinfo.phone}}
 			                		</div>
 	                			</div>
-	                		</div>
-	                		<div class="row">
+	                		</div> 
+	                		<div class="row"  ng-if="editdeliverydet">
 	                			<div class="col-xs-12"> 
-			                		<h3>Delivery Address</h3>
-			                		<div class="deliveryadd"  style="padding: 10px;">
+			                		<h3>Choose your delivery method</h3>  
+			                		<div class="delivermethod">
+			                			<div class="row">
+			                				<div class="col-xs-6">
+			                					<button class="btn btn-primary" ng-click="updatedeliverymethod('delivery')">Delivery</button>
+			                				</div>
+			                				<div class="col-xs-1">
+			                					OR
+			                				</div> 
+			                				<div class="col-xs-5">
+			                					<button class="btn btn-primary" ng-click="updatedeliverymethod('pickup')">Pickup</button>
+			                				</div>
+			                			</div>
+			                		</div>
+	                			</div>
+	                		</div>
+
+	                		<div class="row"  ng-if="cartorder.type[0] === 'pickup'" >
+	                			<div class="col-xs-12"> 
+			                		<h3>Store Pickup<span class="edlink" ng-show="!editdeliverydet"><a href="javascript:;" ng-click="editdeliverydetas()">(Edit)</a></span></h3>  
+			                		<p style="padding: 10px;">{{settings.storeaddress}}</p>
+	                			</div>
+	                		</div>
+
+	                		<div class="row"  ng-if="cartorder.type[0] === 'delivery'" >
+	                			<div class="col-xs-12"> 
+			                		<h3>Delivery Address <span class="edlink" ng-show="!editdeliverydet"><a href="javascript:;" ng-click="editdeliverydetas()">(Edit)</a></span></h3> 
+			                		<div class="deliveryadd" style="padding: 10px;">
 			                			<div class="deliveryaddrs">
 			                				<p>{{chooseddeliery.address}}</p>
 			                			</div>
@@ -101,7 +127,7 @@
 
 	                			<div class="row">
 	                				<div class="col-xs-12">
-	                					<button class="btn btn-primary" style="width: 100%;margin-top: 15px;">Pay it</button>
+	                					<button class="btn btn-primary" ng-click="place_order()" style="width: 100%;margin-top: 15px;">Pay it</button>
 	                				</div>
 	                			</div>
 	                		</div>

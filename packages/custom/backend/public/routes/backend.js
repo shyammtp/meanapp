@@ -203,7 +203,7 @@
                 params: {title : 'Customers',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Customers'}]},
              })
           ).state('admin_order_place_list', angular.extend({},defal,   {
-                url : '/admin/orders/place',
+                url : '/admin/orders/place?user',
                 templateUrl: 'backend/views/'+theme+'/orders/new.html',
                 params: {title : 'New Order',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'New Order'}]},
              })

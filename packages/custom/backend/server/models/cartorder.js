@@ -44,11 +44,12 @@ var FoodCartSchema = new Schema({
 	price : {type : Number,default : 0},
 	discounts : {type : Array, default : []},
 	additionalinfo : {type : String},
-	delivery: {type: Schema.Types.Mixed},
+	delivery: {type: Schema.Types.Mixed},	
 	deliverycharge : {type : Number},
 	personalinfo : {type: Schema.Types.Mixed},
 	sums : {type : Array, default : []},
 	totalpaid : {type : Number,default : 0},
+	order_reference : {type : String},
 	paid : {type: Boolean, default: false},
 	payment_mode: {type: String},
 	orderplaced: {type : Boolean,default: false},
@@ -117,6 +118,12 @@ FoodCartSchema.methods.addHistory = function(id, user, message,cb) {
 	    		_obj.model('FoodCart').find({_id : id}).populate([{path: 'user',select : 'email name'},{path : 'reserved_for',select : 'email name'}]).exec(cb);
 		    }
 		);
+}
+
+FoodCartSchema.methods.getReferenceNumber = function() {
+	var _obj = this; 
+	var date = new Date();
+	return date.getDate()+date.getMonth()+date.getYear()+date.getHours()+date.getMinutes()+date.getSeconds();
 }
 
 FoodCartSchema.methods.addData = function(data) {

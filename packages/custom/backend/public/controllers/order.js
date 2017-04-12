@@ -1,7 +1,7 @@
 (function() {
     'use strict'; 
 
-    function OrderNewController($scope,$location,ItemMenus,ArrayUtil,$state,$timeout) { 
+    function OrderNewController($scope,$location,ItemMenus,ArrayUtil,$state,$timeout,$stateParams) { 
          
         $scope.menuassign = {};
         $scope.menus = []; 
@@ -43,28 +43,31 @@
         $scope.hasitem = {};
         $scope.itemsquantity = {};
         $scope.mainitem = {};
-        var urs= '58e6ae3c818fe017782a204c';  
-        ItemMenus.setCartUser(urs);
-        var itemsset = {};
-        ItemMenus.getCartByUser(urs).then(function(res){    
-            angular.forEach(res.data.data.items, function(v,k) {
-                $scope.hasitem[v.item_ref] = true;
-                if(!ArrayUtil.get($scope.itemsquantity,v.item_ref)) {
-                     $scope.itemsquantity[v.item_ref] = v.quantity;
+        console.log($stateParams);
+        var urs = $stateParams.user;  
+        if(urs) {
+            ItemMenus.setCartUser(urs);
+            var itemsset = {};
+            ItemMenus.getCartByUser(urs).then(function(res){    
+                angular.forEach(res.data.data.items, function(v,k) {
+                    $scope.hasitem[v.item_ref] = true;
+                    if(!ArrayUtil.get($scope.itemsquantity,v.item_ref)) {
+                         $scope.itemsquantity[v.item_ref] = v.quantity;
+                    }
+                    itemsset[v.item_ref] = v; 
+                });
+
+                $scope.mainitem = angular.extend({},$scope.mainitem,itemsset);
+     
+                $scope.cartid = res.data.data._id;
+                $scope.cartorder = res.data.data;
+                $scope.cartorder.priceset = ItemMenus.calculatePrices(res.data.data);
+            },function(err) {
+                if(err.status == 500) {
+
                 }
-                itemsset[v.item_ref] = v; 
             });
-
-            $scope.mainitem = angular.extend({},$scope.mainitem,itemsset);
- 
-            $scope.cartid = res.data.data._id;
-            $scope.cartorder = res.data.data;
-            $scope.cartorder.priceset = ItemMenus.calculatePrices(res.data.data);
-        },function(err) {
-            if(err.status == 500) {
-
-            }
-        })
+        }
 
         var getCartItem = function(item) {
             if(! $scope.cartorder ) {
@@ -302,11 +305,13 @@
 
     }
 
-    function BackendOrderPaymentController($scope,$location,ItemMenus,ArrayUtil,$state,$timeout,Backend) {
+    function BackendOrderPaymentController($scope,$location,ItemMenus,ArrayUtil,$state,$timeout,Backend,$window) {
 
         $scope.cartorder = {}; 
         $scope.editpersonalinfo = false;  
+        $scope.editdeliverydet = false;  
         $scope.addressselect = false; 
+        $scope.settings = $window.settings;
         var itemsset = {};
         $scope.delivery = {};
         $scope.chooseddeliery = {};
@@ -334,7 +339,68 @@
             if(err.status == 500) {
 
             }
-        })
+        });
+
+        $scope.place_order = function() { 
+            var postdata = {};
+            postdata.placeorder = true;
+            if($scope.chooseddeliery) {
+                postdata.delivery = $scope.chooseddeliery;
+            }
+            postdata.orderplaced = true; 
+            postdata.totalpaid = $scope.cartorder.priceset.subtotal;
+            postdata.paid = true;
+            console.log(postdata); 
+            ItemMenus.updateCart($scope.cartorder._id,postdata).then(function(response) {
+                var d = response.data;
+                if(d.success === true) { 
+                    Materialize.toast('Order has been placed', 4000);
+                    return $location.path('admin/orders/live');
+                   
+                } else {
+                    Materialize.toast(ArrayUtil.get(d,'message','Problem in the cart'), 4000,'errortoast');
+                }
+            },function(err) {
+                if(err.status == 500) {
+                    Materialize.toast(ArrayUtil.get(ArrayUtil.get(err,'data'),'message','Cart not saved'), 4000,'errortoast');
+                } 
+            })
+        }
+
+        $scope.updatedeliverymethod = function(method) {
+            ItemMenus.updateCart($scope.cartorder._id,{cartdeliverymethodsave : true,type : method}).then(function(response) {
+                var d = response.data;
+                if(d.success === true) { 
+                    Materialize.toast('Information Updated', 4000);
+                    $scope.editdeliverydet = false;
+                    $scope.cartorder = d.cart;
+                    $scope.cartorder = d.cart;
+                    $scope.cartorder.priceset = ItemMenus.calculatePrices(d.cart);
+                    if($scope.cartorder.user) {
+                        $scope.userdeliveries = $scope.cartorder.user.deliveries;
+                    }
+                    if($scope.cartorder.user && typeof $scope.cartorder.personalinfo === 'undefined') {
+                        $scope.cartorder.personalinfo = {};
+                        $scope.cartorder.personalinfo.name = $scope.cartorder.user.name;
+                        $scope.cartorder.personalinfo.phone = $scope.cartorder.user.phone;
+                        $scope.editpersonalinfo = true;
+                    }
+                } else {
+                    Materialize.toast(ArrayUtil.get(d,'message','Problem in the cart'), 4000,'errortoast');
+                }
+            },function(err) {
+                if(err.status == 500) {
+                    Materialize.toast(ArrayUtil.get(ArrayUtil.get(err,'data'),'message','Cart not saved'), 4000,'errortoast');
+                } 
+            })
+        }
+
+        $scope.editpersonal = function() {
+            $scope.editpersonalinfo = true;
+        }
+        $scope.editdeliverydetas = function() {
+            $scope.editdeliverydet = true;
+        }
         
         $scope.getItemPriceSubtotal = function(itemid) { 
             return ArrayUtil.get(ArrayUtil.get($scope.cartorder.priceset,'individualitemsubtotal',{}),itemid,0);
@@ -410,7 +476,7 @@
         .controller('OrderNewController', OrderNewController)
         .controller('BackendOrderPaymentController', BackendOrderPaymentController);
 
-    OrderNewController.$inject = ['$scope','$location', 'ItemMenus','ArrayUtil','$state','$timeout']; 
-    BackendOrderPaymentController.$inject = ['$scope','$location', 'ItemMenus','ArrayUtil','$state','$timeout','Backend']; 
+    OrderNewController.$inject = ['$scope','$location', 'ItemMenus','ArrayUtil','$state','$timeout','$stateParams']; 
+    BackendOrderPaymentController.$inject = ['$scope','$location', 'ItemMenus','ArrayUtil','$state','$timeout','Backend','$window']; 
 
 })();

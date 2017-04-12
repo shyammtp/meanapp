@@ -26,7 +26,8 @@ var Mongoose = require('mongoose'),
         var products = Backend.productscontroller; 
         //app.use(sidebar.theme);
         //app.use(expressJwt({ secret: config.sessionSecret}));
-        app.use(logErrors); 
+        app.use(logErrors);  
+        app.use(settings.getappsettings);
 
         var theme = config.theme,
         assetspath = '/theme/assets/lib/'+theme+'/';
