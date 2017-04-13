@@ -6,6 +6,7 @@ var Mongoose = require('mongoose'),
   NotificationTemplate = Mongoose.model('NotificationTemplate'),
   adminuser = Mongoose.model('AdminUser'),
   category = Mongoose.model('Category'),
+  directory = Mongoose.model('directory'),
     express = require('express'),
   arrayutil = require('../helpers/util').array,
   textutil = require('../helpers/util').text,
@@ -129,6 +130,12 @@ var Mongoose = require('mongoose'),
         app.get('/api/settings/getpaginate',settings.getpaginate);
         app.get('/api/directory/get/country',settings.getcountry);
         app.get('/api/settings/getcountries',settings.getAllCountries);
+        app.get('/api/directory/getall',authentic,function(req,res){ 
+            directory.getAll(function(err,cb) {  
+                res.send(cb);  
+            })
+        });
+        app.post('/api/directory/save',authentic,settings.saveDirectory);
 
 
         app.get('/api/users/get',authentic, settings.getusers);

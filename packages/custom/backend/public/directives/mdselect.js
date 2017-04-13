@@ -14,6 +14,8 @@
 
         }
     }
+
+
     function jsTree(Product,ArrayUtil,$timeout) {
         return {    
             replace: 'true',
@@ -77,6 +79,94 @@
                 scope.finish = function (id) {
                     scope.methodToCall({value: id});                                
                 }
+                
+                /*angular.element(document).on('dnd_stop.vakata.jstree', function (e, data) {
+                   var ref = element.jstree(true);
+                    var parents = ref.get_node(data.element);
+                    console.log(data.element);
+                    console.log(parents);
+                }); */
+               
+            }
+
+        }
+    }
+
+
+    function directoryjsTree(Backend,ArrayUtil,$timeout,$window) {
+        return {    
+            replace: 'true',
+            scope: {
+                methodToCall: '&method',
+                directoryupdated : '='
+            }, 
+            loadCategoriesTree : function(scope,element) { 
+                Backend.getDirectories().then(function(res) { 
+                    var directoryset = [],catmap = {}; 
+                    res.data.forEach(function(s) { 
+                        var d = {};
+                        d.id = ArrayUtil.get(s,'_id');
+                        d.parent = ArrayUtil.get(s,'parent_id','#');
+                        d.text = ArrayUtil.get(s,'name'); 
+                        directoryset.push(d);
+                        catmap[ArrayUtil.get(s,'_id')] = s;
+                    });  
+                    scope.$parent.setdirectory(catmap);
+                     
+                     element.jstree({
+                        'core' : {
+                            'data' : directoryset,
+                            'check_callback' : true,
+                            'themes' : {
+                                'responsive': false
+                            }
+                        },
+                        'dnd' : {
+                            use_html5 : true
+                        },
+                        'types' : {
+                            'default' : {
+                                'icon' : 'fa fa-folder icon-state-info icon-md'
+                            },
+                            'file' : {
+                                'icon' : 'fa fa-file icon-state-default icon-md'
+                            }
+                        },
+                        'plugins' : ['types', 'dnd']
+                    });
+                });
+                 element.on('select_node.jstree',function(e,data) {
+                    $timeout (function() { 
+                        scope.finish(data.selected[0]); 
+                    });
+                });
+            },
+            link : function(scope,element,attrs) {
+                var _obj = this;
+                 scope.$watch('directoryupdated', function() {
+                   if(typeof scope.directoryupdated ==='undefined') return;
+                   if(scope.directoryupdated === true) {
+                       scope.$parent.directoryupdated = false;
+                       element.jstree('destroy');
+                       _obj.loadCategoriesTree(scope,element);
+                   }
+                });
+                
+                this.loadCategoriesTree(scope,element);                
+                scope.finish = function (id) {
+                    scope.methodToCall({value: id});                                
+                }
+ 
+                var topLimit = window.$('#bar-fixed').offset().top;
+                window.$(window).scroll(function() {
+                  //console.log(topLimit <= $(window).scrollTop())
+                  if (topLimit <= window.$(window).scrollTop()) {
+                    window.$('#bar-fixed').addClass('stickit')
+                  } else {
+                    window.$('#bar-fixed').removeClass('stickit')
+                  }
+                })
+
                 
                 /*angular.element(document).on('dnd_stop.vakata.jstree', function (e, data) {
                    var ref = element.jstree(true);
@@ -694,12 +784,14 @@
         .directive('orderTable', orderTable)
         .directive('shInput', shInput)
         .directive('jsdirtree', jsTree)
+        .directive('directorytree', directoryjsTree)
         .directive('categoryselectslider', categoryselectslider)
         .directive('attributemanager',attributeManager) 
         .directive('catalogfield',catalogfield)
         .directive('catalogvariantfield',catalogvariantfield);
  
     jsTree.$inject = ['Product','ArrayUtil','$timeout'];
+    directoryjsTree.$inject = ['Backend','ArrayUtil','$timeout','$window'];
     priceformat.$inject = ['Product'];
     orderTable.$inject = ['Socket'];
     categoryselectslider = ['Product','$compile','$location'];    

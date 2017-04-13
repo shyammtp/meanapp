@@ -4,17 +4,62 @@
         <div breadcrumbs></div>
     </div> 
     <div id="main-wrapper">  
-        <div ng-controller="DirectoryController as widget">
+        <div ng-controller="DirectoryController">
+            <div class="row"> 
+                <div class="col-md-6">
 
-        <div class="fixed-action-btn">
-            <a href="javascript:;" class="btn-floating btn-large waves-effect" ng-click="addUser()"><i class="material-icons">add</i></a>
-        </div>
-          <listwidget></listwidget>
+                  <button type="submit" ng-click="addRootdirectory()" class="btn btn-primary waves-effect pull-left m-t-xs m-b-xs">Add Root directory</button>
+                  <div class="clearfix  m-b-10"></div>
+                   <div directorytree data-method="getdirectoryMap(value)" directoryupdated="directoryupdated"></div> 
+                </div>         
+                <div class="col-md-6">
+                    <div class="z-depth-3" id="bar-fixed" style="padding: 10px;">
+                        <div class="m-b-10" ng-if="directory.edit">You are modifying this directory <b class="green-theme-text">{{directory.edit}}</b>. Want to add subdirectory under this. <a href="javascript:;" ng-click="addnewdirectory(directory)"> Click here</a></div>
+
+                        <div class="m-b-10" ng-if="directory.parent_id">You are adding new directory under this directory <b class="green-theme-text">{{directory.parent_directory_name}}</b></div>
+
+                        <form class="col-md-12 form-set" name="directoryform" enctype="multipart/form-data"> 
+
+                              <input id="directory_id" ng-model="directory.directory_id" name="directory_id" type="hidden"  value="{{directory.directory_id}}" class=""><input id="parent_id" ng-model="directory.parent_id" name="parent_id" type="hidden"  value="{{directory.parent_id}}" />        
+                              <input id="parent_directory_url" ng-model="directory.parent_directory_url" name="parent_directory_url" type="hidden"  value="{{directory.parent_directory_url}}" />        
+                              <div class="row m-t-10">
+                                <div class="input-field ">
+                                    <div class="col-md-12"> 
+                                       <input id="directory_name" autocomplete="off" required ng-model="directory.directory_name" name="directory_name" type="text"  value="{{directory.directory_name}}" class="">
+                                        <label for="directory_name" class="{{directory.directory_name? 'active':''}}">directory Name</label> 
+                                        <p ng-show="directoryform.directory_name.$error.required" class="error-msg">directory Name is required.</p> 
+                                    </div>
+                                    
+                                </div>
+                              </div> 
+                              <button type="submit"  ng-if="directory.edit" ng-click="deletedirectory(directory)" class="btn btn-danger waves-effect pull-left m-t-xs m-b-xs">Delete</button>
+                              <div class="btn-group pull-right">
+                                <button type="button" ng-if="directory.directory_name" ng-click="addRootdirectory()" class="btn btn-default waves-effect m-t-xs m-b-xs">Cancel</button
+                                >
+                                <button type="submit" ng-click="savedirectory(directory)" class="btn btn-primary waves-effect  m-t-xs m-b-xs">Save</button
+                                >
+                                
+                                </div>
+                              <!-- <div class="row m-t-20">
+                                    <div class="input-field col-md-12">
+                                        <div class="select-wrapper">
+                                            <select md-select ng-model="settings.THEME" class="initialized" data-options="[{'title':'Black','value': 'black'}]" data-value="{{settings.THEME}}"> 
+                                                <option value="" disabled="">Select Theme</option>
+                                                <option value="black">Black</option>
+                                                <option value="white">White</option>  
+                                            </select>
+                                        </div>
+                                        <label>Select Panel Theme</label>
+                                    </div>
+                                </div> -->
+                        </form>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div><!-- Main Wrapper -->
     <div class="page-footer"> 
     </div>
-</div><!-- Page Inner -->
-<script> 
-         /*angular.element('select').material_select(); */
-</script>
+</div><!-- Page Inner --> 

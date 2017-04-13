@@ -194,39 +194,68 @@
 
 
 
-     function DirectoryController($scope,ListWidget,Backend,ArrayUtil,Page,$window) { 
-        var vm = this;  
-         vm.setPage = setPage; 
-
-         ListWidget.init();
-         ListWidget.defaultSortColumn = 'country_name';
-         ListWidget.addColumn('country_name',{'type' : 'text','title' : 'Country Name',defaultValue : '--',width : '50%'}); 
-         ListWidget.addColumn('country_code',{'type' : 'text','title' : 'Code',defaultValue : '--',width : '20%'}); 
-         ListWidget.addColumn('nocolumn',{'type' : 'notype','title' : 'Actions',defaultValue : '--',width : '20%',sortable : false,filterable : false,'render' : 'backend/views/'+theme+'/users/renderer/actions.html'});
-         ListWidget.setDataRequestUrl('/api/directory/get/country'); 
-         
-        function setPage(page) { 
-            if(page < 1) {
-                page = 1;
-            }
-            ListWidget.request({page: page,limit : 20,passtoken : true}).then(function(res){  
-                ListWidget.setTotalItems(res.data.total)
-                        .setPageSize(20).setPage(page)
-                        .setDBResults(res.data.docs);   
-                $scope.pager = ListWidget.getPager();  
-                $scope.dbresult = ListWidget.getDbResults();
-            });    
-        }  
-        $scope.widgetlimitchange = function(selected) {
-            ListWidget.request({page: 1,limit : selected,passtoken : true}).then(function(res){  
-                ListWidget.setTotalItems(res.data.total)
-                        .setPageSize(selected).setPage(1)
-                        .setDBResults(res.data.docs);   
-                $scope.pager = ListWidget.getPager();  
-                $scope.dbresult = ListWidget.getDbResults();
-            }); 
+     function DirectoryController($scope,ListWidget,Backend,ArrayUtil,Page,$window,$document) { 
+        var vm = this,directorymap; 
+        var parentdata  = {};
+        parentdata.externaljs = 'backend/views/'+theme+'/products/directory/js.html'; 
+        $scope.$emit('child', parentdata);  
+        $scope.setdirectory = function(map) {
+            directorymap = map;
         }
-        setPage(1);
+        $scope.directory = {}; 
+        $scope.getdirectoryMap = function(id) { 
+            if(typeof directorymap[id] != 'undefined') {
+                var c = directorymap[id]; 
+                this.directory['edit'] = ArrayUtil.get(c,'name');
+                this.directory['directory_name'] = ArrayUtil.get(c,'name');
+                this.directory['directory_id'] = ArrayUtil.get(c,'_id');  
+                this.directory['parent_id'] = this.directory['parent_url'] = '';
+            }  
+        } 
+        $scope.addnewdirectory = function(cat) { 
+            $scope.directory = {};
+            var c = ArrayUtil.get(directorymap,ArrayUtil.get(cat,'directory_id'),{}); 
+            $scope.directory['edit'] = '';
+            $scope.directory['parent_directory_name'] =  ArrayUtil.get(cat,'directory_name');
+            $scope.directory['parent_id'] = ArrayUtil.get(cat,'directory_id'); 
+        }
+        $scope.directoryupdated = false;
+        $scope.savedirectory = function(cat) { 
+            var params = {};
+            if(ArrayUtil.get(cat,'parent_id')) {
+                params['parent'] = ArrayUtil.get(cat,'directory_id');
+            }
+            params['directory_name'] = ArrayUtil.get(cat,'directory_name');
+            if(ArrayUtil.get(cat,'directory_id')) params['directory_id'] = ArrayUtil.get(cat,'directory_id');
+            Backend.savedirectory(params).then(function(res) {
+                 Materialize.toast("Directory Updated", 4000);
+                 $scope.directoryupdated = true;
+                  $scope.directory = {};
+                },function(err) {
+                    if(err.status == 500) {
+                        Materialize.toast(ArrayUtil.get(ArrayUtil.get(err,'data'),'message','directory not saved'), 4000,'errortoast');
+                    } 
+            });
+        }
+        $scope.deletedirectory = function(cat) {
+            var con = confirm('Are you sure want to delete this directory? Make sure this directory doesn\'t have any children into it');
+            if(con) {
+                var params = {'id' : ArrayUtil.get(cat,'directory_id')}; 
+                Backend.deletedirectory(params).then(function(res) {
+                    Materialize.toast("Directory removed successfully", 4000);
+                     $scope.directoryupdated = true;
+                     $scope.directory = {};
+                }, function(err) {
+                    if(err.status == 500) {
+                        Materialize.toast(ArrayUtil.get(ArrayUtil.get(err,'data'),'message','directory not deleted'), 4000,'errortoast');
+                    }
+                })
+            }
+            
+        }
+        $scope.addRootdirectory = function() {
+            $scope.directory = {};
+        } 
 
     }
 
@@ -393,7 +422,7 @@
     TitleController.$inject = ['$scope','Page'];
     BackendCoreController.$inject = ['$scope','getsettings','$location','$window','Authentication','$state','Backend','$stateParams','getmenus','getcurrency','getassetsdata'];
     SettingsController.$inject = ['$scope','Backend','ArrayUtil','Page','$window'];
-    DirectoryController.$inject = ['$scope','ListWidget','Backend','ArrayUtil','Page','$window'];
+    DirectoryController.$inject = ['$scope','ListWidget','Backend','ArrayUtil','Page','$window','$document'];
     WidgetController.$inject = ['$scope','ListWidget','$location','Backend','$rootScope','$state','$timeout'];
     CustomerController.$inject = ['$scope','ListWidget','$location','Backend','$rootScope','$state','$timeout'];
 

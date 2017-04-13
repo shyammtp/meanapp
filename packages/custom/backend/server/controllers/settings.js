@@ -140,6 +140,68 @@ var Mongoose = require('mongoose'),
                  res.send(cb);
             });
         },
+        saveDirectory : function(req,res,next) {
+            var cat = new Directory();
+            if(arrayutil.get(req.query,'parent')) {            
+                var query = category.where({_id : req.query['parent']});
+                query.findOne(function(err,cate) {
+                    if(cate) {
+                        cat.parent_id = cate._id;
+                        //console.log(cate.level);
+                        cat.level = cate.level+1;
+                        if(typeof cate.tree_path!= 'undefined') {
+                            cat.tree_path = cate.tree_path.concat([cate._id]);
+                            //cat.tree_url = cate.tree_url+'/'+cate.category_url;
+                        } else {
+                            cat.tree_path.push(cate._id);
+                            //cat.tree_url = cate.category_url;
+                        } 
+                        cat.category_name = arrayutil.get(req.body,'directory_name');  
+                        //cat.attributes = attrdefaults;               
+                        cat.save(function(err,category,numAffected) {
+                            if(err) {
+                                res.status(500).json(err);
+                            } else {
+                                res.status(200).json({message: 'Inserted Successfully'});
+                            }
+                        }); 
+                    }
+                });
+            } else {
+                if(arrayutil.get(req.body,'directory_id')) {
+                    category.findById(arrayutil.get(req.body,'directory_id'), function(error, catey) {
+                        // Handle the error using the Express error middleware
+                        if(error) return res.status(200).json(error);
+                        
+                        // Render not found error
+                        if(!catey) {
+                          return res.status(404).json({
+                            message: 'Directory with id ' + id + ' can not be found.'
+                          });
+                        }
+                        var data = {}; 
+                        data.name = arrayutil.get(req.body,'directory_name');
+
+                        // Update the course model
+                        catey.update(data, function(error, catey) {
+                          if(error) return res.status(200).json(error);
+                            
+                          return res.json(catey);
+                           
+                        });
+                      });
+                } else { 
+                    cat.name = arrayutil.get(req.body,'directory_name'); 
+                    cat.save(function(err,category,numAffected) {
+                        if(err) {
+                           res.status(500).json(err);
+                        } else {
+                            res.status(200).json({message: 'Inserted Successfully'});
+                        }
+                    }) 
+                }
+            }
+        },
       upload : function(req,res) {
         var form = new formidable.IncomingForm();
         // specify that we want to allow the user to upload multiple files in a single request

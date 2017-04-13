@@ -168,6 +168,24 @@
                 if(cb) {
                     cb(scope);
                 }
+            },
+            getDirectories : function() {
+                var deferred = $q.defer();
+                $http.get('/api/directory/getall',{headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                    deferred.resolve(response);
+                }, function(response) {
+                    deferred.reject(response);
+                });
+                return deferred.promise;
+            },
+            saveDirectory : function(params) {
+                var deferred = $q.defer();
+                $http.post('/api/directory/save?parent='+ArrayUtil.get(params,'parent'),params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                    deferred.resolve(response);
+                }, function(response) {
+                    deferred.reject(response);
+                });
+                return deferred.promise;
             }
         };
     }
