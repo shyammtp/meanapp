@@ -1,8 +1,7 @@
 'use strict';
 
 import 'angular/angular-csp.css';
-import 'angular-ui-select/select.min.css';
-import 'angular-material/angular-material.min.css'; 
+import 'angular-ui-select/select.min.css';  
 
 import jQuery from 'jquery';
 import 'tinymce';
@@ -21,7 +20,8 @@ import 'angular-ui-router';
 import 'angular-jwt';
 import 'angular-aria';
 import 'angular-animate';
-import 'angular-material';
+//import 'angular-material';
+import 'angular-materialize';
 import 'angular-loading-bar';
 import 'ng-file-upload';
 import 'angular-ui-sortable';
@@ -29,6 +29,11 @@ import 'angular-ui-tinymce';
 import 'angular-dragdrop/src/angular-dragdrop';
 import 'angular-socket-io/dist/socket.io';
 import 'angular-socket-io';
+import 'ngmap';
+import 'angucomplete-alt'; 
+import 'materialize-clockpicker';
+import 'moment';
+import 'angular-moment';
 
 window.$ = jQuery;
 
@@ -43,7 +48,7 @@ angular.element(document).ready(function () {
 });
 
 function processModules (modules) {
-  var packageModules = ['ngCookies', 'ngResource', 'ui.router', 'ui.select', 'ngSanitize', 'ngMaterial','ngFileUpload','ui.sortable'];
+  var packageModules = ['ngCookies', 'ngResource', 'ui.router', 'ui.select', 'ngSanitize','ngFileUpload','ui.sortable','ui.materialize','angularMoment'];
   var m;
   var mn;
   for (var index in modules) {
