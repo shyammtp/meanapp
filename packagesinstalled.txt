@@ -1,0 +1,6 @@
+npm install angular-moment moment --save
+npm install angular-materialize
+
+bower install angucomplete-alt --save
+bower install ngmap --save
+bower install materialize-clockpicker --save
