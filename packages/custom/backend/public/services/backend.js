@@ -17,7 +17,7 @@
         return arr; 
     }
 
-    function Backend($http, $q,$window,$compile,Authentication) {
+    function Backend($http, $q,$window,$compile,Authentication,ArrayUtil) {
         return {
             name: 'backend',
             localsdata : {},
@@ -176,11 +176,38 @@
                 }, function(response) {
                     deferred.reject(response);
                 });
-                return deferred.promise;
+                return deferred.promise; 
             },
             saveDirectory : function(params) {
                 var deferred = $q.defer();
                 $http.post('/api/directory/save?parent='+ArrayUtil.get(params,'parent'),params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                    deferred.resolve(response);
+                }, function(response) {
+                    deferred.reject(response);
+                });
+                return deferred.promise;
+            },
+            deleteDirectory : function(params) {
+                var deferred = $q.defer(); 
+                $http.delete('/api/directory/delete/'+ArrayUtil.get(params,'id'),{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                    deferred.resolve(response);
+                }, function(response) {
+                    deferred.reject(response);
+                });
+                return deferred.promise;
+            },
+            getDirectoryCache : function() {
+                var deferred = $q.defer();
+                $http.get('/api/directory/getallcache',{headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                    deferred.resolve(response);
+                }, function(response) {
+                    deferred.reject(response);
+                });
+                return deferred.promise;
+            },
+            getDirectoryByType : function(params,level) {
+                var deferred = $q.defer();
+                $http.post('/api/directory/get?level='+level,params,{headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
                     deferred.resolve(response);
                 }, function(response) {
                     deferred.reject(response);
@@ -308,7 +335,7 @@
         .factory('Socket',Socket)
         .factory('Page',Page);
 
-    Backend.$inject = ['$http', '$q','$window','$compile','Authentication'];
+    Backend.$inject = ['$http', '$q','$window','$compile','Authentication','ArrayUtil'];
     Authentication.$inject = ['$http', '$q','$window'];
     Socket.$inject = ['socketFactory'];
 

@@ -89,7 +89,7 @@
             link : function(scope,element,attrs) { 
                 scope.getContentUrl = function() {
                     return attrs.template;
-               } 
+               }                 
                scope.rowobject = JSON.parse(attrs.rowObject);
                scope.resultindex = attrs.resultindex;
                scope.checkobjectLength = function(obj,ln) {

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="fragment" content="!">
 
-  <title>{{settings.SITENAME}} - {{ Page.title() }} {{appName}} {{package}}</title>
+  <title ng-bind="pageTitle">{{settings.SITENAME}}</title>
   <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
   <script>
     var theme = 'white';
@@ -48,7 +48,7 @@
     
 <script src="/theme/assets/lib/white/plugins/jquery/jquery-3.1.0.min.js"></script> 
 <script src="/theme/assets/lib/white/plugins/bootstrap/js/bootstrap.min.js"></script>
-<script src="/theme/assets/lib/white/js/materialize.js" type="text/javascript"></script>
+<script src="/bower_components/materialize/bin/materialize.js" type="text/javascript"></script>
 <script src="/theme/assets/lib/white/plugins/jstree/jstree.min.js" type="text/javascript" charset="utf-8"></script> 
 
   <style type="text/css"> 

@@ -1989,7 +1989,7 @@ $(document).ready(function(){
                 element.addEventListener('touchend', Effect.hide, false);
                 element.addEventListener('touchcancel', Effect.hide, false);
             }
-
+            console.log('sdsad')
             element.addEventListener('mouseup', Effect.hide, false);
             element.addEventListener('mouseleave', Effect.hide, false);
         }

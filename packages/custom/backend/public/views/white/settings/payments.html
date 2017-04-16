@@ -31,7 +31,7 @@
                                     </div> 
                                     <div class="form-group">  
                                         <label for="bankdeposit_countries" class=" formlabel">Available Countries</label> 
-                                        <select class="fullwidth" id="bankdeposit_countries" multiple="" name="bankdeposit_countries" ng-model="settings.bankdeposit_countries"><option value="all" selected="selected">-- All Countries --</option><option ng-repeat="(fg,gs) in directories track by fg" value="{{gs._id}}">{{gs.country_name}}</option></select> 
+                                        <select class="fullwidth" id="bankdeposit_countries" multiple="" name="bankdeposit_countries" ng-model="settings.bankdeposit_countries"><option value="all" selected="selected">-- All Countries --</option><option ng-repeat="(fg,gs) in directories track by fg" value="{{gs._id}}">{{gs.name}}</option></select> 
                                         <p class="help-block">Which countries do you want to offer Bank Deposit to? If the customers billing country matches any of the selected countries then they will have the option to pay by Bank Deposit.</p>
                                     </div>
 
@@ -72,7 +72,7 @@
                                     </div> 
                                     <div class="form-group">  
                                         <label for="cashondelivery_countries" class=" formlabel">Available Countries</label> 
-                                        <select class="fullwidth" id="cashondelivery_countries" multiple="" name="cashondelivery_countries" ng-model="settings.cashondelivery_countries"><option value="all" selected="selected">-- All Countries --</option><option ng-repeat="(fg,gs) in directories track by fg" value="{{gs._id}}">{{gs.country_name}}</option></select> 
+                                        <select class="fullwidth" id="cashondelivery_countries" multiple="" name="cashondelivery_countries" ng-model="settings.cashondelivery_countries"><option value="all" selected="selected">-- All Countries --</option><option ng-repeat="(fg,gs) in directories track by fg" value="{{gs._id}}">{{gs.name}}</option></select> 
                                         <p class="help-block">Which countries do you want to offer Cash on delivery to? If the customers billing country matches any of the selected countries then they will have the option to pay by Cash on delivery.</p>
                                     </div>
 

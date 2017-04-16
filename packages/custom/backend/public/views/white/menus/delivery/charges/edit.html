@@ -1,0 +1,34 @@
+<div class="adddeliverycharges">
+	<h3 style="margin-bottom: 0px;"><span class="pull-left">Add a delivery Charges
+	<span class="paratext">You can search the product by it specifics and save as a tab to load all the time</span>
+	</span> <a href="javascript:void(0);" class="pull-right" ng-click="closethis()"><i class="fa fa-angle-right"></i></a><div class="clearfix"></div></h3> 
+	<form name="form.adddeliveryform">   
+		<div class="col-sm-12" style="margin-top: 15px;">
+		<input type="hidden"   ng-model="delivery._id" />
+			<div class="form-group">
+				<label>Name</label>
+				<input type="text"	placeholder="Give the name of this delivery" ng-required="true" ng-model="delivery.name" />
+			</div>
+			<div class="form-group">
+				<label>Delivery Area</label> 
+				<div class="row">
+					<div class="col-xs-12">
+						<select ng-model="delivery.locationids" multiple="multiple"  ng-required="true" class="form-control">
+							<option ng-repeat="(f,b) in localities track by $index" value="{{b.id}}">{{b.name}}</option>
+						</select> 
+					</div> 
+				</div>
+			</div> 
+			<div class="form-group">
+				<label>Delivery Charge</label>
+				<input type="number"	placeholder="Your charge eg: 10.00" ng-required="true" ng-model="delivery.deliverycharge" />
+			</div> 
+		  	<div class="margin15">
+		  		<div class="btn-group">
+		  			<button type="button" ng-click="canceladddelivery()" class="btn btn-default">Back</button> 
+		  			<button type="button" ng-disabled="form.adddeliveryform.$invalid" ng-click="savedelivery()" class="btn btn-primary">Save</button> 
+		  		</div>
+		  	</div>
+		</div>
+	</form>
+</div>

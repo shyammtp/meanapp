@@ -79,6 +79,10 @@ var Mongoose = require('mongoose'),
         app.get('/api/catalog/subproductlist',authentic,products.subproductlist);
         app.post('/api/catalog/saveinterface',authentic,products.saveinterface);
         app.get('/api/catalog/getinterfaceviews',authentic,products.getinterfaceviews);
+        app.post('/api/delivery/chargesave',authentic,products.savecharge);
+        app.get('/api/delivery/getcharges',authentic,products.getcharges);
+        app.get('/api/delivery/getallcharges',authentic,products.getallcharges);
+        app.get('/api/delivery/locationcharge',authentic,products.locationcharge);
         app.post('/api/fileupload',products.uploads);
 
 
@@ -92,6 +96,8 @@ var Mongoose = require('mongoose'),
 
         /* Cart orders */
         app.get('/api/cart/orders',authentic,products.getCartOrders);
+        app.get('/api/cart/getorders',authentic,products.getorderscond);
+        app.get('/api/orders/list',authentic,products.getOrdersList);
         app.get('/api/cart/getorder/:id',authentic,products.getCartOrder);
         app.put('/api/cart/update/:id',authentic,products.updatecart);
         app.post('/api/cart/employeehistory',authentic,products.addHistory);
@@ -130,12 +136,19 @@ var Mongoose = require('mongoose'),
         app.get('/api/settings/getpaginate',settings.getpaginate);
         app.get('/api/directory/get/country',settings.getcountry);
         app.get('/api/settings/getcountries',settings.getAllCountries);
+        app.delete('/api/directory/delete/:id',authentic,settings.deleteDirectory);
         app.get('/api/directory/getall',authentic,function(req,res){ 
             directory.getAll(function(err,cb) {  
                 res.send(cb);  
             })
         });
+        app.get('/api/directory/getallcache',authentic,function(req,res){ 
+            directory.getAllCache(function(ress) {  
+                res.send(ress);  
+            })
+        });
         app.post('/api/directory/save',authentic,settings.saveDirectory);
+        app.post('/api/directory/get',authentic,settings.getDirectories);
 
 
         app.get('/api/users/get',authentic, settings.getusers);

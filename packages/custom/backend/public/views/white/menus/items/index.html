@@ -112,18 +112,20 @@
 		                        				</div>
 		                        			</div>
 		                        			<div class="form-group">
-		                        				<input type="checkbox" id="limitedtime" ng-model="item.limitedtime" /><label for="limitedtime">Available in only limited time for a day</label> 
+		                        				<input type="checkbox" name="limitedtime" id="limitedtime" ng-model="item.limitedtime" /><label for="limitedtime">Available in only limited time for a day</label> 
 		                        			</div> 
+		                        			<div id="clock" style="position: fixed;top:10%; z-index: 545"></div>
 		                        			<div class="form-group" ng-show="item.limitedtime">
 		                        				 <div class="row">
 		                        				 	<div class="col-md-3">
 		                        				 		<label>From</label>
-		                        						<input type="time" placeholder="Eg: HH:MM" ng-model="item.limitedtimefrom" /> 
+		                        						<input type="text" materializetimepicker placeholder="Eg: HH:MM" ng-model="item.limitedtimefrom" /> 
 		                        				 	</div>
 		                        				 	<div class="col-md-3">
 		                        				 		<label>to</label>
-		                        						<input type="time" placeholder="Eg: HH:MM" ng-model="item.limitedtimeto" /> 
+		                        						<input type="text" materializetimepicker placeholder="Eg: HH:MM" ng-model="item.limitedtimeto" /> 
 		                        				 	</div>
+		                        				 	<span class="error" style="color:red; display: block;" ng-show="form.itemaddform.limitedtime.$error.time">Invalid Time</span>
 		                        				 </div>
 		                        			</div>  
 	                        				<div class="form-group">

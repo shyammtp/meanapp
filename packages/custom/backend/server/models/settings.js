@@ -6,10 +6,12 @@ Schema = mongoose.Schema,
 
 
 var SettingsSchema = new Schema({
-	place_id : Number,
+	place_id : {type : String},
 	name : {type: String, required: true},
 	value : String
 });
+
+
 
 SettingsSchema.plugin(mongoosePaginate);
 
@@ -38,9 +40,27 @@ SettingsSchema.statics.getAllConfigPaginate = function(place_id, page, cb) {
 	return this.model('Settings').paginate({place_id : pid}, { page: pg, limit: 1 }, cb); 
 }
 
-SettingsSchema.pre('save', function(next) {
-  console.log('presave');
-  next();
-});
+SettingsSchema.pre('save',function(next) {	
+	console.log(typeof this.value);
+	/*if(typeof this.value === 'object') {
+		this.value = JSON.Stringify(this.value);
+	}*/
+	next();
+})
+
+
+SettingsSchema.methods.toJSON = function() {
+  var obj = this.toObject();
+  var newvalue = '';
+  	try {
+	    newvalue = JSON.parse(obj.value);
+	} catch (e) {	    
+		newvalue = obj.value;
+	}
+	obj.value = newvalue;
+  obj.id = obj._id; 
+  delete obj.__v;
+  return obj;
+};
 
 mongoose.model('Settings',SettingsSchema);

@@ -175,7 +175,7 @@
                     if($scope.cartid) {
                         data._id = $scope.cartid;
                     }  
-                    if(item.variantsetid && typeof $scope.cart.options[item._id] !== 'undefined') { 
+                    if(item.variantsetid && typeof $scope.cart.options!== 'undefined' && typeof $scope.cart.options[item._id] !== 'undefined') { 
                         data.options = {};  
                         angular.forEach($scope.cart.options[item._id],function(g,hj) {
                             if(typeof g ==='string') { 
@@ -325,6 +325,7 @@
                 itemsset[v.item_ref] = v; 
             });   
             $scope.cartorder = res.data.data;
+            ItemMenus.setCart(res.data.data);
             $scope.cartorder.priceset = ItemMenus.calculatePrices(res.data.data);
             if($scope.cartorder.user) {
                 $scope.userdeliveries = $scope.cartorder.user.deliveries;
@@ -348,10 +349,11 @@
             if($scope.chooseddeliery) {
                 postdata.delivery = $scope.chooseddeliery;
             }
+            postdata.priceset = $scope.cartorder.priceset;
             postdata.orderplaced = true; 
-            postdata.totalpaid = $scope.cartorder.priceset.subtotal;
+            postdata.totalpaid = $scope.cartorder.priceset.grandtotal;
             postdata.paid = true;
-            console.log(postdata); 
+            console.log('PlaceOrderData',postdata); 
             ItemMenus.updateCart($scope.cartorder._id,postdata).then(function(response) {
                 var d = response.data;
                 if(d.success === true) { 
@@ -367,15 +369,49 @@
                 } 
             })
         }
+        $scope.names = [];
+        Backend.getDirectoryByType({'treepath' : ['58d01daed956947be15adc0b']},4).then(function(res) {   
+             if(res.data) {
+                 $scope.names = res.data.directory;
+             }
+        });
+        $scope.willdeliver = false;
+        $scope.selectedArea = function(d) { 
+            $scope.willdeliver = false;
+            if(d) {
+                $scope.delivery.delivery_area = d.originalObject._id;
+                ItemMenus.getLocationCharge({'locationid' : d.originalObject._id}).then(function(res){
+                   updatedeliverypriceset(res.data.charges);                      
+                })
+            } 
+        }
+        $scope.inputChanged = function() {
+            console.log('changed');
+            $scope.delivery.delivery_area = '';
+        }
+
+        function updatedeliverypriceset(charge) {  
+            var dcharge = 0;
+            if(charge._id) {
+                dcharge = charge.deliverycharge; 
+                $scope.willdeliver = true;
+            } else {
+                 $scope.willdeliver = false;
+            }
+            ItemMenus.setDeliveryCharge(dcharge);
+            $scope.cartorder.priceset = ItemMenus.calculatePrices();
+        }
 
         $scope.updatedeliverymethod = function(method) {
             ItemMenus.updateCart($scope.cartorder._id,{cartdeliverymethodsave : true,type : method}).then(function(response) {
                 var d = response.data;
+                console.log('UpdateDeliveryMethod',d);
                 if(d.success === true) { 
                     Materialize.toast('Information Updated', 4000);
                     $scope.editdeliverydet = false;
-                    $scope.cartorder = d.cart;
-                    $scope.cartorder = d.cart;
+                    $scope.cartorder = d.cart; 
+                    
+                    ItemMenus.setCart(d.cart);
                     $scope.cartorder.priceset = ItemMenus.calculatePrices(d.cart);
                     if($scope.cartorder.user) {
                         $scope.userdeliveries = $scope.cartorder.user.deliveries;
@@ -386,6 +422,12 @@
                         $scope.cartorder.personalinfo.phone = $scope.cartorder.user.phone;
                         $scope.editpersonalinfo = true;
                     }
+                    if($scope.chooseddeliery.charge) {
+                        updatedeliverypriceset($scope.chooseddeliery.charge); 
+                    }
+                    if(d.cart.type[0] === 'pickup') {
+                         $scope.willdeliver = true;
+                    } 
                 } else {
                     Materialize.toast(ArrayUtil.get(d,'message','Problem in the cart'), 4000,'errortoast');
                 }
@@ -454,12 +496,22 @@
             }
         }
         $scope.selectdelivery = function(delivery) {
-            $scope.chooseddeliery = delivery;   
+            console.log('Choosed Delivery',delivery);
+            $scope.chooseddeliery = delivery; 
+            if(delivery.delivery_area._id) {
+                $scope.willdeliver = false;
+                 ItemMenus.getLocationCharge({'locationid' : delivery.delivery_area._id}).then(function(res){
+                    var charge = res.data.charges;
+
+                    $scope.chooseddeliery.charge = charge;
+                    updatedeliverypriceset(charge); 
+                })  
+            }
+            $scope.closethis();
         }
         $scope.savedelivery = function() { 
             ItemMenus.addDeliveries(ItemMenus.getCartUser(),$scope.delivery).then(function(res){
-                var d = res.data;
-                console.log(d);
+                var d = res.data; 
                 if(d.success) {
                     var user = d.user;   
                     $scope.userdeliveries = user.deliveries;
@@ -471,13 +523,61 @@
         }
     }
 
+    function OrdersListController($scope,$location,ItemMenus,ArrayUtil,$state,$timeout,$stateParams,ListWidget) {
+        console.log('one');
+        var vm = this;
+        vm.setPage = setPage; 
+
+         ListWidget.init();
+         ListWidget.isFilter = false;
+         ListWidget.defaultSortColumn = 'updated_on';
+         ListWidget.defaultSortDirection = -1;
+         ListWidget.addColumn('order_reference',{'type' : 'text','title' : 'ID', index : 'order_reference',defaultValue : '--',width : '10%'});
+         ListWidget.addColumn('delivery.address',{'type' : 'text','title' : 'Location', index : 'delivery.address',defaultValue : '--',width : '20%','render' : 'backend/views/'+theme+'/orders/renderer/locations.html'});
+         ListWidget.addColumn('updated_on',{'type' : 'text','title' : 'Order Date',index : 'updated_on',defaultValue : '--',width : '20%','render' : 'backend/views/'+theme+'/orders/renderer/date.html'}); 
+         ListWidget.addColumn('personalinfo.name',{'type' : 'text','title' : 'Customer', index : 'personalinfo.name',defaultValue : '--',width : '30%','render' : 'backend/views/'+theme+'/orders/renderer/name.html'}); 
+          ListWidget.addColumn('type',{'type' : 'text','title' : 'Type', index : 'type',defaultValue : '--',width : '10%','render' : 'backend/views/'+theme+'/orders/renderer/type.html'}); 
+         ListWidget.addColumn('priceset.grandtotal',{'type' : 'text','title' : 'Total', index : 'priceset.grandtotal',defaultValue : '--',width : '20%','render' : 'backend/views/'+theme+'/orders/renderer/total.html'});
+         ListWidget.addColumn('nocolumn',{'type' : 'notype','title' : 'Actions',defaultValue : '--',width : '20%',sortable : false,filterable : false,'render' : 'backend/views/'+theme+'/orders/renderer/actions.html'});
+         ListWidget.setDataRequestUrl('/api/orders/list?orderplaced=true'); 
+         
+        function setPage(page) { 
+            if(page < 1) {
+                page = 1;
+            }
+            ListWidget.request({page: page,limit : 20,passtoken : true,nocache : true}).then(function(res){  
+                ListWidget.setTotalItems(res.data.total)
+                        .setPageSize(20).setPage(page)
+                        .setDBResults(res.data.docs);   
+                $scope.pager = ListWidget.getPager();  
+                $scope.dbresult = ListWidget.getDbResults();
+            });    
+        }  
+        $scope.widgetlimitchange = function(selected) {
+            ListWidget.request({page: 1,limit : selected,passtoken : true}).then(function(res){  
+                ListWidget.setTotalItems(res.data.total)
+                        .setPageSize(selected).setPage(1)
+                        .setDBResults(res.data.docs);   
+                $scope.pager = ListWidget.getPager();  
+                $scope.dbresult = ListWidget.getDbResults();
+            }); 
+        }
+        setPage(1); 
+
+        $scope.vieworder = function(obj) {
+            $location.path('/admin/orders/items/live/'+obj.id);
+        }
+    }
+
 
     angular
         .module('mean.backend') 
         .controller('OrderNewController', OrderNewController)
+        .controller('OrdersListController', OrdersListController)
         .controller('BackendOrderPaymentController', BackendOrderPaymentController);
 
     OrderNewController.$inject = ['$scope','$location', 'ItemMenus','ArrayUtil','$state','$timeout','$stateParams']; 
+    OrdersListController.$inject = ['$scope','$location', 'ItemMenus','ArrayUtil','$state','$timeout','$stateParams','ListWidget']; 
     BackendOrderPaymentController.$inject = ['$scope','$location', 'ItemMenus','ArrayUtil','$state','$timeout','Backend','$window']; 
 
 })();

@@ -1,5 +1,5 @@
 'use strict';
-
+var GeoJSON = require('mongoose-geojson-schema');
 var mongoose = require('mongoose'),
 Schema = mongoose.Schema,
  mongoosePaginate = require('mongoose-paginate'),
@@ -11,10 +11,13 @@ Schema = mongoose.Schema,
 	textutil = require('../helpers/util').text;
 
 var DirectorySchema = new Schema({ 
-	code : {type: String, required: true},
+	code : {type: String},
 	name : {type: String, required: true},
 	parent_id : {type: String},
 	tree_path: [], 
+	linkedpath: {type: Schema.Types.Mixed}, 
+	zonebox: Schema.Types.Polygon,
+	address_value : {type : String},
 	level : {type : Number, default: 1},
 	sorting : {type: Number,default: 1},
 	status : {type : Boolean,default : true}, 
@@ -36,7 +39,7 @@ DirectorySchema.post('save',function() {
 
 function getPromise(obj){
   	var _obj = obj;  
-   	var promise = _obj.model('directory').find({}).exec();
+   	var promise = _obj.model('directory').find({}).sort({'sorting': -1}).exec();
   	 
    	return promise;
 }
@@ -84,7 +87,24 @@ DirectorySchema.statics.CheckChildren = function(parent_id,cb) {
 
 
 DirectorySchema.statics.getAll = function(cb) {  
-	return this.model('directory').find({}).exec(cb); 
+	return this.model('directory').find({}).sort({'sorting': -1}).exec(cb); 
+} 
+
+
+DirectorySchema.statics.getAllCache = function(cb) {
+	var _obj = this;
+	myCache.get("directory_all",function(err,value) {  
+		if(!err) {
+			if(value != undefined) {				
+				cb(value);
+			} else {
+				_obj.model('directory').find({}).sort({'sorting': -1}).exec(function(err,doc) {   
+					myCache.set( "directory_all", JSON.stringify(doc), 10000 );
+					cb(JSON.stringify(doc));
+				})  
+			}
+		}
+	}); 
 } 
 
 
@@ -173,5 +193,13 @@ function parseFilter(filter,obj) {
 	} 
 	return filtercollection;
 }
+
+DirectorySchema.methods.toJSON = function() {
+  var obj = this.toObject();
+  obj.id = obj._id;
+  //delete obj._id;
+  delete obj.__v;
+  return obj;
+};
 
 mongoose.model('directory',DirectorySchema);

@@ -46,8 +46,9 @@ var FoodCartSchema = new Schema({
 	additionalinfo : {type : String},
 	delivery: {type: Schema.Types.Mixed},	
 	deliverycharge : {type : Number},
+	status : ['accepted','canceled','pending'],
 	personalinfo : {type: Schema.Types.Mixed},
-	sums : {type : Array, default : []},
+	priceset : {type: Schema.Types.Mixed},
 	totalpaid : {type : Number,default : 0},
 	order_reference : {type : String},
 	paid : {type: Boolean, default: false},
@@ -181,6 +182,95 @@ FoodCartSchema.methods.updateData = function(id,cb) {
 	}
 
 }
+
+FoodCartSchema.plugin(mongoosePaginate);
+
+FoodCartSchema.statics.getAllPaginate = function(params, cb) { 
+	/*var limit = parseInt(params.limit) || 1;
+	var filter = params.filter || false, fcollection = {},posfilter = {}; 
+	var sort = {};
+	if( typeof params.sort != 'undefined') {
+		sort[params['sort']] = (typeof params.sortDir != 'undefined' ?params.sortDir : -1);
+	}
+	if( typeof params.productkeywords !== 'undefined') {
+		posfilter = {$or : [{'data.sku' : {$regex : params.productkeywords, $options : 'i'}},
+								{'data.item_name' :{$regex : params.productkeywords, $options : 'i'}
+						 }]
+					}
+	} 
+	fcollection = _.assign({},fcollection,{is_foodie : false});
+	console.log(fcollection);
+	return this.model('FoodCart').paginate(fcollection, { page: parseInt(params.page), sort : sort,limit: limit }, cb);*/ 
+
+	var limit = parseInt(params.limit) || 1;
+	var filter = params.filter || false, fcollection = {}; 
+	var sort = {};
+	if( typeof params.sort != 'undefined') {
+		sort[params['sort']] = (typeof params.sortDir != 'undefined' ?params.sortDir : -1);
+	}
+
+	if(typeof params.orderplaced!== 'undefined') {
+		fcollection['orderplaced'] = params.orderplaced;
+	}
+	//fcollection = fcollection;
+	return this.model('FoodCart').paginate(fcollection, { page: parseInt(params.page), sort : sort,limit: limit }, cb); 
+}  
+
+
+function parseFilter(filter,obj) {
+	if(!filter) {
+		return {};
+	} 
+	var bytes  = CryptoJS.AES.decrypt(filter, secretKey);
+	var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8)),filtercollection = {};  
+	var schemaarray = Object.keys(obj.model('FoodCart').schema.paths);
+	for(var k in schemaarray) { 
+		var d = decryptedData[schemaarray[k]];
+		if(typeof d != 'undefined') {
+			switch(typeof d) {
+				case "string":
+				    var re = new RegExp(d,"i");
+					filtercollection[schemaarray[k]] = re;
+				break;
+				case "object":
+					if(d.hasOwnProperty('id')) {
+						var value = d['id'];
+						var re = new RegExp(value,"i");
+						filtercollection[schemaarray[k]] = re;
+					}
+					if(d.hasOwnProperty('from') || d.hasOwnProperty('to')) { 
+						var obj = {},c = 0;
+
+						if(d.hasOwnProperty('from')) {
+							obj.$gte = d.from;  
+							d.from != ''? c++ : '';
+						}
+						if(d.hasOwnProperty('to')) {
+							obj.$lte = d.to;  							
+							d.to != ''? c++ : '';
+						}
+						if(c <= 0) {
+							continue;
+						}
+						filtercollection[schemaarray[k]] = obj;
+					}
+				break;
+			}
+			
+		}
+	} 
+	return filtercollection;
+}
+
+FoodCartSchema.methods.toJSON = function() {
+  var obj = this.toObject();
+  obj.id = obj._id;
+  //delete obj._id;
+  obj.status = obj.status[0] != undefined ? obj.status[0] : obj.status;
+  obj.deliverytype = obj.type[0] != undefined ? obj.type[0] : obj.type;
+  delete obj.__v;
+  return obj;
+};
  
   
 mongoose.model('FoodCart',FoodCartSchema);

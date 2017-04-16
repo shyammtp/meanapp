@@ -1141,7 +1141,7 @@
 
 
 
-    function MenuItemsController($scope,ItemMenus,ArrayUtil,$timeout,Product,Upload) { 
+    function MenuItemsController($scope,ItemMenus,ArrayUtil,$timeout,Product,Upload,moment) { 
         var vm = this;
         $scope.items = []; 
         $scope.menus = [];  
@@ -1253,6 +1253,21 @@
                 });
             }
         }
+        $scope.$watch('item',function() {
+             if($scope.item.limitedtime) {
+                var from = moment('2015-12-01T'+moment($scope.item.limitedtimefrom, ["h:mmA"]).format("HH:mm")); //todays date
+                var to = moment("2015-12-01T"+moment($scope.item.limitedtimeto, ["h:mmA"]).format("HH:mm")); // another date
+                var duration = moment.duration(to.diff(from));
+                var hrs = duration.asHours();
+                if(hrs > 0) {
+                    $scope.form.itemaddform.limitedtime.$setValidity('time',true);
+                } else {
+                    $scope.form.itemaddform.limitedtime.$setValidity('time',false);
+                }
+             } else {
+                $scope.form.itemaddform.limitedtime.$setValidity('time',true);
+             }
+        },true);
 
         $scope.saveitem = function() {  
             vm.item = {}; 
@@ -1414,6 +1429,79 @@
             }
          }
     }
+
+    function DeliveryChargesController($scope,ItemMenus,ArrayUtil,$timeout,ListWidget,Backend,$location,$stateParams) {
+         var vm = this;   
+         vm.setPage = setPage;  
+         $scope.localities = [];
+         $scope.delivery = {};
+         Backend.getDirectoryByType({'treepath' : ['58d01daed956947be15adc0b']},4).then(function(res) {   
+             console.log('DirectoryByType',res);
+             if(res.data) {
+                 $scope.localities = res.data.directory;
+             }
+         });
+
+          ListWidget.init();
+            ListWidget.defaultSortColumn = 'name';
+            ListWidget.addColumn('name',{'type' : 'text','title' : 'Name',defaultValue : '--',width : '40%'}); 
+            ListWidget.addColumn('deliverycharge',{'type' : 'text','index' : 'deliverycharge','title' : 'Delivery Charge',filterable : false,defaultValue : '--',width : '20%','render' : 'backend/views/'+theme+'/menus/delivery/charges/renderer/price.html'});
+            ListWidget.addColumn('nocolumn1',{'type' : 'notype','title' : 'Locations',defaultValue : '--',width : '20%',sortable : false,filterable : false,'render' : 'backend/views/'+theme+'/menus/delivery/charges/renderer/locations.html'});
+            ListWidget.addColumn('nocolumn',{'type' : 'notype','title' : 'Actions',defaultValue : '--',width : '20%',sortable : false,filterable : false,'render' : 'backend/views/'+theme+'/menus/delivery/charges/renderer/actions.html'});
+            ListWidget.setDataRequestUrl('/api/delivery/getcharges'); 
+            function setPage(page) { 
+                if(page < 1) {
+                    page = 1;
+                }
+                ListWidget.request({page: page,limit : 20,passtoken : true,nocache: true}).then(function(res){  
+                    ListWidget.setTotalItems(res.data.total)
+                            .setPageSize(20).setPage(page)
+                            .setDBResults(res.data.docs);   
+                    $scope.pager = ListWidget.getPager();  
+                    $scope.dbresult = ListWidget.getDbResults();
+                });    
+            } 
+            $scope.widgetlimitchange = function(selected) {
+                ListWidget.request({page: 1,limit : selected,passtoken : true}).then(function(res){  
+                    ListWidget.setTotalItems(res.data.total)
+                            .setPageSize(selected).setPage(1)
+                            .setDBResults(res.data.docs);   
+                    $scope.pager = ListWidget.getPager();  
+                    $scope.dbresult = ListWidget.getDbResults();
+                }); 
+            }
+            setPage(1);
+          
+         
+        $scope.editdeliverycharge = function(obj) { 
+            classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );
+            Backend.loadSider($scope,'cbp-spmenu-s2','backend/views/'+theme+'/menus/delivery/charges/edit.html'); 
+            angular.element('.cd-overlay').addClass('is-visible');
+            $scope.delivery = obj;
+        }
+
+        $scope.addCharges = function() {
+             $scope.delivery= {};
+            classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );
+            Backend.loadSider($scope,'cbp-spmenu-s2','backend/views/'+theme+'/menus/delivery/charges/edit.html'); 
+            angular.element('.cd-overlay').addClass('is-visible');
+        }
+
+        $scope.closethis = function() { 
+            classie.toggle( document.getElementById( 'cbp-spmenu-s2' ), 'cbp-spmenu-open' );            
+            angular.element('.cd-overlay').removeClass('is-visible');
+        } 
+
+        $scope.savedelivery = function() {
+            console.log($scope.delivery);
+            ItemMenus.saveCharge($scope.delivery).then(function(res){
+                $scope.delivery = {};
+                Materialize.toast('ChargeSaved', 4000);
+                $scope.closethis();
+                setPage(1);
+            })
+        }
+    }
   
 
     angular
@@ -1421,6 +1509,7 @@
         .controller('CategoryController', CategoryController)
         .controller('CartOrderController', CartOrderController)
         .controller('CartOrderItemController', CartOrderItemController)
+        .controller('DeliveryChargesController', DeliveryChargesController)
         .controller('menusController', menusController)
         .controller('MenuItemsController', MenuItemsController)
         .controller('CatalogListController', CatalogListController)
@@ -1437,7 +1526,8 @@
     menusController.$inject = ['$scope','ItemMenus','ArrayUtil','$timeout','Socket'];
     CartOrderController.$inject = ['$scope','ItemMenus','ArrayUtil','$timeout','Socket','Authentication','$location'];
     CartOrderItemController.$inject = ['$scope','ItemMenus','ArrayUtil','$timeout','Socket','Authentication','$location','$stateParams'];
-    MenuItemsController.$inject = ['$scope','ItemMenus','ArrayUtil','$timeout','Product','Upload'];
+    DeliveryChargesController.$inject = ['$scope','ItemMenus','ArrayUtil','$timeout','ListWidget','Backend','$location','$stateParams'];
+    MenuItemsController.$inject = ['$scope','ItemMenus','ArrayUtil','$timeout','Product','Upload','moment'];
     CatalogController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product','$timeout','$location'];  
     CatalogListController.$inject = ['$scope', 'ListWidget', 'Backend','ArrayUtil','Product','$timeout','$location','Authentication','$stateParams'];  
     CatalogAttributesController.$inject = ['$scope', 'Global', 'Backend','ArrayUtil','Product','$timeout','$location']; 

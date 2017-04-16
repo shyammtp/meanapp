@@ -1,19 +1,26 @@
+<div>
 <div class="selectaddress" ng-if="addressselect"> 
 	<h3 style="margin-bottom: 0px;"><span class="pull-left">Select or add a delivery address
 	<span class="paratext">You can search the product by it specifics and save as a tab to load all the time</span>
 	</span> <a href="javascript:void(0);" class="pull-right" ng-click="closethis()"><i class="fa fa-angle-right"></i></a><div class="clearfix"></div></h3> 
-	<div class="row">
-		<div class="col-sm-12">  
-			<div class="row" ng-repeat="(b,h) in userdeliveries track by b">
-				<div class="col-sm-12">
-					<div class="form-group">
-						<input type="radio" id="{{h._id}}" ng-change="selectdelivery(h)" ng-model="delivery.deliveryid" ng-value="h._id" /><label for="{{h._id}}"><b>{{h.nickname}}</b><br/><p>{{h.address}}</p></label>
+	<div class="padding10">
+		<div class="row">
+			<div class="col-sm-12">  
+				<div class="row" ng-repeat="(b,h) in userdeliveries track by b">
+					<div class="col-sm-12">
+						<div class="form-group">
+							<input type="radio" id="{{h._id}}" ng-change="selectdelivery(h)" ng-model="delivery.deliveryid" ng-value="h._id" /><label for="{{h._id}}"><b>{{h.nickname}}</b><br/><p>{{h.address}},{{h.delivery_area.name}},{{h.delivery_area.address_value}}</p></label>
+						</div>
 					</div>
 				</div>
+				<div class="closebtn">
+					<button class="btn btn-primary" ng-click="closethis()">Close</button>
+				</div>
+
+			  	<div class="margin15">
+			  		<button type="button" ng-click="adddelivery()" class="btn btn-primary pull-right">Add new address</button> 
+			  	</div>
 			</div>
-		  	<div class="margin15">
-		  		<button type="button" ng-click="adddelivery()" class="btn btn-primary">Add new address</button> 
-		  	</div>
 		</div>
 	</div>
 </div> 
@@ -24,10 +31,13 @@
 	<form name="form.adddeliveryform">  
 		<div class="col-sm-12" style="margin-top: 15px;">
 			<div class="form-group">
-				<label>Delivery Area</label>
+				<label>Delivery Area</label> 
 				<div class="row">
 					<div class="col-xs-11">
-						<input type="text"	placeholder="Enter your delivery area" ng-model="delivery.delivery_area" />
+						<div angucomplete-alt id="ex1" placeholder="Search Your area" maxlength="50" pause="100" selected-object="selectedArea" local-data="names" search-fields="name" title-field="name" minlength="1" match-class="highlight" input-class="form-control form-control-small" match-class="highlight" input-changed="inputChanged">
+		          		</div>
+
+						<input type="hidden"	placeholder="Enter your delivery area" ng-required="true" ng-model="delivery.delivery_area" />
 					</div>
 					<div class="col-xs-1">
 						<button class="btn btn-primary"><i class="fa fa-dot-circle-o"></i></button>
@@ -69,4 +79,5 @@
 		  	</div>
 		</div>
 	</form>
+</div>
 </div>

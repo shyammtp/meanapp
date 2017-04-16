@@ -1,104 +1,314 @@
-<div class="page-inner">
-    <div class="page-title"> 
-        <h3 class="breadcrumb-header">Invoice</h3>
-        <div class="page-breadcrumb">
-            <ol class="breadcrumb breadcrumb-with-header">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="#">Extra</a></li>
-                <li class="active">Invoice</li>
-            </ol>
-        </div>
+<div class="page-inner dashboard"  ng-controller="DashboardController" ng-class="{'morningbg' : bggreet == 1, 'afternoonbg' : bggreet == 2, 'eveningbg' : bggreet == 3}" style="position: relative; overflow: visible;" >
+    <div class="dpage-bg"> 
+         
     </div>
-    <div id="main-wrapper">
+    <div id="main-wrapper" style="position: relative; top:0; width: 100%;margin-top: -249px;margin-left: 0px;">
         <div class="row">
-            <div class="invoice col-md-12">
-                <div class="panel panel-black">
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <h2 class="m-b-md m-t-xxs"><b>ONE</b></h2>
-                                <address>
-                                    Melbourne, Australia<br>
-                                    P: (123) 456-7890
-                                </address>
-                            </div>
-                            <div class="col-md-8 text-right">
-                                <h2 class="m-t-xxs">Invoice</h2>
-                                <button type="button" class="btn btn-default"><i class="fa fa-print"></i> Print</button>
-                            </div>
-                            <div class="col-md-12">
-                                <hr>
-                                <p>
-                                    <strong>Invoice to</strong><br>
-                                    John Doe<br>
-                                    795 Folsom Ave, Suite 600<br>
-                                    San Francisco, CA 94107
-                                </p>
-                            </div>
-                            <div class="col-md-12">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Item</th>
-                                            <th>Description</th>
-                                            <th>Quantity</th>
-                                            <th>Price</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Item One</td>
-                                            <td>Lorem ipsum dolor sit amet</td>
-                                            <td>23</td>
-                                            <td>$3157</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Item Two</td>
-                                            <td>Consectetur adipiscing elit</td>
-                                            <td>13</td>
-                                            <td>$940</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Item Three</td>
-                                            <td>Eget porttitor lorem</td>
-                                            <td>36</td>
-                                            <td>$2080</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Item Four</td>
-                                            <td>Integer molestie lorem at massa</td>
-                                            <td>29</td>
-                                            <td>$1105</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="col-md-8">
-                                <h4>Thank you !</h4>
-                                <p>Nullam quis risus eget urna mollis ornare vel eu leo.<br>Cum sociis natoque penatibus et magnis dis<br>nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula.</p>
-                                <img src="{{assetspath}}images/signature.png" height="150" class="m-t-lg" alt="">
-                            </div>
-                            <div class="col-md-4">
-                                <div class="text-right">
-                                    <h4 class="no-m m-t-sm">Subtotal</h4>
-                                    <h2 class="no-m">$7282</h2>
-                                    <hr>
-                                    <h4 class="no-m m-t-sm">Shipping</h4>
-                                    <h2 class="no-m">$240</h2>
-                                    <hr>
-                                    <h4 class="no-m m-t-md text-success">Total</h4>
-                                    <h1 class="no-m text-success">$7522</h1>
-                                    <hr>
-                                    <button class="btn btn-info">Submit your invoice</button>
-                                </div>
-                            </div>
-                        </div><!--row-->
-                    </div>
+            <div class="col-md-12"> 
+                <div class="blockbox">
+                    {{greet}}, Pradeep
                 </div>
+                <div class="invitetext">
+                    <h3>Here's How is your restaurant doing today</h3>
+                </div>
+
+                <div class="">
+                    <div class="col-md-6">
+
+                        <div class="dash-container" style="">
+                            <div class="">
+                                <div class="dash-tophits">
+                                    <div class="col-md-1">
+                                        <span class="roundcircle"></span>
+                                    </div>
+                                    <div class="col-md-8" style="text-align: left;"> 
+                                        <span class="dash-tophitstext">You have <strong>{{orders.length}}</strong> new orders into the store</span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <a class="btn btn-primary pull-left" href="/admin/orders/live">View Orders</a>
+                                    </div>
+                                </div>
+
+                                 <div class="dash-tophits">
+                                    <div class="col-md-1">
+                                         <span class="roundcircle"></span>
+                                    </div>
+                                    <div class="col-md-8" style="text-align: left;"> 
+                                       <span class="dash-tophitstext">You have added <strong>{{resitems.length}}</strong> items into the restuarant</span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        
+                                    </div>
+                                </div> 
+
+                            </div>
+                        </div> 
+
+                        <div class="getstarted">Get Started with your restuarant</div> 
+                        <section id="cd-timeline" class="cd-container" ng-class="{'step1' : cstep === 'step1','step2' : cstep === 'step2','step3' : cstep === 'step3','step4' : cstep === 'step4','step5' : cstep === 'step5'}">
+                            <div class="cd-timeline-block">
+                                <div class="cd-timeline-img" ng-class="{'cd-success' : checkcompletedstep('step1'),'cd-grey' : !checkcompletedstep('step1')}">
+                                    <i class="fa" ng-class="{'fa-check' : checkcompletedstep('step1'),'fa-circle' : !checkcompletedstep('step1')}"></i>
+                                </div> <!-- cd-timeline-img -->
+                                <div class="cd-timeline-content rest" ng-class="{'completed' :  checkcompletedstep('step1')}">
+                                    <h4>Add a menus to your resturant</h4>
+                                    <p>we found you have added <strong>{{resmenus.length}}</strong> menus to your restuarent</p>
+                                    <p><a class="btn btn-primary" href="/admin/menus"><span ng-if="resmenus.length>0">Add More Menus</span><span ng-if="resmenus.length<=0">Add a Menu</span></a></p>
+                                      
+                                </div> <!-- cd-timeline-content -->
+                            </div> <!-- cd-timeline-block -->
+                            <div class="cd-timeline-block">
+                                <div class="cd-timeline-img" ng-class="{'cd-success' : checkcompletedstep('step2'),'cd-grey' : !checkcompletedstep('step2')}">
+                                    <i class="fa" ng-class="{'fa-check' : checkcompletedstep('step2'),'fa-circle' : !checkcompletedstep('step2')}"></i>
+                                </div> <!-- cd-timeline-img -->
+                                <div class="cd-timeline-content grocery"  ng-class="{'completed' :  checkcompletedstep('step2')}">
+                                    <form name="settingsform">
+                                    <h4>Update these settings to the system</h4> 
+                                    
+                                    
+                                      <div class="row m-t-20">
+                                        <div class="form-group">
+                                            <div class="col-md-12">  
+                                              <label for="storeaddress" class=" formlabel">Store Pickup Address</label> 
+                                              <textarea rows="5" ng-if="!settings.storeaddress" id="storeaddress" ng-model="dsettings.storeaddress" name="storeaddress" type="text" class="form-control"></textarea>
+                                              <p  ng-if="settings.storeaddress" ng-bind="settings.storeaddress"></p>
+                                            </div> 
+                                        </div>
+                                      </div> 
+                                      <div class="row m-t-20">
+                                        <div class="form-group">
+                                            <div class="col-md-12">  
+                                              <label for="minimumorderprice" class=" formlabel">Minimum Order price</label> 
+                                              <input ng-if="!settings.minimumorderprice" id="storeaddress" ng-model="dsettings.minimumorderprice" name="minimumorderprice"class="form-control"></textarea>
+                                              <p  ng-if="settings.minimumorderprice" ng-bind="settings.minimumorderprice"></p>
+                                            </div> 
+                                        </div>
+                                      </div> 
+
+                                       <h4 class=" m-t-20">Where you are targeting your sales?</h4>
+                                       <div class="row form-group ">  
+                                            <div class="col-md-12">
+                                                <label for="bankdeposit_countries" class=" formlabel">Select the country</label> 
+                                                <select class="form-control" id="dsettingscountries" ng-if="!settings.country" name="dsettingscountries" ng-model="dsettings.country"><option value="all" selected="selected">-- All Countries --</option><option ng-repeat="(fg,gs) in directories track by fg" value="{{gs._id}}">{{gs.name}}</option></select>
+                                                <p ng-if="settings.country">Choosed</p>   
+                                            </div>
+                                        </div>
+
+                                    <div class="form-group m-t-10"  ng-if="!settings.storeaddress || !settings.country || !settings.minimumorderprice">
+                                        <button class="btn btn-primary pull-right" ng-click="savesettings(dsettings,'step2')" ng-class="{'disabled' :  !checkcompletedstep('step1')}">Save</button>
+                                    </div>
+                                    </form>
+                                </div> <!-- cd-timeline-content -->
+                            </div> <!-- cd-timeline-block -->
+                            <div class="cd-timeline-block">
+                                <div class="cd-timeline-img" ng-class="{'cd-success' : checkcompletedstep('step3'),'cd-grey' : !checkcompletedstep('step3')}">
+                                    <i class="fa" ng-class="{'fa-check' : checkcompletedstep('step3'),'fa-circle' : !checkcompletedstep('step3')}"></i>
+                                </div> <!-- cd-timeline-img -->
+                                <div class="cd-timeline-content product" ng-class="{'completed' :  checkcompletedstep('step3')}">
+                                    <h4>Add the Items to your resturant</h4>
+                                    <p>we found you have added <strong>{{resitems.length}}</strong> items to your restuarent</p>
+                                    <p><a class="btn btn-primary" href="/admin/menus/items"  ng-class="{'disabled' :  !checkcompletedstep('step2')}">Add Item</a></p>
+                                      
+                                </div> <!-- cd-timeline-content -->
+ 
+                            </div> <!-- cd-timeline-block -->
+                            <div class="cd-timeline-block">
+                                <div class="cd-timeline-img" ng-class="{'cd-success' : checkcompletedstep('step4'),'cd-grey' : !checkcompletedstep('step4')}">
+                                    <i class="fa" ng-class="{'fa-check' : checkcompletedstep('step4'),'fa-circle' : !checkcompletedstep('step4')}"></i>
+                                </div> <!-- cd-timeline-img -->
+                                <div class="cd-timeline-content shipping"  ng-class="{'completed' :  checkcompletedstep('step4')}">
+                                    <h4>Add the delivery charges suitable for your locality</h4>
+                                    <p>Before adding charges, You need to add up the delivery locality of your country location. To add your locality/area <a href="/admin/settings/directory" style="color:#1abc9c">click here</a></p>
+                                    <p style="width:90%;">Delivery charges may vary from one location to another. You can add your charges based on the locality.</p>
+                                    <p><a class="btn btn-primary" href="/admin/delivery/charges" ng-class="{'disabled' :  !checkcompletedstep('step3')}">Add the charges</a></p> 
+                                </div> <!-- cd-timeline-content -->
+                            </div> <!-- cd-timeline-block -->
+                           
+                            <div class="cd-timeline-block"> 
+                                <div class="cd-timeline-img" ng-class="{'cd-success' : checkcompletedstep('step5'),'cd-grey' : !checkcompletedstep('step5')}">
+                                    <i class="fa" ng-class="{'fa-check' : checkcompletedstep('step5'),'fa-circle' : !checkcompletedstep('step5')}"></i>
+                                </div> <!-- cd-timeline-img -->
+                                <div class="cd-timeline-content"   ng-class="{'completed' :  checkcompletedstep('step5')}">
+                                    <h4>Final Section</h4>
+                                    <p>Thats it!!! You are done. :)</p>
+                                    <p>Lets start the business.</p>
+                                    <p ng-if="settings.status === false || !settings.status"><a class="btn btn-primary"  ng-class="{'disabled' :  !checkcompletedstep('step4')}" ng-click="submitstatus({'status' : true},'step5')">Open your resturant</a></p>
+
+                                    <p ng-if="settings.status === true"><a class="btn btn-primary"  ng-class="{'disabled' :  !checkcompletedstep('step4')}" ng-click="submitstatus({'status' : false},'step5')">Close your resturant</a></p>
+                                </div> <!-- cd-timeline-content -->
+                            </div> <!-- cd-timeline-block -->
+                        </section> <!-- cd-timeline -->
+                    </div>
+
+                    <div class="col-md-6"  >
+                        <div class="dash-sales-container">
+                            <div class="col-sm-8">
+                                <div class="text-dss">Today Sales</div>
+                                <div class="text-amt">{{todaysales | priceformat}}</div>
+                            </div>
+                             <div class="col-sm-4" style="    padding-top: 10px; text-align: left;"> 
+                                <img src="/theme/assets/lib/white/img/sales.png" width="40" />
+                            </div>
+                        </div>
+                         <div class="dash-sales-container" style="margin-left: 25px;">
+                            <div class="col-sm-7">
+                                <div class="text-dss">Today Sales</div>
+                                <div class="text-amt">$ 49.99</div>
+                            </div>
+                             <div class="col-sm-4" style="    padding-top: 5px; text-align: left;"> 
+                                <img src="/theme/assets/lib/white/img/group.png" width="50" />
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="panel panel-white">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">Recent Orders</h4>
+                                    <div class="panel-control">
+                                        <a href="/admin/orders/list" data-toggle="tooltip" data-placement="top" title="More Orders" class="panel-reload" data-original-title="Reload"><i class="fa fa-hand-o-right"></i></a>
+                                    </div> 
+                                </div> 
+                                    <div class="panel-body "> 
+                                        <table class="table table-responsive">
+                                            <thead>
+                                                <th>Order ID</th>
+                                                <th>Name</th>
+                                                <th>Location</th>
+                                                <th>Total</th>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="(g,b) in orders track by $index">
+                                                    <th scope="row">#{{b.order_reference}}</th>
+                                                    <td>{{b.personalinfo.name}}</td>
+                                                    <td>
+                                                        <span ng-if="b.deliverytype === 'delivery'">{{b.delivery.address}},{{b.delivery.delivery_area.address_value}}</span>
+                                                        <span ng-if="b.deliverytype === 'pickup'">--</span>
+                                                    </td>
+                                                    <td class="text-success"><b>{{b.priceset.grandtotal | priceformat}}</b></td>
+                                                </tr> 
+                                            </tbody>
+                                        </table>
+                                    </div> 
+                            </div>
+
+                            <div id="clock" style="position: fixed;top:10%; z-index: 545"></div>
+                             <div class="panel panel-white">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"><i class="fa fa-clock-o" aria-hidden="true"></i> Modify Your operational Hours</h4> 
+                                </div> 
+
+                                    <form name="form.operationalhours">
+                                    <div class="panel-body operationalformcontainer"> 
+                                         <div class="row form-group">  
+                                            <div class="col-sm-4">
+                                               <input type="checkbox" name="monday" id="monday" ng-model="operational.monday.status"/> <label for="monday">Monday</label> 
+                                               <span>&nbsp;<a href="javascript:;" ng-click="copytime('monday')" title="Copy this time to all"><i class="fa fa-clone" aria-hidden="true"></i></a></span>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="text"  ng-required="operational.monday.status"  ng-disabled="!operational.monday.status" ng-model="operational.monday.from" materializetimepicker />
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="text"  ng-required="operational.monday.status"  ng-disabled="!operational.monday.status" ng-model="operational.monday.to" materializetimepicker />
+                                            </div>
+
+                                            <span class="error" ng-show="form.operationalhours.monday.$error.time">Invalid Time</span>
+                                         </div> 
+                                         <div class="row form-group">  
+                                            <div class="col-sm-4">
+                                               <input type="checkbox"  name="tuesday"  ng-model="operational.tuesday.status" id="tuesday"/> <label for="tuesday">Tuesday</label>
+
+                                               <span>&nbsp;<a href="javascript:;" ng-click="copytime('tuesday')" title="Copy this time to all"><i class="fa fa-clone" aria-hidden="true"></i></a></span>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="text"    ng-required="operational.tuesday.status" ng-disabled="!operational.tuesday.status"   ng-model="operational.tuesday.from" materializetimepicker />
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="text"   ng-required="operational.tuesday.status" ng-disabled="!operational.tuesday.status"  ng-model="operational.tuesday.to" materializetimepicker />
+                                            </div>
+                                            <span class="error" ng-show="form.operationalhours.tuesday.$error.time">Invalid Time</span>
+                                         </div> 
+                                         <div class="row form-group">  
+                                            <div class="col-sm-4">
+                                               <input type="checkbox" name="wednesday"   id="wednesday" ng-model="operational.wednesday.status" /> <label for="wednesday">Wednesday</label>
+
+                                               <span>&nbsp;<a href="javascript:;" ng-click="copytime('wednesday')" title="Copy this time to all"><i class="fa fa-clone" aria-hidden="true"></i></a></span>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="text"  ng-required="operational.wednesday.status"    ng-disabled="!operational.wednesday.status" ng-model="operational.wednesday.from" materializetimepicker />
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="text"  ng-required="operational.wednesday.status"  ng-disabled="!operational.wednesday.status" ng-model="operational.wednesday.to" materializetimepicker />
+                                            </div>
+                                            <span class="error" ng-show="form.operationalhours.wednesday.$error.time">Invalid Time</span>
+                                         </div> 
+                                         <div class="row form-group">  
+                                            <div class="col-sm-4">
+                                               <input type="checkbox" name="thursday"  id="thursday" ng-model="operational.thursday.status" /> <label for="thursday">Thursday</label>
+
+                                               <span>&nbsp;<a href="javascript:;" ng-click="copytime('thursday')" title="Copy this time to all"><i class="fa fa-clone" aria-hidden="true"></i></a></span>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="text"  ng-required="operational.thursday.status"  ng-disabled="!operational.thursday.status" ng-model="operational.thursday.from" materializetimepicker />
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="text"  ng-required="operational.thursday.status"  ng-disabled="!operational.thursday.status" ng-model="operational.thursday.to" materializetimepicker />
+                                            </div>
+                                             <span class="error" ng-show="form.operationalhours.thursday.$error.time">Invalid Time</span>
+                                         </div> 
+                                         <div class="row form-group">  
+                                            <div class="col-sm-4">
+                                               <input type="checkbox" name="friday" id="friday" ng-model="operational.friday.status" /> <label for="friday">Friday</label>
+
+                                               <span>&nbsp;<a href="javascript:;" ng-click="copytime('friday')" title="Copy this time to all"><i class="fa fa-clone" aria-hidden="true"></i></a></span>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="text" ng-required="operational.friday.status"   ng-disabled="!operational.friday.status" ng-model="operational.friday.from" materializetimepicker />
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="text" ng-required="operational.friday.status"  ng-disabled="!operational.friday.status"  ng-model="operational.friday.to" materializetimepicker />
+                                            </div>
+                                             <span class="error" ng-show="form.operationalhours.friday.$error.time">Invalid Time</span>
+                                         </div> 
+                                         <div class="row form-group">  
+                                            <div class="col-sm-4">
+                                               <input type="checkbox"  name="saturday" id="satday" ng-model="operational.saturday.status" /> <label for="satday">Saturday</label>
+
+                                               <span>&nbsp;<a href="javascript:;" ng-click="copytime('saturday')" title="Copy this time to all"><i class="fa fa-clone" aria-hidden="true"></i></a></span>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="text" ng-required="operational.saturday.status"  ng-disabled="!operational.saturday.status"  ng-model="operational.saturday.from" materializetimepicker />
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="text" ng-required="operational.saturday.status" ng-disabled="!operational.saturday.status" ng-model="operational.saturday.to" materializetimepicker />
+                                            </div>
+                                             <span class="error" ng-show="form.operationalhours.saturday.$error.time">Invalid Time</span>
+                                         </div>
+                                         <div class="row form-group">  
+                                            <div class="col-sm-4">
+                                               <input type="checkbox" name="sunday" id="sunday" ng-model="operational.sunday.status" /> <label for="sunday">Sunday</label>
+
+                                               <span>&nbsp;<a href="javascript:;" ng-click="copytime('sunday')" title="Copy this time to all"><i class="fa fa-clone" aria-hidden="true"></i></a></span>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="text" ng-required="operational.sunday.status"  ng-disabled="!operational.sunday.status" ng-model="operational.sunday.from" materializetimepicker />
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="text" ng-required="operational.sunday.status"  ng-disabled="!operational.sunday.status" ng-model="operational.sunday.to" materializetimepicker />
+                                            </div>
+                                             <span class="error" ng-show="form.operationalhours.sunday.$error.time">Invalid Time</span>
+                                         </div>
+                                         <div class="form-group m-t-10" >
+                                            <button class="btn btn-primary pull-right" ng-disabled="form.operationalhours.$invalid" ng-click="saveTimings(operational)" >Save</button>
+                                        </div>
+                                    </div> 
+                                    </form>
+                            </div>
+
+                    </div>
+
+                </div><!-- Row -->
             </div>
+
+ 
         </div><!-- Row -->
     </div><!-- Main Wrapper -->
-    <div class="page-footer">
-        <p class="no-s">Made with <i class="fa fa-heart"></i> by stacks</p>
-    </div>
 </div><!-- Page Inner -->

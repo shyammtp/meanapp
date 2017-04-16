@@ -9,7 +9,7 @@
                 if(attrs.value) {
                     element.val(attrs.value);
                 }
-                element.material_select();
+                element.material_select(); 
             }
 
         }
@@ -108,6 +108,20 @@
                         d.id = ArrayUtil.get(s,'_id');
                         d.parent = ArrayUtil.get(s,'parent_id','#');
                         d.text = ArrayUtil.get(s,'name'); 
+                        if(ArrayUtil.get(s,'level') === 2) {
+                            d.text += ' <i>(State)</i>';
+                            d.li_attr = {class : "state-text"};
+                        }
+                        if(ArrayUtil.get(s,'level') === 3) {
+                            d.text += ' <i>(City)</i>';
+                            d.li_attr = {class : "city-text"};
+                        }
+                        if(ArrayUtil.get(s,'level') === 4) {
+                            d.text += ' <i>(Locality)</i>';
+                            d.li_attr = {class : "locality-text"};
+
+                        }
+                        d.state = {'opened' : true};
                         directoryset.push(d);
                         catmap[ArrayUtil.get(s,'_id')] = s;
                     });  
@@ -122,11 +136,12 @@
                             }
                         },
                         'dnd' : {
-                            use_html5 : true
+                            use_html5 : true,
+                            is_draggable : false
                         },
                         'types' : {
                             'default' : {
-                                'icon' : 'fa fa-folder icon-state-info icon-md'
+                                'icon' : 'fa fa-globe icon-state-info icon-md'
                             },
                             'file' : {
                                 'icon' : 'fa fa-file icon-state-default icon-md'
@@ -769,8 +784,37 @@
 
     function priceformat(Product) {
         return function(input) { 
-            if(input > 0)
+            if(input >= 0)
                 return Product.formatPrice(input);
+        }
+    }
+
+    function autocomplete($timeout) {
+    return {   
+            link : function(scope,element,attrs) { 
+                element.autocomplete({
+                    source: ["john", "bill", "charlie", "robert", "alban", "oscar", "marie", "celine", "brad", "drew", "rebecca", "michel", "francis", "jean", "paul", "pierre", "nicolas", "alfred", "gerard", "louis", "albert", "edouard", "benoit", "guillaume", "nicolas", "joseph"],
+                    select: function() {
+                        $timeout(function() {
+                          element.trigger('input');
+                        }, 0);
+                    }
+                }); 
+            }
+        }
+    }
+
+    function materializetimepicker() {
+        return {   
+            link : function(scope,element,attrs) {  
+                element.pickatime({
+                    autoclose: false,
+                  //  twelvehour: false,
+                    donetext: 'OK',
+                    default: 'now',
+                    container : '#clock'
+                });
+            }
         }
     }
  
@@ -781,6 +825,7 @@
         .filter('priceformat',priceformat)
         .directive('mdSelect', mdSelect)
         .directive('shModal', shModal)
+        .directive('autoComplete', autocomplete)
         .directive('orderTable', orderTable)
         .directive('shInput', shInput)
         .directive('jsdirtree', jsTree)
@@ -788,9 +833,11 @@
         .directive('categoryselectslider', categoryselectslider)
         .directive('attributemanager',attributeManager) 
         .directive('catalogfield',catalogfield)
+        .directive('materializetimepicker',materializetimepicker)
         .directive('catalogvariantfield',catalogvariantfield);
  
     jsTree.$inject = ['Product','ArrayUtil','$timeout'];
+    autocomplete.$inject = ['$timeout'];
     directoryjsTree.$inject = ['Backend','ArrayUtil','$timeout','$window'];
     priceformat.$inject = ['Product'];
     orderTable.$inject = ['Socket'];

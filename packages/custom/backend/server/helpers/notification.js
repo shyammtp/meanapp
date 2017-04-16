@@ -4,6 +4,8 @@ var
   nodemailer = require('nodemailer'),
   mongoose = require('mongoose'),
   template = mongoose.model('NotificationTemplate'),
+  settings = mongoose.model('Settings'),
+		_ = require('lodash'),
   smtpTransport = require('nodemailer-smtp-transport');
 
 function notification() {
@@ -77,12 +79,14 @@ function notification() {
             });
 		},
 		parseString : function(string, variables) {
+			console.log(string);
 			var str = string,
 			re = /\{(.*?)\}/g; 		
 			var matches = str.match(re); 
 			if(!matches) {
 				return string;
 			}
+			console.log(matches);
 			var datas = {};
 			matches.forEach(function(value) {
 				var g = value.slice(1, -1);
@@ -94,48 +98,57 @@ function notification() {
 			var re = new RegExp(Object.keys(mapObj).join("|"),"gi");
 			str = str.replace(re, function(matched){
 			  return mapObj[matched];
-			});
+			}); 
 			console.log(str);
 			return str;
 		}
 	}
 }
 exports.sendNotification = function(index,datas) {
-	template.findOne({index : index},function(err,doc) {
-		var notif = new notification();
-		if(datas.to) { 
-			notif.setTo(datas.to);
-		}  
-		notif.setFrom(doc.from_email);
-		if(datas.from) {
-			notif.setFrom(datas.from);
-		}  
+	var sss = new settings();
+	settings.find({place_id : '1'},function(err,docs){
+		var sets = {};
+		docs.forEach(function(v,k){
+			sets[v.name] = v.value;
+		});  
+		template.findOne({index : index},function(err,doc) {
+			var notif = new notification(); 
+			if(datas.to) { 
+				notif.setTo(datas.to);
+			}  
+			notif.setFrom(doc.from_email);
+			if(datas.from) {
+				notif.setFrom(datas.from);
+			}  
 
+			
+			if(datas.variables) {
+				datas.variables = _.assign({},datas.variables,sets);
+				notif.setVariables(datas.variables);
+			} 
+
+
+			if(doc.sms === true) {
+				//Send SMS
+				//notif.sendSMS();
+			}
+
+			if(doc.email === true) {
+				//Send Email
+				notif.setIsHtml(true);
+				notif.setSubject(doc.subject);
+				if(datas.subject) {
+					notif.setFrom(datas.subject);
+				}
+
+				notif.setMessage(doc.email_message);
+				if(datas.email_message) {
+					notif.setFrom(datas.email_message);
+				}
+				notif.sendEmail();
+			}
+		});
+	})
 		
-		if(datas.variables) {
-			notif.setVariables(datas.variables);
-		} 
-
-
-		if(doc.sms === true) {
-			//Send SMS
-			//notif.sendSMS();
-		}
-
-		if(doc.email === true) {
-			//Send Email
-			notif.setIsHtml(true);
-			notif.setSubject(doc.subject);
-			if(datas.subject) {
-				notif.setFrom(datas.subject);
-			}
-
-			notif.setMessage(doc.email_message);
-			if(datas.email_message) {
-				notif.setFrom(datas.email_message);
-			}
-			notif.sendEmail();
-		}
-	});	
 }
  

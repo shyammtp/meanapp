@@ -85,7 +85,7 @@ var Mongoose = require('mongoose'),
             var u = new cart();
             var filter =  {};  
 
-            cart.findOne({user: arrayutil.get(req.params,'userid'),orderplaced : false}).populate('user').exec(function(err,doc) {
+            cart.findOne({user: arrayutil.get(req.params,'userid'),orderplaced : false}).populate([{path : 'user',populate : {path : 'deliveries.delivery_area'}}]).exec(function(err,doc) {
                 console.log(doc);
                 if(!doc) {
                     return res.status(500).json({message : 'Invalid Cart',success : false});

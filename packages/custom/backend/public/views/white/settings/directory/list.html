@@ -32,26 +32,31 @@
                                     
                                 </div>
                               </div> 
-                              <button type="submit"  ng-if="directory.edit" ng-click="deletedirectory(directory)" class="btn btn-danger waves-effect pull-left m-t-xs m-b-xs">Delete</button>
+                               <div class="row m-t-10">
+                                <div class="input-field ">
+                                    <div class="col-md-12"> 
+                                       <input id="sorting" autocomplete="off" required ng-model="directory.sorting" name="sorting" type="text"  value="1" class="">
+                                        <label for="sorting" class="{{directory.sorting? 'active':''}}">Sorting</label>  
+                                    </div>
+                                    
+                                </div>
+                              </div>  
+                              <div ng-if="directory.directory_id && directory.level === 4" style="margin-top: 10px;" map-lazy-load="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjoi5ll46SSCWaMA-SpwvAyVGKziIcuBw&libraries=places,drawing">
+                                    <div class="info">
+                                        Draw your locality in the map to calculate zones based results.                                        
+                                    </div>
+                                  <map center="[40.74, -74.18]"> </map>
+
+                                </div>
+
+                              <button type="submit"  ng-if="directory.edit" ng-click="deleteDirectory(directory)" class="btn btn-danger waves-effect pull-left m-t-xs m-b-xs">Delete</button>
                               <div class="btn-group pull-right">
                                 <button type="button" ng-if="directory.directory_name" ng-click="addRootdirectory()" class="btn btn-default waves-effect m-t-xs m-b-xs">Cancel</button
                                 >
                                 <button type="submit" ng-click="savedirectory(directory)" class="btn btn-primary waves-effect  m-t-xs m-b-xs">Save</button
                                 >
                                 
-                                </div>
-                              <!-- <div class="row m-t-20">
-                                    <div class="input-field col-md-12">
-                                        <div class="select-wrapper">
-                                            <select md-select ng-model="settings.THEME" class="initialized" data-options="[{'title':'Black','value': 'black'}]" data-value="{{settings.THEME}}"> 
-                                                <option value="" disabled="">Select Theme</option>
-                                                <option value="black">Black</option>
-                                                <option value="white">White</option>  
-                                            </select>
-                                        </div>
-                                        <label>Select Panel Theme</label>
-                                    </div>
-                                </div> -->
+                                </div> 
                         </form>
                         <div class="clearfix"></div>
                     </div>

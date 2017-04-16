@@ -14,10 +14,10 @@
 	</div> -->
 	<div class="page-sidebar-inner slimscroll">
 	<ul class="menu accordion-menu"> 
-	    <li ng-repeat="(key,value) in datas" ng-if="value.status === true" class="{{objectLength(value.children) > 0 ?'droplink':''}}"><a href="{{(isset(value.url) ||value.url != '') ? value.url : '#'}}" class="waves-effect waves-button" ng-click="loadsubmenu()"><i class="{{value.before}}"></i>&nbsp;&nbsp;<p>{{ value.title_en }}</p><span class="arrow" ng-if="objectLength(value.children) > 0"></span></a> {{value.status}}
+	    <li ng-repeat="(key,value) in datas" ng-if="value.status === true" class="{{objectLength(value.children) > 0 ?'droplink':''}}"><a href="{{(isset(value.url) ||value.url != '') ? value.url : '#'}}" class="" ng-click="loadsubmenu()"><i class="{{value.before}}"></i>&nbsp;&nbsp;<p>{{ value.title_en }}</p><span class="arrow" ng-if="objectLength(value.children) > 0"></span></a> {{value.status}}
 	    	<ul class="sub-menu" ng-if="objectLength(value.children) > 0">
 	    		<li ng-repeat="(s,v) in value.children">
-                	<a href="{{(isset(v.url) || v.url != '') ? v.url : '#'}}" class="waves-effect waves-button "><p>{{v.title_en}}</p></a>
+                	<a href="{{(isset(v.url) || v.url != '') ? v.url : '#'}}" class=""><p>{{v.title_en}}</p></a>
             	</li>
 	    	</ul>
 	    </li>

@@ -29,9 +29,16 @@
         .state('dashboard', angular.extend({},defal, {
                 url: '/admin/dashboard',
                 templateUrl: 'backend/views/'+theme+'/page/dashboard.html',
-                params: {title : 'shyam'}
+                params: {title : 'Dashboard'}
             })
         )
+        .state('permission_denied', angular.extend({},defal, {
+                url: '/access/denied',
+                templateUrl: 'backend/views/'+theme+'/page/denied.html',
+                params: {title : 'Access Denied'}
+            })
+        )
+ 
  
 
         .state('general_settings', 
@@ -222,6 +229,25 @@
                 params: {title : 'New Order',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'New Order'}]},
              })
           )
+          .state('admin_delivery_charges', angular.extend({},defal,   {
+                url : '/admin/delivery/charges',
+                templateUrl: 'backend/views/'+theme+'/menus/delivery/charges/list.html',
+                params: {title : 'New Order',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'New Order'}]},
+             })
+          )
+
+          .state('admin_order_list', angular.extend({},defal,   {
+                url : '/admin/orders/list',
+                templateUrl: 'backend/views/'+theme+'/orders/list.html',
+                params: {title : 'New Order',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'New Order'}]},
+             })
+          )
+          .state('admin_permissions', angular.extend({},defal,   {
+                url : '/admin/permission/roles',
+                templateUrl: 'backend/views/'+theme+'/permission/roles.html',
+                params: {title : 'New Order',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'New Order'}]},
+             })
+          )
           ;
         $locationProvider
             .html5Mode({enabled:true, requireBase:false});
@@ -233,11 +259,17 @@
             adminconfig = response.data;
         })
 
+
         $rootScope.backend = Backend;
         $rootScope.assetspath = Backend.getassetpath();
         $rootScope.theme = theme; 
         $rootScope.preloader = false;
         $rootScope.$on('$stateChangeStart', function(event, nextRoute, currentRoute) { 
+            console.log('NextRoute',nextRoute);
+            console.log('CurrentRoute',currentRoute); 
+            /*if(nextRoute.name === 'general_settings') {
+                return $location.path('/access/denied');
+            }*/
             $rootScope.preloader = true;
             if(Authentication.isLoggedIn()) {
                 if(nextRoute.name === 'login') {
@@ -258,6 +290,8 @@
         });
         $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
             $rootScope.preloader = false;
+            $rootScope.pageTitle = toState.params.title;
+            console.log(toState);
         })
     }
 

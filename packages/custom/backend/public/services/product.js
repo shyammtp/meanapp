@@ -343,6 +343,8 @@
 
     function ItemMenus($http, $q,$window, Authentication,ArrayUtil,Backend) {
         this.cartuser = '';
+        this.cart = {};
+        this.deliverycharge = 0;
         return {
             getAllMenus : function() {
                 var deferred = $q.defer();
@@ -469,7 +471,40 @@
                     deferred.reject(response);
                 });
                 return deferred.promise;
-            }, calculatePrices : function(cart) {
+            },saveCharge : function(post) {
+                var deferred = $q.defer(); 
+                $http.post('/api/delivery/chargesave',post,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                    deferred.resolve(response);
+                }, function(response) {
+                    deferred.reject(response);
+                });
+                return deferred.promise;
+            },getAllDeliveryCharges : function() {
+                var deferred = $q.defer(); 
+                $http.get('/api/delivery/getallcharges',{cache : true, headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                    deferred.resolve(response);
+                }, function(response) {
+                    deferred.reject(response);
+                });
+                return deferred.promise;
+            }, getLocationCharge : function(params) {
+                var deferred = $q.defer(); 
+                $http.get('/api/delivery/locationcharge',{ params : params, headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                    deferred.resolve(response);
+                }, function(response) {
+                    deferred.reject(response);
+                });
+                return deferred.promise;
+            }, setDeliveryCharge : function(charge) {
+                this.deliverycharge  = charge;
+                return this;
+            }, setCart : function(cart) {
+                this.cart  = cart;
+                return this;
+            }, calculatePrices : function(cart) { 
+                if(!cart) {
+                    cart = this.cart;
+                }
                 var prices = {};
                 var grandtotal = 0;
                 prices.individualitemsubtotal = {};
@@ -492,7 +527,13 @@
                     prices.individualitemtotal[s._id] = parseFloat(s.price)+additions;
                     subtotal += prices.individualitemsubtotal[s._id] = ArrayUtil.get(s,'quantity',1) * (parseFloat(s.price)+additions);
                 })
-                prices.subtotal = subtotal;       
+                grandtotal = prices.subtotal = subtotal; 
+                prices.deliverycharge = 0;      
+                if(this.deliverycharge > 0) {
+                   prices.deliverycharge = this.deliverycharge;
+                   grandtotal += this.deliverycharge;
+                }
+                prices.grandtotal = grandtotal;
                 return prices;
             },
             setCartUser : function(userid) {
@@ -500,6 +541,15 @@
             },
             getCartUser : function() {
                 return this.cartuser;
+            },
+            getOrdersCond : function(params) {
+                 var deferred = $q.defer(); 
+                $http.get('/api/cart/getorders',{ params : params, headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                    deferred.resolve(response);
+                }, function(response) {
+                    deferred.reject(response);
+                });
+                return deferred.promise;
             }
         }
     }

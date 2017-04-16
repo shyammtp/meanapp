@@ -58,8 +58,9 @@
 
 	                		<div class="row"  ng-if="cartorder.type[0] === 'pickup' && !editdeliverydet" >
 	                			<div class="col-xs-12"> 
-			                		<h3>Store Pickup<span class="edlink" ng-show="!editdeliverydet"><a href="javascript:;" ng-click="editdeliverydetas()">(Edit)</a></span></h3>  
-			                		<p style="padding: 10px;">{{settings.storeaddress}}</p>
+			                		<h3>Store Pickup <span class="edlink" ng-show="!editdeliverydet"><a href="javascript:;" ng-click="editdeliverydetas()">(Edit)</a></span></h3>  
+			                		<p style="padding: 10px 10px 0 10px;"><i>You have to pick your item from the below address</i></p>
+			                		<p style="padding: 0 10px 10px 10px; font-size:12px;    color: #1abc9c; font-weight: bold;">{{settings.storeaddress}}</p>
 	                			</div>
 	                		</div>
 
@@ -68,11 +69,16 @@
 			                		<h3>Delivery Address <span class="edlink" ng-show="!editdeliverydet"><a href="javascript:;" ng-click="editdeliverydetas()">(Edit)</a></span></h3> 
 			                		<div class="deliveryadd" style="padding: 10px;">
 			                			<div class="deliveryaddrs">
-			                				<p>{{chooseddeliery.address}}</p>
+			                				<p ng-if="chooseddeliery.address" style="font-size:12px;color: #1abc9c; font-weight: bold;">{{chooseddeliery.address}},{{chooseddeliery.delivery_area.name}},{{chooseddeliery.delivery_area.address_value}}</p>
+
+			                				<p ng-if="chooseddeliery.address && !willdeliver" style="color:red; font-weight: bold;">Oops! This restaurant does not deliver to the selected location.</p>
 			                			</div>
 
 			                			<div class="deliveryaddrs_bt">
-			                				<button class="btn btn-primary" ng-click="addDeliveryaddress()" style="width: 100%; margin-top: 10px;">Add Your delivery address</button>
+			                				<button class="btn btn-primary" ng-click="addDeliveryaddress()"  style="width: 100%; margin-top: 10px;">
+			                					<span  ng-if="chooseddeliery.address">Modify Your delivery address</span>
+			                					<span  ng-if="!chooseddeliery.address">Add Your delivery address</span>	
+		                					</button>
 			                			</div>
 			                		</div>
 	                			</div>
@@ -108,7 +114,7 @@
 		                				</div>
 	                				</div>
 	                			</li>
-	                		</ul>
+	                		</ul> 
 	                		<div class="no-or"  ng-if="cartorder.items.length <= 0" style="text-align: center;margin:55px 0;">
 	                			 
 	                			<div style="text-align: center;"><img style="opacity: 0.2;" src="/theme/assets/lib/white/img/restaurant.png" /></div>
@@ -116,9 +122,20 @@
 	                		</div>
 	                		<div class="footer-d">
 	                			<div class="row">
-	                				<div class="col-xs-4">Subtotal</div>
-	                				<div class="col-xs-8" style="text-align: right;">{{cartorder.priceset.subtotal | priceformat}}</div>
-	                			</div><!-- 
+	                				<div class="col-xs-8">Subtotal</div>
+	                				<div class="col-xs-4" style="text-align: right;">{{cartorder.priceset.subtotal | priceformat}}</div>
+	                			</div>
+
+	                			<div class="row deliverychar">
+	                				<div class="col-xs-8">Delivery Charge </div>
+	                				<div class="col-xs-4" style="text-align: right;">{{cartorder.priceset.deliverycharge | priceformat}}</div>
+	                			</div>
+
+	                			<div class="row grandtot">
+	                				<div class="col-xs-8">Grandtotal</div>
+	                				<div class="col-xs-4" style="text-align: right;">{{cartorder.priceset.grandtotal | priceformat}}</div>
+	                			</div>
+	                			<!-- 
 	                			<div class="row">
 	                				<div class="col-xs-12">
 	                					<textarea class="form-control" ng-model="cart.additional" placeholder="Enter any additional information about your order. Eg: 'No Mayo!'" style="max-width: 100%;resize: none; margin-top: 10px;"></textarea>
@@ -127,7 +144,7 @@
 
 	                			<div class="row">
 	                				<div class="col-xs-12">
-	                					<button class="btn btn-primary" ng-click="place_order()" style="width: 100%;margin-top: 15px;">Pay it</button>
+	                					<button class="btn btn-primary" ng-disabled="!willdeliver" ng-click="place_order()" style="width: 100%;margin-top: 15px;">Pay it</button>
 	                				</div>
 	                			</div>
 	                		</div>

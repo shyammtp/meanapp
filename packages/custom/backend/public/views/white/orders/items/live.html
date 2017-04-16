@@ -23,9 +23,11 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <h2 class="m-b-md m-t-xxs"><b>{{cart.user.name}}</b></h2>
-                                <address>
-                                    Melbourne, Australia<br>
-                                    P: (123) 456-7890
+
+                                <address ng-if="cart.personalinfo"> 
+                                    <strong>Personal info</strong><br>
+                                    {{cart.personalinfo.name}} <br>
+                                    P: {{cart.personalinfo.phone}}
                                 </address>
                             </div>
                             <div class="col-md-8 text-right">
@@ -34,13 +36,26 @@
                             </div>
                             <div class="col-md-12">
                                 <hr>
-                                <p>
-                                    <strong>Invoice to</strong><br>
-                                    John Doe<br>
-                                    795 Folsom Ave, Suite 600<br>
-                                    San Francisco, CA 94107
+                                <div class="col-md-6"><p>
+                                    <strong>Delivery Address</strong><br>
+                                    {{cart.delivery.address}}<br>
+                                    {{cart.delivery.delivery_area.name}}<br>
+                                    {{cart.delivery.delivery_area.address_value}}
                                 </p>
-                            </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>
+                                        <strong>Delivery Instructions</strong><br>
+                                        {{cart.delivery.delivery_instructions}} 
+                                    </p>
+                                    <p ng-if="cart.additionalinfo">
+                                        <strong>Additional Info</strong><br>
+                                        {{cart.additionalinfo}} 
+                                    </p>
+                                </div>
+                                
+                                
+                            </div> 
                             <div class="col-md-12">
                                 <table class="table table-striped">
                                     <thead>
@@ -54,8 +69,10 @@
                                     </thead>
                                     <tbody>
                                         <tr  ng-repeat="(gf,gs) in cart.items track by $index">
-                                            <td>{{gs.item_name}}</td>
+                                            <td>{{gs.item_name}} ({{gs.price | priceformat}})</td>
                                             <td>
+
+                                                <div class="pull-right">{{gs.price | priceformat}}</div>
 	                                            <div class="row tdg" ng-repeat="(kl,ks) in gs.additions track by kl">
 													<div class="col-xs-8 "> 
 														<div class="tessd"><b>{{ks.name}}</b></div>
@@ -81,15 +98,15 @@
                             <div class="col-md-4">
                                 <div class="text-right">
                                     <h4 class="no-m m-t-sm">Subtotal</h4>
-                                    <h2 class="no-m">{{cart.sumprices.subtotal | priceformat}}</h2>
+                                    <h2 class="no-m">{{cart.priceset.subtotal | priceformat}}</h2>
                                     <hr>
-                                    <h4 class="no-m m-t-sm">Shipping</h4>
-                                    <h2 class="no-m">$240</h2>
+                                    <h4 class="no-m m-t-sm">Delivery Charge</h4>
+                                    <h2 class="no-m">{{cart.priceset.deliverycharge | priceformat}}</h2>
                                     <hr>
                                     <h4 class="no-m m-t-md text-success">Total</h4>
-                                    <h1 class="no-m text-success">{{cart.sumprices.subtotal | priceformat}}</h1>
+                                    <h1 class="no-m text-success">{{cart.priceset.grandtotal | priceformat}}</h1>
                                     <hr>
-                                    <button class="btn btn-info">Submit your invoice</button>
+                                    <!-- <button class="btn btn-info">Submit your invoice</button> -->
                                 </div>
                             </div>
                         </div><!--row-->

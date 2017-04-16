@@ -1,7 +1,10 @@
 'use strict';
 
 var Mongoose = require('mongoose'),
-	AdminUser = Mongoose.model('AdminUser'),category = Mongoose.model('Category'),product = Mongoose.model('Product'),
+	AdminUser = Mongoose.model('AdminUser'),category = Mongoose.model('Category'),
+	product = Mongoose.model('Product'),
+	deliverycharges = Mongoose.model('DeliveryCharges'),
+	directory = Mongoose.model('directory'),
 	user = Mongoose.model('Customer'),
 	variants = Mongoose.model('Variants'),
 	intf = Mongoose.model('InterfaceSettings'),
@@ -550,7 +553,7 @@ var Mongoose = require('mongoose'),
 						    },
 						    {upsert: true},
 						    function(err,doc) {
-					    		user.findOne({_id : arrayutil.get(req.params,'id')}).exec(function(err,docs) {
+					    		user.findOne({_id : arrayutil.get(req.params,'id')}).populate([{path : 'deliveries.delivery_area'}]).exec(function(err,docs) {
 					    			return res.status(200).json({message : "Loaded", user: docs,success : true});
 					    		});
 						    }
@@ -579,7 +582,7 @@ var Mongoose = require('mongoose'),
 
 										vars.update(data, function(error, catey) {
 											if(error) return res.status(200).json(error);
-										foodcart.findOne({_id : arrayutil.get(req.params,'id')}).populate([{path: 'user',select : 'email name'},{path : 'reserved_for',select : 'email name'}]).exec(function (err, docs) {  
+										foodcart.findOne({_id : arrayutil.get(req.params,'id')}).populate([{path: 'user',select : 'email name deliveries',populate : {path : 'deliveries.delivery_area'}},{path : 'reserved_for',select : 'email name'}]).exec(function (err, docs) {  
 
 												//Update the history
 												var historymsg = 'This orders is been handled by '+arrayutil.get(arrayutil.get(docs,'reserved_for'),'name');
@@ -604,7 +607,7 @@ var Mongoose = require('mongoose'),
 							data.additionalinfo = arrayutil.get(req.body,'additionalinfo');
 							vars.update(data, function(error, catey) {
 								if(error) return res.status(200).json(error);
-								foodcart.findOne({_id : arrayutil.get(req.params,'id')}).populate([{path: 'user',select : 'email name'},{path : 'reserved_for',select : 'email name'}]).exec(function (err, docs) {
+								foodcart.findOne({_id : arrayutil.get(req.params,'id')}).populate([{path: 'user',select : 'email name deliveries',populate : {path : 'deliveries.delivery_area'}},{path : 'reserved_for',select : 'email name'}]).exec(function (err, docs) {
 									socketio.sockets.emit('cart.orders', docs);
 									return res.status(200).json({message: 'Modified Successfully',success : true, cart : docs});
 								});
@@ -614,7 +617,7 @@ var Mongoose = require('mongoose'),
 							data.personalinfo = arrayutil.get(req.body,'personalinfo');
 							vars.update(data, function(error, catey) {
 								if(error) return res.status(200).json(error);
-								foodcart.findOne({_id : arrayutil.get(req.params,'id')}).populate([{path: 'user',select : 'email name'},{path : 'reserved_for',select : 'email name'}]).exec(function (err, docs) {
+								foodcart.findOne({_id : arrayutil.get(req.params,'id')}).populate([{path: 'user',select : 'email name deliveries',populate : {path : 'deliveries.delivery_area'}},{path : 'reserved_for',select : 'email name'}]).exec(function (err, docs) {
 									socketio.sockets.emit('cart.orders', docs);
 									return res.status(200).json({message: 'Modified Successfully',success : true, cart : docs});
 								});
@@ -624,7 +627,7 @@ var Mongoose = require('mongoose'),
 							data.type = arrayutil.get(req.body,'type');
 							vars.update(data, function(error, catey) {
 								if(error) return res.status(200).json(error);
-								foodcart.findOne({_id : arrayutil.get(req.params,'id')}).populate([{path: 'user',select : 'email name'},{path : 'reserved_for',select : 'email name'}]).exec(function (err, docs) {
+								foodcart.findOne({_id : arrayutil.get(req.params,'id')}).populate([{path: 'user',select : 'email name deliveries',populate : {path : 'deliveries.delivery_area'}},{path : 'reserved_for',select : 'email name'}]).exec(function (err, docs) {
 									socketio.sockets.emit('cart.orders', docs);
 									return res.status(200).json({message: 'Modified Successfully',success : true, cart : docs});
 								});
@@ -633,9 +636,10 @@ var Mongoose = require('mongoose'),
 						}  else if(arrayutil.get(req.body,'placeorder') == true ) {
 							data.delivery = arrayutil.get(req.body,'delivery');
 							data.orderplaced = arrayutil.get(req.body,'orderplaced');
+							data.priceset = arrayutil.get(req.body,'priceset');
 							data.totalpaid = arrayutil.get(req.body,'totalpaid');
-							var settings = appsettings.settings(req.app.locals.appsettings,'orderprefix');
-							console.log(settings);
+							data.status = 'pending';
+							var settings = appsettings.settings(req.app.locals.appsettings,'orderprefix'); 
 							var refno = '';
 							if(appsettings.settings(req.app.locals.appsettings,'orderprefix')) {
 								refno += appsettings.settings(req.app.locals.appsettings,'orderprefix');
@@ -644,11 +648,10 @@ var Mongoose = require('mongoose'),
 							if(appsettings.settings(req.app.locals.appsettings,'ordersuffix')) {
 								refno += appsettings.settings(req.app.locals.appsettings,'ordersuffix');
 							}
-							data.order_reference = refno;
-							console.log(data);
+							data.order_reference = refno; 
 							vars.update(data, function(error, catey) {
 								if(error) return res.status(200).json(error);
-								foodcart.findOne({_id : arrayutil.get(req.params,'id')}).populate([{path: 'user',select : 'email name'},{path : 'reserved_for',select : 'email name'}]).exec(function (err, docs) {
+								foodcart.findOne({_id : arrayutil.get(req.params,'id')}).populate([{path: 'user',select : 'email name deliveries',populate : {path : 'deliveries.delivery_area'}},{path : 'reserved_for',select : 'email name'}]).exec(function (err, docs) {
 									socketio.sockets.emit('cart.orders', docs);
 
 									return res.status(200).json({message: 'Modified Successfully',success : true, cart : docs});
@@ -682,7 +685,120 @@ var Mongoose = require('mongoose'),
 							}
 						})
 					});
+				},
+				getcharges : function(req,res,next) {
+					directory.getAllCache(function(vd) {
+						var ds = {};
+						var dgsf = JSON.parse(vd);
+						console.log(dgsf);
+						for(var n in dgsf) {	
+							var bn = dgsf[n]; 
+							ds[bn.id] = bn;
+						}
+ 
+						deliverycharges.getAllPaginate(req.query,function(err,cb) {  
+							 
+							var bg = [];
+							console.log(cb);
+							if(cb) {
+								for(var i  in cb.docs) {
+									var ad = JSON.parse(JSON.stringify(cb.docs[i]));
+									var vf = []; 
+									ad.locationids.forEach(function(ite) {
+										var dvv = ds[ite];
+										if(dvv) {
+											vf.push(dvv.name);
+										} 
+									})  
+									ad.locations = vf.join(', '); 
+									bg.push(ad);
+								} 
+								cb.docs = bg; 
+							}
+						 	res.send(cb);
+						});
+					})
+					
+				},
+				getallcharges : function(req,res,next) {
+					deliverycharges.find({}).exec(function(err,doc){
+						res.status(200).json({data : doc, message : 'got the result'});
+					}) 
+				},
+				locationcharge : function(req,res,next) {
+		          var filter = {};  
+		          if(arrayutil.get(req.query,'locationid')) {
+		            filter.locationids = { $in : [arrayutil.get(req.query,'locationid')]};
+		          }
+		          deliverycharges.find(filter).sort({deliverycharge : 1}).limit(1).exec(function(err,docs) { 
+		            res.status(200).json({charges : arrayutil.get(docs,0,{}), message : "got the result"});
+		          });
+		        },
+				savecharge : function(req,res,next) {
+					var dc = new deliverycharges(); 
+					if(arrayutil.get(req.body,'_id')) { 
+						deliverycharges.findById(arrayutil.get(req.body,'_id'), function(error, catey) {
+	                        // Handle the error using the Express error middleware
+	                        if(error) return res.status(200).json(error);
+	                        
+	                        // Render not found error
+	                        if(!catey) {
+	                          return res.status(404).json({
+	                            message: 'Charge with id ' + id + ' can not be found.'
+	                          });
+	                        }
+	                        var data = {}; 
+	                        data.name = arrayutil.get(req.body,'name');
+	                        data.locationids = arrayutil.get(req.body,'locationids',1);
+	                        data.deliverycharge = arrayutil.get(req.body,'deliverycharge',{});
+
+	                        // Update the course model
+	                        catey.update(data, function(error, catey) {
+	                          if(error) return res.status(200).json(error);
+	                            
+	                          return res.json(catey);
+	                           
+	                        });
+	                      });
+						dc.updateData(arrayutil.get(req.body,'_id'),function(err,sd) {
+								if(err) return res.status(500).json(err);
+								res.status(200).json(sd);
+						});
+					} else {
+						dc.name = arrayutil.get(req.body,'name');
+	                    dc.locationids = arrayutil.get(req.body,'locationids',[]); 
+	                    dc.deliverycharge = arrayutil.get(req.body,'deliverycharge',[]); 
+	                    dc.save(function(err,d,numAffected) {
+	                        if(err) {
+	                           res.status(500).json(err);
+	                        } else {
+	                            res.status(200).json({message: 'Inserted Successfully'});
+	                        }
+	                    }) 
+					}
+				},
+				getOrdersList : function(req,res,next) {
+					foodcart.getAllPaginate(req.query,function(err,cb) { 
+						 res.send(cb);
+					});
+				},
+				getorderscond : function(req,res,next) {
+					var filter = {};
+					if(arrayutil.get(req.query,'gettodays') === 'true') {
+						var start = new Date();
+						start.setHours(0,0,0,0);
+
+						var end = new Date();
+						end.setHours(23,59,59,999);
+						filter.created_on = {$gte : start,$lt : end};
+					}
+					filter.orderplaced = true;
+					console.log(filter);
+					foodcart.find(filter).exec(function(err,doc) { 
+						 res.status(200).json({data : doc});
+					});
 				}
+
 
 		 }
 	}

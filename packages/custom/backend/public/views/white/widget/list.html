@@ -55,7 +55,7 @@
 			<tr ng-if="dbresult.length" ng-repeat="(key, value) in dbresult"> 
 				<td ng-repeat="(k,v) in columns"> 
 					<span ng-if="getColumnRenderStatus(v.dindex) == true">
-					<widget-custom-render row-object="{{value}}" data-resultindex="{{key}}" data-index="{{v.dindex}}" template="{{getColumnRender(v.dindex)}}"></widget-custom-render>
+					<widget-custom-render row-object="{{value}}"   data-resultindex="{{key}}" data-index="{{v.dindex}}" template="{{getColumnRender(v.dindex)}}"></widget-custom-render>
 					</span>
 					<span ng-if="getColumnRenderStatus(v.dindex) == false">{{v.dindex | columnrender:value}}</span>
 				</td>

@@ -2,7 +2,7 @@
 
 var Mongoose = require('mongoose'),
   Settings = Mongoose.model('Settings'),
-  notification = Mongoose.model('NotificationTemplate'),
+  notificationtemplate = Mongoose.model('NotificationTemplate'),
   users = Mongoose.model('Customer'),
   Directory = Mongoose.model('directory'),
   notification = require('../helpers/notification'),
@@ -27,12 +27,17 @@ var Mongoose = require('mongoose'),
       }, 
   	 	saveAllsettings : function(req,res) { 
             var params = req.body;
+            var s = 1;
             for(var jg in params) {
-                Settings.addSettings(jg,params[jg],1,function(cb) {
-
+                Settings.addSettings(jg,params[jg],'1',function(err,cb) { 
+                  if(Object.keys(params).length === s) { 
+                        Settings.find({}).exec(function(err,doc) {
+                          return res.status(200).json({data : doc});
+                        });   
+                  } 
+                  s++;
                 });
             }
-            res.send({message: "Saved"});
   	 	}, 
       getSetting : function(req,res) {
         var params = req.body;
@@ -74,7 +79,7 @@ var Mongoose = require('mongoose'),
                 if(value != undefined) { 
                     res.send(value);
                 } else {
-                    Directory.find({},null,{sort : {country_name : 1}},function(err,cb) { 
+                    Directory.find({ level : 1},null,{sort : {name : 1}},function(err,cb) { 
                         myCache.set('directories',JSON.parse(JSON.stringify(cb)),10000);
                        res.send(JSON.parse(JSON.stringify(cb)));
                     });
@@ -84,6 +89,9 @@ var Mongoose = require('mongoose'),
       },
 
       saveuser : function(req,res,next){
+                notification.sendNotification('WELCOME_USERS',{'to' : req.body.email,variables : {'name' : 'Pradeep shyam','assetsurl' : 'http://localhost:3000/'}});
+                res.status(200).json({message: 'Updated Successfully',success : true});  
+                return;
             if(arrayutil.get(req.body,'_id')) {
                 users.findOne({_id : arrayutil.get(req.body,'_id')},function (err, vars) { 
                         var data = req.body;  
@@ -94,8 +102,7 @@ var Mongoose = require('mongoose'),
                 });
 
             } else {
-                notification.sendNotification('WELCOME_USERS',{'to' : req.body.email});
-                return;
+                
                 var us = new users(); 
                 us.name =  req.body.name;
                 if(arrayutil.get(req.body,'email')) {
@@ -126,7 +133,7 @@ var Mongoose = require('mongoose'),
             if(!arrayutil.get(req.params,'id')) {
                      return res.status(500).json({message: "Invalid Template ID",success : false});
             }
-            notification.findOne({_id : arrayutil.get(req.params,'id')},function (err, vars) { 
+            notificationtemplate.findOne({_id : arrayutil.get(req.params,'id')},function (err, vars) { 
                     var data = req.body;  
                     vars.update(data, function(error, catey) {
                             if(error) return res.status(200).json(error);
@@ -143,20 +150,30 @@ var Mongoose = require('mongoose'),
         saveDirectory : function(req,res,next) {
             var cat = new Directory();
             if(arrayutil.get(req.query,'parent')) {            
-                var query = category.where({_id : req.query['parent']});
+                var query = Directory.where({_id : req.query['parent']});
                 query.findOne(function(err,cate) {
                     if(cate) {
                         cat.parent_id = cate._id;
-                        //console.log(cate.level);
+                        console.log(cate.tree_path);
                         cat.level = cate.level+1;
-                        if(typeof cate.tree_path!= 'undefined') {
+                        if(arrayutil.get(req.body,'zonebox')) {
+                            cat.zonebox = arrayutil.get(req.body,'zonebox',{});
+                        }
+                        if(cate.tree_path.length > 0) {
                             cat.tree_path = cate.tree_path.concat([cate._id]);
-                            //cat.tree_url = cate.tree_url+'/'+cate.category_url;
+                            if(cat.linkedpath == undefined) {
+                                cat.linkedpath = {};
+                            }
+                            cat.linkedpath[cate.level] = cate._id; 
+                            cat.address_value = cate.name+','+cate.address_value;
                         } else {
                             cat.tree_path.push(cate._id);
-                            //cat.tree_url = cate.category_url;
+                            cat.linkedpath[cate.level] = cate._id;
+                            cat.address_value = cate.name;
                         } 
-                        cat.category_name = arrayutil.get(req.body,'directory_name');  
+                        cat.name = arrayutil.get(req.body,'directory_name'); 
+                        cat.sorting = arrayutil.get(req.body,'sorting',1); 
+                        console.log('DirectorySave',cat);
                         //cat.attributes = attrdefaults;               
                         cat.save(function(err,category,numAffected) {
                             if(err) {
@@ -169,7 +186,7 @@ var Mongoose = require('mongoose'),
                 });
             } else {
                 if(arrayutil.get(req.body,'directory_id')) {
-                    category.findById(arrayutil.get(req.body,'directory_id'), function(error, catey) {
+                    Directory.findById(arrayutil.get(req.body,'directory_id'), function(error, catey) {
                         // Handle the error using the Express error middleware
                         if(error) return res.status(200).json(error);
                         
@@ -181,6 +198,8 @@ var Mongoose = require('mongoose'),
                         }
                         var data = {}; 
                         data.name = arrayutil.get(req.body,'directory_name');
+                        data.sorting = arrayutil.get(req.body,'sorting',1);
+                        data.zonebox = arrayutil.get(req.body,'zonebox',{});
 
                         // Update the course model
                         catey.update(data, function(error, catey) {
@@ -191,7 +210,8 @@ var Mongoose = require('mongoose'),
                         });
                       });
                 } else { 
-                    cat.name = arrayutil.get(req.body,'directory_name'); 
+                    cat.name = arrayutil.get(req.body,'directory_name');
+                    cat.sorting = arrayutil.get(req.body,'sorting',1); 
                     cat.save(function(err,category,numAffected) {
                         if(err) {
                            res.status(500).json(err);
@@ -201,6 +221,35 @@ var Mongoose = require('mongoose'),
                     }) 
                 }
             }
+        },
+        deleteDirectory : function(req,res,next) {
+            if(!arrayutil.get(req.params,'id')) {
+                 return res.status(500).json({message: "Invalid Directory ID"});
+            }
+            Directory.CheckChildren(arrayutil.get(req.params,'id'),function(err,count) {
+                if(count <= 0) {
+                    Directory.findByIdAndRemove(arrayutil.get(req.params,'id'),function(err,obj) {
+                        if (err) {
+                            return res.status(500).json(err);
+                        };
+                        res.status(200).json({message : "Directory has deleted"});
+                    });
+                } else {
+                    res.status(500).json({message: "Directory has children"});
+                }  
+            })
+        }, 
+        getDirectories : function(req,res,next) {
+          var filter = {};
+          if(arrayutil.get(req.query,'level')) {
+            filter.level = arrayutil.get(req.query,'level');
+          }
+          if(arrayutil.get(req.query,'treepath')) {
+            filter.tree_path = { $in : arrayutil.get(req.query,'treepath')};
+          }
+          Directory.find(filter).exec(function(err,doc) {
+            res.status(200).json({directory : doc, message : "got the result"});
+          });
         },
       upload : function(req,res) {
         var form = new formidable.IncomingForm();
