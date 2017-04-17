@@ -1,5 +1,6 @@
 (function() {
     'use strict';
+    alert(theme);
 
     function mdSelect() { 
         return {  
