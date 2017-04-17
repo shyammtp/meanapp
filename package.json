@@ -22,7 +22,6 @@
     "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
-
     "angular": "^1.5.5",
     "angular-animate": "^1.5.8",
     "angular-aria": "^1.5.8",
@@ -39,16 +38,13 @@
     "angular-ui-select": "^0.12.100",
     "body-parser": "^1.15.2",
     "bootstrap": "^3.3.7",
-    "bower" : "^1.8.0",
-    "socket.io" : "^1.4.7",
-    "mongoose-paginate" : "^5.0.3",
-    "mongoose-geojson-schema" : "latest",
-    "crypto-js" : "latest",
+    "bower": "^1.8.0",
     "compression": "^1.6.2",
     "connect-flash": "^0.1.1",
     "connect-modrewrite": "^0.9.0",
     "consolidate": "^0.14.1",
     "cross-env": "^3.0.0",
+    "crypto-js": "latest",
     "debug": "^2.2.0",
     "express": "^4.14.0",
     "file-loader": "^0.9.0",
@@ -61,6 +57,8 @@
     "meanio-upload": "^1.0.3",
     "meanio-users": "git://github.com/linnovate/meanio-users.git",
     "moment": "^2.18.1",
+    "mongoose-geojson-schema": "^2.1.2",
+    "mongoose-paginate": "^5.0.3",
     "morgan": "^1.7.0",
     "node-cache": "^4.1.1",
     "npm": "^3.10.7",
@@ -69,6 +67,7 @@
     "request": "^2.76.0",
     "shelljs": "^0.7.5",
     "snyk": "^1.17.5",
+    "socket.io": "^1.4.7",
     "view-helpers": "0.1.5"
   },
   "devDependencies": {
