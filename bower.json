@@ -20,6 +20,8 @@
     "crypto-js" : "latest",
     "angular-loading-bar" : "latest",
     "ng-file-upload" : "latest",
-    "tinymce" : "latest"
+    "tinymce" : "latest",
+    "angular-socket-io" : "latest",
+    "materialize" :"latest"
   }
 }
