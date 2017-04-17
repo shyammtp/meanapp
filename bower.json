@@ -12,6 +12,14 @@
     "angular-ui-router": "latest",
     "web-bootstrap": "./node_modules/meanio/resources/web-bootstrap.js",
     "angular-ui-select": "latest",
-    "angular-sanitize": "latest"
+    "angular-sanitize": "latest",
+    "angular-ui-tinymce": "^0.0.18",
+    "angucomplete-alt": "^3.0.0",
+    "materialize-clockpicker": "^0.1.1",
+    "ngmap" : "latest",
+    "crypto-js" : "latest",
+    "angular-loading-bar" : "latest",
+    "ng-file-upload" : "latest",
+    "tinymce" : "latest",
   }
 }
