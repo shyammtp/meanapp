@@ -1,8 +1,8 @@
 'use strict'
 
 module.exports = {
-  //db: 'mongodb://' + (process.env.DB_PORT_27017_TCP_ADDR || 'localhost') + '/shyamdb',
-  db : 'mongodb://shyammtp:shyam@ndot@ds161960.mlab.com:61960/heroku_jx3m476g'
+  db: 'mongodb://' + (process.env.DB_PORT_27017_TCP_ADDR || 'localhost') + '/shyamdb',
+  //db : 'mongodb://shyammtp:shyam@ndot@ds161960.mlab.com:61960/heroku_jx3m476g'
   debug: true,
   logging: {
     format: 'tiny'
