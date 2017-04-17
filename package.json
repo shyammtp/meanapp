@@ -42,6 +42,7 @@
     "bower" : "^1.8.0",
     "socket.io" : "^1.4.7",
     "mongoose-paginate" : "^5.0.3",
+    "crypto-js" : "latest",
     "compression": "^1.6.2",
     "connect-flash": "^0.1.1",
     "connect-modrewrite": "^0.9.0",
