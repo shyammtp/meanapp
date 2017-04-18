@@ -72,7 +72,8 @@
     "shelljs": "^0.7.5",
     "snyk": "^1.17.5",
     "socket.io": "^1.4.7",
-    "view-helpers": "0.1.5"
+    "view-helpers": "0.1.5",
+    "zeroclipboard": "^2.3.0"
   },
   "devDependencies": {
     "babel-core": "^6.18.0",
