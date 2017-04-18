@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = {
-  db: process.env.MONGODB_URI,
+  db: 'mongodb://' + (process.env.DB_PORT_27017_TCP_ADDR || 'localhost') + '/shyamdb',
   /**
    * Database options that will be passed directly to mongoose.connect
    * Below are some examples.
@@ -77,5 +77,5 @@ module.exports = {
       pass: 'PASSWORD'
     }
   },
-  secret: 'SOME_TOKEN_SECRET'
+  secret: 'SHYAMSECRET'
 }
