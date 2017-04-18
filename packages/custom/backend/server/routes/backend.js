@@ -129,6 +129,7 @@ var Mongoose = require('mongoose'),
             res.status(401);
             res.json({'message' : err.name + ': ' + err.message});
           }
+          next();
         });        
         app.post('/api/settings/save',settings.savesettings);
         app.post('/api/settings/saveall',settings.saveAllsettings);
