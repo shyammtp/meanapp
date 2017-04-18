@@ -3942,6 +3942,8 @@ label {
 label.formlabel {	
     border-left: 2px solid #e74c3c;
     padding-left: 7px;
+    text-transform: uppercase;
+    font-size: 12px;font-weight: bold;
 }
 label.done{
   color:#0090d9 !important;
@@ -5731,4 +5733,37 @@ Main components
     padding-left:140px !important;
     width:30%;
     
-}
+}.topbox {border-bottom: 1px solid #ccc; padding: 10px 0;}
+.topbox .text {font-size:12px; font-weight: bold; text-transform: uppercase;}
+.leftmenbox { }
+.rolesboxcontainer .rightbox{ border-left:1px solid #ccc; }
+.rolesboxcontainer .col-boxes ul{ float: left;    width: 45%;}
+.rolesboxcontainer .col-boxes ul li{ float: left;margin: 0 7px;}
+.rolesboxcontainer .col-boxes ul li a{ display: block; width: 20px; height: 20px; border-radius: 4px; margin:10px 0;}
+
+.rolesboxcontainer .col-boxes ul li a.active {border:3px solid #5bc1f6;}
+.rolesboxcontainer .col-boxes ul li a.greenishblue {background-color: #2dbb99;}
+.rolesboxcontainer .col-boxes ul li a.greenish {background-color: #3fcb65;}
+.rolesboxcontainer .col-boxes ul li a.bluish {background-color: #3596e0;}
+.rolesboxcontainer .col-boxes ul li a.violetish {background-color: #9858bb;}
+.rolesboxcontainer .col-boxes ul li a.pinkish {background-color: #e62864;}
+.rolesboxcontainer .col-boxes ul li a.yelloish {background-color: #f1c500;}
+.rolesboxcontainer .col-boxes ul li a.orangeyellowish {background-color: #e48000;}
+.rolesboxcontainer .col-boxes ul li a.orange {background-color:#e45036;}
+.rolesboxcontainer .col-boxes ul li a.bluishgrey {background-color:#95a5a6;}
+.rolesboxcontainer .col-boxes ul li a.bluishdullgrey {background-color:#617c8c;}
+.rolesboxcontainer .col-boxes ul li a.dullgreygreen {background-color:#1d8069;}
+
+.rolesboxcontainer .col-boxes ul li a.brightgreengrey {background-color:#2a8b44;}
+.rolesboxcontainer .col-boxes ul li a.drakgreyblue {background-color:#216597;}
+.rolesboxcontainer .col-boxes ul li a.darkpurplegrey {background-color:#6e358e;}
+.rolesboxcontainer .col-boxes ul li a.darkpinkishgrey {background-color:#aa1b59;}
+.rolesboxcontainer .col-boxes ul li a.darkyellowishgrey {background-color:#c17d00;}
+.rolesboxcontainer .col-boxes ul li a.darkorangegrey {background-color:#a64600;}
+.rolesboxcontainer .col-boxes ul li a.darkoredgrey {background-color:#97301e;}
+.rolesboxcontainer .col-boxes ul li a.darkgrey {background-color:#979b9f;}
+.rolesboxcontainer .col-boxes ul li a.darkbluegreys {background-color:#546d7b;}
+.roleslist ul {margin-top: 6px; max-height: 500px; overflow: auto;}
+.roleslist ul li { border-left:4px solid #fff;   }
+.roleslist ul li a {display: block; text-decoration: none; font-weight: bold;padding:20px 15px;} 
+.roleslist ul li.active {background-color: #f7f7f7; border-left:4px solid #1abc9c; }

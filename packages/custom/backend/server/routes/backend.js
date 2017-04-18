@@ -133,6 +133,9 @@ var Mongoose = require('mongoose'),
         });        
         app.post('/api/settings/save',settings.savesettings);
         app.post('/api/settings/saveall',settings.saveAllsettings);
+        app.post('/api/settings/saverole',authentic, settings.saverole);
+        app.get('/api/settings/getroles',authentic, settings.getroles);
+        app.get('/api/settings/getrole/:id',authentic, settings.getrolebyid);
         app.get('/api/settings/get',settings.getallsettings);
         app.get('/api/settings/getpaginate',settings.getpaginate);
         app.get('/api/directory/get/country',settings.getcountry);

@@ -273,16 +273,16 @@
             $rootScope.preloader = true;
             if(Authentication.isLoggedIn()) {
                 if(nextRoute.name === 'login') {
-                    $location.path('/admin/dashboard');
-                    $state.go('dashboard');
+                    //$location.path('/admin/dashboard');
+                    //$state.go('dashboard');
                     console.log('in')
                     return;
                 }
             }
             if(!Authentication.isLoggedIn()) {  
                 if(nextRoute.name !== 'login') { 
-                    $location.path('/admin/login');
-                    return $state.go('login');
+                    //$location.path('/admin/login');
+                    //return $state.go('login');
                 }
             }
             return; 

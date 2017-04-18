@@ -4,9 +4,127 @@
         <div breadcrumbs></div>
     </div> 
     <div id="main-wrapper">  
-        <div ng-controller="OrdersListController as widget">
+        <div ng-controller="PermissionRolesController" class="rolesboxcontainer"> 
+            <div class="row boxedform" style="border:0;">
+                <div class="col-md-3 leftmenbox">
+                   <div class="row topbox">
+                        <div class="col-sm-6 text">Roles</div>
+                        <div class="col-sm-6"><a href="javascript:;" class="pull-right" ng-click="canceleditrole()"><i class="fa fa-plus" aria-hidden="true"></i></a></div>
+                   </div>
+                   <div class="roleslist">
+                        <ul>
+                            <li ng-repeat="(g,h) in roles"  ng-class="{'active' : editid == h._id}"><a href="javascript:;" ng-click="editrole(h)" style="color:#{{h.role_color}};">{{h.role_name}}</a></li>
+                        </ul>
+                   </div> 
+                </div>
+                <form name="roleform">
+                <div class="col-md-9 rightbox"> 
+                      <div class="row m-t-10">
+                        <div class="">
+                            <div class="col-md-12"> 
+                              <label for="rolename" class="formlabel">Role Name</label> 
+                              <input id="_id" placeholder="Eg: Role Name" ng-model="permission._id" name="_id" type="hidden" class="">
+                              <input id="role_color" placeholder="Eg: Role Name" ng-model="permission.role_color"  ng-required="true" name="role_color" type="hidden" class="">
+                              <input id="rolename" placeholder="Eg: Role Name" ng-model="permission.role_name" ng-required="true" name="rolename" type="text" class="">
+                            </div>
+                            
+                        </div>
+                      </div> 
+                      <div class="row m-t-20"> 
+                        <div class="col-md-12"> 
+                            <label for="accountemail" class="formlabel">Role Color</label> 
+
+                            <div class="col-boxes">
+                                <ul>
+                                    <li><a href="javascript:;" ng-click="addcolor('2dbb99')" ng-class="{'active' : permission.role_color === '2dbb99'}" class="greenishblue"></a></li>
+                                    <li><a href="javascript:;" ng-click="addcolor('3fcb65')"  ng-class="{'active' : permission.role_color === '3fcb65'}" class="greenish"></a></li>
+                                    <li><a href="javascript:;" ng-click="addcolor('3596e0')"  ng-class="{'active' : permission.role_color === '3596e0'}" class="bluish"></a></li>
+                                    <li><a href="javascript:;" ng-click="addcolor('9858bb')"  ng-class="{'active' : permission.role_color === '9858bb'}" class="violetish"></a></li>
+                                    <li><a href="javascript:;" ng-click="addcolor('e62864')"  ng-class="{'active' : permission.role_color === 'e62864'}" class="pinkish"></a></li>
+                                    <li><a href="javascript:;" ng-click="addcolor('f1c500')"  ng-class="{'active' : permission.role_color === 'f1c500'}" class="yelloish"></a></li>
+                                    <li><a href="javascript:;" ng-click="addcolor('e48000')"  ng-class="{'active' : permission.role_color === 'e48000'}" class="orangeyellowish"></a></li>
+                                    <li><a href="javascript:;" ng-click="addcolor('e45036')"  ng-class="{'active' : permission.role_color === 'e45036'}" class="orange"></a></li>
+                                    <li><a href="javascript:;" ng-click="addcolor('95a5a6')"  ng-class="{'active' : permission.role_color === '95a5a6'}" class="bluishgrey"></a></li>
+                                    <li><a href="javascript:;" ng-click="addcolor('617c8c')"  ng-class="{'active' : permission.role_color === '617c8c'}" class="bluishdullgrey"></a></li>
+                                    <li><a href="javascript:;" ng-click="addcolor('1d8069')"  ng-class="{'active' : permission.role_color === '1d8069'}" class="dullgreygreen"></a></li> 
+
+                                    <li><a href="javascript:;" ng-click="addcolor('2a8b44')"  ng-class="{'active' : permission.role_color === '2a8b44'}" class="brightgreengrey"></a></li> 
+                                    <li><a href="javascript:;" ng-click="addcolor('216597')"  ng-class="{'active' : permission.role_color === '216597'}" class="drakgreyblue"></a></li> 
+                                    <li><a href="javascript:;" ng-click="addcolor('6e358e')"  ng-class="{'active' : permission.role_color === '6e358e'}" class="darkpurplegrey"></a></li> 
+                                    <li><a href="javascript:;" ng-click="addcolor('aa1b59')"  ng-class="{'active' : permission.role_color === 'aa1b59'}" class="darkpinkishgrey"></a></li> 
+                                    <li><a href="javascript:;" ng-click="addcolor('c17d00')"  ng-class="{'active' : permission.role_color === 'c17d00'}" class="darkyellowishgrey"></a></li> 
+                                    <li><a href="javascript:;" ng-click="addcolor('a64600')"   ng-class="{'active' : permission.role_color === 'a64600'}" class="darkorangegrey"></a></li> 
+                                    <li><a href="javascript:;" ng-click="addcolor('97301e')"  ng-class="{'active' : permission.role_color === '97301e'}" class="darkoredgrey"></a></li> 
+                                    <li><a href="javascript:;" ng-click="addcolor('979b9f')"  ng-class="{'active' : permission.role_color === '979b9f'}" class="darkgrey"></a></li> 
+                                    <li><a href="javascript:;" ng-click="addcolor('546d7b')"  ng-class="{'active' : permission.role_color === '546d7b'}" class="darkbluegreys"></a></li>  
+                                </ul>
+                            </div>
+                        </div>
  
-          <listwidget></listwidget>
+                      </div>  
+
+                      <div class="row m-t-10"> 
+                            <div class="col-md-12"> 
+                              <label class="formlabel">General Permissions</label>   
+                            </div>
+                            <div class="col-md-12 m-t-10">
+                                <div class="col-sm-4">
+                                    <input type="checkbox" name="managecustomer" ng-model="permission.permissionset.managecustomer"  id="managecustomer"/><label for="managecustomer">Manage Customer</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="checkbox" name="manageroles"  ng-model="permission.permissionset.manageroles" id="manageroles"/><label for="manageroles">Manage Roles</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="checkbox" name="managecuisines" ng-model="permission.permissionset.managecuisines" id="managecuisines"/><label for="managecuisines">Manage Cuisines</label>
+                                </div> 
+                            </div>
+
+                            <div class="col-md-12 m-t-10"> 
+                                <div class="col-sm-4">
+                                    <input type="checkbox" name="managesettings"  ng-model="permission.permissionset.managesettings" id="managesettings"/><label for="managesettings">Manage Settings</label>
+                                </div>
+                            </div> 
+                      </div>  
+
+                      <div class="row m-t-10"> 
+                            <div class="col-md-12"> 
+                              <label class="formlabel">Menus and items</label>   
+                            </div>
+                            <div class="col-md-12 m-t-10">
+                                <div class="col-sm-4">
+                                    <input type="checkbox" name="manageitems" ng-model="permission.permissionset.manageitems" id="manageitems"/><label for="manageitems">Manage Items</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="checkbox" name="managemenus"  ng-model="permission.permissionset.managemenus" id="managemenus"/><label for="managemenus">Manage Menus</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="checkbox" name="deliverycharges"  ng-model="permission.permissionset.managedeliverycharges" id="deliverycharges"/><label for="deliverycharges">Manage delivery charges</label>
+                                </div> 
+                            </div>
+
+                            <div class="col-md-12 m-t-10"> 
+                                <div class="col-sm-4">
+                                    <input type="checkbox" name="manageorders"  ng-model="permission.permissionset.manageorders" id="manageorders"/><label for="manageorders">Manage Orders</label>
+                                </div>
+                            </div> 
+                      </div>
+
+                        <div class="row m-t-10">  
+                            <div class="btn-group pull-right">
+                                <button type="button" class="btn btn-default" ng-click="canceleditrole()">Cancel</button>
+                                <button  type="button" ng-click="saverole(permission)" class="btn btn-primary" ng-disabled="roleform.$invalid"><i class="fa fa-floppy-o"></i> Save</button>
+                            </div> 
+                        </div>
+
+
+
+                </div> 
+                </form>
+            </div> 
+
+             
+ 
+        
         </div>
     </div><!-- Main Wrapper -->
     <div class="page-footer"> 
