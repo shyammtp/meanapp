@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = {
-  db: 'mongodb://shyammtp:shyammtp@ds161960.mlab.com:61960/heroku_jx3m476g',
+  db: 'mongodb://shyammtp:shyammtp@ds023902.mlab.com:23902/heroku_qlckj71b', 
   /**
    * Database options that will be passed directly to mongoose.connect
    * Below are some examples.
