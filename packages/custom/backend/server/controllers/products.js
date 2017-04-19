@@ -378,7 +378,8 @@ var Mongoose = require('mongoose'),
 						}) 
 				},
 				getMenus : function(req,res,next) { 
-						var menus = new MenuItem();  
+						var menus = new MenuItem(); 
+						console.log(req); 
 						MenuItem.find({}).sort({'sorting':1}).exec(function(err,dat) { 
 								res.send({menus : dat});
 						})

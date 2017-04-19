@@ -63,7 +63,7 @@
             },
             getGeneralData : function(index) {
                 var deferred = $q.defer();
-                $http.get('/api/generaldatas',{cache : true,headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                $http.get('/api/generaldatas',{cache : true}).then(function(response) {
                     var d = response.data;
                     if(typeof d[index] !== 'undefined') {
                         deferred.resolve(d[index]);

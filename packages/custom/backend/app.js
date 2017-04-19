@@ -22,14 +22,16 @@ Backend.register(function(app, auth, database, circles) {
   Backend.settingscontroller = require('./server/controllers/settings')(Backend, app);
   Backend.authenticationcontroller = require('./server/controllers/authentication')(Backend, app);
   Backend.frontendcontroller = require('./server/controllers/frontend')(Backend, app);
-  app.use(passport.initialize());
+  app.use(passport.initialize());  
+  
+  app.set('views', path.join(__dirname, '/server/views')); 
 
   //We enable routing. By default the Package Object is passed to the routes 
   Backend.routes(app, auth, database, circles);
   //app.use(session({ secret: config.secret, resave: false, saveUninitialized: true }));
   //app.use('/api', expressJwt({ secret: config.sessionSecret }).unless({ path: ['/api/users/authenticate', '/api/users/register'] }));
   Backend.angularDependencies(['ngSanitize','ui.router','ui.tinymce','angular-loading-bar','btford.socket-io','ngMap','angucomplete-alt']); 
-  app.set('views', path.join(__dirname, '/server/views/white')); 
+
  
   //We are adding a link to the main menu for all authenticated users
   Backend.menus.add({

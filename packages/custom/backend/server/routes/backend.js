@@ -28,6 +28,7 @@ var Mongoose = require('mongoose'),
         //app.use(sidebar.theme);
         //app.use(expressJwt({ secret: config.sessionSecret}));
         //app.use(logErrors);  
+        
         app.use(settings.getappsettings);
 
         var theme = config.theme,
@@ -125,11 +126,13 @@ var Mongoose = require('mongoose'),
         app.post('/api/adminlogin', authentication.login);
         app.post('/api/adminregister', authentication.register);
         app.use(function (err, req, res, next) {
+            console.log(err);
           if (err.name === 'UnauthorizedError') {
             res.status(401);
             res.json({'message' : err.name + ': ' + err.message});
+          } if(!err) {
+            next();
           }
-          next();
         });        
         app.post('/api/settings/save',settings.savesettings);
         app.post('/api/settings/saveall',settings.saveAllsettings);
@@ -193,8 +196,5 @@ var Mongoose = require('mongoose'),
         });*/
     };
 
-    function logErrors (err, req, res, next) {
-      console.error(err.stack)
-      next(err)
-    }
+    
 })();
