@@ -241,13 +241,7 @@
                 templateUrl: 'backend/views/'+theme+'/orders/list.html',
                 params: {title : 'New Order',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'New Order'}]},
              })
-          )
-          .state('admin_permissions', angular.extend({},defal,   {
-                url : '/admin/permission/roles',
-                templateUrl: 'backend/views/'+theme+'/permission/roles.html',
-                params: {title : 'New Order',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'New Order'}]},
-             })
-          )
+          ) 
           ;
         $locationProvider
             .html5Mode({enabled:true, requireBase:false});
@@ -273,16 +267,16 @@
             $rootScope.preloader = true;
             if(Authentication.isLoggedIn()) {
                 if(nextRoute.name === 'login') {
-                    //$location.path('/admin/dashboard');
-                    //$state.go('dashboard');
+                    $location.path('/admin/dashboard');
+                    $state.go('dashboard');
                     console.log('in')
                     return;
                 }
             }
             if(!Authentication.isLoggedIn()) {  
                 if(nextRoute.name !== 'login') { 
-                    //$location.path('/admin/login');
-                    //return $state.go('login');
+                    $location.path('/admin/login');
+                    return $state.go('login');
                 }
             }
             return; 
@@ -293,6 +287,16 @@
             $rootScope.pageTitle = toState.params.title;
             console.log(toState);
         })
+
+        $rootScope.checkmoduleexists = function(name) {
+            if(!name) {
+                return true;
+            }
+          try {
+                return !!angular.module(name);    
+              } catch (e) {
+          }
+        }
     }
 
     angular

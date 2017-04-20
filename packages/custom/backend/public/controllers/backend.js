@@ -652,47 +652,7 @@
 
 
     } 
-
-    function PermissionRolesController($scope,$location,Backend) {
-        var vm = this;
-        $scope.permission = {};
-        $scope.roles = [];
-        $scope.editid = '';
-        Backend.getRoles().then(function(res){
-             $scope.roles = res.data.data;
-        })
-        $scope.saverole = function(permission) {
-            var roleset = permission;
-            Backend.saveRole(roleset).then(function(res){
-                if(res.data.success) {
-                    Materialize.toast('Stored successfully', 4000);
-                    Backend.getRoles().then(function(res){
-                         $scope.roles = res.data.data;
-                    });
-                    $scope.permission = {};
-                    $scope.editid = '';
-                }
-            });
-        }
-
-        $scope.addcolor = function(color) {
-            $scope.permission.role_color = color;
-        }
-
-        $scope.editrole = function(obj) {
-             $scope.editid = obj._id;
-            var permissionset = {};
-            angular.forEach(obj.permissions, function(v,k){
-                permissionset[k] = true;
-            })
-            $scope.permission = obj;
-            $scope.permission.permissionset = permissionset;
-        }
-        $scope.canceleditrole = function() {
-             $scope.permission = {};
-            $scope.editid = '';
-        }
-    }
+ 
 
 
     angular
@@ -700,8 +660,7 @@
         .controller('BackendCoreController', BackendCoreController)
         .controller('CustomerController', CustomerController)
         .controller('DirectoryController', DirectoryController)
-        .controller('BackendController', BackendController)
-        .controller('PermissionRolesController', PermissionRolesController)
+        .controller('BackendController', BackendController) 
         .controller('TitleController', TitleController)
         .controller('SettingController', SettingsController)
         .controller('DashboardController', DashboardController)
@@ -714,7 +673,6 @@
     SettingsController.$inject = ['$scope','Backend','ArrayUtil','Page','$window'];
     DirectoryController.$inject = ['$scope','ListWidget','Backend','ArrayUtil','Page','$window','$document','NgMap','ShyamGoogleMap'];
     WidgetController.$inject = ['$scope','ListWidget','$location','Backend','$rootScope','$state','$timeout'];
-    CustomerController.$inject = ['$scope','ListWidget','$location','Backend','$rootScope','$state','$timeout'];
-    PermissionRolesController.$inject = ['$scope','$location','Backend','$rootScope','$state','$timeout'];
+    CustomerController.$inject = ['$scope','ListWidget','$location','Backend','$rootScope','$state','$timeout']; 
 
 })();

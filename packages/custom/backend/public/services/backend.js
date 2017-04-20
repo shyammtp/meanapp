@@ -205,24 +205,7 @@
                 });
                 return deferred.promise;
             },
-            saveRole : function(data) {
-                var deferred = $q.defer();
-                $http.post('/api/settings/saverole',data,{headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
-                    deferred.resolve(response);
-                }, function(response) {
-                    deferred.reject(response);
-                });
-                return deferred.promise;
-            },
-            getRoles : function() {
-                var deferred = $q.defer();
-                $http.get('/api/settings/getroles',{headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
-                    deferred.resolve(response);
-                }, function(response) {
-                    deferred.reject(response);
-                });
-                return deferred.promise;
-            }, 
+            
             getDirectoryByType : function(params,level) {
                 var deferred = $q.defer();
                 $http.post('/api/directory/get?level='+level,params,{headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {

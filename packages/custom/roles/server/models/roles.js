@@ -1,5 +1,6 @@
 'use strict';
 
+var backendpath = '../../../backend/server/';
 var mongoose = require('mongoose'),
 Schema = mongoose.Schema,
 meanio = require('meanio'),
@@ -11,7 +12,7 @@ config = meanio.getConfig(),
  Nodecache = require( "node-cache" ),
  myCache = new Nodecache(),
 	_ = require('lodash'),
-	textutil = require('../helpers/util').text;
+	textutil = require(backendpath +'helpers/util').text;
   
 
 var RolesSchema = new Schema({ 

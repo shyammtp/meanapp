@@ -789,6 +789,14 @@
         }
     }
 
+    function checkmoduleexists(name) {
+        return function(name) { 
+            try {
+                return !!angular.module(name);    
+              } catch (e) {}
+        }
+    }
+
     function autocomplete($timeout) {
     return {   
             link : function(scope,element,attrs) { 
@@ -823,6 +831,7 @@
         .module('mean.backend')
         .filter('filterrange',filterrange)
         .filter('priceformat',priceformat)
+        .filter('checkmoduleexists',checkmoduleexists)
         .directive('mdSelect', mdSelect)
         .directive('shModal', shModal)
         .directive('autoComplete', autocomplete)

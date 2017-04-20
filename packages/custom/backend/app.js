@@ -30,9 +30,8 @@ Backend.register(function(app, auth, database, circles) {
   Backend.routes(app, auth, database, circles);
   //app.use(session({ secret: config.secret, resave: false, saveUninitialized: true }));
   //app.use('/api', expressJwt({ secret: config.sessionSecret }).unless({ path: ['/api/users/authenticate', '/api/users/register'] }));
-  Backend.angularDependencies(['ngSanitize','ui.router','ui.tinymce','angular-loading-bar','btford.socket-io','ngMap','angucomplete-alt']); 
-
- 
+  Backend.angularDependencies(['ngSanitize','ui.router','ui.tinymce','angular-loading-bar','btford.socket-io','ngMap','angucomplete-alt']);  
+  
   //We are adding a link to the main menu for all authenticated users
   Backend.menus.add({
     title: 'backend example page',
@@ -41,7 +40,7 @@ Backend.register(function(app, auth, database, circles) {
     menu: 'main'
   }); 
   Backend.adminconfig = getConfig; 
-  
+   
   /**
     //Uncomment to use. Requires meanio@0.3.7 or above
     // Save settings with callback
