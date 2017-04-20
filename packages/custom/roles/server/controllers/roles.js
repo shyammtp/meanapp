@@ -2,9 +2,9 @@
 
 var backendpath = '../../../backend/server/';
 var Mongoose = require('mongoose'), 
-  notificationtemplate = Mongoose.model('NotificationTemplate'), 
+  //notificationtemplate = Mongoose.model('NotificationTemplate'), 
   roles = Mongoose.model('Roles'),
-  notification = require(backendpath+'helpers/notification'),
+  //notification = require(backendpath+'helpers/notification'),
   config = require('meanio').getConfig(),
   nodemailer = require('nodemailer'),
   smtpTransport = require('nodemailer-smtp-transport'),
