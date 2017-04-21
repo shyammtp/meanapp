@@ -135,7 +135,7 @@
     } 
  
 
-     function SettingsController($scope,Backend,ArrayUtil,Page,$window) { 
+     function SettingsController($scope,Backend,ArrayUtil,Page,$window,Authentication) { 
         $scope.settings = {};
         Page.setTitle('My new title');
         $scope.directories = $scope.$parent.$parent.directories;
@@ -190,12 +190,17 @@
 
          $scope.savesettings = function(settings) {   
             var success = 0,error = 0;
-            Backend.saveAllSettings(settings).then(function(res){ 
-                var ds = {};
+
+            Backend.saveAllSettings(settings,Authentication.getRestaurantId()).then(function(res){ 
+                var ds = {}; 
                 angular.forEach(res.data.data,function(v,k) {
                     ds[v.name] = v.value;
                 }) 
                 Materialize.toast('Settings Saved Successfully', 4000);
+            },function(res) {
+                if(res.status == 500) {
+                    Materialize.toast(res.data.message, 4000,'errortoast');
+                }
             });
         }
 
@@ -670,7 +675,7 @@
     DashboardController.$inject = ['$scope','Global', 'Backend', '$stateParams','$rootScope','$location','$state','Authentication','$window','Product','$timeout','ItemMenus','moment'];
     TitleController.$inject = ['$scope','Page'];
     BackendCoreController.$inject = ['$scope','getsettings','$location','$window','Authentication','$state','Backend','$stateParams','getmenus','getcurrency','getassetsdata'];
-    SettingsController.$inject = ['$scope','Backend','ArrayUtil','Page','$window'];
+    SettingsController.$inject = ['$scope','Backend','ArrayUtil','Page','$window','Authentication'];
     DirectoryController.$inject = ['$scope','ListWidget','Backend','ArrayUtil','Page','$window','$document','NgMap','ShyamGoogleMap'];
     WidgetController.$inject = ['$scope','ListWidget','$location','Backend','$rootScope','$state','$timeout'];
     CustomerController.$inject = ['$scope','ListWidget','$location','Backend','$rootScope','$state','$timeout']; 

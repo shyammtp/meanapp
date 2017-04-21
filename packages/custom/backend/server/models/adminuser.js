@@ -4,10 +4,10 @@ var mongoose = require('mongoose'),
 meanio = require('meanio'),
 config = meanio.getConfig(),
 Schema = mongoose.Schema,
- mongoosePaginate = require('mongoose-paginate'),
- CryptoJS = require('crypto-js'),
-    secretKey = config.sessionSecret;
-    var jwt = require('jsonwebtoken');
+mongoosePaginate = require('mongoose-paginate'),
+CryptoJS = require('crypto-js'),
+secretKey = config.secret;
+var jwt = require('jsonwebtoken');
 
 
 var AdminUserSchema = new Schema({
@@ -15,6 +15,7 @@ var AdminUserSchema = new Schema({
 	email : { type: String,unique: true,required: true}, 
 	hash : String,
 	salt : String,
+	restaurant_id : {type : String},
     created_on : { type: Date, default: Date.now },
     updated_on: { type: Date, default: Date.now }
 },{collection: "admin_user"});
@@ -35,10 +36,12 @@ AdminUserSchema.methods.validPassword = function(password){
 AdminUserSchema.methods.generateJwt  = function(){ 
 	var expiry = new Date();
   	expiry.setDate(expiry.getDate() + 7);
+
   	return jwt.sign({
 	    _id: this._id,
 	    email: this.email,
 	    name: this.name,
+	    restaurant_id : this.restaurant_id,
 	    exp: parseInt(expiry.getTime() / 1000),
 	  }, secretKey); 
 };

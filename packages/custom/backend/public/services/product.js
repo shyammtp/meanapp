@@ -38,7 +38,7 @@
          
         var getCategories = function() {
             var deferred = $q.defer();
-            $http.get('/api/category/getall',{headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+            $http.get('/api/category/getall',{headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {
                 deferred.reject(response);
@@ -47,7 +47,7 @@
         },
         getCategoryTree = function() {
             var deferred = $q.defer();
-            $http.get('/api/category/getcattree',{cache : true,headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+            $http.get('/api/category/getcattree',{cache : true,headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {
                 deferred.reject(response);
@@ -57,7 +57,7 @@
         getCategoryPath = function(params) {
             var ids = params.filter(removeempty);
             var deferred = $q.defer();
-            $http.get('/api/category/getpath?catpath='+ids.join(","),{cache : true,headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+            $http.get('/api/category/getpath?catpath='+ids.join(","),{cache : true,headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {
                 deferred.reject(response);
@@ -66,7 +66,7 @@
         },
         saveCategory = function(params) {
             var deferred = $q.defer();
-            $http.post('/api/category/save?parent='+ArrayUtil.get(params,'parent'),params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+            $http.post('/api/category/save?parent='+ArrayUtil.get(params,'parent'),params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {
                 deferred.reject(response);
@@ -75,7 +75,7 @@
         },
         saveProduct = function() {
             var deferred = $q.defer(), params = this.getProductData();
-            $http.post('/api/product/save',params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+            $http.post('/api/product/save',params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {
                 deferred.reject(response);
@@ -84,7 +84,7 @@
         },
         saveVariant = function(data) { 
             var deferred = $q.defer(), params = data;
-            $http.post('/api/variant/save',params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+            $http.post('/api/variant/save',params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {
                 deferred.reject(response);
@@ -92,7 +92,7 @@
             return deferred.promise;
         }, saveVariantSet = function(data) {
             var deferred = $q.defer(), params = data;
-            $http.post('/api/variantset/save',params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+            $http.post('/api/variantset/save',params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {
                 deferred.reject(response);
@@ -100,7 +100,7 @@
             return deferred.promise; 
         }, getVariantById = function(params) {
             var deferred = $q.defer();
-            $http.get('/api/variant/get/'+ArrayUtil.get(params,'id'),{headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+            $http.get('/api/variant/get/'+ArrayUtil.get(params,'id'),{headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {
                 deferred.reject(response);
@@ -108,7 +108,7 @@
             return deferred.promise; 
         },getProductById = function(id) {
             var deferred = $q.defer();
-            $http.get('/api/catalog/get/'+id,{headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+            $http.get('/api/catalog/get/'+id,{headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {
                 deferred.reject(response);
@@ -116,7 +116,7 @@
             return deferred.promise; 
         },getCategoryById = function(id) {
             var deferred = $q.defer();
-            $http.get('/api/category/get/'+id,{headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+            $http.get('/api/category/get/'+id,{headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {
                 deferred.reject(response);
@@ -124,7 +124,7 @@
             return deferred.promise; 
         },getVariantsetById = function(params) {
             var deferred = $q.defer();
-            $http.get('/api/variantset/get/'+ArrayUtil.get(params,'id'),{headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+            $http.get('/api/variantset/get/'+ArrayUtil.get(params,'id'),{headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {
                 deferred.reject(response);
@@ -133,7 +133,7 @@
         },
         getVariantRuleByIndex = function(params) {
             var deferred = $q.defer();
-            $http.get('/api/variantset/rule/get/'+ArrayUtil.get(params,'id')+'?index='+ArrayUtil.get(params,'index'),{headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+            $http.get('/api/variantset/rule/get/'+ArrayUtil.get(params,'id')+'?index='+ArrayUtil.get(params,'index'),{headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {
                 deferred.reject(response);
@@ -142,7 +142,7 @@
         },
         saveVariantRule = function(id, params) {
             var deferred = $q.defer();
-            $http.post('/api/catalog/savevariantsetrule?id='+id,params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+            $http.post('/api/catalog/savevariantsetrule?id='+id,params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {
                 deferred.reject(response);
@@ -151,7 +151,7 @@
         },
         saveInterface = function(params) {
             var deferred = $q.defer();
-            $http.post('/api/catalog/saveinterface',params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+            $http.post('/api/catalog/saveinterface',params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {
                 deferred.reject(response);
@@ -160,7 +160,7 @@
         },
         getProductViewInterface = function(params) {
             var deferred = $q.defer();
-            $http.get('/api/catalog/getinterfaceviews?userid='+Authentication.getUser(),{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+            $http.get('/api/catalog/getinterfaceviews?userid='+Authentication.getUser(),{ headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {
                 deferred.reject(response);
@@ -169,7 +169,7 @@
         },
         getAllVariants = function() {
             var deferred = $q.defer();
-            $http.get('/api/variants/getall',{cache : true,headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+            $http.get('/api/variants/getall',{cache : true,headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {
                 deferred.reject(response);
@@ -178,7 +178,7 @@
         },
         getAllVariantset = function() {
             var deferred = $q.defer();
-            $http.get('/api/variantset/getall',{cache : true,headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+            $http.get('/api/variantset/getall',{cache : true,headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {
                 deferred.reject(response);
@@ -200,7 +200,7 @@
         },
         deleteCategory = function(params) {
             var deferred = $q.defer(); 
-            $http.delete('/api/category/delete/'+ArrayUtil.get(params,'id'),{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+            $http.delete('/api/category/delete/'+ArrayUtil.get(params,'id'),{ headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {
                 deferred.reject(response);
@@ -248,7 +248,7 @@
         saveCategoryAttribute = function(params) {
             var deferred = $q.defer(); 
             params.attributes = this.getCatalogAttributeData(); 
-            $http.put('/api/category/attributesave/'+ArrayUtil.get(params,'category_id'),params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+            $http.put('/api/category/attributesave/'+ArrayUtil.get(params,'category_id'),params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {
                 deferred.reject(response);
@@ -257,7 +257,7 @@
         },
         overrideCategoryAttribute = function(id,params) {
             var deferred = $q.defer();  
-            $http.put('/api/category/attributeoverride/'+id,params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+            $http.put('/api/category/attributeoverride/'+id,params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {
                 deferred.reject(response);
@@ -267,7 +267,7 @@
         deleteCategoryAttribute = function(id,key,block,parent) {
             var deferred = $q.defer();  
             parent || (parent = '');
-            $http.delete('/api/category/attributedelete/'+id+'?key='+key+'&block='+block+'&parent='+parent,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+            $http.delete('/api/category/attributedelete/'+id+'?key='+key+'&block='+block+'&parent='+parent,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {
                 deferred.reject(response);
@@ -280,7 +280,7 @@
             if(cache === false) {
                 ca = false;
             }
-            $http.get('/api/category/getcategory/'+id,{ cache : ca, headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+            $http.get('/api/category/getcategory/'+id,{ cache : ca, headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                 deferred.resolve(response);
             }, function(response) {
                 deferred.reject(response);
@@ -348,7 +348,7 @@
         return {
             getAllMenus : function() {
                 var deferred = $q.defer();
-                $http.get('/api/menus/getall',{cache : true,headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                $http.get('/api/menus/getall',{cache : true,headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                     deferred.resolve(response);
                 }, function(response) {
                     deferred.reject(response);
@@ -357,7 +357,7 @@
             }, 
             saveMenus : function(params) {
                 var deferred = $q.defer();
-                $http.post('/api/menus/save',params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                $http.post('/api/menus/save',params,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                     deferred.resolve(response);
                 }, function(response) {
                     deferred.reject(response);
@@ -366,7 +366,7 @@
             },
             deleteMenus : function(params) {
                 var deferred = $q.defer(); 
-                $http.delete('/api/menus/delete/'+ArrayUtil.get(params,'id'),{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                $http.delete('/api/menus/delete/'+ArrayUtil.get(params,'id'),{ headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                     deferred.resolve(response);
                 }, function(response) {
                     deferred.reject(response);
@@ -375,7 +375,7 @@
             },
             deleteItem : function(params) {
                 var deferred = $q.defer(); 
-                $http.delete('/api/menus/items/delete/'+ArrayUtil.get(params,'id'),{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                $http.delete('/api/menus/items/delete/'+ArrayUtil.get(params,'id'),{ headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                     deferred.resolve(response);
                 }, function(response) {
                     deferred.reject(response);
@@ -384,7 +384,7 @@
             },
             getItems : function(params) {
                 var deferred = $q.defer(); 
-                $http.get('/api/menus/items',{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                $http.get('/api/menus/items',{ headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                     deferred.resolve(response);
                 }, function(response) {
                     deferred.reject(response);
@@ -393,7 +393,7 @@
             },
             setMenu : function(id, menus) {
                 var deferred = $q.defer(); 
-                $http.put('/api/menus/items/'+id,menus,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                $http.put('/api/menus/items/'+id,menus,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                     deferred.resolve(response);
                 }, function(response) {
                     deferred.reject(response);
@@ -401,7 +401,7 @@
                 return deferred.promise; 
             },cartOrders : function() {
                 var deferred = $q.defer(); 
-                $http.get('/api/cart/orders',{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                $http.get('/api/cart/orders',{ headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                     deferred.resolve(response);
                 }, function(response) {
                     deferred.reject(response);
@@ -409,7 +409,7 @@
                 return deferred.promise;
             },getOrder : function(id) {
                 var deferred = $q.defer(); 
-                $http.get('/api/cart/getorder/'+id,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                $http.get('/api/cart/getorder/'+id,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                     deferred.resolve(response);
                 }, function(response) {
                     deferred.reject(response);
@@ -417,7 +417,7 @@
                 return deferred.promise;
             },addHistory : function(post) {
                 var deferred = $q.defer(); 
-                $http.post('api/cart/employeehistory',post,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                $http.post('api/cart/employeehistory',post,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                     deferred.resolve(response);
                 }, function(response) {
                     deferred.reject(response);
@@ -425,7 +425,7 @@
                 return deferred.promise;
             },getCartByUser : function(userid) {
                 var deferred = $q.defer(); 
-                $http.get('/api/v1/cart/get/'+userid,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                $http.get('/api/v1/cart/get/'+userid,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                     deferred.resolve(response);
                 }, function(response) {
                     deferred.reject(response);
@@ -433,7 +433,7 @@
                 return deferred.promise;
             },updateCart : function(id, post) {
                 var deferred = $q.defer(); 
-                $http.put('/api/cart/update/'+id,post,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                $http.put('/api/cart/update/'+id,post,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                     deferred.resolve(response);
                 }, function(response) {
                     deferred.reject(response);
@@ -441,7 +441,7 @@
                 return deferred.promise;
             },removeItem : function(cartid,item_id) {
                 var deferred = $q.defer(); 
-                $http.delete('/api/cart/item/remove/'+cartid+'?itemid='+item_id,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                $http.delete('/api/cart/item/remove/'+cartid+'?itemid='+item_id,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                     deferred.resolve(response);
                 }, function(response) {
                     deferred.reject(response);
@@ -449,7 +449,7 @@
                 return deferred.promise;
             },updateCartQuantity : function(id, post) {
                 var deferred = $q.defer(); 
-                $http.put('/api/v1/cart/update/'+id,post,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                $http.put('/api/v1/cart/update/'+id,post,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                     deferred.resolve(response);
                 }, function(response) {
                     deferred.reject(response);
@@ -457,7 +457,7 @@
                 return deferred.promise;
             },addDeliveries : function(id, post) {
                 var deferred = $q.defer(); 
-                $http.put('/api/cart/user/addaddress/'+id,post,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                $http.put('/api/cart/user/addaddress/'+id,post,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                     deferred.resolve(response);
                 }, function(response) {
                     deferred.reject(response);
@@ -465,7 +465,7 @@
                 return deferred.promise;
             },addCart : function(post) {
                 var deferred = $q.defer(); 
-                $http.post('api/v1/cart/add',post,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                $http.post('api/v1/cart/add',post,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                     deferred.resolve(response);
                 }, function(response) {
                     deferred.reject(response);
@@ -473,7 +473,7 @@
                 return deferred.promise;
             },saveCharge : function(post) {
                 var deferred = $q.defer(); 
-                $http.post('/api/delivery/chargesave',post,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                $http.post('/api/delivery/chargesave',post,{ headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                     deferred.resolve(response);
                 }, function(response) {
                     deferred.reject(response);
@@ -481,7 +481,7 @@
                 return deferred.promise;
             },getAllDeliveryCharges : function() {
                 var deferred = $q.defer(); 
-                $http.get('/api/delivery/getallcharges',{cache : true, headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                $http.get('/api/delivery/getallcharges',{cache : true, headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                     deferred.resolve(response);
                 }, function(response) {
                     deferred.reject(response);
@@ -489,7 +489,7 @@
                 return deferred.promise;
             }, getLocationCharge : function(params) {
                 var deferred = $q.defer(); 
-                $http.get('/api/delivery/locationcharge',{ params : params, headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                $http.get('/api/delivery/locationcharge',{ params : params, headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                     deferred.resolve(response);
                 }, function(response) {
                     deferred.reject(response);
@@ -544,7 +544,7 @@
             },
             getOrdersCond : function(params) {
                  var deferred = $q.defer(); 
-                $http.get('/api/cart/getorders',{ params : params, headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                $http.get('/api/cart/getorders',{ params : params, headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                     deferred.resolve(response);
                 }, function(response) {
                     deferred.reject(response);

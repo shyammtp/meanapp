@@ -12,7 +12,8 @@ var VariantsSchema = new Schema({
     option_set : {type: Schema.Types.Mixed},
     rules : {type: Schema.Types.Mixed},
     created_on : { type: Date, default: Date.now },
-    updated_on: { type: Date, default: Date.now }
+    updated_on: { type: Date, default: Date.now },    
+	restaurant_id : {type : mongoose.Schema.Types.ObjectId,ref : 'Restaurant'}
 },{collection: 'variantset'});
 
 VariantsSchema.plugin(mongoosePaginate);
@@ -23,10 +24,12 @@ VariantsSchema.methods.addData = function(data) {
 	if(data.rules) {
 		this.rules = data.rules;
 		this.ruleindex = -1;	
+		this.restaurant_id = data.restaurant_id;
 		if(typeof data.index !== 'undefined') this.ruleindex = data.index;
 	} else {		
 		this.option_set = data.option_set;
 		this.set_name = data.set_name; 
+		this.restaurant_id = data.restaurant_id;
 	}
 }
 

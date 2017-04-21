@@ -31,6 +31,7 @@ var ProductSchema = new Schema({
     created_on : { type: Date, default: Date.now },
     updated_on: { type: Date, default: Date.now },
     category_id : {type : String},
+	restaurant_id : {type : mongoose.Schema.Types.ObjectId,ref : 'Restaurant'},
     is_foodie : {type : Boolean,default : false},
     menus : [],
     variantsetid :  {type : mongoose.Schema.Types.ObjectId,ref : 'Variantset'},
@@ -59,6 +60,9 @@ ProductSchema.methods.addData = function(data) {
 	} else if(data.item_name) {
 		this.product_url = textutil.url_title(data.item_name);
 	} 
+	if(data.restaurant_id) {
+		this.restaurant_id = data.restaurant_id;
+	}
 	this.status = 1;
 	this.parent_id = 0;
 	if(data.category_id) {

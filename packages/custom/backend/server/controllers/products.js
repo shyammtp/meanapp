@@ -97,6 +97,9 @@ var Mongoose = require('mongoose'),
 					}); 
 				},
 				getVariants : function(req,res,next) {
+						if(!appsettings.validateResId(req)) {
+			                return res.status(500).json({message : 'Invalid Restaurant ID',success : false});
+			            }
 						if(!arrayutil.get(req.params,'id')) {
 								 return res.status(500).json({message: "Invalid Variant ID"});
 							}
@@ -105,6 +108,9 @@ var Mongoose = require('mongoose'),
 							}); 
 				},
 				getVariantset : function(req,res,next) {
+						if(!appsettings.validateResId(req)) {
+			                return res.status(500).json({message : 'Invalid Restaurant ID',success : false});
+			            }
 						if(!arrayutil.get(req.params,'id')) {
 								 return res.status(500).json({message: "Invalid Variant ID"});
 							}
@@ -134,10 +140,16 @@ var Mongoose = require('mongoose'),
 								}); 
 				},
 				getVariantsAll : function(req,res,next) {
+						if(!appsettings.validateResId(req)) {
+			                return res.status(500).json({message : 'Invalid Restaurant ID',success : false});
+			            }
 						variants.find({},function (err, vars) { 
 									res.status(200).json(vars); 
 							});
 				},getVariantsetAll : function(req,res,next) {
+						if(!appsettings.validateResId(req)) {
+			                return res.status(500).json({message : 'Invalid Restaurant ID',success : false});
+			            }
 						variantset.find({},function (err, vars) { 
 									res.status(200).json(vars); 
 							});
@@ -180,6 +192,11 @@ var Mongoose = require('mongoose'),
 				},
 				saveProduct : function(req,res,next) {
 					var pr = new product();
+					var rid = appsettings.validateResId(req);
+					if(!rid) {
+		                return res.status(500).json({message : 'Invalid Restaurant ID',success : false});
+		            }
+		            req.body.restaurant_id = rid;
 					pr.addData(req.body); 
 					if(arrayutil.get(req.body,'_id')) { 
 						pr.updateData(arrayutil.get(req.body,'_id'),function(err,sd) {
@@ -271,9 +288,13 @@ var Mongoose = require('mongoose'),
 						});
 				},
 				saveVariant : function(req,res,next) {
+					var rid = appsettings.validateResId(req);
+					if(!rid) {
+		                return res.status(500).json({message : 'Invalid Restaurant ID',success : false});
+		            }
 					var vr = new variants();
-					vr.addData(req.body);  
-					//console.log(req.body);
+					req.body.restaurant_id = rid;
+					vr.addData(req.body);   
 					if(arrayutil.get(req.body,'_id')) {
 						vr.updateData(arrayutil.get(req.body,'_id'),function(err,sd) {
 								if(err) return res.status(500).json(err);
@@ -301,7 +322,12 @@ var Mongoose = require('mongoose'),
 						})  
 				},
 				saveVariantSet : function(req,res,next) {
+					var rid = appsettings.validateResId(req);
+					if(!rid) {
+		                return res.status(500).json({message : 'Invalid Restaurant ID',success : false});
+		            }
 					var vr = new variantset();
+					req.body.restaurant_id = rid;
 					vr.addData(req.body);  
 					//console.log(req.body);
 					if(arrayutil.get(req.body,'_id')) {
@@ -378,6 +404,9 @@ var Mongoose = require('mongoose'),
 						}) 
 				},
 				getMenus : function(req,res,next) { 
+						if(!appsettings.validateResId(req)) {
+			                return res.status(500).json({message : 'Invalid Restaurant ID',success : false});
+			            }
 						var menus = new MenuItem(); 
 						console.log(req); 
 						MenuItem.find({}).sort({'sorting':1}).exec(function(err,dat) { 
@@ -386,6 +415,9 @@ var Mongoose = require('mongoose'),
 				},
 
 				deleteMenus : function(req,res,next) {
+					if(!appsettings.validateResId(req)) {
+		                return res.status(500).json({message : 'Invalid Restaurant ID',success : false});
+		            }
 					if(!arrayutil.get(req.params,'id')) {
 						 return res.status(500).json({message: "Invalid Menu ID"});
 					} 
@@ -401,6 +433,9 @@ var Mongoose = require('mongoose'),
 					
 				},
 				deleteItem : function(req,res,next) {
+					if(!appsettings.validateResId(req)) {
+		                return res.status(500).json({message : 'Invalid Restaurant ID',success : false});
+		            }
 					if(!arrayutil.get(req.params,'id')) {
 						 return res.status(500).json({message: "Invalid Item ID"});
 					}
@@ -414,7 +449,11 @@ var Mongoose = require('mongoose'),
 					});
 					
 				},
-				saveMenus : function(req,res) {  
+				saveMenus : function(req,res) { 
+						var rid = appsettings.validateResId(req);
+						if(!rid) {
+			                return res.status(500).json({message : 'Invalid Restaurant ID',success : false});
+			            }
 						var menus = new MenuItem(); 
 						if(arrayutil.get(req.body,'forsort')) {  
 								var eless = 0;
@@ -476,6 +515,7 @@ var Mongoose = require('mongoose'),
 								} else {
 										menus.menuurl = textutil.url_title(arrayutil.get(arrayutil.get(req.body,'menu_name'),'en'));
 										menus.menu_name['en'] = arrayutil.get(arrayutil.get(req.body,'menu_name'),'en'); 
+										menus.restaurant_id = rid;
 										menus.save(function(err,category,numAffected) {
 												if(err) {
 													 res.status(500).json(err);
@@ -497,6 +537,9 @@ var Mongoose = require('mongoose'),
 						}); 
 				},
 				getItems : function(req,res,next) {  
+						if(!appsettings.validateResId(req)) {
+			                return res.status(500).json({message : 'Invalid Restaurant ID',success : false});
+			            }
 						product.find({is_foodie : true}).populate('variantsetid').exec(function (err, vars) { 
 								return res.status(200).json(vars); 
 						}); 
@@ -517,6 +560,9 @@ var Mongoose = require('mongoose'),
 						}); 
 				},
 				getCartOrders : function(req,res,next) {
+					if(!appsettings.validateResId(req)) {
+			                return res.status(500).json({message : 'Invalid Restaurant ID',success : false});
+			            }
 					foodcart.find({orderplaced : true}).sort({updated_on: -1}).populate([{path: 'user',select : 'email name'},{path : 'reserved_for',select : 'email name'}]).exec(function (err, docs) { 
 							return res.status(200).json(docs); 
 					});
@@ -529,6 +575,9 @@ var Mongoose = require('mongoose'),
 					})
 				},
                 getCartOrder : function(req,res,next) {
+                	if(!appsettings.validateResId(req)) {
+			                return res.status(500).json({message : 'Invalid Restaurant ID',success : false});
+			            }
                     if(!arrayutil.get(req.params,'id')) {
                         return res.status(500).json({message: "Invalid Cart ID"});
                     }
@@ -561,6 +610,9 @@ var Mongoose = require('mongoose'),
 						);  
                 },
 				updatecart : function(req,res,next) {
+					if(!appsettings.validateResId(req)) {
+		                return res.status(500).json({message : 'Invalid Restaurant ID',success : false});
+		            }
 					var socketio = req.app.get('socketio'); var cart = new foodcart();  
 					if(!arrayutil.get(req.params,'id')) {
 						return res.status(500).json({message: "Invalid Cart ID"});
@@ -666,7 +718,9 @@ var Mongoose = require('mongoose'),
 					//return res.status(200).json({message: 'Not Updated'});
 				},
 				removecartitem : function(req,res,next) { 
-					
+					if(!appsettings.validateResId(req)) {
+		                return res.status(500).json({message : 'Invalid Restaurant ID',success : false});
+		            }
 					//res.status(200).json({message: "Invalid Cart ID"});
 					if(!arrayutil.get(req.params,'cartid')) {
 						return res.status(500).json({message: "Invalid Cart ID"});
@@ -736,7 +790,11 @@ var Mongoose = require('mongoose'),
 		          });
 		        },
 				savecharge : function(req,res,next) {
+					if(!appsettings.validateResId(req)) {
+			                return res.status(500).json({message : 'Invalid Restaurant ID',success : false});
+			            }
 					var dc = new deliverycharges(); 
+
 					if(arrayutil.get(req.body,'_id')) { 
 						deliverycharges.findById(arrayutil.get(req.body,'_id'), function(error, catey) {
 	                        // Handle the error using the Express error middleware
@@ -779,11 +837,17 @@ var Mongoose = require('mongoose'),
 					}
 				},
 				getOrdersList : function(req,res,next) {
+					if(!appsettings.validateResId(req)) {
+		                return res.status(500).json({message : 'Invalid Restaurant ID',success : false});
+		            }
 					foodcart.getAllPaginate(req.query,function(err,cb) { 
 						 res.send(cb);
 					});
 				},
 				getorderscond : function(req,res,next) {
+					if(!appsettings.validateResId(req)) {
+		                return res.status(500).json({message : 'Invalid Restaurant ID',success : false});
+		            }
 					var filter = {};
 					if(arrayutil.get(req.query,'gettodays') === 'true') {
 						var start = new Date();

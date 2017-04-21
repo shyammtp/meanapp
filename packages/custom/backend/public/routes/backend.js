@@ -1,10 +1,12 @@
 (function() {
     'use strict'; 
-    function Backend($stateProvider,$locationProvider,$urlRouterProvider) {
+    function Backend($stateProvider,$locationProvider,$urlRouterProvider,AuthenticationProvider) {
       
+        var Authentication = AuthenticationProvider.$get();
+
         var defal = {resolve : {
                 getsettings : function(Backend) {
-                   return Backend.getSettings(1);
+                   return Backend.getSettings(Authentication.getRestaurantId());
                 },
                 getmenus : function(Backend) {
                     return Backend.getMenus();
@@ -305,6 +307,6 @@
         .run(Run);
 
     Run.$inject = ['$rootScope','$state','$location','Authentication','Backend','$window'];
-    Backend.$inject = ['$stateProvider','$locationProvider','$urlRouterProvider'];
+    Backend.$inject = ['$stateProvider','$locationProvider','$urlRouterProvider','AuthenticationProvider','BackendProvider'];
 
 })();

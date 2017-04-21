@@ -5,8 +5,8 @@ Schema = mongoose.Schema,
  mongoosePaginate = require('mongoose-paginate');
 
 
-var SettingsSchema = new Schema({
-	place_id : {type : String},
+var SettingsSchema = new Schema({	
+	place_id : {type : mongoose.Schema.Types.ObjectId,ref : 'Restaurant'},
 	name : {type: String, required: true},
 	value : String
 });

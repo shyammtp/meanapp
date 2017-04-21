@@ -11,6 +11,7 @@ var MenuItemSchema = new Schema({
 				},
 	menuurl : {type: String, required: true,lowercase : true},
 	sorting : {type: Number,default: 1},
+	restaurant_id : {type : mongoose.Schema.Types.ObjectId,ref : 'Restaurant'},
 	status : {type : Boolean,default : false},
 	created_on : { type: Date, default: Date.now },
     updated_on: { type: Date, default: Date.now }

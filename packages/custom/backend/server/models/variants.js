@@ -13,6 +13,7 @@ var VariantsSchema = new Schema({
 	type : ['checkbox','date','file_upload','textarea','multichoice','number','subproducts','swatch','text'],
     default_value : String,
     type_datas : {type: Schema.Types.Mixed},
+	restaurant_id : {type : mongoose.Schema.Types.ObjectId,ref : 'Restaurant'},
     created_on : { type: Date, default: Date.now },
     updated_on: { type: Date, default: Date.now }
 },{collection: 'variants'});
@@ -26,6 +27,7 @@ VariantsSchema.methods.addData = function(data) {
 	this.variant_name = data.variant_name;
 	this.display_name = data.display_name;
 	this.type = data.type;
+	this.restaurant_id = data.restaurant_id;
 }
 
 VariantsSchema.methods.updateData = function(id,cb) {

@@ -134,9 +134,9 @@ var Mongoose = require('mongoose'),
             next();
           }
         });        
-        app.post('/api/settings/save',settings.savesettings);
-        app.post('/api/settings/saveall',settings.saveAllsettings);
-        app.get('/api/settings/get',settings.getallsettings);
+        app.post('/api/settings/save',authentic,settings.savesettings);
+        app.post('/api/settings/saveall',authentic, settings.saveAllsettings);
+        app.get('/api/settings/get',authentic,settings.getallsettings);
         app.get('/api/settings/getpaginate',settings.getpaginate);
         app.get('/api/directory/get/country',settings.getcountry);
         app.get('/api/settings/getcountries',settings.getAllCountries);

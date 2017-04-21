@@ -21,13 +21,9 @@ var RestaurantSchema = new Schema({
 },{collection: "restaurant"});
  
 
-RestaurantSchema.pre('save',function(next) {
-	console.log(this.attributes);
+RestaurantSchema.pre('save',function(next) { 
 	next();
-})
-
-
-
+}) 
  
 
 RestaurantSchema.plugin(mongoosePaginate);

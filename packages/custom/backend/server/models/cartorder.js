@@ -48,6 +48,7 @@ var FoodCartSchema = new Schema({
 	deliverycharge : {type : Number},
 	status : ['accepted','canceled','pending'],
 	personalinfo : {type: Schema.Types.Mixed},
+	restaurant_id : {type : mongoose.Schema.Types.ObjectId,ref : 'Restaurant'},
 	priceset : {type: Schema.Types.Mixed},
 	totalpaid : {type : Number,default : 0},
 	order_reference : {type : String},

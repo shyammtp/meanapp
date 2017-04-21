@@ -27,11 +27,15 @@ var Mongoose = require('mongoose'),
       }, 
   	 	saveAllsettings : function(req,res) { 
             var params = req.body;
+            var rid = arrayutil.get(req.headers,'_rid');
+            if(!appsettings.validateResId(req)) {
+                return res.status(500).json({message : 'Invalid Restaurant ID',success : false});
+            }
             var s = 1;
             for(var jg in params) {
-                Settings.addSettings(jg,params[jg],'1',function(err,cb) { 
+                Settings.addSettings(jg,params[jg],rid,function(err,cb) { 
                   if(Object.keys(params).length === s) { 
-                        Settings.find({}).exec(function(err,doc) {
+                        Settings.find({place_id : rid}).exec(function(err,doc) {
                           return res.status(200).json({data : doc});
                         });   
                   } 
@@ -48,8 +52,7 @@ var Mongoose = require('mongoose'),
       getappsettings : function(req,res,next) {
         if(typeof req.app.locals.appsettings === 'undefined') { 
           Settings.find({}).exec(function(err,doc) {
-            req.app.locals.appsettings = doc;
-            console.log('coming');
+            req.app.locals.appsettings = doc; 
             next();
           })
         } else {
@@ -57,9 +60,11 @@ var Mongoose = require('mongoose'),
         }
       },
 
-      getallsettings : function(req,res) { 
-   
-        Settings.getAllConfig(arrayutil.get(req.query,'place_id'),function(err,cb) {
+      getallsettings : function(req,res) {   
+        if(!appsettings.validateResId(req)) {
+            return res.status(500).json({message : 'Invalid Restaurant ID',success : false});
+        }
+        Settings.getAllConfig(arrayutil.get(req.query,'rid'),function(err,cb) {
            res.send(cb);
         });
       },

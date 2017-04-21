@@ -30,7 +30,7 @@ var passport = require('passport'),Mongoose = require('mongoose'),
           if (err) {
             res.status(404).json(err);
             return;
-          }
+          }  
 
           // If a user is found
           if(user){ 

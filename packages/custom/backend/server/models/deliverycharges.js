@@ -11,6 +11,7 @@ var DeliveryChargesSchema = new Schema({
 	name : {type : String},
 	locationids : [],
 	deliverycharge : {type : Number},
+	restaurant_id : {type : mongoose.Schema.Types.ObjectId,ref : 'Restaurant'},
     created_on : { type: Date, default: Date.now },
     updated_on: { type: Date, default: Date.now }
 },{collection: 'deliverycharges'});

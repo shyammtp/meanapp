@@ -8,6 +8,8 @@ passport.use(new LocalStrategy({
   },
   function(username, password, done) { 
     AdminUser.findOne({ email: username }, function (err, user) {
+  
+        var restuarant = mongoose.model('Restaurant');
       if (err) { return done(err); }
       // Return if user not found in database
       if (!user) {
@@ -21,8 +23,14 @@ passport.use(new LocalStrategy({
           message: 'Password is wrong'
         });
       }
-      // If credentials are correct, return the user object
-      return done(null, user);
+
+        restuarant.findOne({linked_accountid : user._id}).exec(function(err,doc){
+            user.restaurant_id = doc._id;
+            console.log(user);
+            // If credentials are correct, return the user object
+            return done(null, user);
+        })
+      
     });
   }
 ));

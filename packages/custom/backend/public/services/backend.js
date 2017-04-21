@@ -75,17 +75,17 @@
             },
             saveSettings : function(name, value, place_id) { 
                 var deferred = $q.defer();
-                $http.post('/api/settings/save',{name : name, value : value, place_id : place_id}).then(function(response) {
+                $http.post('/api/settings/save',{name : name, value : value, place_id : place_id},{headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                     deferred.resolve(response);
                 }, function(response) {
                     deferred.reject(response);
                 });
                 return deferred.promise;
             },
-            saveAllSettings : function(datas) { 
+            saveAllSettings : function(datas,rid) { 
                 var deferred = $q.defer();
-                 
-                $http.post('/api/settings/saveall',datas).then(function(response) {
+                datas.rid =  rid;
+                $http.post('/api/settings/saveall',datas,{headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                     deferred.resolve(response);
                 }, function(response) {
                     deferred.reject(response);
@@ -114,7 +114,7 @@
             },
             getSettings: function(place_id) {
                 var deferred = $q.defer();
-                $http.get('/api/settings/get',{place_id : place_id}).then(function(response) {
+                $http.get('/api/settings/get',{params : {rid : place_id},headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                     deferred.resolve(response);
                 }, function(response) {
                     deferred.reject(response);
@@ -224,6 +224,12 @@
         },
         saveUser = function(user) {
             $window.localStorage['user'] =  user._id;
+            if(user.restaurant_id) {
+                $window.localStorage['restaurant_id'] = user.restaurant_id;
+            }
+        },
+        getRestaurantId = function() {
+            return $window.localStorage['restaurant_id'];
         },
         getToken = function() {
             return $window.localStorage['login-token'];
@@ -242,6 +248,7 @@
                 payload = token.split('.')[1];
                 payload = $window.atob(payload);
                 payload = JSON.parse(payload);  
+                console.log(payload);
                 return payload.exp > Date.now() / 1000;
               } else {
                 return false;
@@ -264,6 +271,7 @@
             getUser : getUser,
             getToken : getToken,
             logout : logout,
+            getRestaurantId : getRestaurantId,
             isLoggedIn : isLoggedIn,
             login : login
         }
