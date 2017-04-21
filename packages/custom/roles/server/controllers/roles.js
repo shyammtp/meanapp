@@ -17,6 +17,11 @@ var Mongoose = require('mongoose'),
   	 return { 
         saverole : function(req,res,next) {  
             var rol = new roles();
+            var rid = arrayutil.get(req.headers,'_rid');
+            if(!appsettings.validateResId(req)) {
+                return res.status(500).json({message : 'Invalid Restaurant ID',success : false});
+            }
+            req.body.restaurant_id = rid;
           rol.addData(req.body);
           if(arrayutil.get(req.body,'_id')) {
             rol.updateData(arrayutil.get(req.body,'_id'),function(err,doc) {
@@ -33,16 +38,24 @@ var Mongoose = require('mongoose'),
           }
         },
         getroles : function(req,res,next) {
+            var rid = arrayutil.get(req.headers,'_rid'); 
+            if(!appsettings.validateResId(req)) {
+                return res.status(500).json({message : 'Invalid Restaurant ID',success : false});
+            }
 
-          roles.find({}).exec(function(err,doc) {
+          roles.find({restaurant_id : rid}).exec(function(err,doc) {
             res.send({message : 'loaded',data : doc});
           })
         },
         getrolebyid : function(req,res,next) {
+            var rid = arrayutil.get(req.headers,'_rid'); 
+            if(!appsettings.validateResId(req)) {
+                return res.status(500).json({message : 'Invalid Restaurant ID',success : false});
+            }
             if(!arrayutil.get(req.params,'id')) {
                      return res.status(500).json({message: "Invalid Role ID",success : false});
             }
-          roles.findOne({_id : arrayutil.get(req.params,'id')}).exec(function(err,doc) {
+          roles.findOne({_id : arrayutil.get(req.params,'id'),restaurant_id : rid}).exec(function(err,doc) {
             res.send({message : 'loaded',data : doc});
           })
         } 

@@ -17,7 +17,8 @@ config = meanio.getConfig(),
 
 var RolesSchema = new Schema({ 
 	role_name : {type: String},
-	role_color : {type : String},   
+	role_color : {type : String},
+	restaurant_id : {type : mongoose.Schema.Types.ObjectId,ref : 'Restaurant'},
 	permissions : {type: Schema.Types.Mixed},
     created_on : { type: Date, default: Date.now },
     updated_on: { type: Date, default: Date.now }   
@@ -34,6 +35,7 @@ RolesSchema.methods.addData = function(data) {
 	var _obj = this;  
 	this.role_name = data.role_name;
 	this.role_color = data.role_color;
+	this.restaurant_id = data.restaurant_id;
 	if(data.permissionset) {
 		var dd = {};
 		for(var v in data.permissionset) {

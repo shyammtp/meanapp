@@ -24,7 +24,7 @@ Backend.register(function(app, auth, database, circles) {
   Backend.frontendcontroller = require('./server/controllers/frontend')(Backend, app);
   app.use(passport.initialize());  
   
-  app.set('views', path.join(__dirname, '/server/views')); 
+  app.set('views', path.join(__dirname, '/server/views/white')); 
 
   //We enable routing. By default the Package Object is passed to the routes 
   Backend.routes(app, auth, database, circles);

@@ -3467,7 +3467,7 @@ Copyright (c) 2015 Daniel Eden
 }
 
 .login-btns {position: absolute;right: 0; bottom: 0;}
-.loginbox {position: relative; box-shadow:0px 0px 18px rgba(0,0,0,0.9); background: url('../img/popbackdrop_03.png') no-repeat 0 0; height: 465px;}
+.loginbox {position: relative;      margin: 20px auto; /*background: url('../img/popbackdrop_03.png') no-repeat 0 0;*/ height: 465px;}
 .logo-sts {position: relative;}
 .logo-sts .logo-bis {position: absolute; top:217px;}
 
@@ -3478,8 +3478,8 @@ Copyright (c) 2015 Daniel Eden
 	margin-left:0px;
 	margin-right:0px;
 }
-.tiles{	
-	background-color:#bcbcbc;
+.tiles{	/*
+	background-color:#bcbcbc;*/
 	color:#fff;
 	position:relative;
 }.tiles.added-margin{	
@@ -3735,7 +3735,7 @@ background-position: -95px -40px;
 	background-color:#141414;
 }
 .tiles.white{
-	background-color:#141414;
+	/*background-color:#f3f3f3;*/
 	color:#8b91a0;
 }
 .tiles.white.borderall{

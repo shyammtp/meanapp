@@ -6,7 +6,9 @@
 
         var defal = {resolve : {
                 getsettings : function(Backend) {
-                   return Backend.getSettings(Authentication.getRestaurantId());
+                  if(Authentication.getToken()) {
+                    return Backend.getSettings(Authentication.getRestaurantId());
+                  }
                 },
                 getmenus : function(Backend) {
                     return Backend.getMenus();
@@ -21,9 +23,10 @@
             controller: 'BackendCoreController as vm'};
             //console.log($locationProvider);
         $urlRouterProvider.otherwise('/admin/dashboard');
-        $stateProvider.state('login',angular.extend({},defal,{
+        $stateProvider.state('login',angular.extend({},{},{
                 url: '/admin/login',
-                templateUrl: 'backend/views/'+theme+'/login.html'
+                templateUrl: 'backend/views/'+theme+'/login.html',
+                params: {title : 'Login'}
             })
         )
 
@@ -267,10 +270,11 @@
                 return $location.path('/access/denied');
             }*/
             $rootScope.preloader = true;
+            console.log(Authentication.getToken());
             if(Authentication.isLoggedIn()) {
                 if(nextRoute.name === 'login') {
-                    $location.path('/admin/dashboard');
-                    $state.go('dashboard');
+                   // $location.path('/admin/dashboard');
+                    //$state.go('dashboard');
                     console.log('in')
                     return;
                 }
@@ -278,7 +282,7 @@
             if(!Authentication.isLoggedIn()) {  
                 if(nextRoute.name !== 'login') { 
                     $location.path('/admin/login');
-                    return $state.go('login');
+                   return $state.go('login');
                 }
             }
             return; 

@@ -23,12 +23,44 @@
 
 
     function BackendController($scope, Global, Backend, $stateParams,$rootScope,$location,$state, Authentication,$window,Product,$timeout,ItemMenus) {
-         
+       
+
         var bm = this;   
         bm.credentials = {
             email : '',
             password: ''
         }  
+        $scope.login = function() {
+            Authentication.login(bm.credentials).then(function(res) {                 
+                Authentication.saveToken(res.data.token);
+                Authentication.saveUser(res.data.user);
+                $location.path('/admin/dashboard'); 
+                Materialize.toast('Logged in Successfully', 4000);  
+            },function(err) { 
+                if(err.status == 401) {
+                    Materialize.toast(err.data.message, 2000,'errortoast');
+                }
+            });
+            
+        }
+
+        $scope.currenturl = $location.path(); 
+        $scope.loadheader = function(params) {
+            if($state.current.name === 'login'){
+                return false;
+            }
+            if($state.current.name !== '/admin/login')  {
+                if(params.hasheader === 'false') {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+            return true;
+        }
+        if($state.current.name === 'login'){
+            return false;
+        }
          $scope.shyam = 'shyam';
         $scope.$on('child', function (event, data) {
             if(typeof data.externaljs!== 'undefined') {
@@ -79,39 +111,12 @@
             uploadFile();
         }
 
-        $scope.login = function() {
-            Authentication.login(bm.credentials).then(function(res) {                 
-                Authentication.saveToken(res.data.token);
-                Authentication.saveUser(res.data.user);
-                $location.path('/admin/dashboard'); 
-                Materialize.toast('Logged in Successfully', 4000);  
-            },function(err) { 
-                if(err.status == 401) {
-                    Materialize.toast(err.data.message, 2000,'errortoast');
-                }
-            });
-            
-        }
-        $scope.currenturl = $location.path();
-        $scope.loadheader = function(params) {
-            if($scope.currenturl !== '/admin/login')  {
-                if(params.hasheader === 'false') {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-            return true;
-        }
         $scope.logout = function() {
             Authentication.logout();
             $state.go('login'); 
             Materialize.toast('Logged out Successfully', 4000);            
-        }
-        $rootScope.$on('$stateChangeStart', function(event, nextRoute, currentRoute) { 
-              $scope.currenturl = nextRoute.url; 
-        });
-        $scope.loadScript = function(url, type, charset) {
+        } 
+        /*$scope.loadScript = function(url, type, charset) {
             if (type===undefined) type = 'text/javascript';
             if (url) {
                 var script = document.querySelector("script[src*='"+url+"']");
@@ -130,7 +135,7 @@
                 }
                 return script;
             }
-        };
+        };*/
 
     } 
  

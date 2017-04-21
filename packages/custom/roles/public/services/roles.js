@@ -5,7 +5,7 @@
         return { 
             saveRole : function(data) {
                 var deferred = $q.defer();
-                $http.post('/api/settings/saverole',data,{headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                $http.post('/api/settings/saverole',data,{headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                     deferred.resolve(response);
                 }, function(response) {
                     deferred.reject(response);
@@ -14,7 +14,7 @@
             },
             getRoles : function() {
                 var deferred = $q.defer();
-                $http.get('/api/settings/getroles',{headers : {'Authorization' : 'Bearer '+Authentication.getToken()}}).then(function(response) {
+                $http.get('/api/settings/getroles',{headers : {'Authorization' : 'Bearer '+Authentication.getToken(),'_rid' : Authentication.getRestaurantId()}}).then(function(response) {
                     deferred.resolve(response);
                 }, function(response) {
                     deferred.reject(response);

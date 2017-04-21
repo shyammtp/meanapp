@@ -1,6 +1,7 @@
 <div class="container" ng-controller="BackendController as bm">
   <div class="row login-container animated fadeInUp">  
-        <div class="col-md-7 col-md-offset-2 loginbox tiles white no-padding">
+        <div class="col-md-7 col-md-offset-2   no-padding">
+        <div class="loginbox tiles white">
         <div class="row">
           <div class="col-sm-5 logo-sts"> 
           </div>
@@ -30,8 +31,9 @@
                 </form>
             </div>
           </div>
+        </div> 
+
         </div>
-        {{token}}
         <div class="login-btns">
          <button type="button" class="waves-effect waves-light btn btn-primary btn-cons" ng-click="login()" id="login_toggle">Login</button>
          </div>
