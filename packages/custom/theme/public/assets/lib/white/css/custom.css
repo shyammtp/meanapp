@@ -5767,3 +5767,5 @@ Main components
 .roleslist ul li { border-left:4px solid #fff;   }
 .roleslist ul li a {display: block; text-decoration: none; font-weight: bold;padding:20px 15px;} 
 .roleslist ul li.active {background-color: #f7f7f7; border-left:4px solid #1abc9c; }
+
+.elementslist li {float: left;}

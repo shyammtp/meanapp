@@ -4,8 +4,10 @@
     /* jshint -W098 */
 
     function TablebookController($scope, Global, Tablebook, $stateParams) {
-        
-        
+
+        $scope.createelement = function(img) {
+        	$scope.$broadcast('createelement',img);
+        }
     }
 
     angular

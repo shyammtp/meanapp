@@ -24,7 +24,7 @@
         $stateProvider.state('admin_tables', angular.extend({},defal,   {
                 url : '/admin/tables',
                 templateUrl: 'tablebook/views/'+theme+'/tablebook/design.html',
-                params: {title : 'Table Design',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Floor Plan'}]},
+                params: {title : 'Table Design',hasheader : 'false',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Floor Plan'}]},
              })
           );
        $locationProvider

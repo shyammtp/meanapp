@@ -1,3 +1,19 @@
 <div class="" ng-controller="TablebookController">
-	<canvas drawingcanvas width="400" height="300">
+	<div class="row">
+		<div class="col-sm-3">
+			<div class="panel panel-white">
+				<div class="panel-heading">
+					Table Elements
+				</div>
+				<div class="panel-body">
+					<ul class="elementslist">
+						<li><a href="javascript:;" ng-click="createelement(assetspath+'images/book4table.png')"><img src="{{assetspath}}images/book4table.png" id="4booktable" width="80" /></a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-8"> 
+			<div drawingcanvas id="container"></div>
+		</div>
+	</div>
 </div>
