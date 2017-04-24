@@ -1,32 +1,24 @@
 (function() {
     'use strict';
+    var config = require('meanio').getConfig(),
+        jwt = require('jsonwebtoken'),
+        expressJwt = require('express-jwt');
+
+    var authentic  = expressJwt({ 
+        secret: config.secret,
+        userProperty: 'payload'
+    });
+
 
     /* jshint -W098 */
     // The Package is past automatically as first parameter
     module.exports = function(Tablebook, app, auth, database, circles) {
 
-        var requiresAdmin = circles.controller.hasCircle('admin');
-        var requiresLogin = circles.controller.hasCircle('authenticated');
+        var tablebook = Tablebook.bookcontroller; 
 
-        app.get('/api/tablebook/example/anyone', function(req, res) {
-            res.send('Anyone can access this');
-        });
-
-        app.get('/api/tablebook/example/auth', requiresLogin, function(req, res) {
-            res.send('Only authenticated users can access this');
-        });
-
-        app.get('/api/tablebook/example/admin', requiresAdmin, function(req, res) {
-            res.send('Only users with Admin role can access this');
-        });
-
-        app.get('/api/tablebook/example/render', function(req, res) {
-            Tablebook.render('index', {
-                package: 'tablebook'
-            }, function(err, html) {
-                //Rendering a view from the Package server/views
-                res.send(html);
-            });
-        });
+        app.post('/api/tables/saveplan',authentic, tablebook.savedesign);
+        app.post('/api/tables/savefloor',authentic, tablebook.savefloor);
+        app.get('/api/tables/getplans',authentic, tablebook.getplans);
+        app.get('/api/tables/getplan/:id',authentic, tablebook.getplanbyid);
     };
 })();

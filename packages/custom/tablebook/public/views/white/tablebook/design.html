@@ -1,19 +1,100 @@
 <div class="" ng-controller="TablebookController">
-	<div class="row">
-		<div class="col-sm-3">
-			<div class="panel panel-white">
-				<div class="panel-heading">
-					Table Elements
+	<div class="panel panel-white" style="margin:10px;">
+		<div class="panel-heading">
+				Floor Plan
+			</div>
+		<div class="panel-body">
+
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="panel panel-white">
+						<div class="panel-heading">
+							Dining Areas
+						</div> 
+						<div class="panel-body tableelements" style="padding: 0;"> 
+							 <ul class="diningarealist" role="menu">
+			                    <li ng-repeat="(hf,ds) in floors" ng-class="{'active' : currentfloor.index === ds.index }"><a href="/admin/tables?floorid={{ds.id}}"  >{{ds.name}}</a></li>  
+			                </ul>
+			                <div class="addbutton">
+			                	<button class="btn btn-primary" ng-click="addfloor()">Add Floor</button>
+			                </div>
+						</div>
+					</div>
+
+					<div class="panel panel-white">
+						<div class="panel-heading">
+							Table Elements
+						</div> 
+						<div class="panel-body tableelements" style="padding: 0;">
+							<div class="headd">Boxed Table</div>
+							<table class="elementslist">
+								<tbody>
+									<tr>
+										<td><a href="javascript:;" ng-click="createelement(assetspath+'img/table/table_2no.png','table_2no')">
+												<span class="image"><img src="{{assetspath}}img/table/table_2no.png" id="4booktable" height="40" /></span>
+												<span class="text">2 Person</span>
+											</a>
+										</td>
+										<td><a href="javascript:;" ng-click="createelement(assetspath+'img/table/table_4no.png','table_4no')">
+												<span class="image"><img src="{{assetspath}}img/table/table_4no.png" id="4sbooktable" height="40" /></span>
+												<span class="text">4 Person</span>
+											</a>
+										</td>
+										<td><a href="javascript:;" ng-click="createelement(assetspath+'img/table/table_6no.png','table_6no')">
+												<span class="image"><img src="{{assetspath}}img/table/table_6no.png" id="4sbfooktable" height="40" /></span>
+												<span class="text">6 Person</span>
+											</a>
+										</td>
+										<td><a href="javascript:;" ng-click="createelement(assetspath+'img/table/table_8no.png','table_8no')">
+												<span class="image"><img src="{{assetspath}}img/table/table_8no.png" id="4ssbooktable" height="40" /></span>
+												<span class="text">8 Person</span>
+											</a>
+										</td>
+									</tr> 
+								</tbody>
+							</table> 
+							<div class="headd">Rounded Table</div>
+							<table class="elementslist">
+								<tbody>
+									<tr>
+										<td><a href="javascript:;" ng-click="createelement(assetspath+'img/table/table_round2no.png','table_round2no')">
+												<span class="image"><img src="{{assetspath}}img/table/table_round2no.png" id="table_round2no" height="40" /></span>
+												<span class="text">2 Person</span>
+											</a>
+										</td>
+										<td><a href="javascript:;" ng-click="createelement(assetspath+'img/table/table_round4no.png','table_round4no')">
+												<span class="image"><img src="{{assetspath}}img/table/table_round4no.png" id="table_round4no" height="40" /></span>
+												<span class="text">4 Person</span>
+											</a>
+										</td>
+										
+									</tr> 
+								</tbody>
+							</table> 
+						</div>
+					</div>
+
 				</div>
-				<div class="panel-body">
-					<ul class="elementslist">
-						<li><a href="javascript:;" ng-click="createelement(assetspath+'images/book4table.png')"><img src="{{assetspath}}images/book4table.png" id="4booktable" width="80" /></a></li>
-					</ul>
+				<div class="col-sm-9 canvastst"> 
+				 	<!-- <div class="btn-group" role="group">
+		                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+		                    {{currentfloor.name}}
+		                    <span class="caret"></span>
+		                </button>
+		                <ul class="dropdown-menu" role="menu">
+		                    <li ng-repeat="(hf,ds) in floors" ng-class="{'active' : currentfloor.index === ds.index }"><a href="javascript:;" ng-click="switchfloor(ds.index)">{{ds.name}}</a></li> 
+		                    <li class="diveder"></li>
+		                    <li><a href="javascript:;"  ng-click="addfloor()">Add Floor</a></li>
+		                </ul>
+		            </div> -->
+
+					<div drawingcanvas data-labelform="triggertableform(data)" id="container"></div>
 				</div>
+				<div class="fixed-action-btn">
+		            <a href="javascript:;" class="btn-floating btn-large" ng-class="{'disabled' : !currentfloor._id}" ng-disabled="!currentfloor._id" ng-click="savedata()"><i class="fa fa-floppy-o"></i></a>
+		        </div> 
 			</div>
 		</div>
-		<div class="col-sm-8"> 
-			<div drawingcanvas id="container"></div>
-		</div>
 	</div>
-</div>
+	
+</div> 

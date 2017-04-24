@@ -17,7 +17,7 @@
         return arr; 
     }
 
-    function Backend($http, $q,$window,$compile,Authentication,ArrayUtil) {
+    function Backend($http, $q,$window,$compile,Authentication,ArrayUtil,$timeout) {
         return {
             name: 'backend',
             localsdata : {},
@@ -162,12 +162,15 @@
                 return deferred.promise;
             },
             loadSider : function(scope,elementid,template,cb) {
-                var t = '<div class="sider-container" ng-include="\''+template+'\'"></div>'
+                var t = '<div class="sider-container" ng-include="\''+template+'\'"></div>';
+                console.log(t);
                 angular.element('#'+elementid).html(t);
+                $timeout(function() {
                 $compile(angular.element('#'+elementid))(scope);
                 if(cb) {
                     cb(scope);
                 }
+                })
             },
             getDirectories : function() {
                 var deferred = $q.defer();
@@ -316,6 +319,13 @@
                     str = str.replace(new RegExp(find[i], 'gi'), replace[i]);
                 }
                 return str;
+            },
+            slugtitle : function(str) {
+                return str
+                    .toLowerCase()
+                    .replace(/ /g,'-')
+                    .replace(/[^\w-]+/g,'')
+                    ;
             }
         }
     }
@@ -344,7 +354,7 @@
         .factory('Socket',Socket)
         .factory('Page',Page);
 
-    Backend.$inject = ['$http', '$q','$window','$compile','Authentication','ArrayUtil'];
+    Backend.$inject = ['$http', '$q','$window','$compile','Authentication','ArrayUtil','$timeout'];
     Authentication.$inject = ['$http', '$q','$window'];
     Socket.$inject = ['socketFactory'];
 

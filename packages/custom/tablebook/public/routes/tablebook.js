@@ -22,9 +22,9 @@
             },
             controller: 'BackendCoreController as vm'};
         $stateProvider.state('admin_tables', angular.extend({},defal,   {
-                url : '/admin/tables',
+                url : '/admin/tables?floorid',
                 templateUrl: 'tablebook/views/'+theme+'/tablebook/design.html',
-                params: {title : 'Table Design',hasheader : 'false',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Floor Plan'}]},
+                params: {title : 'Table Design',hasheader : 'false',fullwidth : true,breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'Floor Plan'}]},
              })
           );
        $locationProvider

@@ -1956,7 +1956,7 @@ fieldset[disabled] .btn-danger.active {
 }
 
 .panel-white {
-   /* background: #fff;*/
+    background: #fff;
 }
 
 .panel-white .panel-heading .panel-control a {
@@ -3388,7 +3388,7 @@ tr.group:hover {
     right: auto;
     display: inline-block !important;
     border-right: 8px solid transparent;
-    border-bottom: 8px solid #232323;
+    border-bottom: 8px solid #ababab;
     border-left: 8px solid transparent;
     content: '';
 }
@@ -3400,7 +3400,7 @@ tr.group:hover {
     right: auto;
     display: inline-block !important;
     border-right: 7px solid transparent;
-    border-bottom: 7px solid #232323;
+    border-bottom: 7px solid #ffffff;
     border-left: 7px solid transparent;
     content: '';
 }

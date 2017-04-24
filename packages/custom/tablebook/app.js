@@ -15,6 +15,7 @@ var Tablebook = new Module('tablebook');
  */
 Tablebook.register(function(app, auth, database, circles) {
 
+  Tablebook.bookcontroller = require('./server/controllers/tablebook')(Tablebook, app);
 
   Tablebook.angularDependencies(['mean.backend']);
   //We enable routing. By default the Package Object is passed to the routes

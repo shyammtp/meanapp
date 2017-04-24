@@ -1,0 +1,16 @@
+<h3 style="margin-bottom: 0px;"><span class="pull-left">Add the floor Name
+	<span class="paratext">Add the floor Name</span>
+</span> 
+<a href="javascript:void(0);" class="pull-right" ng-click="closethis()"><i class="fa fa-angle-right"></i></a><div class="clearfix"></div></h3> 
+<form name="form.floors">  	 
+	<div class="col-sm-12"> 
+		<div class="form-group">
+	 		<label>Table Name</label>
+			<input type="text" ng-required="true"  ng-class="{'invalid' : form.floors.floor.name.$invalid}" ng-model="floor.name" />  
+	 	</div> 
+ 
+	  	<div class="margin15">
+	  		<button type="button" ng-disabled="form.floors.$invalid" ng-click="savefloor(floor)" class="btn btn-primary">Save</button>
+	  	</div>
+	</div>
+</form>

@@ -14,7 +14,7 @@
 	</div> -->
 	<div class="page-sidebar-inner slimscroll"> 
 	<ul class="menu accordion-menu"> 
-	    <li  ng-if="checkmoduleexists(value.depmodulename)" ng-repeat="(key,value) in datas" ng-if="value.status === true" class="{{objectLength(value.children) > 0 ?'droplink':''}}"><a href="{{(isset(value.url) ||value.url != '') ? value.url : '#'}}" class="" ng-click="loadsubmenu()"><i class="{{value.before}}"></i>&nbsp;&nbsp;<p>{{ value.title_en }}</p><span class="arrow" ng-if="objectLength(value.children) > 0"></span></a> {{value.status}}
+	    <li ng-repeat="(key,value) in datas" ng-if="value.status === true && checkmoduleexists(value.depmodulename)" class="{{objectLength(value.children) > 0 ?'droplink':''}}"><a href="{{(isset(value.url) ||value.url != '') ? value.url : '#'}}" class="" ng-click="loadsubmenu()"><i class="{{value.before}}"></i>&nbsp;&nbsp;<p>{{ value.title_en }}</p><span class="arrow" ng-if="objectLength(value.children) > 0"></span></a> {{value.status}}
 	    	<ul class="sub-menu" ng-if="objectLength(value.children) > 0">
 	    		<li ng-if="checkmoduleexists(v.depmodulename)" ng-repeat="(s,v) in value.children">
 	    		 
