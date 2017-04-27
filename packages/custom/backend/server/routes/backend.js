@@ -38,7 +38,7 @@ var Mongoose = require('mongoose'),
             next();
           }
         });   
-        app.use(settings.getappsettings);
+        //app.use(settings.getappsettings);
 
         var theme = config.theme,
         assetspath = '/theme/assets/lib/'+theme+'/';
