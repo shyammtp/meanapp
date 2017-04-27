@@ -29,16 +29,16 @@ var Mongoose = require('mongoose'),
         //app.use(expressJwt({ secret: config.sessionSecret}));
         //app.use(logErrors);  
         
-        app.use(settings.getappsettings);
         app.use(function (err, req, res, next) {
-            console.log(err);
+            console.log('Shyam',err);
           if (err.name === 'UnauthorizedError') {
             res.status(401);
-            res.json({'message' : err.name + ': ' + err.message});
+            res.json({'message' : err.name + ': ' + err.message,'logout' : true});
           } if(!err) {
             next();
           }
         });   
+        app.use(settings.getappsettings);
 
         var theme = config.theme,
         assetspath = '/theme/assets/lib/'+theme+'/';

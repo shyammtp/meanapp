@@ -62,7 +62,7 @@ var Mongoose = require('mongoose'),
 
       getallsettings : function(req,res) {   
         if(!appsettings.validateResId(req)) {
-            return res.status(500).json({message : 'Invalid Restaurant ID',success : false});
+            return res.status(500).json({message : 'Invalid Restaurant ID',success : false,'logout' : true});
         }
         Settings.getAllConfig(arrayutil.get(req.query,'rid'),function(err,cb) {
            res.send(cb);

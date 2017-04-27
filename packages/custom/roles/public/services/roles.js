@@ -43,12 +43,12 @@
                     return false;
                 }
                 var _obj = this;
-                var roles = [];
+                var roles = []; 
                 try {
                     roles = JSON.parse($window.localStorage['roles']);
                     if(!$window.localStorage['rolepermissions']) {
-                        this.getRolesSet(roles.join(",")).then(function(res){
-                            var data = res.data.data;
+                         this.getRolesSet(roles.join(",")).then(function(res){
+                            var data = (typeof res.data.data !== 'undefined') ? res.data.data : [];
                             var pr = [];
                             angular.forEach(data,function(b,c){
                                 for(var h in b.permissions) {
@@ -57,7 +57,7 @@
                             })
                             $window.localStorage['rolepermissions'] = JSON.stringify(pr);
                             _obj.setPermissions(pr);
-                        })
+                        }) 
                     }
                 } catch(e) {
 
@@ -66,7 +66,13 @@
                 if(master !== 'false') {  
                    return true; 
                 } else {
-                   var rolespermissions = JSON.parse($window.localStorage['rolepermissions']);
+                   var rolespermissions = [];
+
+                   try {
+                        rolespermissions = JSON.parse($window.localStorage['rolepermissions']);
+                   } catch(e) {
+
+                   } 
                    console.log("RolePermission",rolespermissions);
                     if(rolespermissions.indexOf(index) > -1) {
                         return true;

@@ -34,7 +34,7 @@
         .state('dashboard', angular.extend({},defal, {
                 url: '/admin/dashboard',
                 templateUrl: 'backend/views/'+theme+'/page/dashboard.html',
-                params: {title : 'Dashboard'}
+                params: {title : 'Dashboard',openaccess : true}
             })
         )
         
@@ -266,13 +266,13 @@
 //            console.log(Authentication.getToken());
             if(Authentication.isLoggedIn()) {
                 if(nextRoute.name === 'login') { 
-                    $window.location.href = '/admin/dashboard';
+                    $window.location.href = 'admin/dashboard';
                     return;
                 }
             }
             if(!Authentication.isLoggedIn()) {  
                 if(nextRoute.name !== 'login') { 
-                    $window.location.href = '/admin/login';
+                    $window.location.href = 'admin/login';
                    return $state.go('login');
                 }
             }

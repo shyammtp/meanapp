@@ -37,8 +37,13 @@
               .html5Mode({enabled:true, requireBase:false});            
           } 
 
-    function Run($rootScope, $state, $location,Authentication,Backend,$window,Roles) {          
+    function Run($rootScope, $state, $location,Authentication,Backend,$window,Roles) {  
+        $rootScope.statechangestartexecuted = false;        
+        $rootScope.accesspermission = {};        
         $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+            if(toState.params.openaccess) {
+                return;
+            } 
             if(typeof toState.params.permissionindex === 'undefined') {
                 toState.params.permissionindex = '';
             }
@@ -48,25 +53,29 @@
                       console.log('Authenticated');
                 } else {
                     // $rootScope.accesspermission = false;
-                    console.log('Not Authenticated');
                     if(toState.name !== 'permission_denied') {
-                        $state.go('permission_denied');
-                        $window.location.href = '/access/denied';
-                        return $location.path('/access/denied');
+                        //$state.go('permission_denied');
+                        console.log('Not Authenticated');
+                        $window.location.href = 'access/denied';
+                        $location.path('access/denied');
+                        return;
                     }
 
                 }
             }
+            $rootScope.statechangestartexecuted = true;
         });
         var checkmoduleexists = function(name) {
             if(!name) { return true; }
             try { return !!angular.module(name);} catch (e) { }
         }
         $rootScope.accesspermission = function(index) {
+            
             if(checkmoduleexists('mean.roles')) {
                 if(Roles.isAuthenticated(index)) {
+                   
                     return true;
-                }
+                } 
                 return false;
             } 
             return true;
@@ -77,7 +86,7 @@
         .config(Roles)
         .run(Run);
 
-    Run.$inject = ['$rootScope','$state','$location','Authentication','Backend','$window','Roles','$window'];
+    Run.$inject = ['$rootScope','$state','$location','Authentication','Backend','$window','Roles'];
      Roles.$inject = ['$stateProvider','$locationProvider','$urlRouterProvider','BackendProvider'];
 
 })();

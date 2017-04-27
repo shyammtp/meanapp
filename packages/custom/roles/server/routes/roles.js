@@ -14,7 +14,7 @@
     module.exports = function(Roles, app, auth, database, circles) {
         
         var roles = Roles.rolescontroller; 
-
+         
         app.post('/api/settings/saverole',authentic, roles.saverole);
         app.get('/api/settings/getroles',authentic, roles.getroles);
         app.get('/api/settings/getrole/:id',authentic, roles.getrolebyid);

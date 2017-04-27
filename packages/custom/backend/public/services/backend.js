@@ -255,7 +255,7 @@
         }, isLoggedIn = function() {
               var token = getToken();
               var payload;
-
+              
               if(token){
                 payload = token.split('.')[1];
                 payload = $window.atob(payload);

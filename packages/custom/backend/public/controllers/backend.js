@@ -9,6 +9,15 @@
 
     function BackendCoreController($scope,getsettings,$location,$window,Authentication,$state,Backend,$stateParams,getmenus,getcurrency,getassetsdata) { 
         $window.settings = {};
+        console.log(getsettings);
+        if(typeof getsettings.data.logout !== 'undefined') {
+            console.log(getsettings.data)
+            if(getsettings.data.logout === true) {
+                Authentication.logout();
+                $window.location.href="/admin/login";
+                return;
+            }
+        }
         angular.forEach(getsettings.data,function(v,e){
             $window.settings[v.name] = v.value;
         });
