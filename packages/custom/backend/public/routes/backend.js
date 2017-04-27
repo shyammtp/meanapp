@@ -6,6 +6,7 @@
 
         var defal = {resolve : {
                 getsettings : function(Backend) {
+                  console.log("Authtoken",Authentication.getToken());
                   if(Authentication.getToken()) {
                     return Backend.getSettings(Authentication.getRestaurantId());
                   }
