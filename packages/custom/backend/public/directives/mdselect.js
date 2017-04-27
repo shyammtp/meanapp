@@ -696,7 +696,7 @@
      function shModal() { 
         return { 
             transclude: true, 
-            templateUrl: 'backend/views/'+theme+'/widget/modal.html',
+            templateUrl: 'backend/views/'+theme+'/widget/modalssss.html',
             link : function(scope,element,attrs) { 
                 scope.open = function(){
                     angular.element('.modal',element).modal('open');
