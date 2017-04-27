@@ -226,9 +226,14 @@
             $window.localStorage['login-token'] = token;
         },
         saveUser = function(user) {
+            console.log("AuthenticationSaveUser",user);
             $window.localStorage['user'] =  user._id;
             if(user.restaurant_id) {
                 $window.localStorage['restaurant_id'] = user.restaurant_id;
+            }
+            if(user.roles) {
+                $window.localStorage['roles'] = JSON.stringify(user.roles);
+                $window.localStorage['is_master'] = JSON.stringify(user.is_master);
             }
         },
         getRestaurantId = function() {
@@ -240,9 +245,13 @@
         getUser = function() {
             return $window.localStorage['user'];
         },
+        
         logout = function() {
             $window.localStorage.removeItem('login-token');
+            $window.localStorage.removeItem('roles');
             $window.localStorage.removeItem('user');
+            $window.localStorage.removeItem('restaurant_id');
+            $window.localStorage.removeItem('rolepermissions'); 
         }, isLoggedIn = function() {
               var token = getToken();
               var payload;
@@ -251,7 +260,11 @@
                 payload = token.split('.')[1];
                 payload = $window.atob(payload);
                 payload = JSON.parse(payload);  
-                console.log(payload);
+
+                if(payload.roles) {
+                    $window.localStorage['roles'] = JSON.stringify(payload.roles);
+                    $window.localStorage['is_master'] = payload.is_master;
+                }
                 return payload.exp > Date.now() / 1000;
               } else {
                 return false;
@@ -272,7 +285,7 @@
             saveToken : saveToken,
             saveUser : saveUser,
             getUser : getUser,
-            getToken : getToken,
+            getToken : getToken, 
             logout : logout,
             getRestaurantId : getRestaurantId,
             isLoggedIn : isLoggedIn,

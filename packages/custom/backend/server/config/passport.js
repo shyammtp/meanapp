@@ -23,13 +23,8 @@ passport.use(new LocalStrategy({
           message: 'Password is wrong'
         });
       }
-
-        restuarant.findOne({linked_accountid : user._id}).exec(function(err,doc){
-            user.restaurant_id = doc._id;
-            console.log(user);
-            // If credentials are correct, return the user object
-            return done(null, user);
-        })
+      user.restaurant_id = user.restaurant_id;
+      return done(null, user); 
       
     });
   }

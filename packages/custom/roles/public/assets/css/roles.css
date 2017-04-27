@@ -1,3 +1,7 @@
 .roles-example span {
     font-weight: bold;
 }
+
+.access_forbidden {
+	padding: 10px;
+}

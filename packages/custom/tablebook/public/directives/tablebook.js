@@ -21,6 +21,12 @@
                       height: height
                     });
                     this.layer = new Konva.Layer();
+                    console.log(this.layer.getContext())
+                    var gridimg = new Image();
+                    gridimg.onload = function() {
+                        _obj.layer.getContext().drawImage(gridimg,0,0);
+                    }
+                    gridimg.src = "/tablebook/assets/img/grid.svg";
                     this.stage.add(this.layer);
                 } 
                 $scope.$parent.canvasstage = this.stage;
@@ -145,7 +151,8 @@
                         x : 50,
                         y : 50,
                         draggable : true,
-                        rotation : 0
+                        rotation : 0,
+                        id : 'group-'+uniqueid+'.'+$scope.id 
                     })
                     var blueText = new Konva.Text({
                         fontSize: 16,

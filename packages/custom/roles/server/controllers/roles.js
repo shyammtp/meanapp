@@ -47,6 +47,16 @@ var Mongoose = require('mongoose'),
             res.send({message : 'loaded',data : doc});
           })
         },
+        getrolebyset : function(req,res,next) {
+            var rid = arrayutil.get(req.headers,'_rid'); 
+            if(!appsettings.validateResId(req)) {
+                return res.status(500).json({message : 'Invalid Restaurant ID',success : false});
+            }
+            var rids = arrayutil.get(req.body,'rids').split(",");
+          roles.find({_id : { $in : rids}}).exec(function(err,doc) {
+            res.send({message : 'loaded',data : doc});
+          })
+        },
         getrolebyid : function(req,res,next) {
             var rid = arrayutil.get(req.headers,'_rid'); 
             if(!appsettings.validateResId(req)) {

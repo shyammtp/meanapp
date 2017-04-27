@@ -31,10 +31,21 @@
             .html5Mode({enabled:true, requireBase:false});
     }
 
+    function Run($rootScope, $state, $location,Authentication,Backend,$window) { 
+         
+        $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) { 
+            console.log(toState);
+        })
+
+         
+    }
+
     angular
         .module('mean.tablebook')
-        .config(Tablebook);
+        .config(Tablebook)
+        .run(Run);
 
+    Run.$inject = ['$rootScope','$state','$location','Authentication','Backend','$window'];
     Tablebook.$inject = ['$stateProvider','$locationProvider','$urlRouterProvider','AuthenticationProvider','BackendProvider'];
 
 })();

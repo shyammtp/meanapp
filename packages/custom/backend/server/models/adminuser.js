@@ -12,13 +12,16 @@ var jwt = require('jsonwebtoken');
 
 var AdminUserSchema = new Schema({
 	name : String,
-	email : { type: String,unique: true,required: true}, 
+	email : { type: String,required: true}, 
 	hash : String,
 	salt : String,
+	is_master : {default : false, type : Boolean},
 	restaurant_id : {type : String},
+	roles : [],
     created_on : { type: Date, default: Date.now },
     updated_on: { type: Date, default: Date.now }
 },{collection: "admin_user"});
+AdminUserSchema.index({email : 1,restaurant_id : 1},{unique : true});
 
 AdminUserSchema.plugin(mongoosePaginate);
  
@@ -36,12 +39,14 @@ AdminUserSchema.methods.validPassword = function(password){
 AdminUserSchema.methods.generateJwt  = function(){ 
 	var expiry = new Date();
   	expiry.setDate(expiry.getDate() + 7);
-
+  	
   	return jwt.sign({
 	    _id: this._id,
 	    email: this.email,
 	    name: this.name,
 	    restaurant_id : this.restaurant_id,
+	    roles : this.roles,
+	    is_master : this.is_master,
 	    exp: parseInt(expiry.getTime() / 1000),
 	  }, secretKey); 
 };

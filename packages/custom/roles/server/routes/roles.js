@@ -18,5 +18,6 @@
         app.post('/api/settings/saverole',authentic, roles.saverole);
         app.get('/api/settings/getroles',authentic, roles.getroles);
         app.get('/api/settings/getrole/:id',authentic, roles.getrolebyid);
+        app.post('/api/roles/getrolesset',authentic, roles.getrolebyset);
     };
 })();

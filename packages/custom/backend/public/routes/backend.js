@@ -37,12 +37,7 @@
                 params: {title : 'Dashboard'}
             })
         )
-        .state('permission_denied', angular.extend({},defal, {
-                url: '/access/denied',
-                templateUrl: 'backend/views/'+theme+'/page/denied.html',
-                params: {title : 'Access Denied'}
-            })
-        )
+        
  
  
 
@@ -244,7 +239,7 @@
           .state('admin_order_list', angular.extend({},defal,   {
                 url : '/admin/orders/list',
                 templateUrl: 'backend/views/'+theme+'/orders/list.html',
-                params: {title : 'New Order',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'New Order'}]},
+                params: {title : 'New Order', permissionindex : 'manageorders',breadcrumbs : [{title : 'Home', link:'admin/dashboard'},{title : 'New Order'}]},
              })
           ) 
           ;
@@ -263,25 +258,21 @@
         $rootScope.assetspath = Backend.getassetpath();
         $rootScope.theme = theme; 
         $rootScope.preloader = false;
-        $rootScope.$on('$stateChangeStart', function(event, nextRoute, currentRoute) { 
-            console.log('NextRoute',nextRoute);
-            console.log('CurrentRoute',currentRoute); 
+        $rootScope.$on('$stateChangeStart', function(event, nextRoute, currentRoute) {  
             /*if(nextRoute.name === 'general_settings') {
                 return $location.path('/access/denied');
             }*/
             $rootScope.preloader = true;
-            console.log(Authentication.getToken());
+//            console.log(Authentication.getToken());
             if(Authentication.isLoggedIn()) {
-                if(nextRoute.name === 'login') {
-                   // $location.path('/admin/dashboard');
-                    //$state.go('dashboard');
-                    console.log('in')
+                if(nextRoute.name === 'login') { 
+                    $window.location.href = '/admin/dashboard';
                     return;
                 }
             }
             if(!Authentication.isLoggedIn()) {  
                 if(nextRoute.name !== 'login') { 
-                    $location.path('/admin/login');
+                    $window.location.href = '/admin/login';
                    return $state.go('login');
                 }
             }
