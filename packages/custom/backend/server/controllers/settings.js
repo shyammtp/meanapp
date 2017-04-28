@@ -65,8 +65,10 @@ var Mongoose = require('mongoose'),
             //return res.status(500).json({message : 'Invalid Restaurant ID',success : false,'logout' : true});
         }
         Settings.getAllConfig(arrayutil.get(req.query,'rid'),function(err,cb) {
+          if(err) res.send(err);
            res.send(cb);
         });
+        res.json({'message' : 'sff'});
       },
        getpaginate : function(req,res) {  
         Settings.getAllConfigPaginate(arrayutil.get(req.query,'place_id'),arrayutil.get(req.query,'page'),function(err,cb) {
