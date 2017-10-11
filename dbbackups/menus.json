@@ -1,33 +1,21 @@
-[{
-    "_id" : ObjectId("5879d715debbaac8a35d490c"),
-    "menu_key" : "dashboard",
-    "title_en" : "Dashboard",
-    "sort" : 1,
-    "url" : "admin/dashboard",
-    "before" : "<i class='fa fa-dashboard'></i>",
-    "after" : "",
-    "parent_key" : "",
-    "domain" : "admin"
-},
-{
-    "_id" : ObjectId("5879d7f4debbaac8a35d4959"),
-    "menu_key" : "settings",
-    "title_en" : "Settings",
-    "sort" : 2,
-    "url" : "",
-    "before" : "<i class='fa fa-anchor'></i>",
-    "after" : "",
-    "parent_key" : "",
-    "domain" : "admin"
-},
-{
-    "_id" : ObjectId("5879d82bdebbaac8a35d496c"),
-    "menu_key" : "general",
-    "title_en" : "General",
-    "sort" : 1,
-    "url" : "admin/settings/general",
-    "before" : "<i class='fa fa-anchor'></i>",
-    "after" : "",
-    "parent_key" : "settings",
-    "domain" : "admin"
-}]
+{"_id":{"$oid":"5902f938734d1d32590e2076"},"menu_key":"dashboard","title_en":"Dashboard","sort":1,"url":"admin/dashboard","before":"fa fa-dashboard","after":"","parent_key":"","domain":"admin","status":true}
+{"_id":{"$oid":"5902f947734d1d32590e207a"},"menu_key":"settings","title_en":"Settings","sort":2,"url":"","before":"fa fa-cogs","after":"","parent_key":"","domain":"admin","status":true}
+{"_id":{"$oid":"5902f951734d1d32590e2081"},"menu_key":"general","title_en":"General","sort":1,"url":"admin/settings/general","before":"\u003ci class='fa fa-anchor'\u003e\u003c/i\u003e","after":"","parent_key":"settings","domain":"admin"}
+{"_id":{"$oid":"5902f95f734d1d32590e2082"},"menu_key":"notification_template","title_en":"Notification Template","sort":1,"url":"admin/settings/template","before":"\u003ci class='fa fa-anchor'\u003e\u003c/i\u003e","after":"","parent_key":"settings","domain":"admin"}
+{"_id":{"$oid":"5902f96a734d1d32590e2084"},"menu_key":"products","title_en":"Products","sort":1,"url":"","before":"fa fa-shopping-bag","after":"","parent_key":"","domain":"admin","status":false}
+{"_id":{"$oid":"5902f973734d1d32590e20be"},"menu_key":"category","title_en":"Category","sort":1,"url":"admin/products/category","before":"\u003ci class='fa fa-dashboard'\u003e\u003c/i\u003e","after":"","parent_key":"products","domain":"admin"}
+{"_id":{"$oid":"5902f980734d1d32590e20c6"},"menu_key":"catalog","title_en":"Catalog","sort":1,"url":"admin/products/catalog","before":"\u003ci class='fa fa-dashboard'\u003e\u003c/i\u003e","after":"","parent_key":"products","domain":"admin"}
+{"_id":{"$oid":"5902f98a734d1d32590e20c7"},"menu_key":"catalog_attributes","title_en":"Catalog Attributes","sort":3,"url":"admin/products/catalog/attributes","before":"\u003ci class='fa fa-dashboard'\u003e\u003c/i\u003e","after":"","parent_key":"products","domain":"admin"}
+{"_id":{"$oid":"5902f999734d1d32590e20c8"},"menu_key":"catalog_variants","title_en":"Catalog Variants","sort":2,"url":"admin/products/catalog/variants","before":"\u003ci class='fa fa-dashboard'\u003e\u003c/i\u003e","after":"","parent_key":"products","domain":"admin"}
+{"_id":{"$oid":"5902fa6c734d1d32590e2128"},"menu_key":"payments","title_en":"Payments","sort":1,"url":"admin/settings/payments","before":"\u003ci class='fa fa-anchor'\u003e\u003c/i\u003e","after":"","parent_key":"settings","domain":"admin"}
+{"_id":{"$oid":"5902fa79734d1d32590e2133"},"menu_key":"menus","title_en":"Menus","sort":1,"url":"admin/menus","before":"fa fa-bars","after":"","parent_key":"","domain":"admin"}
+{"_id":{"$oid":"5902fa88734d1d32590e2141"},"menu_key":"item_choices","title_en":"Item Choices","sort":2,"url":"admin/products/catalog/variants","before":"\u003ci class='fa fa-dashboard'\u003e\u003c/i\u003e","after":"","parent_key":"menus","domain":"admin","status":true}
+{"_id":{"$oid":"5902faa8734d1d32590e215b"},"menu_key":"menu_items","title_en":"Menu \u0026 Items","sort":1,"url":"admin/menus","before":"\u003ci class='fa fa-dashboard'\u003e\u003c/i\u003e","after":"","parent_key":"menus","domain":"admin","status":true}
+{"_id":{"$oid":"5902fab5734d1d32590e215e"},"menu_key":"menu_items","title_en":"Menu \u0026 Items","sort":1,"url":"admin/menus","before":"\u003ci class='fa fa-dashboard'\u003e\u003c/i\u003e","after":"","parent_key":"menus","domain":"admin","status":true}
+{"_id":{"$oid":"5902fac1734d1d32590e2168"},"menu_key":"cuisines","title_en":"Cuisines","sort":3,"url":"admin/products/category","before":"\u003ci class='fa fa-dashboard'\u003e\u003c/i\u003e","after":"","parent_key":"menus","domain":"admin","status":true}
+{"_id":{"$oid":"5902facf734d1d32590e216c"},"menu_key":"customers","title_en":"Customer","sort":1,"url":"admin/customers","before":"fa fa-user","after":"","parent_key":"","domain":"admin"}
+{"_id":{"$oid":"5902fad7734d1d32590e216e"},"menu_key":"directory","title_en":"Directory","sort":1,"url":"admin/settings/directory","before":"fa fa-dashboard","after":"","parent_key":"","domain":"admin","status":true}
+{"_id":{"$oid":"5902fae1734d1d32590e2171"},"menu_key":"permissions","title_en":"Permissions","sort":1,"url":"admin/permission/roles","before":"\u003ci class='fa fa-anchor'\u003e\u003c/i\u003e","after":"","parent_key":"settings","domain":"admin","depmodulename":"mean.roles"}
+{"_id":{"$oid":"5902faea734d1d32590e217f"},"menu_key":"tablesbook","title_en":"Tables","sort":1,"url":"admin/tables","before":"fa fa-table","after":"","parent_key":"","domain":"admin","status":true}
+{"_id":{"$oid":"5906c234734d1d32590f61ec"},"menu_key":"delivery_charges","title_en":"Delivery Charges","sort":1,"url":"admin/delivery/charges","before":"fa fa-user","after":"","parent_key":"menus","domain":"admin"}
+{"_id":{"$oid":"5910ab92734d1d0d7398c417"},"menu_key":"walkin","title_en":"Walkin","sort":1,"url":"admin/tables/walkin","before":"fa fa-table","after":"","parent_key":"tablesbook","domain":"admin","status":true,"depmodulename":"mean.tablebook"}

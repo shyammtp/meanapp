@@ -1,0 +1,25 @@
+{"_id":{"$oid":"5902fb7e33013c949a9409bb"},"name":"cashondelivery_dname","place_id":{"$oid":"58f9d04f5ccf72e883069b6b"},"__v":0,"value":"Cash on delivery"}
+{"_id":{"$oid":"5902fb7e33013c949a9409bc"},"name":"bankdeposit_information","place_id":{"$oid":"58f9d04f5ccf72e883069b6b"},"__v":0,"value":"Bank Name: ACME Bank\r\nBank Branch: New York\r\nAccount Name: John Smith\r\nAccount Number: XXXXXXXXXXXX\r\nType any special instructions in here."}
+{"_id":{"$oid":"5902fb7e33013c949a9409bd"},"name":"check_dname","place_id":{"$oid":"58f9d04f5ccf72e883069b6b"},"__v":0,"value":"Pay by check"}
+{"_id":{"$oid":"5902fb7e33013c949a9409be"},"name":"storepayment_dname","place_id":{"$oid":"58f9d04f5ccf72e883069b6b"},"__v":0,"value":"Pay in store"}
+{"_id":{"$oid":"5902fb7e33013c949a9409bf"},"name":"bankdeposit_dname","place_id":{"$oid":"58f9d04f5ccf72e883069b6b"},"__v":0,"value":"Bank Deposit"}
+{"_id":{"$oid":"5902fb7e33013c949a9409c0"},"name":"moneyorder_dname","place_id":{"$oid":"58f9d04f5ccf72e883069b6b"},"__v":0,"value":"Pay by Money Order"}
+{"_id":{"$oid":"5902fb7e33013c949a9409c1"},"name":"rid","place_id":{"$oid":"58f9d04f5ccf72e883069b6b"},"__v":0,"value":"58f9d04f5ccf72e883069b6b"}
+{"_id":{"$oid":"5902fb7e33013c949a9409c2"},"name":"bankdeposit_countries","place_id":{"$oid":"58f9d04f5ccf72e883069b6b"},"__v":0,"value":"all"}
+{"_id":{"$oid":"5902fb7e33013c949a9409c3"},"name":"currency","place_id":{"$oid":"58f9d04f5ccf72e883069b6b"},"__v":0,"value":"usd"}
+{"_id":{"$oid":"5902fb8b33013c949a9409c4"},"name":"html_currency","place_id":{"$oid":"58f9d04f5ccf72e883069b6b"},"__v":0,"value":"%%currency%% %%amount%%"}
+{"_id":{"$oid":"5902fd3933013c949a9409c5"},"name":"cashondelivery_dname","place_id":{"$oid":"5902fc2f734d1d32590e227b"},"__v":0,"value":"Cash on delivery"}
+{"_id":{"$oid":"5902fd3933013c949a9409c6"},"name":"check_dname","place_id":{"$oid":"5902fc2f734d1d32590e227b"},"__v":0,"value":"Pay by check"}
+{"_id":{"$oid":"5902fd3933013c949a9409c7"},"name":"storepayment_dname","place_id":{"$oid":"5902fc2f734d1d32590e227b"},"__v":0,"value":"Pay in store"}
+{"_id":{"$oid":"5902fd3933013c949a9409c8"},"name":"moneyorder_dname","place_id":{"$oid":"5902fc2f734d1d32590e227b"},"__v":0,"value":"Pay by Money Order"}
+{"_id":{"$oid":"5902fd3933013c949a9409c9"},"name":"bankdeposit_countries","place_id":{"$oid":"5902fc2f734d1d32590e227b"},"__v":0,"value":"all"}
+{"_id":{"$oid":"5902fd3933013c949a9409ca"},"name":"bankdeposit_information","place_id":{"$oid":"5902fc2f734d1d32590e227b"},"__v":0,"value":"Bank Name: ACME Bank\r\nBank Branch: New York\r\nAccount Name: John Smith\r\nAccount Number: XXXXXXXXXXXX\r\nType any special instructions in here."}
+{"_id":{"$oid":"5902fd3933013c949a9409cb"},"name":"bankdeposit_dname","place_id":{"$oid":"5902fc2f734d1d32590e227b"},"__v":0,"value":"Bank Deposit"}
+{"_id":{"$oid":"5902fd3933013c949a9409cc"},"name":"rid","place_id":{"$oid":"5902fc2f734d1d32590e227b"},"__v":0,"value":"5902fc2f734d1d32590e227b"}
+{"_id":{"$oid":"5902fd3933013c949a9409cd"},"name":"html_currency","place_id":{"$oid":"5902fc2f734d1d32590e227b"},"__v":0,"value":"%%currency%% %%amount%%"}
+{"_id":{"$oid":"5902fd3933013c949a9409ce"},"name":"currency","place_id":{"$oid":"5902fc2f734d1d32590e227b"},"__v":0,"value":"usd"}
+{"_id":{"$oid":"5906c89933013c949a9409d6"},"name":"storeaddress","place_id":{"$oid":"5902fc2f734d1d32590e227b"},"__v":0,"value":"No, 3 Opposite to cng Company co,\nvillage power street\nComplete backup,\nIndia"}
+{"_id":{"$oid":"5906c89933013c949a9409d7"},"name":"minimumorderprice","place_id":{"$oid":"5902fc2f734d1d32590e227b"},"__v":0,"value":"50"}
+{"_id":{"$oid":"5906c89933013c949a9409d8"},"name":"country","place_id":{"$oid":"5902fc2f734d1d32590e227b"},"__v":0,"value":"59037793202f63002dbbcd0a"}
+{"_id":{"$oid":"5907afd533013c949a9409db"},"name":"status","place_id":{"$oid":"5902fc2f734d1d32590e227b"},"__v":0,"value":"true"}
+{"_id":{"$oid":"59dcd55b69cacb2c66c24a62"},"name":"operationtimings","place_id":{"$oid":"5902fc2f734d1d32590e227b"},"__v":0,"value":"{\"monday\":{\"status\":true,\"from\":\"09:00AM\",\"to\":\"12:50PM\"},\"tuesday\":{\"status\":true,\"from\":\"09:00AM\",\"to\":\"12:50PM\"},\"wednesday\":{\"status\":true,\"from\":\"09:00AM\",\"to\":\"12:50PM\"},\"thursday\":{\"status\":true,\"from\":\"09:00AM\",\"to\":\"12:50PM\"},\"friday\":{\"status\":true,\"from\":\"09:00AM\",\"to\":\"12:50PM\"},\"saturday\":{\"status\":true,\"from\":\"09:00AM\",\"to\":\"12:50PM\"},\"sunday\":{\"status\":true,\"from\":\"09:00AM\",\"to\":\"12:50PM\"}}"}

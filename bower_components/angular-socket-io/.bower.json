@@ -16,7 +16,6 @@
     "commit": "0864970501e7f5ce82b1182e29ed1b63e80cf5cc"
   },
   "_source": "https://github.com/btford/angular-socket-io.git",
-  "_target": "^0.7.0",
-  "_originalSource": "angular-socket-io",
-  "_direct": true
+  "_target": "*",
+  "_originalSource": "angular-socket-io"
 }
